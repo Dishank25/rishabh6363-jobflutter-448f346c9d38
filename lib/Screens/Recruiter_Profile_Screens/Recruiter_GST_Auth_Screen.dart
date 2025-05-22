@@ -5,7 +5,9 @@ import '../../UI_Helper/UI_Helper.dart';
 import '../../Widgets/widgets.dart';
 
 class RecruiterGSTAUTH_Screen extends StatelessWidget {
-  const RecruiterGSTAUTH_Screen({super.key});
+
+
+  TextEditingController GSTController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

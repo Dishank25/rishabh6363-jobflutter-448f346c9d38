@@ -6,7 +6,8 @@ import '../../Widgets/widgets.dart';
 import '../Log_In_Screens/Log_in_Page1.dart';
 
 class RecruiterVerifyEmailScreen extends StatelessWidget {
-  const RecruiterVerifyEmailScreen({super.key});
+
+  TextEditingController timePassController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class RecruiterVerifyEmailScreen extends StatelessWidget {
                   SizedBox(height: 2,),
                   SizedBox(
                       width: double.infinity,
-                      child: CustomTextField(controller: otpController, hintText: "Enter OTP",fillColor: Colors.white )),
+                      child: CustomTextField(controller: timePassController, hintText: "Enter OTP",fillColor: Colors.white )),
                   mSpacer(),
                   SizedBox(
                       width: double.infinity,

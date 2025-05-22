@@ -22,6 +22,9 @@ class RecruiterDashboard extends StatefulWidget {
 }
 
 class _RecruiterDashboardState extends State<RecruiterDashboard> {
+
+  TextEditingController findingController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +74,7 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
                 children: [
                   SizedBox(
                       width: 320,
-                      child: customSearchBar(controller: searchController, hint: "Search "),),
+                      child: customSearchBar(controller: findingController, hint: "Search "),),
                   Spacer(),
                   InkWell(
                       onTap: (){

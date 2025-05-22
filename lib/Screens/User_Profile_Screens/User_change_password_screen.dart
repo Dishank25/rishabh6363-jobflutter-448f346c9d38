@@ -5,7 +5,10 @@ import '../../UI_Helper/UI_Helper.dart';
 import '../../Widgets/widgets.dart';
 
 class UserChangePasswordScreen extends StatelessWidget {
-  const UserChangePasswordScreen({super.key});
+
+  TextEditingController oldPassWordController = TextEditingController();
+  TextEditingController NewPassWordController = TextEditingController();
+  TextEditingController Re_enterPassWordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

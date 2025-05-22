@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:job_portal/Screens/Log_In_Screens/Log_in_Page1.dart';
-import '../../Bloc State Management/Register User Bloc/RegisterUserBloc.dart';
-import '../../Bloc State Management/Register User Bloc/RegisterUserEvent.dart';
-import '../../Bloc State Management/Register User Bloc/RegisterUserState.dart';
+import '../../Bloc State Management/Register User API/RegisterUserBloc.dart';
+import '../../Bloc State Management/Register User API/RegisterUserEvent.dart';
+import '../../Bloc State Management/Register User API/RegisterUserState.dart';
 import '../../Data/Remote/API_Helper.dart';
 import '../../UI_Helper/UI_Helper.dart';
 import '../../Widgets/widgets.dart';
@@ -32,7 +32,7 @@ class _SignUpStudent_1State extends State<SignUpStudent_1> {
     return Scaffold(
       appBar: AppBar(title: Text("")),
       body: BlocListener<RegisterUserBloc, RegisterUserState>(
-        listener: (context, state) {
+        listener: (context, state) async{
           if (state is RegisterUserLoadingState) {
             setState(() => isLoading = true);
           } else {
@@ -47,12 +47,12 @@ class _SignUpStudent_1State extends State<SignUpStudent_1> {
 
           if (state is RegisterUserSuccessState) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("User Registered Successfully")),
-            );
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (_) => SignUpStudent_2()),
-            );
+                SnackBar(content: Text("User registered successfully")));
+
+            await Future.delayed(Duration(seconds: 1));
+            if (!mounted) return;
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => LogInPage1()));
           }
         },
         child: SingleChildScrollView(
@@ -104,7 +104,7 @@ class _SignUpStudent_1State extends State<SignUpStudent_1> {
                   ],
                 ),
 
-                mSpacer(mHeight: 16.0),
+                mSpacer(mHeight: 15.0),
                 Text("Email", style: mTextStyle12()),
                 CustomTextField(
                   controller: emailController,
@@ -118,7 +118,7 @@ class _SignUpStudent_1State extends State<SignUpStudent_1> {
                   },
                 ),
 
-                mSpacer(mHeight: 16.0),
+                mSpacer(mHeight: 15.0),
                 Text("Password", style: mTextStyle12()),
                 CustomTextField(
                   controller: passwordController,
@@ -132,7 +132,7 @@ class _SignUpStudent_1State extends State<SignUpStudent_1> {
                   },
                 ),
 
-                mSpacer(mHeight: 16.0),
+                mSpacer(mHeight: 15.0),
                 Text("Phone Number", style: mTextStyle12()),
                 CustomTextField(
                   controller: phoneController,
@@ -183,7 +183,7 @@ class _SignUpStudent_1State extends State<SignUpStudent_1> {
                     )
                   ],
                 ),
-                mSpacer(mHeight: 26.0),
+                mSpacer(mHeight: 25.0),
                 dividerLine(),
                 mSpacer(),
                 belowBars(text: "Continue with Google", imgUrl: "assets/Icons/google.svg"),

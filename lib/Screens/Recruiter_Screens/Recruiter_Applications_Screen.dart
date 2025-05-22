@@ -18,10 +18,11 @@ class RecruiterApplicationsScreen extends StatefulWidget {
 }
 
 class _RecruiterApplicationsScreenState extends State<RecruiterApplicationsScreen> {
+
+  TextEditingController searchingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       /// App bar
       appBar: AppBar(
         title: Padding(
@@ -66,7 +67,7 @@ class _RecruiterApplicationsScreenState extends State<RecruiterApplicationsScree
               Row(
                 children: [
                   Expanded(
-                    child: customSearchBar(controller: searchController, hint: "Search"),
+                    child: customSearchBar(controller: searchingController, hint: "Search"),
                   ),
                   const SizedBox(width: 10),
                   InkWell(

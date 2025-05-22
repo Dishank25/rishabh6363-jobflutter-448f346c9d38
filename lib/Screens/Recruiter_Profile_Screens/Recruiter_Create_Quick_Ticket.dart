@@ -13,6 +13,7 @@ class RecruiterCreateQuickTicket extends StatefulWidget {
 class _RecruiterCreateQuickTicketState extends State<RecruiterCreateQuickTicket> {
   int? selectedPriorityIndex; // 0 = Low, 1 = Medium, 2 = High
   final List<String> priorities = ['Low', 'Medium', 'High'];
+  TextEditingController eController = TextEditingController();
 
 
   @override
@@ -38,7 +39,7 @@ class _RecruiterCreateQuickTicketState extends State<RecruiterCreateQuickTicket>
             SizedBox(height: 25,),
             Text("Customer Email", style: mTextStyle12(),),
             SizedBox(height: 4,),
-            CustomTextField(controller: emailController, hintText: "amangupta@gmail.com", fillColor: Color(0xffFFF7FB),),
+            CustomTextField(controller:eController , hintText: "amangupta@gmail.com", fillColor: Color(0xffFFF7FB),),
             SizedBox(height: 25,),
             Text("Ticket Priority",style: mTextStyle12(),),
             SizedBox(height: 4,),

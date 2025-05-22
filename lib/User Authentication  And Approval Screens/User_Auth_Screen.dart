@@ -7,6 +7,16 @@ import '../UI_Helper/UI_Helper.dart';
 class UserAuthScreen extends StatelessWidget {
   /*final VoidCallback ? onCallBack;
   UserAuthScreen({this.onCallBack});*/
+  TextEditingController phoneNoController = TextEditingController();
+ TextEditingController otpReceivedController = TextEditingController();
+ TextEditingController AadharController = TextEditingController();
+ TextEditingController dateBirthController = TextEditingController();
+ TextEditingController uploadController = TextEditingController();
+ TextEditingController linkedPhoneController = TextEditingController();
+ TextEditingController nOtpController = TextEditingController();
+ TextEditingController nEmailController = TextEditingController();
+ TextEditingController cellPhoneController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +65,7 @@ class UserAuthScreen extends StatelessWidget {
                                  children: [
                                    SizedBox(
                                        width:230,
-                                     child: CustomTextField(controller: phoneController, hintText: "+91xxxxxxxxxx",fillColor: Color(0xffFFFFFC))),
+                                     child: CustomTextField(controller: phoneNoController, hintText: "+91xxxxxxxxxx",fillColor: Color(0xffFFFFFC))),
                                    Spacer(),
                                    sendOTPContainer(),
         
@@ -63,7 +73,7 @@ class UserAuthScreen extends StatelessWidget {
                                ),
                             SizedBox(height: 4,),
                             Text("OTP",style: mTextStyle12(mColor: Color(0xff6C7278)),),
-                            CustomTextField(controller: otpController, hintText: "6 digit number",fillColor: Color(0xffFFFFFC)),
+                            CustomTextField(controller:otpReceivedController , hintText: "6 digit number",fillColor: Color(0xffFFFFFC)),
                             SizedBox(height: 20,),
                             Center(
                               child: SizedBox(
@@ -115,7 +125,7 @@ class UserAuthScreen extends StatelessWidget {
                             Row(
                               children: [
                                 SizedBox(width:165,
-                                    child: CustomTextField(controller: DOBController , hintText: "DD/MM/YYYY",fillColor: Color(0xffFFFFFC))),
+                                    child: CustomTextField(controller: dateBirthController  , hintText: "DD/MM/YYYY",fillColor: Color(0xffFFFFFC))),
                                Spacer(),
                                 SizedBox(
                                   width: 165,
@@ -129,14 +139,14 @@ class UserAuthScreen extends StatelessWidget {
                           children: [
                             SizedBox(
                                 width:230,
-                                child: CustomTextField(controller: linkedPhoneController, hintText: "+91xxxxxxxxxx",fillColor: Color(0xffFFFFFC))),
+                                child: CustomTextField(controller:cellPhoneController , hintText: "+91xxxxxxxxxx",fillColor: Color(0xffFFFFFC))),
                             Spacer(),
                             sendOTPContainer(),
                           ],
                         ),
                             SizedBox(height: 4,),
                             Text("OTP",style: mTextStyle12(mColor: Color(0xff6C7278)),),
-                            CustomTextField(controller: otpController, hintText: "6 digit number",fillColor: Color(0xffFFFFFC)),
+                            CustomTextField(controller:nOtpController, hintText: "6 digit number",fillColor: Color(0xffFFFFFC)),
                             SizedBox(height: 20,),
                             Center(
                               child: SizedBox(
@@ -173,7 +183,7 @@ class UserAuthScreen extends StatelessWidget {
                           children: [
                             Text("Email ID", style: mTextStyle12(),),
                             SizedBox(height: 4,),
-                            CustomTextField(controller: emailController, hintText: "ABC@gmail.com", fillColor: Color(0xffFFFFFC),),
+                            CustomTextField(controller: nEmailController, hintText: "ABC@gmail.com", fillColor: Color(0xffFFFFFC),),
                             SizedBox(height: 4,),
                             InkWell(
                               onTap: (){},

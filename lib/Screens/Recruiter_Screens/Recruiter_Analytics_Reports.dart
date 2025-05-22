@@ -5,7 +5,9 @@ import 'package:job_portal/Widgets/widgets.dart';
 import '../../UI_Helper/UI_Helper.dart';
 
 class RecruiterAnalyticsReports extends StatelessWidget {
-  const RecruiterAnalyticsReports({super.key});
+
+
+  TextEditingController serController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +47,7 @@ class RecruiterAnalyticsReports extends StatelessWidget {
                SizedBox(height: 25,),
                  Row(
                   children: [
-                      Expanded(child: CustomTextField(controller: searchController,hintText: "Search Reports or Stats", fillColor: Colors.white,)),
+                      Expanded(child: CustomTextField(controller: serController,hintText: "Search Reports or Stats", fillColor: Colors.white,)),
                          SizedBox(width: 10,),
                          InkWell(
                               onTap: (){},

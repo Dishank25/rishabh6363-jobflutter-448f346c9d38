@@ -9,7 +9,8 @@ import '../../Widgets/widgets.dart';
 import 'Recruiter_total_job_posts.dart';
 
 class RecruiterPipelineCandidates extends StatelessWidget {
-  const RecruiterPipelineCandidates({super.key});
+
+  TextEditingController fdController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class RecruiterPipelineCandidates extends StatelessWidget {
                         SizedBox(height: 25,),
                          Row(
                              children: [
-                               Expanded(child: CustomTextField(controller: searchController, hintText: "Search by name, role or keyword...", fillColor: Colors.white, suffixIcon: Icons.search, onSuffixTap: (){},)),
+                               Expanded(child: CustomTextField(controller: fdController, hintText: "Search by name, role or keyword...", fillColor: Colors.white, suffixIcon: Icons.search, onSuffixTap: (){},)),
                              SizedBox(width: 10,),
                           InkWell(
                           onTap: (){},

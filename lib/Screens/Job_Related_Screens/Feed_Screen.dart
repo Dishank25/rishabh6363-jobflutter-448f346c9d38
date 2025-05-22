@@ -19,6 +19,8 @@ class FeedScreen extends StatefulWidget {
 
 class _FeedScreenState extends State<FeedScreen> {
 
+  TextEditingController feedSearchController = TextEditingController();
+
   List<Map<String, dynamic>> uList = [
     {
       "company_name": "Uber",
@@ -71,7 +73,7 @@ class _FeedScreenState extends State<FeedScreen> {
                                  children: [
                                    SizedBox(
                                        width: 300,
-                                       child: CustomTextField(controller: searchController, hintText: "Search", suffixIcon: Icons.search,fillColor: Colors.white,)),
+                                       child: CustomTextField(controller: feedSearchController, hintText: "Search", suffixIcon: Icons.search,fillColor: Colors.white,)),
                                    SizedBox(width: 40,),
                                    SvgPicture.asset("assets/Icons/settings-sliders 1.svg")
                                  ],

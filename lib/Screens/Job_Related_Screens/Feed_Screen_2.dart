@@ -7,9 +7,18 @@ import 'Job_details_Screen.dart';
 import '../../UI_Helper/UI_Helper.dart';
 import '../../Widgets/widgets.dart';
 
-class FeedScreen2 extends StatelessWidget {
+class FeedScreen2 extends StatefulWidget {
   final VoidCallback ? onBack;
   FeedScreen2({this.onBack});
+
+  @override
+  State<FeedScreen2> createState() => _FeedScreen2State();
+}
+
+class _FeedScreen2State extends State<FeedScreen2> {
+
+  TextEditingController fSearchController = TextEditingController();
+  TextEditingController sendController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +56,7 @@ class FeedScreen2 extends StatelessWidget {
             children: [
             SizedBox(
             width: 330,
-                child: CustomTextField(controller: searchController, hintText: "Search", suffixIcon: Icons.search,fillColor: Colors.white,)),
+                child: CustomTextField(controller: fSearchController, hintText: "Search", suffixIcon: Icons.search,fillColor: Colors.white,)),
            Spacer(),
             SvgPicture.asset("assets/Icons/settings-sliders 1.svg")
             ],
@@ -67,8 +76,8 @@ class FeedScreen2 extends StatelessWidget {
                  Spacer(),
                   SizedBox(
                     width: 270,
-                      child: CustomTextField(controller: shareFeedController, hintText: "Share something...", fillColor: Colors.white, suffixIcon: Icons.send, onSuffixTap: (){},))
-        
+                      child: CustomTextField(controller: sendController, hintText: "Share something...", fillColor: Colors.white, suffixIcon: Icons.send, onSuffixTap: (){},))
+
                    /* Container(
                       height: 46,
                       width: 290,

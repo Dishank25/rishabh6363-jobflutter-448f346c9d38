@@ -4,7 +4,9 @@ import 'package:job_portal/UI_Helper/UI_Helper.dart';
 import 'package:job_portal/Widgets/widgets.dart';
 
 class UserChangeEmailPage extends StatelessWidget {
-  const UserChangeEmailPage({super.key});
+
+  TextEditingController changedEmailController = TextEditingController();
+  TextEditingController ChangedEmail_PasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

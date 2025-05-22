@@ -6,7 +6,7 @@ import '../../Widgets/widgets.dart';
 import '../Job_Related_Screens/Job_Search_Screen.dart';
 
 class SignupPageYourPreferences extends StatelessWidget {
-  const SignupPageYourPreferences({super.key});
+
 
   @override
   Widget build(BuildContext context) {

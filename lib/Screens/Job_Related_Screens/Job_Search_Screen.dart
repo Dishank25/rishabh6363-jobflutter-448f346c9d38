@@ -18,6 +18,8 @@ class JobSearchScreen extends StatefulWidget {
 
 class _JobSearchScreenState extends State<JobSearchScreen> {
 
+  TextEditingController jSearchController = TextEditingController();
+
  List<Map<String, dynamic>> mList = [
    {
      "job_title": "Digital Marketing Executive",
@@ -96,7 +98,7 @@ class _JobSearchScreenState extends State<JobSearchScreen> {
                                    children: [
                                     Expanded(
                                       flex:6,
-                                        child: CustomTextField(controller: jobSearch, hintText: "Search", suffixIcon: Icons.search,fillColor: Colors.white,)),
+                                        child: CustomTextField(controller:jSearchController , hintText: "Search", suffixIcon: Icons.search,fillColor: Colors.white,)),
                                     SizedBox(width: 6,),
                                      Expanded(
                                        flex: 1,

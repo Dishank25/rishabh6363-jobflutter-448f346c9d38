@@ -7,6 +7,8 @@ import '../../Widgets/widgets.dart';
 
 class RecruiterSettingPanel extends StatelessWidget {
 
+  TextEditingController searchOnlyController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +23,7 @@ class RecruiterSettingPanel extends StatelessWidget {
                       SizedBox(height: 25,),
                       Row(
                         children: [
-                          Expanded(child: CustomTextField(controller: searchController,hintText: "Search Reports or Stats", fillColor: Colors.white,)),
+                          Expanded(child: CustomTextField(controller:searchOnlyController ,hintText: "Search Reports or Stats", fillColor: Colors.white,)),
                           SizedBox(width: 10,),
                           InkWell(
                               onTap: (){},

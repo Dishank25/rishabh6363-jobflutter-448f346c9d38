@@ -9,7 +9,8 @@ import '../../UI_Helper/UI_Helper.dart';
 import '../../Widgets/widgets.dart';
 
 class RecruiterTotalJobPosts extends StatelessWidget {
-  const RecruiterTotalJobPosts({super.key});
+
+  TextEditingController seController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class RecruiterTotalJobPosts extends StatelessWidget {
                               children: [
                               SizedBox(
                                 width: 320,
-                                child: customSearchBar(controller: searchController, hint: "Search "),),
+                                child: customSearchBar(controller: seController, hint: "Search "),),
                                Spacer(),
                                InkWell(
                                 onTap: (){},

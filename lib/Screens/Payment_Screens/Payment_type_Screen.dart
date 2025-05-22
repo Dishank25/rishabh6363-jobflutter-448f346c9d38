@@ -6,7 +6,8 @@ import '../../UI_Helper/UI_Helper.dart';
 import 'Default_payment_gateway.dart';
 
 class PaymentTypeScreen extends StatelessWidget {
-  const PaymentTypeScreen({super.key});
+
+  TextEditingController nameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

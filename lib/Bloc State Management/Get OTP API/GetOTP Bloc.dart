@@ -1,8 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:job_portal/Bloc%20State%20Management/Get%20OTP%20Bloc/GetOTP%20Event.dart';
-import 'package:job_portal/Bloc%20State%20Management/Get%20OTP%20Bloc/GetOTP%20State.dart';
 import 'package:job_portal/Data/Remote/API_Helper.dart';
 import 'package:job_portal/Data/Remote/App_URLS.dart';
+
+import 'GetOTP Event.dart';
+import 'GetOTP State.dart';
 
 class GetOTPBloc extends Bloc<GetOTPEvent, GetOTPState>{
   ApiHelper apiHelper;
@@ -14,12 +15,12 @@ class GetOTPBloc extends Bloc<GetOTPEvent, GetOTPState>{
         final response = await apiHelper.postAPI(
           Url: AppUrls.GetOTPURL,
           mBodyParams: {'phoneNumber': event.phoneNumber},
+
         );
-        if (response['success'] == true) {
-          emit(GetOTPSuccessState(OTP: response['data']));
+        if (response != null && response.containsKey("otp")) {
+          emit(GetOTPSuccessState(OTP: response));
         } else {
-          emit(GetOTPFailureState(
-              ErrorMsg: response['message'] ?? 'Something went wrong'));
+          emit(GetOTPFailureState(ErrorMsg: response["message"] ?? "Unknown error"));
         }
       } catch (e) {
         emit(GetOTPFailureState(ErrorMsg: e.toString()));

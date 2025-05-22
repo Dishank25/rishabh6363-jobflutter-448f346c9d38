@@ -16,6 +16,9 @@ class CompanyFilteredJobsScreen extends StatefulWidget {
 }
 
 class _CompanyFilteredJobsState extends State<CompanyFilteredJobsScreen> {
+
+  TextEditingController jobSearchController = TextEditingController();
+
   List<Map<String, dynamic>> vList = [
     {
       "job_title": "Digital Marketing Executive",
@@ -88,7 +91,7 @@ class _CompanyFilteredJobsState extends State<CompanyFilteredJobsScreen> {
                                 children: [
                                   SizedBox(
                                       width: 300,
-                                      child: CustomTextField(controller: searchController, hintText: "Search", suffixIcon: Icons.search,)),
+                                      child: CustomTextField(controller: jobSearchController, hintText: "Search", suffixIcon: Icons.search,)),
                                   Spacer(),
                                   InkWell(
                                       onTap:(){

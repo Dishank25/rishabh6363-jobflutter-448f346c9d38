@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../UI_Helper/UI_Helper.dart';
@@ -76,7 +77,7 @@ PreferredSizeWidget buildCustomAppBar({required String titleText}) {
  }
 
 /// FORGET PASSWORD ROW
- Widget forgetPassRow(){
+ Widget forgetPassRow({required VoidCallback ontap}){
    return Row(
      children: [
        Container(
@@ -90,7 +91,9 @@ PreferredSizeWidget buildCustomAppBar({required String titleText}) {
        SizedBox(width: 6.0,),
        Text("Remember me", style: mTextStyle12(),),
        Spacer(),
-       Text("Forgot Password?", style: mTextStyle12(mColor: AppColors.blueTextColor, mFontWeight: FontWeight.w600),),
+       InkWell(
+         onTap: ontap,
+           child: Text("Forgot Password?", style: mTextStyle12(mColor: AppColors.blueTextColor, mFontWeight: FontWeight.w600),)),
      ],
    );
  }
@@ -256,40 +259,7 @@ class CustomTextField extends StatelessWidget {
 }
 
 /// TEXTFILEDS
-TextEditingController nameController = TextEditingController();
-TextEditingController firstnameController = TextEditingController();
-TextEditingController surnameController = TextEditingController();
-TextEditingController phoneController = TextEditingController();
-TextEditingController collegeController = TextEditingController();
-TextEditingController genderController = TextEditingController();
-TextEditingController specializationController = TextEditingController();
-TextEditingController startYearController = TextEditingController();
-TextEditingController endYearController = TextEditingController();
-TextEditingController emailController = TextEditingController();
-TextEditingController passwordController = TextEditingController();
-TextEditingController TWXController = TextEditingController();
-TextEditingController jobRoleController = TextEditingController();
-TextEditingController currentCompany = TextEditingController();
-TextEditingController CTCController = TextEditingController();
-TextEditingController searchController = TextEditingController();
-TextEditingController courseCollegeController = TextEditingController();
-TextEditingController locationController = TextEditingController();
-TextEditingController profileController = TextEditingController();
-TextEditingController jobSearch = TextEditingController();
-TextEditingController changedEmailController = TextEditingController();
-TextEditingController ChangedEmail_PasswordController = TextEditingController();
-TextEditingController oldPassWordController = TextEditingController();
-TextEditingController NewPassWordController = TextEditingController();
-TextEditingController Re_enterPassWordController= TextEditingController();
-TextEditingController otpController = TextEditingController();
-TextEditingController AadharController = TextEditingController();
-TextEditingController DOBController = TextEditingController();
-TextEditingController uploadController = TextEditingController();
-TextEditingController linkedPhoneController = TextEditingController();
-TextEditingController addFeedController = TextEditingController();
-TextEditingController shareFeedController = TextEditingController();
-TextEditingController GSTController = TextEditingController();
-TextEditingController email_phone_Controller = TextEditingController();
+
 TextEditingController paymentCardController = TextEditingController();
 TextEditingController CVVController = TextEditingController();
 TextEditingController ValidUptoController = TextEditingController();
@@ -314,49 +284,55 @@ TextEditingController maxSalaryController = TextEditingController();
 TextEditingController recruiterNameController = TextEditingController();
 TextEditingController recruiter_SurNameController = TextEditingController();
 TextEditingController newPassController = TextEditingController();
+TextEditingController courseCollegeController = TextEditingController();
 
 
 
 
 
 
-///  OPTION CONTAINER
+///  OPTION CONTAINER (For any kind of option like courses option, user-type option)
 Widget OptionContainer({
   required String title,
   bool isSelected = false,
   VoidCallback ? onTap,
-   String? imgPath}){
+   String? imgPath,
+IconData? mIcon}){
 
   final hasImg = imgPath!=null && imgPath.isNotEmpty;
   return GestureDetector(
     onTap: onTap,
     child: Container(
-      height: 32,
+    //  height: 32,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(25.69),
-          border: Border.all(color: Color(0xffEDF1F3,), width: 1.0),
+          border: Border.all(color: Colors.grey.shade400/*Color(0xffEDF1F3,)*/, width: 1.0),
         color: isSelected==true? Color(0xff1961F3):Color(0xffFFF7FB)
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: hasImg? MainAxisAlignment.spaceAround:MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: Container(
-                height:14,
-                width: 12,
-                child: SvgPicture.asset(imgPath??"", color:isSelected==true?Colors.white:Colors.black ,), /*color:isSelected==true?Colors.white:Colors.black*/  ),
-          ),
-          SizedBox(width: 5,),
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: Text(title, style: TextStyle(fontSize: 11,
-                fontFamily: "Inter",
-                fontWeight: FontWeight.w400,
-                color: isSelected==true?Colors.white:Colors.black ), ),
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.only(top: 6.0, bottom: 6.0),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: hasImg? MainAxisAlignment.spaceAround:MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Container(
+                  height:14,
+                  width: 12,
+                  child: SvgPicture.asset(imgPath??"", color:isSelected==true?Colors.white:Colors.black ,), /*color:isSelected==true?Colors.white:Colors.black*/  ),
+            ),
+            SizedBox(width: 5,),
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Text(title, style: TextStyle(fontSize: 13,
+                  fontFamily: "Inter",
+                  fontWeight: FontWeight.w400,
+                  color: isSelected==true?Colors.white:Colors.black ), ),
+            ),
+            Padding(padding: const EdgeInsets.only(right: 4.0),child: Icon(mIcon, size: 10,),)
+          ],
+        ),
       ),
     ),
   );
@@ -384,45 +360,50 @@ Widget mSpacer17(){
 }
 
 /// PREFERENCE CONTAINER
-Widget preferenceContainer( {required double finalHeight, required double finalWeight, required String cName,IconData ? cIcon, required VoidCallback onTap, Color? bgColor }){
+Widget preferenceContainer({
+  required String cName,
+  IconData? cIcon,
+  required VoidCallback onTap,
+  Color? bgColor,
+}) {
   return InkWell(
     onTap: onTap,
     child: Container(
-      height: 120,
       width: double.infinity,
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: bgColor,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Color(0xffBCC1CA)),
+        color: bgColor ?? Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: const Color(0xffBCC1CA)),
       ),
-      child: Padding(
-        padding: const EdgeInsets.only(top: 10.0, left: 10.0, right: 8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                courseName( name: cName, bgColor:  Color(0xff1961F3),mIcon: cIcon),
-                Spacer(),
-                courseName( name: "Upload Certificate"),
-                SizedBox(width: 5,),
-                Padding(
-                  padding: const EdgeInsets.only(right: 5.0),
-                  child: InkWell(
-                    onTap: (){},
-                      child: SvgPicture.asset("assets/Icons/doubt_icon.svg")),
-                )
-              ],
-            ),
-            SizedBox(width: 7,),
-            Text("Where did you learn this skill?", style: mTextStyle12(),),
-            SizedBox(height: 5,),
-            SizedBox(
-                height: 46,
-                width: 330,
-                child: CustomTextField(controller: courseCollegeController, hintText: "College/Company Name", fillColor: Colors.white,))
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min, // auto height
+        children: [
+          Row(
+            children: [
+              courseName(name: cName, bgColor: const Color(0xff1961F3), mIcon: cIcon),
+              const Spacer(),
+              courseName(name: "Upload Certificate"),
+              const SizedBox(width: 5),
+              Padding(
+                padding: const EdgeInsets.only(right: 5.0),
+                child: InkWell(
+                  onTap: () {},
+                  child: SvgPicture.asset("assets/Icons/doubt_icon.svg"),
+                ),
+              )
+            ],
+          ),
+          const SizedBox(height: 7),
+          Text("Where did you learn this skill?", style: mTextStyle12()),
+          const SizedBox(height: 8),
+          CustomTextField(
+            controller: courseCollegeController,
+            hintText: "College/Company Name",
+            fillColor: Colors.white,
+          )
+        ],
       ),
     ),
   );
@@ -454,7 +435,7 @@ Widget courseName({
         children: [
           Text(
             name,
-            style: TextStyle(fontSize: 11, color: textColor),
+            style: TextStyle(fontSize: 13, color: textColor),
           ),
           if (mIcon != null) ...[
             const SizedBox(width: 6),

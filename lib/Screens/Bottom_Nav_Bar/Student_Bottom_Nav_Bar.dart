@@ -27,6 +27,7 @@ class _Student_Bottom_Nav_barState extends State<Student_Bottom_Nav_bar> {
  bool ShowUserProfileScreen2 = false;
  bool ShowJobDetailsScreen = false;
  bool  showCompanyFilteredJobsScreen = false;
+ TextEditingController addFeedController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

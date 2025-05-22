@@ -5,7 +5,11 @@ import '../UI_Helper/UI_Helper.dart';
 import '../Widgets/widgets.dart';
 
 class UserEducationApprovalScreen extends StatelessWidget {
-  const UserEducationApprovalScreen({super.key});
+
+  TextEditingController collController = TextEditingController();
+  TextEditingController searchOutController = TextEditingController();
+  TextEditingController cStartYearController = TextEditingController();
+  TextEditingController cEndYearController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +40,7 @@ class UserEducationApprovalScreen extends StatelessWidget {
                 children: [
                  Text("Your Education", style: mTextStyle32(mColor: Colors.black),),
                 SizedBox(height: 10,),
-                  CustomTextField(controller: searchController, hintText: "Select your course",suffixIcon: Icons.search, fillColor: Colors.white,),
+                  CustomTextField(controller:searchOutController , hintText: "Select your course",suffixIcon: Icons.search, fillColor: Colors.white,),
                   SizedBox(height: 24,),
                   Container(
                     height: 285,
@@ -59,7 +63,7 @@ class UserEducationApprovalScreen extends StatelessWidget {
                           ),
                           SizedBox(height: 4,),
                           Text("College Name", style: mTextStyle12(),),
-                          CustomTextField(controller: collegeController, hintText: "Delhi Technological University", fillColor: Colors.white,),
+                          CustomTextField(controller:collController , hintText: "Delhi Technological University", fillColor: Colors.white,),
                          SizedBox(height: 4,),
                           Text("Specialization", style: mTextStyle12(),),
                           SizedBox(height: 4,),
@@ -80,11 +84,11 @@ class UserEducationApprovalScreen extends StatelessWidget {
                             children: [
                               SizedBox(
                                 width: 165,
-                                  child: CustomTextField(controller: startYearController, hintText: "Choose Year", suffixIcon: Icons.arrow_drop_down, fillColor: Colors.white, onSuffixTap: (){},)),
+                                  child: CustomTextField(controller: cStartYearController , hintText: "Choose Year", suffixIcon: Icons.arrow_drop_down, fillColor: Colors.white, onSuffixTap: (){},)),
                              Spacer(),
                               SizedBox(
                                   width: 165,
-                                  child: CustomTextField(controller: startYearController, hintText: "Choose Year", suffixIcon: Icons.arrow_drop_down, fillColor: Colors.white, onSuffixTap: (){},)),
+                                  child: CustomTextField(controller: collController, hintText: "Choose Year", suffixIcon: Icons.arrow_drop_down, fillColor: Colors.white, onSuffixTap: (){},)),
                             ],
                           ),
                         ],

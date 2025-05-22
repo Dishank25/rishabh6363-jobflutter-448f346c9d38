@@ -1,11 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:job_portal/Bloc%20State%20Management/Register%20User%20Bloc/RegisterUserEvent.dart';
-import 'package:job_portal/Bloc%20State%20Management/Register%20User%20Bloc/RegisterUserState.dart';
+
 import 'package:job_portal/Data/Remote/API_Helper.dart';
 import 'package:job_portal/Data/Remote/App_URLS.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Data/Remote/API_Exceptions.dart';
+import 'RegisterUserEvent.dart';
+import 'RegisterUserState.dart';
 
 class RegisterUserBloc extends Bloc<RegisterUserEvent, RegisterUserState> {
   final ApiHelper apiHelper;
@@ -23,11 +24,8 @@ class RegisterUserBloc extends Bloc<RegisterUserEvent, RegisterUserState> {
 
         print("Register Response: $data");
 
-        if (data != null && data["status"] == true) {
-          if (data.containsKey('token')) {
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            await prefs.setString("token", data['token']);
-          }
+        if (data != null && data["message"] != null && data["message"].toString().contains("registered")) {
+          // Optionally save token here if present
           emit(RegisterUserSuccessState());
         } else {
           final errorMsg = data != null && data["message"] != null
@@ -35,6 +33,7 @@ class RegisterUserBloc extends Bloc<RegisterUserEvent, RegisterUserState> {
               : "Unknown error occurred";
           emit(RegisterUserFailedState(errorMsg: errorMsg));
         }
+
       } catch (e) {
         String errorMessage = "An unexpected error occurred";
         if (e is APIExceptions) {

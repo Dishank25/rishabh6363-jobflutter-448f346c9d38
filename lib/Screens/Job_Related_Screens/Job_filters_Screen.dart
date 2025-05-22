@@ -17,6 +17,14 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
 
   bool value2 = false;
 
+  TextEditingController profileController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
+  TextEditingController totalWorkExperienceController = TextEditingController();
+  TextEditingController currentComController = TextEditingController();
+  TextEditingController PackageController = TextEditingController();
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,15 +97,15 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
                 ),
                 Text("Year of Experience", style:mTextStyle12() ,),
                 SizedBox(height: 2,),
-                CustomTextField(controller: TWXController, hintText: "Total Experience", suffixIcon: Icons.keyboard_arrow_down_outlined,fillColor: Colors.white,),
+                CustomTextField(controller:totalWorkExperienceController , hintText: "Total Experience", suffixIcon: Icons.keyboard_arrow_down_outlined,fillColor: Colors.white,),
                 SizedBox(height: 20,),
                 Text("Company", style:mTextStyle12() ,),
                 SizedBox(height: 2,),
-                CustomTextField(controller: currentCompany, hintText: "Company Name", suffixIcon: Icons.keyboard_arrow_down_outlined,fillColor: Colors.white,),
+                CustomTextField(controller: currentComController, hintText: "Company Name", suffixIcon: Icons.keyboard_arrow_down_outlined,fillColor: Colors.white,),
                 SizedBox(height: 20,),
                 Text("Annual Salary(In lakhs)", style:mTextStyle12() ,),
                 SizedBox(height: 2,),
-                CustomTextField(controller: CTCController, hintText: "Eg.4,50,000", suffixIcon: Icons.keyboard_arrow_down_outlined,fillColor: Colors.white,),
+                CustomTextField(controller: PackageController, hintText: "Eg.4,50,000", suffixIcon: Icons.keyboard_arrow_down_outlined,fillColor: Colors.white,),
                 SizedBox(height: 32,),
                 Row(
                   children: [

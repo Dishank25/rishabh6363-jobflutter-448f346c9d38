@@ -5,7 +5,13 @@ import '../UI_Helper/UI_Helper.dart';
 import '../Widgets/widgets.dart';
 
 class UserExperienceApprovalScreen extends StatelessWidget {
-  const UserExperienceApprovalScreen({super.key});
+
+
+  TextEditingController searchJobfieldController = TextEditingController();
+  TextEditingController JobProfileController = TextEditingController();
+  TextEditingController JobStartDate = TextEditingController();
+  TextEditingController jobEndDate = TextEditingController();
+  TextEditingController salarryController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +40,9 @@ class UserExperienceApprovalScreen extends StatelessWidget {
                           child: Column(
                                        crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                       Text("Your Education", style: mTextStyle32(mColor: Colors.black),),
+                                       Text("Your Experience", style: mTextStyle32(mColor: Colors.black),),
                                         SizedBox(height: 10,),
-                                     CustomTextField(controller: searchController, hintText: "Select your course",suffixIcon: Icons.search, fillColor: Colors.white,),
+                                     CustomTextField(controller:searchJobfieldController , hintText: "Select your company",suffixIcon: Icons.search, fillColor: Colors.white,),
                                  SizedBox(height: 24,),
                                        Container(
                                            height: 275,
@@ -59,7 +65,7 @@ class UserExperienceApprovalScreen extends StatelessWidget {
                                                         ),
                                                        SizedBox(height: 4,),
                                                         Text("Job Role/Profile", style: mTextStyle12(),),
-                                                       CustomTextField(controller: collegeController, hintText: "Delhi Technological University", fillColor: Colors.white,),
+                                                       CustomTextField(controller:JobProfileController , hintText: "Digital Marketing", fillColor: Colors.white,),
                                                            Row(
                                                              children: [
                                                                Text("Start Year", style: mTextStyle12(),),
@@ -75,16 +81,16 @@ class UserExperienceApprovalScreen extends StatelessWidget {
                                                              children: [
                                                                SizedBox(
                                                                    width: 165,
-                                                                   child: CustomTextField(controller: startYearController, hintText: "Choose Year", suffixIcon: Icons.arrow_drop_down, fillColor: Colors.white, onSuffixTap: (){},)),
+                                                                   child: CustomTextField(controller:JobStartDate, hintText: "Choose Year", suffixIcon: Icons.arrow_drop_down, fillColor: Colors.white, onSuffixTap: (){},)),
                                                                Spacer(),
                                                                SizedBox(
                                                                    width: 165,
-                                                                   child: CustomTextField(controller: startYearController, hintText: "Choose Year", suffixIcon: Icons.arrow_drop_down, fillColor: Colors.white, onSuffixTap: (){},)),
+                                                                   child: CustomTextField(controller:jobEndDate , hintText: "Choose Year", suffixIcon: Icons.arrow_drop_down, fillColor: Colors.white, onSuffixTap: (){},)),
                                                              ],
                                                            ),
                                                            SizedBox(height: 4,),
                                                            Text("Current CTC", style: mTextStyle12(),),
-                                                           CustomTextField(controller: CTCController, hintText: "Eg. 4,00,000", fillColor: Colors.white,),
+                                                           CustomTextField(controller: salarryController, hintText: "Eg. 4,00,000", fillColor: Colors.white,),
 
                                            ]
                                                       ),

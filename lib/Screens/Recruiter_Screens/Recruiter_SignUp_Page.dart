@@ -7,6 +7,11 @@ import '../../Widgets/widgets.dart';
 import '../Log_In_Screens/Log_in_Page1.dart';
 
 class RecruiterSignupPage extends StatelessWidget {
+
+
+   TextEditingController eController = TextEditingController();
+   TextEditingController pController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,10 +64,10 @@ class RecruiterSignupPage extends StatelessWidget {
                 mSpacer(mHeight: 16.0),
                 Text("Official Email", style: mTextStyle12(),),
                 CustomTextField(
-                    controller: emailController, hintText: "abc@gmail.com", fillColor: Colors.white),
+                    controller:eController, hintText: "abc@gmail.com", fillColor: Colors.white),
                 mSpacer(mHeight: 16.0),
                 Text("Password", style: mTextStyle12()),
-                CustomTextField(controller: passwordController,
+                CustomTextField(controller:pController ,
                     hintText: "*******",
                     suffixIcon: Icons.visibility_off_outlined,fillColor: Colors.white),
                 mSpacer(),

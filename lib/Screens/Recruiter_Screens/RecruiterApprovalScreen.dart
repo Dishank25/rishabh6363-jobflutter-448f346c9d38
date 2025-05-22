@@ -7,6 +7,9 @@ import 'Recruiter_pipeline_candidates.dart';
 import 'Recruiter_total_job_posts.dart';
 
 class RecruiterApprovalScreen extends StatelessWidget {
+
+  TextEditingController searchItController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +24,7 @@ class RecruiterApprovalScreen extends StatelessWidget {
                 SizedBox(height: 25,),
                   Row(
                    children: [
-                    Expanded(child: CustomTextField(controller: searchController, hintText: "Search by name, role or keyword...", fillColor: Colors.white, suffixIcon: Icons.search, onSuffixTap: (){},)),
+                    Expanded(child: CustomTextField(controller: searchItController, hintText: "Search by name, role or keyword...", fillColor: Colors.white, suffixIcon: Icons.search, onSuffixTap: (){},)),
                       SizedBox(width: 10,),
                     InkWell(
                     onTap: (){},
