@@ -123,7 +123,7 @@ class InterviewCard extends StatelessWidget{
                 width: 160,
                 child: ViewAppContainer(
                   title: viewContainerText,
-                  bgColor: viewContainerText =="Join Now"? AppColors.blueTextColor: AppColors.secondaryColor,
+                  bgColor: viewContainerText =="Join Now"? AppColors.blueTextColor: AppColors.mainRedColor,
                   textColor: Colors.white,
                   onTap: () {
                     /// Handle

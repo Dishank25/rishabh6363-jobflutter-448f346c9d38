@@ -11,7 +11,7 @@ class RelatedSkillsBloc extends Bloc<RelatedSkillsEvent, RelatedSkillsState> {
     on<FetchRelatedSkills>((event, emit) async {
       emit(RelatedSkillsLoading());
       try {
-        final skills = await repository.fetchSkillsByDomain(event.domainName);
+        final skills = await repository.fetchSkillsByDomain(event.domainName); // ✅ Dynamic domain used
         emit(RelatedSkillsLoaded(skills));
       } catch (e) {
         emit(RelatedSkillsError(e.toString()));

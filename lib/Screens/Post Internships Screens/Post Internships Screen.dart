@@ -69,7 +69,7 @@ class _PostInternshipsScreenState extends State<PostInternshipsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Logo", style:TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: AppColors.mainColor)),
+                Text("Logo", style:TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: AppColors.mainIndigoColor)),
                 SizedBox(height: 20,),
                 Text("Post internships jobs",style: mTextStyle32(mColor: Colors.black),),
                 SizedBox(height: 15,),

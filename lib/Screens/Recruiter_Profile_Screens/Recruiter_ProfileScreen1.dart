@@ -54,7 +54,7 @@ class _RecruiterProfilescreen1State extends State<RecruiterProfilescreen1> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                    color: AppColors.mainColor
+                    color: AppColors.mainIndigoColor
                 ),
                 child: Row(
                     children: [

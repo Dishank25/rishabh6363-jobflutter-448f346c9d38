@@ -69,7 +69,7 @@ class _NotificationsScreenState extends State<MessagesScreen> {
                               height: 19,
                               width: 19,
                               decoration: BoxDecoration(
-                                color: AppColors.secondaryColor,
+                                color: AppColors.mainRedColor,
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child:Center(child: Text(mContacts[index]['mCount']??"", style: mTextStyle12(mColor: Colors.white))) ,

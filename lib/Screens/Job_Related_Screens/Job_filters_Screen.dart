@@ -31,7 +31,7 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
       appBar: AppBar(
         title: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: Text("LOGO", style: TextStyle(fontSize: 20, fontFamily: "Inter", fontWeight: FontWeight.w700, color: AppColors.mainColor),),
+          child: Text("LOGO", style: TextStyle(fontSize: 20, fontFamily: "Inter", fontWeight: FontWeight.w700, color: AppColors.mainIndigoColor),),
         ),
         actions: [
           InkWell(

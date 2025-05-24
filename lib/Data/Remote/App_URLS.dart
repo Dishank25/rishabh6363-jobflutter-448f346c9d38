@@ -1,10 +1,13 @@
 class AppUrls{
-  static const String BaseURL = "https://252e-2409-40d0-1012-3356-60a7-d129-d5f9-8eb.ngrok-free.app/";
+  static const String BaseURL = "  https://b1e9-2405-204-3310-6573-9c97-16a1-c9b2-bac9.ngrok-free.app/";
 
   static const String RegisterURL ="${BaseURL}api/users/register";
   static const String LoginURL = "${BaseURL}api/users/login";
+
   static const String GetOTPURL = "${BaseURL}api/mobileotp/sendotp";
   static const String VerifyOTPURL = "${BaseURL}api/mobileotp/verifyotp";
+  static const String VerifyEmailOTPURL = "${BaseURL}api/otp/send-otp";
+  static const String VerifyEmailURL = "${BaseURL}api/api/otp/verify-otp";
   static const String ForgetPasswordURL = "${BaseURL}api/users/forgotPassword";
  static const String ResetPasswordWithOtpURL ="${BaseURL}api/users/resetPasswordWithOtp";
  static const String GetUserDetails ="${BaseURL}api/users/getUserData";

@@ -58,7 +58,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                         SizedBox(height: 10,),
                         Row(
                           children: [
-                            greyContainer(text: 'Actively Hiring', bgColor: AppColors.secondaryColor),
+                            greyContainer(text: 'Actively Hiring', bgColor: AppColors.mainRedColor),
                             SizedBox(width: 18,),
                            greyContainer(text: "2 weeks ago", bgColor:Color(0xffEFF0F6) )
                           ],

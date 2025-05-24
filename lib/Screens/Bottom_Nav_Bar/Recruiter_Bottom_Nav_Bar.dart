@@ -29,16 +29,16 @@ class _RecruiterBottomNavBarState extends State<RecruiterBottomNavBar> {
     return Scaffold(
       body: navTo[selectedIndex],
       bottomNavigationBar:BottomNavigationBar(items: [
-        BottomNavigationBarItem(icon: SvgPicture.asset("assets/Icons/Feed_Icons.svg", color: (selectedIndex==0)? AppColors.secondaryColor: Colors.white,), label: "Feed", ),
-        BottomNavigationBarItem(icon: SvgPicture.asset("assets/Icons/dashboard_icon.svg",color: (selectedIndex==1)? AppColors.secondaryColor: Colors.white,), label: "Dashboard",),
-        BottomNavigationBarItem(icon: SvgPicture.asset("assets/Icons/Approval_icon.svg",color: (selectedIndex==2)? AppColors.secondaryColor: Colors.white,), label: "Approvals" ),
-        BottomNavigationBarItem(icon: SvgPicture.asset("assets/Icons/nav_profile.svg",color: (selectedIndex==3)? AppColors.secondaryColor: Colors.white,), label: "Approvals" )
+        BottomNavigationBarItem(icon: SvgPicture.asset("assets/Icons/Feed_Icons.svg", color: (selectedIndex==0)? AppColors.mainRedColor: Colors.white,), label: "Feed", ),
+        BottomNavigationBarItem(icon: SvgPicture.asset("assets/Icons/dashboard_icon.svg",color: (selectedIndex==1)? AppColors.mainRedColor: Colors.white,), label: "Dashboard",),
+        BottomNavigationBarItem(icon: SvgPicture.asset("assets/Icons/Approval_icon.svg",color: (selectedIndex==2)? AppColors.mainRedColor: Colors.white,), label: "Approvals" ),
+        BottomNavigationBarItem(icon: SvgPicture.asset("assets/Icons/nav_profile.svg",color: (selectedIndex==3)? AppColors.mainRedColor: Colors.white,), label: "Approvals" )
       ],
         iconSize: 24,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: AppColors.mainColor,
+        backgroundColor: AppColors.mainIndigoColor,
         // selectedIconTheme: Colors.white,
-        selectedItemColor: AppColors.secondaryColor,
+        selectedItemColor: AppColors.mainRedColor,
         unselectedItemColor: Colors.white,
         currentIndex: selectedIndex,
         onTap: (value){

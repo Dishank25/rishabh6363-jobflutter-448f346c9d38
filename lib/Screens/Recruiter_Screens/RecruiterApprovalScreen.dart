@@ -156,7 +156,7 @@ class ApprovalCard extends StatelessWidget {
                     border: Border.all(color: Colors.black12)),
                 child: ViewAppContainer(
                   title: viewContainerText,
-                  bgColor: viewContainerText == "View Profile" ? Color(0xffFFF7FB) : AppColors.secondaryColor,
+                  bgColor: viewContainerText == "View Profile" ? Color(0xffFFF7FB) : AppColors.mainRedColor,
                   textColor: viewContainerText == "View Profile" ? Color(0xff6C7278) : Colors.white,
                   onTap: () {
                     /// Handle

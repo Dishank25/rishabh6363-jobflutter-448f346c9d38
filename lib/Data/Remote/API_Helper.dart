@@ -57,6 +57,8 @@ class ApiHelper {
       case 401:
       case 403:
         throw UnAuthorizedRequestException(ErrorMsg: response.body.toString());
+      case 409:
+        throw BadRequestException(ErrorMsg: "User already exist");
       case 500:
       default:
         throw FetchDataException(
@@ -152,7 +154,7 @@ class DomainRepository {
         'Authorization': 'Bearer $token',
       },
     );
-    if (response.statusCode == 200||response.statusCode == 200) {
+    if (response.statusCode == 200||response.statusCode == 201) {
       final data = jsonDecode(response.body);
       final List domains = data['domains'];
       return domains.map((json) => DomainModel.fromJson(json)).toList();
@@ -165,19 +167,18 @@ class DomainRepository {
 /// Related Skills Repo
 
 class RelatedSkillsRepository {
-  final String token;
-  RelatedSkillsRepository(this.token);
-
   Future<List<RelatedSkillModel>> fetchSkillsByDomain(String domainName) async{
     final response = await http.get(
       Uri.parse(AppUrls.relatedSkillsURL),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
+
       },
     );
+    print("Response Status: ${response.statusCode}");
+    print("Response Body: ${response.body}");
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200|| response.statusCode == 201) {
       final List data = jsonDecode(response.body)['skills'];
       return data.map((e) => RelatedSkillModel.fromJson(e)).toList();
     } else {

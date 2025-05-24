@@ -90,7 +90,7 @@ class _Student_Bottom_Nav_barState extends State<Student_Bottom_Nav_bar> {
         width: 44,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(26),
-          color: AppColors.secondaryColor,
+          color: AppColors.mainRedColor,
           border: Border.all(width: 2.6, color: Colors.white)
         ),
         child: FloatingActionButton(
@@ -100,7 +100,7 @@ class _Student_Bottom_Nav_barState extends State<Student_Bottom_Nav_bar> {
               return Container(
                 height: 450,
                 width: double.infinity,
-                color: AppColors.mainColor,
+                color: AppColors.mainIndigoColor,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical:32 ),
                   child: Column(
@@ -138,7 +138,7 @@ class _Student_Bottom_Nav_barState extends State<Student_Bottom_Nav_bar> {
                                                width: 120,
                                                decoration: BoxDecoration(
                                                  borderRadius: BorderRadius.circular(12),
-                                                 color: AppColors.secondaryColor
+                                                 color: AppColors.mainRedColor
                                                ),
                                                child: Row(
                                                  mainAxisAlignment: MainAxisAlignment.center,
@@ -198,16 +198,16 @@ class _Student_Bottom_Nav_barState extends State<Student_Bottom_Nav_bar> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: navTo[selected_index],
       bottomNavigationBar: BottomNavigationBar(items: [
-        BottomNavigationBarItem(icon: SvgPicture.asset("assets/Icons/Feed_Icons.svg", color:(selected_index==0)? AppColors.secondaryColor:Colors.white ,), label: "Feed"),
-        BottomNavigationBarItem(icon: SvgPicture.asset("assets/Icons/Jobs.svg",  color:(selected_index==1)? AppColors.secondaryColor:Colors.white ,), label: "Jobs"),
-        BottomNavigationBarItem(icon: SvgPicture.asset("assets/Icons/AI_Icon.svg", color:(selected_index==2)? AppColors.secondaryColor:Colors.white ,), label: "AI Predictions"),
-        BottomNavigationBarItem(icon: SvgPicture.asset("assets/Icons/nav_profile.svg", color:(selected_index==3)? AppColors.secondaryColor:Colors.white ,), label: "Profile")
+        BottomNavigationBarItem(icon: SvgPicture.asset("assets/Icons/Feed_Icons.svg", color:(selected_index==0)? AppColors.mainRedColor:Colors.white ,), label: "Feed"),
+        BottomNavigationBarItem(icon: SvgPicture.asset("assets/Icons/Jobs.svg",  color:(selected_index==1)? AppColors.mainRedColor:Colors.white ,), label: "Jobs"),
+        BottomNavigationBarItem(icon: SvgPicture.asset("assets/Icons/AI_Icon.svg", color:(selected_index==2)? AppColors.mainRedColor:Colors.white ,), label: "AI Predictions"),
+        BottomNavigationBarItem(icon: SvgPicture.asset("assets/Icons/nav_profile.svg", color:(selected_index==3)? AppColors.mainRedColor:Colors.white ,), label: "Profile")
       ],
         iconSize: 24,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: AppColors.mainColor,
+        backgroundColor: AppColors.mainIndigoColor,
        // selectedIconTheme: Colors.white,
-        selectedItemColor: AppColors.secondaryColor,
+        selectedItemColor: AppColors.mainRedColor,
         unselectedItemColor: Colors.white,
         currentIndex: selected_index,
         onTap: (value){

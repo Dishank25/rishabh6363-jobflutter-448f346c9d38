@@ -18,7 +18,7 @@ PreferredSizeWidget buildCustomAppBar({required String titleText}) {
           fontSize: 20,
           fontFamily: "Inter",
           fontWeight: FontWeight.w700,
-          color: AppColors.mainColor,
+          color: AppColors.mainIndigoColor,
         ),
       ),
     ),
@@ -44,18 +44,17 @@ PreferredSizeWidget buildCustomAppBar({required String titleText}) {
 /// HEADING PART WIDGET
  Widget signInHeader({required VoidCallback onTap}){
    return  Container(
-     height: 220,
+     height: 180,
      width: double.infinity,
      decoration: BoxDecoration(
-         color: AppColors.mainColor
+         color: AppColors.mainIndigoColor
      ),
      child: Padding(
        padding: const EdgeInsets.symmetric(horizontal: 24.0),
        child: Column(
          crossAxisAlignment: CrossAxisAlignment.start,
          children: [
-           Text("Logo", style: mTextStyle15(),),
-           mSpacer(),
+         //  mSpacer(),
            Container(
              height: 113,
              width: 327,
@@ -64,10 +63,10 @@ PreferredSizeWidget buildCustomAppBar({required String titleText}) {
            mSpacer(mHeight: 10.0),
            Row(
              children: [
-               Text("Don't have an account?", style: mTextStyle12(mColor: Colors.white),),
+               Text("Don't have an account?", style: mTextStyle14(mColor: Colors.white),),
                InkWell(
                    onTap: onTap,
-                   child: Text(" Sign Up", style: TextStyle(color: AppColors.secondaryColor, fontSize: 12, fontWeight: FontWeight.w600,  )))
+                   child: Text(" Sign Up", style: TextStyle(color: AppColors.mainRedColor, fontSize: 14, fontWeight: FontWeight.w600,  )))
              ],
            )
          ],
@@ -89,11 +88,11 @@ PreferredSizeWidget buildCustomAppBar({required String titleText}) {
          ),
        ),
        SizedBox(width: 6.0,),
-       Text("Remember me", style: mTextStyle12(),),
+       Text("Remember me", style: mTextStyle14(),),
        Spacer(),
        InkWell(
          onTap: ontap,
-           child: Text("Forgot Password?", style: mTextStyle12(mColor: AppColors.blueTextColor, mFontWeight: FontWeight.w600),)),
+           child: Text("Forgot Password?", style: mTextStyle14(mColor: AppColors.blueTextColor, mFontWeight: FontWeight.w600),)),
      ],
    );
  }
@@ -106,7 +105,7 @@ Widget commonRedContainer({required String text, VoidCallback ? onTap}){
        height: 48,
        width: double.infinity,
        decoration: BoxDecoration(
-         color: AppColors.secondaryColor,
+         color: AppColors.mainRedColor,
          borderRadius: BorderRadius.circular(10),
        ),
        child: Center(child: Text(text, style: mTextStyle14(mColor: Colors.white),)),
@@ -142,7 +141,7 @@ Widget commonRedContainer({required String text, VoidCallback ? onTap}){
  }
 
 /// BELOW BARS
-Widget belowBars({required String text, String ? imgUrl}){
+Widget belowBars({required String text, String ? imgUrl, VoidCallback ? onTap}){
   return  Container(
     height: 48,
     width: double.infinity,
@@ -160,7 +159,9 @@ Widget belowBars({required String text, String ? imgUrl}){
             child: SvgPicture.asset("assets/Icons/google.svg", height: 18,width: 18,),
           ),
           SizedBox(width: 5,),],
-        Text(text, style: mTextStyle14(mFontWeight: FontWeight.w600),)
+        InkWell(
+          onTap: onTap,
+            child: Text(text, style: mTextStyle14(mFontWeight: FontWeight.w600),))
       ],
     ),
   );
@@ -347,7 +348,7 @@ Widget nextButton({required String title, required VoidCallback onTap}){
       width: 110,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: AppColors.secondaryColor
+          color: AppColors.mainRedColor
       ),
       child: Center(child: Text(title, style: mTextStyle14(mColor: Colors.white),)),
     ),

@@ -94,7 +94,7 @@ required VoidCallback buttonTap}){
           ),
           SizedBox(height: 15,),
 
-          ViewAppContainer(title: viewContainer_text, onTap: onTap, bgColor: AppColors.secondaryColor, textColor: Colors.white,),
+          ViewAppContainer(title: viewContainer_text, onTap: onTap, bgColor: AppColors.mainRedColor, textColor: Colors.white,),
 
         ],
       ),

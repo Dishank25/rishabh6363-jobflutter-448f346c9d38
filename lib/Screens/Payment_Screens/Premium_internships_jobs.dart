@@ -20,7 +20,7 @@ class PremiumInternships_Jobs extends StatelessWidget {
               Row(
                 children: [
                   Text("Payment", style: mTextStyle32(mColor: Colors.black),),
-                  Text(" premium", style: mTextStyle32(mColor: AppColors.secondaryColor)),
+                  Text(" premium", style: mTextStyle32(mColor: AppColors.mainRedColor)),
                 ],
               ),
                Text("internships and Jobs", style: mTextStyle32(mColor: Colors.black),),
@@ -75,7 +75,7 @@ Widget premiumPlansContainer({required String discountPrice, required String ori
           SizedBox(
             height: 22,
               width: 200,
-              child:ViewAppContainer(title: "Buy Now", bgColor: AppColors.secondaryColor, textColor: Colors.white, onTap: (){},)
+              child:ViewAppContainer(title: "Buy Now", bgColor: AppColors.mainRedColor, textColor: Colors.white, onTap: (){},)
           )  ],
       ),
     ),

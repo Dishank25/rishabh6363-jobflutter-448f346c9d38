@@ -33,7 +33,7 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
       appBar: AppBar(
         title: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: Text("LOGO", style: TextStyle(fontSize: 20, fontFamily: "Inter", fontWeight: FontWeight.w700, color: AppColors.mainColor),),
+          child: Text("LOGO", style: TextStyle(fontSize: 20, fontFamily: "Inter", fontWeight: FontWeight.w700, color: AppColors.mainIndigoColor),),
         ),
         actions: [
           InkWell(
@@ -190,7 +190,7 @@ Widget DashBoardConatiner({
             width: 150,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
-              color: AppColors.secondaryColor
+              color: AppColors.mainRedColor
             ),
             child: InkWell(
               onTap: onTap,

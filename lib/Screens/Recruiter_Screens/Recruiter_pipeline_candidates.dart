@@ -166,7 +166,7 @@ class AppReceivedCard extends StatelessWidget{
               SizedBox(
                 width: 160,
                 child: ViewAppContainer(
-                  bgColor: AppColors.secondaryColor,
+                  bgColor: AppColors.mainRedColor,
                   textColor: Colors.white,
                   title: "View Full Application",
                   onTap: () {

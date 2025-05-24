@@ -55,7 +55,7 @@ class _JobSearchScreenState extends State<JobSearchScreen> {
       appBar: AppBar(
         title: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: Text("LOGO", style: TextStyle(fontSize: 20, fontFamily: "Inter", fontWeight: FontWeight.w700, color: AppColors.mainColor),),
+          child: Text("LOGO", style: TextStyle(fontSize: 20, fontFamily: "Inter", fontWeight: FontWeight.w700, color: AppColors.mainIndigoColor),),
         ),
         actions: [
           InkWell(
@@ -210,7 +210,7 @@ class JobCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    greyContainer(text: status, bgColor: AppColors.secondaryColor),
+                    greyContainer(text: status, bgColor: AppColors.mainRedColor),
                     SizedBox(height: 6),
                     greyContainer(text: posted, bgColor: Color(0xffEFF0F6)),
                     SizedBox(height: 6),

@@ -127,7 +127,7 @@ class TotalJobPostsCard extends StatelessWidget {
                 numSeenContainer(nSeen: 7500),
                 const Spacer(),
                 ViewAppContainer(
-                  bgColor: AppColors.secondaryColor,
+                  bgColor: AppColors.mainRedColor,
                   textColor: Colors.white,
                   title: buttonTitle,
                   nApplications: nApplications,

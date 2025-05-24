@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:job_portal/Bloc%20State%20Management/Domain%20Skills%20API/Domain%20Model/Domain%20Model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Bloc State Management/Domain Skills API/DomainSkills Bloc.dart';
@@ -47,6 +48,7 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
 
   TextEditingController skillsSearchController = TextEditingController();
   String ? token;
+  String ? selectedDomain;
 
 
   /// Domain Skills Drop Down
@@ -189,7 +191,7 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
                     key: _domainFieldKey,
                     controller: skillsSearchController,
                     hintText: "Select Area of Interest",
-                    suffixIcon: Icons.keyboard_arrow_down_outlined,
+                    suffixIcon: Icons.search,
                     onSuffixTap: () {
                       if (_domainOverlayEntry == null) {
                         _showDomainDropdown(context, skillsSearchController);
@@ -198,6 +200,7 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
                         _domainOverlayEntry = null;
                       }
                     },
+
                   ),
                 ),
                 mSpacer(mHeight: 16.0),
@@ -262,7 +265,28 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SignupPageYourPreferences(),
+                            builder: (context) => SignupPageYourPreferences(
+                               /* firstName:
+                                surName:
+                                gender:
+                                DOB:
+                                phoneNumber:
+                                email:
+                            jobPreferenceLocation:
+                            currentLocation:
+                             userCategory:
+                             totalWorkExp:
+                             currentJobRole:
+                            currentCompany:
+                             jobStartYear:
+                             jobEndYear:
+                           studentClass:
+                           course:
+                           CollegeName:
+                            Specialization:
+                                courseStartYear:
+                                 courseEndYear:*/
+                            ),
                           ),
                         );
                       },

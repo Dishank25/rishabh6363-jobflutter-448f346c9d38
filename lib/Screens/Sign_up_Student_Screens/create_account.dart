@@ -19,7 +19,7 @@ class _CreateAccountState extends State<CreateAccount> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(""),
+        title:   Text("Logo", style: mTextStyle15(mColor: Color(0xff032466), mFontWeight: FontWeight.w700),),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -28,8 +28,6 @@ class _CreateAccountState extends State<CreateAccount> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("Logo", style: mTextStyle15(mColor: Color(0xff032466), mFontWeight: FontWeight.w700),),
-              mSpacer(mHeight: 32.0),
               Container(
                 height: 84,
                 width: double.infinity,
@@ -69,17 +67,20 @@ class _CreateAccountState extends State<CreateAccount> {
                     selectedIndex=2;
                   });
               }),
-              mSpacer(mHeight: 220.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Already have an account?", style: mTextStyle12(),),
-                  InkWell(
-                    onTap: (){
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LogInPage1()));
-                    },
-                      child: Text(" Login", style: mTextStyle12(mColor: AppColors.blueTextColor,mFontWeight: FontWeight.w600),))
-                ],
+         SizedBox(height: 250,),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 18.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Already have an account?", style: mTextStyle12(),),
+                    InkWell(
+                      onTap: (){
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LogInPage1()));
+                      },
+                        child: Text(" Login", style: mTextStyle12(mColor: AppColors.blueTextColor,mFontWeight: FontWeight.w600),))
+                  ],
+                ),
               )
             ],
           ),
@@ -94,8 +95,8 @@ class _CreateAccountState extends State<CreateAccount> {
  Widget OptionContainer({
    required String title1, required String title2,
    required int index, required bool isSelected, required VoidCallback onTap}){
-  final borderColor = isSelected? AppColors.secondaryColor: AppColors.mainColor;
-  final textColor = isSelected? AppColors.secondaryColor: AppColors.mainColor;
+  final borderColor = isSelected? AppColors.mainRedColor: AppColors.mainIndigoColor;
+  final textColor = isSelected? AppColors.mainRedColor: AppColors.mainIndigoColor;
   final fillColor = isSelected? Color(0xffFFE4DB): Color(0xffDFEAFB);
   return  InkWell(
     onTap: onTap,
@@ -140,7 +141,7 @@ class _CreateAccountState extends State<CreateAccount> {
               width: 18,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(9),
-                color: AppColors.secondaryColor,
+                color: AppColors.mainRedColor,
               ),
               child: Icon(Icons.check, color: Colors.white, size: 12),
             ),

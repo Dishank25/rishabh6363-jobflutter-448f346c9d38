@@ -27,7 +27,7 @@ class _RecruiterApplicationsScreenState extends State<RecruiterApplicationsScree
       appBar: AppBar(
         title: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: Text("LOGO", style: TextStyle(fontSize: 20, fontFamily: "Inter", fontWeight: FontWeight.w700, color: AppColors.mainColor),),
+          child: Text("LOGO", style: TextStyle(fontSize: 20, fontFamily: "Inter", fontWeight: FontWeight.w700, color: AppColors.mainIndigoColor),),
         ),
 
         /// Icons Row
@@ -148,7 +148,7 @@ class AppReceivedCard extends StatelessWidget{
               SizedBox(
                 width: 160,
                 child: ViewAppContainer(
-                  bgColor: AppColors.secondaryColor,
+                  bgColor: AppColors.mainRedColor,
                   textColor: Colors.white,
                   title: "View Full Application",
                   onTap: onTap

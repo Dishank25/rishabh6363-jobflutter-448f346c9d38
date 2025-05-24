@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:job_portal/Screens/Common_Screens/Forgot_password_Screen.dart';
+import 'package:job_portal/Screens/Sign_up_Student_Screens/Sign_up_Student(1).dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Bloc State Management/Login User API/UserLoginBloc.dart';
 import '../../Bloc State Management/Login User API/UserLoginEvent.dart';
@@ -8,8 +9,9 @@ import '../../Bloc State Management/Login User API/UserLoginState.dart';
 import '../../Service_locator/Service_Locator.dart';
 import '../../UI_Helper/UI_Helper.dart';
 import '../../Widgets/widgets.dart';
+import '../Sign_up_Student_Screens/LoginWithEmailOtpScreen.dart';
 import '../Sign_up_Student_Screens/create_account.dart';
-import 'Log_in_Page2.dart';
+import 'loginWithEmailOTP.dart';
 
 
 class LogInPage1 extends StatefulWidget {
@@ -28,7 +30,11 @@ class _SignInPage_1State extends State<LogInPage1> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.mainColor,
+        title: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Text("LOGO", style: mTextStyle12(mColor: Colors.white),),
+        ),
+        backgroundColor: AppColors.mainIndigoColor,
       ),
       body: BlocListener<UserloginBloc, LoginState>(
         listener: (context, state) async{
@@ -52,11 +58,9 @@ class _SignInPage_1State extends State<LogInPage1> {
                 SnackBar(content: Text(state.userLoginData['message']))
             );
 
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.userLoginData['message'])));
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => LogInPage2()),
+              MaterialPageRoute(builder: (context) => CreateAccount())
             );
           }
         },
@@ -66,7 +70,7 @@ class _SignInPage_1State extends State<LogInPage1> {
             children: [
               signInHeader(
                 onTap: () {
-                  Navigator.pushReplacement(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => CreateAccount()),
                   );
@@ -80,7 +84,7 @@ class _SignInPage_1State extends State<LogInPage1> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Email", style: mTextStyle12()),
+                      Text("Email", style: mTextStyle14()),
                       CustomTextField(
                         controller: emailController,
                         hintText: "abc@gmail.com",
@@ -95,7 +99,7 @@ class _SignInPage_1State extends State<LogInPage1> {
                         },
                       ),
                       mSpacer(mHeight: 16.0),
-                      Text("Password", style: mTextStyle12()),
+                      Text("Password", style: mTextStyle14()),
                       CustomTextField(
                         controller: passwordController,
                         hintText: "*******",
@@ -135,9 +139,13 @@ class _SignInPage_1State extends State<LogInPage1> {
                       mSpacer(),
                       belowBars(
                           text: "Continue with Google",
-                          imgUrl: "assets/Icons/google.svg"),
+                          imgUrl: "assets/Icons/google.svg",
+                      onTap: (){}),
                       mSpacer(),
-                      belowBars(text: "Login with OTP"),
+                      belowBars(text: "Login with OTP",
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginWithEmailOtpScreen()));
+                      }),
                       SizedBox(height: 20),
                     ],
                   ),

@@ -49,7 +49,7 @@ class PaymentTypeScreen extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: 15,),
-                      Text("Card Number", style: mTextStyle14(mColor: AppColors.mainColor,mFontWeight: FontWeight.w600),),
+                      Text("Card Number", style: mTextStyle14(mColor: AppColors.mainIndigoColor,mFontWeight: FontWeight.w600),),
                       SizedBox(height: 4,),
                       CustomTextField(controller:paymentCardController, hintText: "XXXX-XXXX-XXXX", fillColor:Color(0xffFFF7FB) ,),
                       SizedBox(height: 15,),

@@ -7,6 +7,8 @@ import '../Log_In_Screens/Log_in_Page1.dart';
 import 'SignUp_As_any_one.dart';
 
 class  SignUpStudent_2 extends StatelessWidget {
+  final String Email;
+  SignUpStudent_2({required this.Email});
   TextEditingController enterOTP = TextEditingController();
 
   @override
@@ -26,7 +28,7 @@ class  SignUpStudent_2 extends StatelessWidget {
               mSpacer(mHeight: 20.0),
               Text("Verify your email", style: mTextStyle32(mColor: Color(0xff1A1C1E)),),
               mSpacer(),
-              Text("One Time Password (OTP) has been sent on amangupta@gmail.com", style: mTextStyle12(),),
+              Text("One Time Password (OTP) has been sent on ${Email}", style: mTextStyle12(),),
               mSpacer(mHeight: 26.0),
               Text("Enter OTP to verify your email", style: mTextStyle12(),),
               SizedBox(height: 2,),

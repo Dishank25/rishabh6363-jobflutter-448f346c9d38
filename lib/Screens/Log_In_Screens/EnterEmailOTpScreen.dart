@@ -12,16 +12,14 @@ import '../Sign_up_Student_Screens/create_account.dart';
 
 
 
-class LogInPage3 extends StatefulWidget {
-  final String phoneNumber;
-  final String receivedOtp;
-  LogInPage3({required this.phoneNumber, required this.receivedOtp});
-
+class EnterEmailOTpScreen extends StatefulWidget {
+final String email;
+EnterEmailOTpScreen({required this.email});
   @override
-  State<LogInPage3> createState() => _LogInPage3State();
+  State<EnterEmailOTpScreen> createState() => _EnterEmailOTpScreen();
 }
 
-class _LogInPage3State extends State<LogInPage3> {
+class _EnterEmailOTpScreen extends State<EnterEmailOTpScreen> {
   late TextEditingController phoneController;
   TextEditingController otp1 = TextEditingController();
   TextEditingController otp2 = TextEditingController();
@@ -31,7 +29,7 @@ class _LogInPage3State extends State<LogInPage3> {
   @override
   void initState() {
     super.initState();
-    phoneController = TextEditingController(text: widget.phoneNumber);
+    phoneController = TextEditingController(text: widget.email);
   }
 
   String getEnteredOtp() {
@@ -41,7 +39,7 @@ class _LogInPage3State extends State<LogInPage3> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: AppColors.mainColor),
+      appBar: AppBar(backgroundColor: AppColors.mainIndigoColor),
       body: BlocListener<VerifyOTPBloc, VerifyOTPState>(
         listener: (context, state) async {
           print("state: $state");
@@ -55,7 +53,7 @@ class _LogInPage3State extends State<LogInPage3> {
 
             if (!context.mounted) return;
             Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) => SignupAsAnyOne()),
+              MaterialPageRoute(builder: (_) => CreateAccount()),
             );
           }
 
@@ -88,7 +86,7 @@ class _LogInPage3State extends State<LogInPage3> {
                     mSpacer(mHeight: 5.0),
                     CustomTextField(
                       controller: phoneController,
-                      hintText: widget.phoneNumber,
+                      hintText: widget.email,
                       fillColor: Colors.white,
                     ),
                     mSpacer(),
@@ -102,7 +100,6 @@ class _LogInPage3State extends State<LogInPage3> {
                       ],
                     ),
                     mSpacer(),
-                    Text("Received OTP: ${widget.receivedOtp}"),
                     mSpacer(),
                     commonRedContainer(
                       text: "Log In",
@@ -111,18 +108,7 @@ class _LogInPage3State extends State<LogInPage3> {
                           final enteredOtp = getEnteredOtp();
                           print("Entered OTP: $enteredOtp");
 
-                          if (enteredOtp.length == 4) {
-                            context.read<VerifyOTPBloc>().add(
-                              VerifyOTP(
-                                phoneNumber: widget.phoneNumber,
-                                otp: enteredOtp,
-                              ),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Please enter a 4-digit OTP")),
-                            );
-                          }
+
                         } catch (e, stack) {
                           print("Login Click Error: $e");
                           print(stack);

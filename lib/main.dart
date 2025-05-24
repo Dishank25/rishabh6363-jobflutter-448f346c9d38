@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:job_portal/Bloc%20State%20Management/Verify%20email%20API/Verify%20Email%20Bloc.dart';
 
 import 'Bloc State Management/Colleges Names API/Colleges Bloc.dart';
 import 'Bloc State Management/Colleges Names API/Colleges Event.dart';
@@ -20,6 +21,7 @@ import 'Bloc State Management/Register User API/RegisterUserBloc.dart';
 
 import 'Bloc State Management/Related Skills API/Related Skills Bloc.dart';
 import 'Bloc State Management/Related Skills API/Related Skills Event.dart';
+import 'Bloc State Management/Send_Mail_OTP_API/Send_mail_otp_bloc.dart';
 import 'Bloc State Management/Specialization API/Specialization Bloc.dart';
 import 'Bloc State Management/Specialization API/Specialization Event.dart';
 import 'Bloc State Management/Verify OTP API/VerifyOTP Bloc.dart';
@@ -46,6 +48,7 @@ import 'Screens/Recruiter_Screens/Recruiter_View_Full_Application_screen.dart';
 import 'Screens/Recruiter_Screens/Recruiter_pending_tasks.dart';
 import 'Screens/Recruiter_Screens/Recruiter_pipeline_candidates.dart';
 import 'Screens/Recruiter_Screens/Recruiter_total_job_posts.dart';
+import 'Screens/Sign_up_Student_Screens/LoginWithEmailOtpScreen.dart';
 import 'Screens/Sign_up_Student_Screens/SignUp_As_any_one.dart';
 import 'Screens/User_Profile_Screens/Choose_Your_Template_Screen.dart';
 import 'Screens/User_Profile_Screens/User_Notifications_Screen.dart';
@@ -64,19 +67,21 @@ void main() {
   runApp(MultiBlocProvider(providers:[
       BlocProvider(create:(context)=>RegisterUserBloc(apiHelper: ApiHelper())),
     BlocProvider(create: (context)=>UserloginBloc(apiHelper: ApiHelper())),
-    BlocProvider(create: (context)=>GetOTPBloc(apiHelper: ApiHelper())),
     BlocProvider(create: (context)=>VerifyOTPBloc(apiHelper: ApiHelper())),
     BlocProvider(create: (context)=> ForgotPasswordBloc()),
     BlocProvider(create: (context)=>ResetPasswordBloc(apiHelper: ApiHelper())),
     BlocProvider(create: (context)=>FetchUserBloc(apiHelper: ApiHelper())),
-  BlocProvider(
-  create: (context) => CourseBloc(CourseRepository())..add(FetchCourses())),
+    BlocProvider(create: (context)=>SendOTPBloc(apiHelper: ApiHelper())),
+  BlocProvider(create: (context) => CourseBloc(CourseRepository())..add(FetchCourses())),
     BlocProvider(create: (context)=>CollegeBloc(CollegeRepository())..add(FetchColleges())),
+    BlocProvider(create: (context)=>EmailVerificationBloc(apiHelper: ApiHelper())),
     BlocProvider(create: (context)=> SpecializationBloc(SpecializationRepository())..add(FetchSpecializations())),
     BlocProvider(create: (context)=> JobRoleBloc(JobRoleRepository())..add(FetchJobRoles())),
     BlocProvider(create: (context)=> JobLocationsBloc(JobLocationRepository())..add(FetchJobLocations())),
   BlocProvider(
   create: (_) => DomainBloc(getIt<DomainRepository>())..add(FetchDomains())),
+   BlocProvider(create: (context)=>RelatedSkillsBloc(RelatedSkillsRepository())),
+
   
 
   ],
