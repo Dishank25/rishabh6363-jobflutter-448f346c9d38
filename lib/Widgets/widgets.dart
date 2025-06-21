@@ -1,10 +1,9 @@
+import 'dart:developer' as developer show log;
 import 'dart:ui';
-
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../UI_Helper/UI_Helper.dart';
-
 
 /// CUSTOMIZED APPBAR
 
@@ -37,136 +36,159 @@ PreferredSizeWidget buildCustomAppBar({required String titleText}) {
   );
 }
 
-
-
-
-
 /// HEADING PART WIDGET
- Widget signInHeader({required VoidCallback onTap}){
-   return  Container(
-     height: 180,
-     width: double.infinity,
-     decoration: BoxDecoration(
-         color: AppColors.mainIndigoColor
-     ),
-     child: Padding(
-       padding: const EdgeInsets.symmetric(horizontal: 24.0),
-       child: Column(
-         crossAxisAlignment: CrossAxisAlignment.start,
-         children: [
-         //  mSpacer(),
-           Container(
-             height: 113,
-             width: 327,
-             child: Text("Sign in to your Account", style: mTextStyle32(),),
-           ),
-           mSpacer(mHeight: 10.0),
-           Row(
-             children: [
-               Text("Don't have an account?", style: mTextStyle14(mColor: Colors.white),),
-               InkWell(
-                   onTap: onTap,
-                   child: Text(" Sign Up", style: TextStyle(color: AppColors.mainRedColor, fontSize: 14, fontWeight: FontWeight.w600,  )))
-             ],
-           )
-         ],
-       ),
-     ),
-   );
- }
-
-/// FORGET PASSWORD ROW
- Widget forgetPassRow({required VoidCallback ontap}){
-   return Row(
-     children: [
-       Container(
-         height: 11.08,
-         width: 11.08,
-         decoration: BoxDecoration(
-             borderRadius: BorderRadius.circular(2),
-             border: Border.all(color: Color(0xff6C7278), width: 1)
-         ),
-       ),
-       SizedBox(width: 6.0,),
-       Text("Remember me", style: mTextStyle14(),),
-       Spacer(),
-       InkWell(
-         onTap: ontap,
-           child: Text("Forgot Password?", style: mTextStyle14(mColor: AppColors.blueTextColor, mFontWeight: FontWeight.w600),)),
-     ],
-   );
- }
-
- /// COMMON CONTAINER WIDGET
-Widget commonRedContainer({required String text, VoidCallback ? onTap}){
-   return InkWell(
-     onTap: onTap,
-     child: Container(
-       height: 48,
-       width: double.infinity,
-       decoration: BoxDecoration(
-         color: AppColors.mainRedColor,
-         borderRadius: BorderRadius.circular(10),
-       ),
-       child: Center(child: Text(text, style: mTextStyle14(mColor: Colors.white),)),
-     ),
-   );
- }
-
- /// DIVIDER LINE
- Widget dividerLine(){
-   return Row(
-     children: [
-       Expanded(child: Divider(
-         thickness: 1,
-         color:  Colors.grey[400],
-         endIndent: 10,
-       )
-       ),
-       Text(
-         "OR",
-         style: mTextStyle14(
-             mColor:Colors.grey.shade500
-         ),
-       ),
-       Expanded(
-         child: Divider(
-           thickness: 1,
-           color: Colors.grey[400],
-           indent: 10,
-         ),
-       ),
-     ],
-   );
- }
-
-/// BELOW BARS
-Widget belowBars({required String text, String ? imgUrl, VoidCallback ? onTap}){
-  return  Container(
-    height: 48,
+Widget signInHeader({required VoidCallback onTap}) {
+  return Container(
+    height: 180,
     width: double.infinity,
-    decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.grey.shade500)
-    ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        if(imgUrl!=null)...[
+    decoration: BoxDecoration(color: AppColors.mainIndigoColor),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          //  mSpacer(),
           Container(
-            height: 18,
-            width: 18,
-            child: SvgPicture.asset("assets/Icons/google.svg", height: 18,width: 18,),
+            height: 113,
+            width: 327,
+            child: Text(
+              "Sign in to your Account",
+              style: mTextStyle32(),
+            ),
           ),
-          SizedBox(width: 5,),],
-        InkWell(
-          onTap: onTap,
-            child: Text(text, style: mTextStyle14(mFontWeight: FontWeight.w600),))
-      ],
+          mSpacer(mHeight: 10.0),
+          Row(
+            children: [
+              Text(
+                "Don't have an account?",
+                style: mTextStyle14(mColor: Colors.white),
+              ),
+              InkWell(
+                  onTap: onTap,
+                  child: const Text(" Sign Up",
+                      style: TextStyle(
+                        color: AppColors.mainRedColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      )))
+            ],
+          )
+        ],
+      ),
     ),
   );
 }
 
+/// FORGET PASSWORD ROW
+Widget forgetPassRow({required VoidCallback ontap}) {
+  return Row(
+    children: [
+      Container(
+        height: 11.08,
+        width: 11.08,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(2),
+            border: Border.all(color: Color(0xff6C7278), width: 1)),
+      ),
+      SizedBox(
+        width: 6.0,
+      ),
+      Text(
+        "Remember me",
+        style: mTextStyle14(),
+      ),
+      Spacer(),
+      InkWell(
+          onTap: ontap,
+          child: Text(
+            "Forgot Password?",
+            style: mTextStyle14(
+                mColor: AppColors.blueTextColor, mFontWeight: FontWeight.w600),
+          )),
+    ],
+  );
+}
+
+/// COMMON CONTAINER WIDGET
+Widget commonRedContainer({required String text, VoidCallback? onTap}) {
+  return InkWell(
+    onTap: onTap,
+    child: Container(
+      height: 48,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: AppColors.mainRedColor,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Center(
+          child: Text(
+        text,
+        style: mTextStyle14(mColor: Colors.white),
+      )),
+    ),
+  );
+}
+
+/// DIVIDER LINE
+Widget dividerLine() {
+  return Row(
+    children: [
+      Expanded(
+          child: Divider(
+        thickness: 1,
+        color: Colors.grey[400],
+        endIndent: 10,
+      )),
+      Text(
+        "OR",
+        style: mTextStyle14(mColor: Colors.grey.shade500),
+      ),
+      Expanded(
+        child: Divider(
+          thickness: 1,
+          color: Colors.grey[400],
+          indent: 10,
+        ),
+      ),
+    ],
+  );
+}
+
+/// BELOW BARS
+Widget belowBars({required String text, String? imgUrl, VoidCallback? onTap}) {
+  return Container(
+    height: 48,
+    width: double.infinity,
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.grey.shade500)),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        if (imgUrl != null) ...[
+          Container(
+            height: 18,
+            width: 18,
+            child: SvgPicture.asset(
+              "assets/Icons/google.svg",
+              height: 18,
+              width: 18,
+            ),
+          ),
+          SizedBox(
+            width: 5,
+          ),
+        ],
+        InkWell(
+            onTap: onTap,
+            child: Text(
+              text,
+              style: mTextStyle14(mFontWeight: FontWeight.w600),
+            ))
+      ],
+    ),
+  );
+}
 
 /// CUSTOM TEXTFIELDS
 class CustomTextField extends StatelessWidget {
@@ -180,7 +202,6 @@ class CustomTextField extends StatelessWidget {
   final VoidCallback? onSuffixTap;
   final String? Function(String?)? validator;
   final Color? fillColor;
-
 
   const CustomTextField({
     super.key,
@@ -218,15 +239,16 @@ class CustomTextField extends StatelessWidget {
             prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
             suffixIcon: suffixIcon != null
                 ? GestureDetector(
-              onTap: onSuffixTap,
-              child: Icon(
-                suffixIcon,
-                size: 20,
-                color: const Color(0xffBCC1CA),
-              ),
-            )
+                    onTap: onSuffixTap,
+                    child: Icon(
+                      suffixIcon,
+                      size: 20,
+                      color: const Color(0xffBCC1CA),
+                    ),
+                  )
                 : null,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14), // maintain height
+            contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16, vertical: 14), // maintain height
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: const BorderSide(width: 1, color: Color(0xffBCC1CA)),
@@ -237,7 +259,8 @@ class CustomTextField extends StatelessWidget {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(width: 1.5, color: Theme.of(context).primaryColor),
+              borderSide:
+                  BorderSide(width: 1.5, color: Theme.of(context).primaryColor),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
@@ -253,7 +276,7 @@ class CustomTextField extends StatelessWidget {
             ),
           ),
         ),
-       // const SizedBox(height: 12), // spacing between fields
+        // const SizedBox(height: 12), // spacing between fields
       ],
     );
   }
@@ -275,11 +298,12 @@ TextEditingController minIncentivesController = TextEditingController();
 TextEditingController maxStipendController = TextEditingController();
 TextEditingController maxIncentivesController = TextEditingController();
 TextEditingController alterPhoneController = TextEditingController();
- TextEditingController startDateController = TextEditingController();
- TextEditingController endDateController = TextEditingController();
+TextEditingController startDateController = TextEditingController();
+TextEditingController endDateController = TextEditingController();
 TextEditingController cityController = TextEditingController();
 TextEditingController internshipDurationController = TextEditingController();
-TextEditingController internshipDurationMonthsController = TextEditingController();
+TextEditingController internshipDurationMonthsController =
+    TextEditingController();
 TextEditingController minSalaryController = TextEditingController();
 TextEditingController maxSalaryController = TextEditingController();
 TextEditingController recruiterNameController = TextEditingController();
@@ -287,51 +311,62 @@ TextEditingController recruiter_SurNameController = TextEditingController();
 TextEditingController newPassController = TextEditingController();
 TextEditingController courseCollegeController = TextEditingController();
 
-
-
-
-
-
 ///  OPTION CONTAINER (For any kind of option like courses option, user-type option)
-Widget OptionContainer({
-  required String title,
-  bool isSelected = false,
-  VoidCallback ? onTap,
-   String? imgPath,
-IconData? mIcon}){
-
-  final hasImg = imgPath!=null && imgPath.isNotEmpty;
+Widget OptionContainer(
+    {required String title,
+    bool isSelected = false,
+    VoidCallback? onTap,
+    String? imgPath,
+    IconData? mIcon}) {
+  final hasImg = imgPath != null && imgPath.isNotEmpty;
   return GestureDetector(
     onTap: onTap,
     child: Container(
-    //  height: 32,
+      //  height: 32,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(25.69),
-          border: Border.all(color: Colors.grey.shade400/*Color(0xffEDF1F3,)*/, width: 1.0),
-        color: isSelected==true? Color(0xff1961F3):Color(0xffFFF7FB)
-      ),
+          border: Border.all(
+              color: Colors.grey.shade400 /*Color(0xffEDF1F3,)*/, width: 1.0),
+          color: isSelected == true ? Color(0xff1961F3) : Color(0xffFFF7FB)),
       child: Padding(
         padding: const EdgeInsets.only(top: 6.0, bottom: 6.0),
         child: Row(
           mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: hasImg? MainAxisAlignment.spaceAround:MainAxisAlignment.center,
+          mainAxisAlignment:
+              hasImg ? MainAxisAlignment.spaceAround : MainAxisAlignment.center,
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
               child: Container(
-                  height:14,
-                  width: 12,
-                  child: SvgPicture.asset(imgPath??"", color:isSelected==true?Colors.white:Colors.black ,), /*color:isSelected==true?Colors.white:Colors.black*/  ),
+                height: 14,
+                width: 12,
+                child: SvgPicture.asset(
+                  imgPath ?? "",
+                  color: isSelected == true ? Colors.white : Colors.black,
+                ), /*color:isSelected==true?Colors.white:Colors.black*/
+              ),
             ),
-            SizedBox(width: 5,),
+            SizedBox(
+              width: 5,
+            ),
             Padding(
               padding: const EdgeInsets.only(right: 8.0),
-              child: Text(title, style: TextStyle(fontSize: 13,
-                  fontFamily: "Inter",
-                  fontWeight: FontWeight.w400,
-                  color: isSelected==true?Colors.white:Colors.black ), ),
+              child: Text(
+                title,
+                style: TextStyle(
+                    fontSize: 13,
+                    fontFamily: "Inter",
+                    fontWeight: FontWeight.w400,
+                    color: isSelected == true ? Colors.white : Colors.black),
+              ),
             ),
-            Padding(padding: const EdgeInsets.only(right: 4.0),child: Icon(mIcon, size: 10,),)
+            Padding(
+              padding: const EdgeInsets.only(right: 4.0),
+              child: Icon(
+                mIcon,
+                size: 10,
+              ),
+            )
           ],
         ),
       ),
@@ -340,7 +375,7 @@ IconData? mIcon}){
 }
 
 /// NEXT BUTTON AT THE BOTTOM
-Widget nextButton({required String title, required VoidCallback onTap}){
+Widget nextButton({required String title, required VoidCallback onTap}) {
   return InkWell(
     onTap: onTap,
     child: Container(
@@ -348,16 +383,21 @@ Widget nextButton({required String title, required VoidCallback onTap}){
       width: 110,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: AppColors.mainRedColor
-      ),
-      child: Center(child: Text(title, style: mTextStyle14(mColor: Colors.white),)),
+          color: AppColors.mainRedColor),
+      child: Center(
+          child: Text(
+        title,
+        style: mTextStyle14(mColor: Colors.white),
+      )),
     ),
   );
 }
 
 /// SIZEBOX OF HEIGHT 17
-Widget mSpacer17(){
-  return SizedBox(height: 17,);
+Widget mSpacer17() {
+  return SizedBox(
+    height: 17,
+  );
 }
 
 /// PREFERENCE CONTAINER
@@ -383,7 +423,8 @@ Widget preferenceContainer({
         children: [
           Row(
             children: [
-              courseName(name: cName, bgColor: const Color(0xff1961F3), mIcon: cIcon),
+              courseName(
+                  name: cName, bgColor: const Color(0xff1961F3), mIcon: cIcon),
               const Spacer(),
               courseName(name: "Upload Certificate"),
               const SizedBox(width: 5),
@@ -409,14 +450,14 @@ Widget preferenceContainer({
     ),
   );
 }
+
 /// Widget for course names
 
-Widget courseName({
-  required String name,
-  IconData? mIcon,
-  Color? bgColor,
-  VoidCallback? onTap
-}) {
+Widget courseName(
+    {required String name,
+    IconData? mIcon,
+    Color? bgColor,
+    VoidCallback? onTap}) {
   final Color background = bgColor ?? Colors.grey[300]!; // Default grey
   final bool isDefaultGrey = background == Colors.grey[300];
   final Color textColor = isDefaultGrey ? Colors.black : Colors.white;
@@ -432,7 +473,8 @@ Widget courseName({
         border: Border.all(color: const Color(0xffEFF0F6)),
       ),
       child: Row(
-        mainAxisSize: MainAxisSize.min, // <<<<< This makes width shrink-wrap content
+        mainAxisSize:
+            MainAxisSize.min, // <<<<< This makes width shrink-wrap content
         children: [
           Text(
             name,
@@ -440,7 +482,8 @@ Widget courseName({
           ),
           if (mIcon != null) ...[
             const SizedBox(width: 6),
-            Icon(mIcon, size: 12, color: textColor), // Match icon color to text color
+            Icon(mIcon,
+                size: 12, color: textColor), // Match icon color to text color
           ],
         ],
       ),
@@ -448,4 +491,192 @@ Widget courseName({
   );
 }
 
+ScaffoldFeatureController showSnackbar(String message, BuildContext context) {
+  return ScaffoldMessenger.of(context)
+      .showSnackBar(SnackBar(content: Text(message)));
+}
 
+class CustomAutocomplete extends StatefulWidget {
+  final List<String> options;
+  final String label;
+  final void Function(String) onSelected;
+
+  const CustomAutocomplete({
+    super.key,
+    required this.options,
+    required this.label,
+    required this.onSelected,
+  });
+
+  @override
+  State<CustomAutocomplete> createState() => _CustomAutocompleteState();
+}
+
+class _CustomAutocompleteState extends State<CustomAutocomplete> {
+  late TextEditingController _controller;
+  late FocusNode _focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+    _focusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // developer.log('Colleges in autocomplete : ${widget.options}');
+    return Container(
+      // color: Colors.white,
+      child: Padding(
+        // padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12),
+        padding: const EdgeInsets.symmetric(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            LayoutBuilder(
+              builder: (context, constraints) {
+                return RawAutocomplete<String>(
+                  textEditingController: _controller,
+                  focusNode: _focusNode,
+                  optionsBuilder: (TextEditingValue textEditingValue) {
+                    final input = textEditingValue.text.toLowerCase().trim();
+                    // Show all options if field is focused but empty
+                    if (input.isEmpty && _focusNode.hasFocus) {
+                      return widget.options;
+                    }
+                    return widget.options.where(
+                        (option) => option.toLowerCase().contains(input));
+                  },
+                  optionsViewBuilder: (context, onSelected, options) {
+                    return Align(
+                      alignment: Alignment.topLeft,
+                      child: Material(
+                        elevation: 8.0,
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        child: ConstrainedBox(
+                          constraints:
+                              BoxConstraints(maxWidth: constraints.maxWidth),
+                          child: ListView.builder(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            shrinkWrap: true,
+                            itemCount: options.length,
+                            itemBuilder: (context, index) {
+                              final String option = options.elementAt(index);
+                              return InkWell(
+                                onTap: () => onSelected(option),
+                                borderRadius: BorderRadius.circular(8),
+                                // child: ConsignerCard(
+                                //   addressText: option,
+                                //   isSelected: false,
+                                //   onTap: () => onSelected(option),
+                                // ),
+                                child: ListTile(
+                                  title: Text(option),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  onSelected: widget.onSelected,
+                  fieldViewBuilder: (
+                    context,
+                    controller,
+                    focusNode,
+                    onFieldSubmitted,
+                  ) {
+                    return TextField(
+                      controller: controller,
+                      focusNode: focusNode,
+                      decoration: InputDecoration(
+                        fillColor: Colors.white,
+                        isDense: true,
+                        // contentPadding: const EdgeInsets.symmetric(
+                        //     vertical: 4, horizontal: 12),
+                        // suffixIcon: const Icon(
+                        //   Icons.keyboard_arrow_down,
+                        //   color: Color.fromARGB(255, 200, 200, 200),
+                        //   size: 24,
+                        // ),
+                        hintText: widget.label,
+                        hintStyle: mTextStyle14(
+                          mFontWeight: FontWeight.w500,
+                          mColor: const Color(0xffBCC1CA),
+                        ),
+                        // hintStyle: const TextStyle(
+                        //   color: Color.fromARGB(255, 51, 51, 51),
+                        // ),
+                        // border: const OutlineInputBorder(
+                        //   borderRadius: BorderRadius.vertical(
+                        //     top: Radius.circular(12),
+                        //   ),
+                        // ),
+                        // enabledBorder: OutlineInputBorder(
+                        //   borderSide: BorderSide(
+                        //     color: Color.fromARGB(255, 227, 227, 227),
+                        //   ),
+                        //   borderRadius:
+                        //       BorderRadius.vertical(top: Radius.circular(12)),
+                        // ),
+                        // focusedBorder: OutlineInputBorder(
+                        //   borderSide: BorderSide(
+                        //     color: Color.fromARGB(255, 227, 227, 227),
+                        //   ),
+                        //   borderRadius:
+                        //       BorderRadius.vertical(top: Radius.circular(12)),
+                        // ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 14), // maintain height
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                              width: 1, color: Color(0xffBCC1CA)),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                              width: 1, color: Color(0xffBCC1CA)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                              width: 1.5,
+                              color: Theme.of(context).primaryColor),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              const BorderSide(width: 1, color: Colors.red),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              const BorderSide(width: 1.5, color: Colors.red),
+                        ),
+                        errorStyle: const TextStyle(
+                          fontSize: 12,
+                          height: 1.0, // Control line height
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

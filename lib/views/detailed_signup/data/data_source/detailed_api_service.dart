@@ -1,0 +1,28 @@
+import 'package:dio/dio.dart';
+import 'package:job_portal/utils/constants/urls.dart';
+import 'package:job_portal/views/detailed_signup/data/model/basic_user_data_response.dart';
+import 'package:job_portal/views/detailed_signup/data/model/colleges_response.dart';
+import 'package:job_portal/views/detailed_signup/data/model/courses_response.dart';
+import 'package:job_portal/views/detailed_signup/data/model/specialization_response.dart';
+import 'package:retrofit/retrofit.dart';
+
+part 'detailed_api_service.g.dart';
+
+@RestApi(baseUrl: Urls.baseUrl)
+abstract class DetailedApiService {
+  factory DetailedApiService(Dio dio, {String? baseUrl}) = _DetailedApiService;
+
+  @POST(Urls.getUserBasicInfo)
+  Future<HttpResponse<BasicUserInfoResponse>> getBasicUserInfo(
+      @Body() Map<String, dynamic> emailMap);
+
+  @GET(Urls.getColleges)
+  Future<HttpResponse<CollegesListResponse>> getColleges(
+      @Body() Map<String, dynamic> emailMap);
+
+  @GET(Urls.getSpecialization)
+  Future<HttpResponse<SpecializationListResponse>> getSpecialization();
+
+  @GET(Urls.getCourses)
+  Future<HttpResponse<CoursesListResponse>> getCourses();
+}

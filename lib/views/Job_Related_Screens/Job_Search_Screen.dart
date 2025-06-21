@@ -1,0 +1,271 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:job_portal/views/Bottom_Nav_Bar/Student_Bottom_Nav_Bar.dart';
+import '../../widgets/widgets.dart';
+import '../User_Profile_Screens/User_messages_screen.dart';
+import 'Job_filters_Screen.dart';
+
+import '../../ui_helper/ui_helper.dart';
+import 'Job_details_Screen.dart';
+
+class JobSearchScreen extends StatefulWidget {
+  final VoidCallback? onCallBackFromJobDetailsPage;
+  JobSearchScreen({this.onCallBackFromJobDetailsPage});
+
+  @override
+  State<JobSearchScreen> createState() => _JobSearchScreenState();
+}
+
+class _JobSearchScreenState extends State<JobSearchScreen> {
+  TextEditingController jSearchController = TextEditingController();
+
+  List<Map<String, dynamic>> mList = [
+    {
+      "job_title": "Digital Marketing Executive",
+      "company_name": "Uber",
+      "image":
+          "https://static-00.iconduck.com/assets.00/uber-icon-1024x1024-4icncyyo.png",
+      "location": "Mumbai",
+      "experience": "1-2 years",
+      "salary": "INR 3,00,000",
+      "status": "Actively Hiring",
+      "posted": "2 weeks ago",
+      "match": "92% match"
+    },
+    {
+      "job_title": "Web Developer",
+      "company_name": "GitHub",
+      "image":
+          "https://seekvectors.com/files/download/e58196130297806acd58a2bf536ac0bc.jpg",
+      "location": "Remote",
+      "experience": "2-4 years",
+      "salary": "INR 6,00,000",
+      "status": "Actively Hiring",
+      "posted": "1 week ago",
+      "match": "88% match"
+    },
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: Text(
+              "LOGO",
+              style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: "Inter",
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.mainIndigoColor),
+            ),
+          ),
+          actions: [
+            InkWell(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MessagesScreen()));
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 20.0),
+                child: SvgPicture.asset("assets/Icons/message_icon.svg"),
+              ),
+            ),
+            InkWell(
+              onTap: () {},
+              child: Padding(
+                padding: const EdgeInsets.only(right: 20.0),
+                child: SvgPicture.asset("assets/Icons/notifications_icon.svg"),
+              ),
+            ),
+          ],
+        ),
+        body: SingleChildScrollView(
+            child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                          width: double.infinity,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Jobs",
+                                style: mTextStyle32(mColor: Colors.black),
+                              ),
+                              Text(
+                                  "Start applying to the latest job vacancies at the\nleading companies in India below.",
+                                  style:
+                                      mTextStyle14(mColor: Color(0xff6C7278))),
+                              SizedBox(
+                                height: 25,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 11.0),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: CustomTextField(
+                                          controller: jSearchController,
+                                          hintText: "Search",
+                                          suffixIcon: Icons.search,
+                                          fillColor: Colors.white,
+                                        )),
+                                    SizedBox(
+                                      width: 6,
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        JobFiltersScreen()));
+                                          },
+                                          child: SvgPicture.asset(
+                                              "assets/Icons/settings-sliders 1.svg")),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              SizedBox(
+                                  child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: mList.length,
+                                itemBuilder: (context, index) {
+                                  final job = mList[index];
+                                  return JobCard(
+                                    onTap: () {
+                                      setState(() {
+                                        if (widget
+                                                .onCallBackFromJobDetailsPage !=
+                                            null) {
+                                          widget
+                                              .onCallBackFromJobDetailsPage!();
+                                        }
+                                      });
+                                      //  Navigator.push(context, MaterialPageRoute(builder: (context)=>JobDetailsScreen()));
+                                    },
+                                    imageUrl: job['image'],
+                                    jobTitle: job['job_title'],
+                                    company: job['company_name'],
+                                    location: job['location'],
+                                    experience: job['experience'],
+                                    salary: job['salary'],
+                                    status: job['status'],
+                                    posted: job['posted'],
+                                    match: job['match'],
+                                  );
+                                },
+                              ))
+                            ],
+                          )),
+                    ]))));
+  }
+}
+
+class JobCard extends StatelessWidget {
+  final String imageUrl,
+      jobTitle,
+      company,
+      location,
+      experience,
+      salary,
+      status,
+      posted,
+      match;
+  VoidCallback onTap;
+
+  JobCard({
+    required this.imageUrl,
+    required this.jobTitle,
+    required this.company,
+    required this.location,
+    required this.experience,
+    required this.salary,
+    required this.status,
+    required this.posted,
+    required this.match,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        margin: EdgeInsets.only(bottom: 16),
+        padding: EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black12, blurRadius: 4, offset: Offset(0, 2))
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // First Row - Icon + Title + Company + Right Tags
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(imageUrl,
+                      height: 48, width: 48, fit: BoxFit.cover),
+                ),
+                SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(jobTitle,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16)),
+                      Text(company, style: TextStyle(color: Colors.grey)),
+                    ],
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    greyContainer(
+                        text: status, bgColor: AppColors.mainRedColor),
+                    SizedBox(height: 6),
+                    greyContainer(text: posted, bgColor: Color(0xffEFF0F6)),
+                    SizedBox(height: 6),
+                    greyContainer(text: match, bgColor: Color(0xff00B34B)),
+                  ],
+                )
+              ],
+            ),
+            SizedBox(height: 12),
+            // Second Row - Grey Containers aligned Left under the Icon
+            Row(
+              children: [
+                greyContainer(text: location, bgColor: Color(0xffEFF0F6)),
+                Spacer(),
+                greyContainer(text: experience, bgColor: Color(0xffEFF0F6)),
+                Spacer(),
+                greyContainer(text: salary, bgColor: Color(0xffEFF0F6)),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
