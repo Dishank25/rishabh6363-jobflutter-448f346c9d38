@@ -2,20 +2,24 @@ import 'dart:developer' as developer show log;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:job_portal/utils/constants/enums.dart';
 import 'package:job_portal/views/detailed_signup/data/model/basic_user_data_response.dart';
-import 'package:job_portal/views/detailed_signup/presentation/bloc/detailed_signup_bloc.dart';
-import 'package:job_portal/views/detailed_signup/presentation/bloc/detailed_signup_event.dart';
-import 'package:job_portal/views/detailed_signup/presentation/bloc/detailed_signup_state.dart';
+import 'package:job_portal/views/detailed_signup/presentation/bloc/signup_as_anyone_bloc/detailed_signup_bloc.dart';
+import 'package:job_portal/views/detailed_signup/presentation/bloc/signup_as_anyone_bloc/detailed_signup_event.dart';
+import 'package:job_portal/views/detailed_signup/presentation/bloc/signup_as_anyone_bloc/detailed_signup_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../../widgets/widgets.dart';
 import 'signup_your_skills_view.dart';
 
 class SignupAsAnyOne extends StatefulWidget {
-  // final Map<String, dynamic> params;
+  Map<String, dynamic> params = {};
   final BasicUserInfoResponse basicUserInfoResponse;
 
-  const SignupAsAnyOne({super.key, required this.basicUserInfoResponse});
+  SignupAsAnyOne({
+    super.key,
+    required this.basicUserInfoResponse,
+  });
   @override
   State<SignupAsAnyOne> createState() => _SignInPageUniversityStudentState();
 }
@@ -24,7 +28,10 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
   String? selectedOption;
   String? selectedClass;
   String? selectedCourse;
+  String? selectedjobRole;
   TextEditingController totalWorkExp = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
 
   ///FOR COLLEGE DROPDOWN
   final LayerLink _collegeLayerLink = LayerLink();
@@ -399,6 +406,7 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
     // bloc.add(const DetailedSignupGetSpecialization());
     // bloc.add(const DetailedSignupGetCourses());
     bloc.add(DetailedSignupGetCollegeDetails(emailMap));
+    // bloc.add(DetailedSignupGetJobRoles());
     super.didChangeDependencies();
   }
 
@@ -420,30 +428,7 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
 
   @override
   Widget build(BuildContext context) {
-    // return BlocConsumer<FetchUserBloc, FetchUserState>(
-    //     listener: (context, state) {
-    //   print("Listener triggered with state: $state");
-    //   // if (state is UserDetailsLoadedState) {
-    //   //   final user = state.userDetails;
-    //   //   print("User details received: ${state.userDetails}");
-    //   //   setState(() {
-    //   //     firstnameController.text = user.firstName ?? '';
-    //   //     surnameController.text = user.lastName ?? '';
-    //   //     emailController.text = user.email ?? '';
-    //   //     phoneController.text = user.phone ?? '';
-    //   //   });
-    //   // }
-    //   // if (state is FetchUserFailedState) {
-    //   //   print("Failed to fetch user details: ${state.errorMsg}");
-    //   //   ScaffoldMessenger.of(context).showSnackBar(
-    //   //     SnackBar(content: Text('Error: ${state.errorMsg}')),
-    //   //   );
-    //   // }
-    // },
-    // return SizedBox();
     /// MAIN UI PERSPECTIVE CODE
-    // builder:
-    // (context, state) {
     return Scaffold(
       appBar: AppBar(
         title: Text(""),
@@ -451,88 +436,121 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              /// HEADER
-              Text(
-                "Logo",
-                style: mTextStyle15(
-                    mColor: Color(0xff032466), mFontWeight: FontWeight.w700),
-              ),
-              mSpacer17(),
-              Container(
-                height: 70,
-                width: double.infinity,
-                child: Text(
-                  "Let's get started! ",
-                  style: mTextStyle32(mColor: Color(0xff1A1C1E)),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                /// HEADER
+                Text(
+                  "Logo",
+                  style: mTextStyle15(
+                      mColor: Color(0xff032466), mFontWeight: FontWeight.w700),
                 ),
-              ),
-              //  mSpacer17(),
-              // mSpacer(mHeight: 26.0),
-
-              /// BODY PART
-              Row(
-                children: [
-                  Expanded(
-                      child: Text(
-                    "First Name",
-                    style: mTextStyle14(),
-                  )),
-                  SizedBox(
-                    width: 12,
+                mSpacer17(),
+                Container(
+                  height: 70,
+                  width: double.infinity,
+                  child: Text(
+                    "Let's get started! ",
+                    style: mTextStyle32(mColor: Color(0xff1A1C1E)),
                   ),
-                  Expanded(
-                      child: Text(
-                    "Last Name",
-                    style: mTextStyle14(),
-                  ))
-                ],
-              ),
-              mSpacer(mHeight: 2.0),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomTextField(
-                        controller: firstnameController, hintText: "Aman"),
-                  ),
-                  SizedBox(
-                    width: 12.0,
-                  ),
-                  Expanded(
-                    child: CustomTextField(
-                        controller: surnameController, hintText: "Gupta"),
-                  ),
-                ],
-              ),
-              mSpacer17(),
+                ),
 
-              /// EMAIL TEXTFIELD
-              Text(
-                "Email",
-                style: mTextStyle14(),
-              ),
-              mSpacer(mHeight: 2.0),
-              CustomTextField(
-                  controller: emailController, hintText: "amangupta@gmail.com"),
-              mSpacer17(),
+                /// BODY PART
+                Row(
+                  children: [
+                    Expanded(
+                        child: Text(
+                      "First Name",
+                      style: mTextStyle14(),
+                    )),
+                    SizedBox(
+                      width: 12,
+                    ),
+                    Expanded(
+                        child: Text(
+                      "Last Name",
+                      style: mTextStyle14(),
+                    ))
+                  ],
+                ),
+                mSpacer(mHeight: 2.0),
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomTextField(
+                        controller: firstnameController,
+                        hintText: "Aman",
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return 'First name is required';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      width: 12.0,
+                    ),
+                    Expanded(
+                      child: CustomTextField(
+                        controller: surnameController,
+                        hintText: "Gupta",
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return 'Last name is required';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                mSpacer17(),
 
-              /// PHONE NUMBER TEXTFIELD
-              Text(
-                "Phone Number",
-                style: mTextStyle14(),
-              ),
-              CustomTextField(controller: phoneController, hintText: ""),
-              mSpacer17(),
+                /// EMAIL TEXTFIELD
+                Text(
+                  "Email",
+                  style: mTextStyle14(),
+                ),
+                mSpacer(mHeight: 2.0),
+                CustomTextField(
+                  controller: emailController,
+                  hintText: "amangupta@gmail.com",
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Email is required';
+                    }
+                    return null;
+                  },
+                ),
+                mSpacer17(),
 
-              /// DATE OF BIRTH TEXTFIELD
-              Text(
-                "Date of Birth",
-                style: mTextStyle14(),
-              ),
-              CustomTextField(
+                /// PHONE NUMBER TEXTFIELD
+                Text(
+                  "Phone Number",
+                  style: mTextStyle14(),
+                ),
+                CustomTextField(
+                  controller: phoneController,
+                  hintText: "",
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Phone Number is required';
+                    }
+                    return null;
+                  },
+                ),
+                mSpacer17(),
+
+                /// DATE OF BIRTH TEXTFIELD
+                Text(
+                  "Date of Birth",
+                  style: mTextStyle14(),
+                ),
+                CustomTextField(
                   controller: DOBController,
                   hintText: "",
                   suffixIcon: Icons.calendar_month_outlined,
@@ -551,658 +569,751 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
                           "${pickedDate.day.toString().padLeft(2, '0')}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.year}";
                       DOBController.text = formattedDate;
                     }
-                    ;
-                  }),
-              mSpacer17(),
-
-              /// CURRENT CITY TEXT FIELD
-              Text(
-                "Current City",
-                style: mTextStyle14(),
-              ),
-              CustomTextField(controller: cityController, hintText: ""),
-              mSpacer17(),
-
-              /// JOB LOCATION TEXTFIELD
-              Text(
-                "Preferred Job Location",
-                style: mTextStyle14(),
-              ),
-              CompositedTransformTarget(
-                link: _jobLocationLink,
-                child: CustomTextField(
-                  key: _jobLocationFieldKey,
-                  controller: JobLocationController,
-                  hintText: "Select Preferred Job Location",
-                  suffixIcon: Icons.keyboard_arrow_down_outlined,
-                  onSuffixTap: () {
-                    if (_jobLocationOverlayEntry == null) {
-                      _showJobLocationDropdown();
-                    } else {
-                      _jobLocationOverlayEntry?.remove();
-                      _jobLocationOverlayEntry = null;
+                  },
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'DOB is required';
                     }
+                    return null;
                   },
                 ),
-              ),
-              mSpacer17(),
+                mSpacer17(),
 
-              /// GENDER TEXTFIELD
-              Text(
-                "Gender",
-                style: mTextStyle14(),
-              ),
-              CompositedTransformTarget(
-                link: _genderLayerLink,
-                child: Container(
-                  key: _genderKey,
+                /// CURRENT CITY TEXT FIELD
+                Text(
+                  "Current City",
+                  style: mTextStyle14(),
+                ),
+                CustomTextField(
+                  controller: cityController,
+                  hintText: "",
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Current City is required';
+                    }
+                    return null;
+                  },
+                ),
+                mSpacer17(),
+
+                /// JOB LOCATION TEXTFIELD
+                Text(
+                  "Preferred Job Location",
+                  style: mTextStyle14(),
+                ),
+                CompositedTransformTarget(
+                  link: _jobLocationLink,
                   child: CustomTextField(
-                    controller: genderController,
-                    hintText: "",
+                    key: _jobLocationFieldKey,
+                    controller: JobLocationController,
+                    hintText: "Select Preferred Job Location",
                     suffixIcon: Icons.keyboard_arrow_down_outlined,
-                    onSuffixTap: _toggleGenderDropdown,
+                    onSuffixTap: () {
+                      if (_jobLocationOverlayEntry == null) {
+                        _showJobLocationDropdown();
+                      } else {
+                        _jobLocationOverlayEntry?.remove();
+                        _jobLocationOverlayEntry = null;
+                      }
+                    },
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Preferred Job Location is required';
+                      }
+                      return null;
+                    },
                   ),
                 ),
-              ),
-              mSpacer17(),
+                mSpacer17(),
 
-              /// USER TYPE
-              Text(
-                "Type",
-                style: mTextStyle14(),
-              ),
-              Wrap(
-                spacing: 12, // space between containers horizontally
-                runSpacing: 12, // space between lines
-                children: [
-                  OptionContainer(
-                    title: "School Student",
-                    imgPath: "assets/Icons/school_student.svg",
-                    isSelected: selectedOption == "School Student",
-                    onTap: () {
-                      setState(() {
-                        selectedOption = "School Student";
-                      });
-                    },
-                  ),
-                  OptionContainer(
-                    title: "College Student",
-                    imgPath: "assets/Icons/College_Student.svg",
-                    isSelected: selectedOption == "College Student",
-                    onTap: () {
-                      setState(() {
-                        selectedOption = "College Student";
-                      });
-                    },
-                  ),
-                  OptionContainer(
-                    title: "Fresher",
-                    imgPath: "assets/Icons/fresher_icon.svg",
-                    isSelected: selectedOption == "Fresher",
-                    onTap: () {
-                      setState(() {
-                        selectedOption = "Fresher";
-                      });
-                    },
-                  ),
-                  OptionContainer(
-                    title: "Working Professional",
-                    imgPath: "assets/Icons/working-professional.svg",
-                    isSelected: selectedOption == "Working Professional",
-                    onTap: () {
-                      setState(() {
-                        selectedOption = "Working Professional";
-                      });
-                    },
-                  ),
-                ],
-              ),
-              SizedBox(height: 3),
-              mSpacer(mHeight: 25.0),
-
-              /// FOR OPTION USER TYPE: SCHOOL STUDENT
-              if (selectedOption == "School Student")
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Standard", style: mTextStyle12()),
-                    const SizedBox(height: 8),
-                    Wrap(
-                      spacing:
-                          12, // horizontal spacing between OptionContainers
-                      runSpacing: 8, // vertical spacing between rows
-                      children: [
-                        OptionContainer(
-                          title: "Class XII",
-                          imgPath: "",
-                          isSelected: selectedClass == "Class XII",
-                          onTap: () {
-                            setState(() {
-                              selectedClass = "Class XII";
-                            });
-                          },
-                        ),
-                        OptionContainer(
-                          title: "Class XI",
-                          imgPath: "",
-                          isSelected: selectedClass == "Class XI",
-                          onTap: () {
-                            setState(() {
-                              selectedClass = "Class XI";
-                            });
-                          },
-                        ),
-                        OptionContainer(
-                          title: "Class X or below",
-                          isSelected: selectedClass == "Class X or below",
-                          onTap: () {
-                            setState(() {
-                              selectedClass = "Class X or below";
-                            });
-                          },
-                        ),
-                      ],
+                /// GENDER TEXTFIELD
+                Text(
+                  "Gender",
+                  style: mTextStyle14(),
+                ),
+                CompositedTransformTarget(
+                  link: _genderLayerLink,
+                  child: Container(
+                    key: _genderKey,
+                    child: CustomTextField(
+                      controller: genderController,
+                      hintText: "",
+                      suffixIcon: Icons.keyboard_arrow_down_outlined,
+                      onSuffixTap: _toggleGenderDropdown,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Gender is required';
+                        }
+                        return null;
+                      },
                     ),
-                    mSpacer(mHeight: 25.0),
+                  ),
+                ),
+                mSpacer17(),
+
+                /// USER TYPE
+                Text(
+                  "Type",
+                  style: mTextStyle14(),
+                ),
+                Wrap(
+                  spacing: 12, // space between containers horizontally
+                  runSpacing: 12, // space between lines
+                  children: [
+                    OptionContainer(
+                      title: "School Student",
+                      imgPath: "assets/Icons/school_student.svg",
+                      // isSelected: selectedOption == "School Student",
+                      isSelected:
+                          selectedOption == JOBSEEKERTYPE.SchoolStudent.name,
+
+                      onTap: () {
+                        setState(() {
+                          // selectedOption = "School Student";
+                          selectedOption = JOBSEEKERTYPE.SchoolStudent.name;
+                        });
+                      },
+                    ),
+                    OptionContainer(
+                      title: "College Student",
+                      imgPath: "assets/Icons/College_Student.svg",
+                      // isSelected: selectedOption == "College Student",
+                      isSelected:
+                          selectedOption == JOBSEEKERTYPE.CollegeStudent.name,
+                      onTap: () {
+                        setState(() {
+                          // selectedOption = "College Student";
+                          selectedOption = JOBSEEKERTYPE.CollegeStudent.name;
+                        });
+                      },
+                    ),
+                    OptionContainer(
+                      title: "Fresher",
+                      imgPath: "assets/Icons/fresher_icon.svg",
+                      // isSelected: selectedOption == "Fresher",
+                      isSelected: selectedOption == JOBSEEKERTYPE.Fresher.name,
+                      onTap: () {
+                        setState(() {
+                          // selectedOption = "Fresher";
+                          selectedOption = JOBSEEKERTYPE.Fresher.name;
+                        });
+                      },
+                    ),
+                    OptionContainer(
+                      title: "Working Professional",
+                      imgPath: "assets/Icons/working-professional.svg",
+                      // isSelected: selectedOption == "Working Professional",
+                      isSelected: selectedOption ==
+                          JOBSEEKERTYPE.WorkingProffesional.name,
+                      onTap: () {
+                        setState(() {
+                          // selectedOption = "Working Professional";
+                          selectedOption =
+                              JOBSEEKERTYPE.WorkingProffesional.name;
+                        });
+                      },
+                    ),
                   ],
                 ),
+                SizedBox(height: 3),
+                mSpacer(mHeight: 25.0),
 
-              /// FOR OPTION USER TYPE: COLLEGE STUDENT OR FRESHER
-              if (selectedOption == "College Student" ||
-                  selectedOption == "Fresher")
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Text(
-                    //   "Course",
-                    //   style: mTextStyle14(),
-                    // ),
-                    const Padding(
-                      padding: EdgeInsets.only(right: 11.0),
-                      // child: BlocBuilder<CourseBloc, CourseState>(
-                      //     builder: (context, state) {
-                      //   if (state is CourseLoading) {
-                      //     return CircularProgressIndicator();
-                      //   } else if (state is CourseLoaded) {
-                      //     return Wrap(
-                      //       spacing: 8,
-                      //       runSpacing: 8,
-                      //       children: state.courses.map((course) {
-                      //         return OptionContainer(
-                      //           title: course.title,
-                      //           isSelected: selectedCourse == course.title,
-                      //           onTap: () {
-                      //             setState(() {
-                      //               selectedCourse = course.title;
-                      //             });
-                      //           },
-                      //         );
-                      //       }).toList(),
-                      //     );
-                      //   } else if (state is CourseError) {
-                      //     return Text('Error: ${state.message}');
-                      //   } else {
-                      //     return SizedBox.shrink();
-                      //   }
-                      // },),
-                    ),
-                    // mSpacer(),
+                /// FOR OPTION USER TYPE: SCHOOL STUDENT
+                if (selectedOption == JOBSEEKERTYPE.SchoolStudent.name)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Standard", style: mTextStyle12()),
+                      const SizedBox(height: 8),
+                      Wrap(
+                        spacing:
+                            12, // horizontal spacing between OptionContainers
+                        runSpacing: 8, // vertical spacing between rows
+                        children: [
+                          OptionContainer(
+                            title: "Class XII",
+                            imgPath: "",
+                            isSelected: selectedClass == "Class XII",
+                            onTap: () {
+                              setState(() {
+                                selectedClass = "Class XII";
+                              });
+                            },
+                          ),
+                          OptionContainer(
+                            title: "Class XI",
+                            imgPath: "",
+                            isSelected: selectedClass == "Class XI",
+                            onTap: () {
+                              setState(() {
+                                selectedClass = "Class XI";
+                              });
+                            },
+                          ),
+                          OptionContainer(
+                            title: "Class X or below",
+                            isSelected: selectedClass == "Class X or below",
+                            onTap: () {
+                              setState(() {
+                                selectedClass = "Class X or below";
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                      mSpacer(mHeight: 25.0),
+                    ],
+                  ),
 
-                    /// COLLEGES DETAILS
-                    BlocBuilder<DetailedSignupBloc, DetailedSignupState>(
-                      builder: (context, state) {
-                        if (state is DetailedSignupGetCollegeDetailsLoaded) {
-                          final colleges = state.collegesListResponse;
-                          final specializations =
-                              state.specializationListResponse;
-                          final course = state.coursesListResponse;
-                          // developer
-                          //     .log('College list in ui : ${data.colleges}');
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Course",
-                                style: mTextStyle14(),
-                              ),
-                              CustomAutocomplete(
-                                options: course.courses,
-                                label: 'Course Names',
-                                onSelected: (value) {
-                                  showSnackbar('Selected $value', context);
-                                  developer.log(
-                                      'Selected Course variable : $selectedCollege');
-                                },
-                              ),
-                              mSpacer(),
-                              Text(
-                                "College Name",
-                                style: mTextStyle14(),
-                              ),
-                              CustomAutocomplete(
-                                options: colleges.colleges,
-                                label: 'College Names',
-                                onSelected: (value) {
-                                  showSnackbar('Selected $value', context);
-                                  selectedCollege = value;
-                                  developer.log(
-                                      'Selected college variable : $selectedCollege');
-                                },
-                              ),
-                              mSpacer17(),
-                              Text(
-                                "Specialization",
-                                style: mTextStyle14(),
-                              ),
-                              CustomAutocomplete(
-                                options: specializations.specialization,
-                                label: 'Specialization Names',
-                                onSelected: (value) {
-                                  showSnackbar('Selected $value', context);
-                                  developer.log(
-                                      'Selected Specialization variable : $selectedCollege');
-                                },
-                              ),
-                            ],
-                          );
-                        } else if (state
-                            is DetailedSignupGetCollegeDetailsLoading) {
-                          developer.log('State is Details Loading');
-                          return const CircularProgressIndicator();
-                        } else if (state
-                            is DetailedSignupGetCollegeDetailsError) {
-                          developer.log('Error in loading Details.');
-                          return const Center(
+                /// FOR OPTION USER TYPE: COLLEGE STUDENT OR FRESHER
+                if (selectedOption == JOBSEEKERTYPE.CollegeStudent.name ||
+                    selectedOption == JOBSEEKERTYPE.Fresher.name)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Text(
+                      //   "Course",
+                      //   style: mTextStyle14(),
+                      // ),
+                      const Padding(
+                        padding: EdgeInsets.only(right: 11.0),
+                        // child: BlocBuilder<CourseBloc, CourseState>(
+                        //     builder: (context, state) {
+                        //   if (state is CourseLoading) {
+                        //     return CircularProgressIndicator();
+                        //   } else if (state is CourseLoaded) {
+                        //     return Wrap(
+                        //       spacing: 8,
+                        //       runSpacing: 8,
+                        //       children: state.courses.map((course) {
+                        //         return OptionContainer(
+                        //           title: course.title,
+                        //           isSelected: selectedCourse == course.title,
+                        //           onTap: () {
+                        //             setState(() {
+                        //               selectedCourse = course.title;
+                        //             });
+                        //           },
+                        //         );
+                        //       }).toList(),
+                        //     );
+                        //   } else if (state is CourseError) {
+                        //     return Text('Error: ${state.message}');
+                        //   } else {
+                        //     return SizedBox.shrink();
+                        //   }
+                        // },),
+                      ),
+                      // mSpacer(),
+
+                      /// COLLEGES DETAILS
+                      BlocBuilder<DetailedSignupBloc, DetailedSignupState>(
+                        builder: (context, state) {
+                          if (state is DetailedSignupGetCollegeDetailsLoaded) {
+                            final colleges = state.collegesListResponse;
+                            final specializations =
+                                state.specializationListResponse;
+                            final course = state.coursesListResponse;
+                            // developer
+                            //     .log('College list in ui : ${data.colleges}');
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Course",
+                                  style: mTextStyle14(),
+                                ),
+                                CustomAutocomplete(
+                                  options: course.courses,
+                                  label: 'Course Names',
+                                  onSelected: (value) {
+                                    showSnackbar('Selected $value', context);
+                                    developer.log(
+                                        'Selected Course variable : $selectedCollege');
+                                  },
+                                ),
+                                mSpacer(),
+                                Text(
+                                  "College Name",
+                                  style: mTextStyle14(),
+                                ),
+                                CustomAutocomplete(
+                                  options: colleges.colleges,
+                                  label: 'College Names',
+                                  onSelected: (value) {
+                                    showSnackbar('Selected $value', context);
+                                    selectedCollege = value;
+                                    developer.log(
+                                        'Selected college variable : $selectedCollege');
+                                  },
+                                ),
+                                mSpacer17(),
+                                Text(
+                                  "Specialization",
+                                  style: mTextStyle14(),
+                                ),
+                                CustomAutocomplete(
+                                  options: specializations.specialization,
+                                  label: 'Specialization Names',
+                                  onSelected: (value) {
+                                    showSnackbar('Selected $value', context);
+                                    developer.log(
+                                        'Selected Specialization variable : $selectedCollege');
+                                  },
+                                ),
+                              ],
+                            );
+                          } else if (state
+                              is DetailedSignupGetCollegeDetailsLoading) {
+                            developer.log('State is Details Loading');
+                            return const CircularProgressIndicator();
+                          } else if (state
+                              is DetailedSignupGetCollegeDetailsError) {
+                            developer.log('Error in loading Details.');
+                            return const Center(
+                              child: Text(
+                                  'There was some error in loading Details.'),
+                            );
+                          } else {
+                            developer.log('Unhandeled state : of Load Details');
+                            return const SizedBox();
+                          }
+                        },
+                      ),
+
+                      // mSpacer17(),
+
+                      /// SPECIALIZATION DETAILS
+                      // Text(
+                      //   "Specialization",
+                      //   style: mTextStyle14(),
+                      // ),
+                      // CompositedTransformTarget(
+                      //   link: _specializationLayerLink,
+                      //   child: CustomTextField(
+                      //     key: _specializationKey,
+                      //     controller: specializationController,
+                      //     hintText: "Select Specialization",
+                      //     suffixIcon: Icons.keyboard_arrow_down_outlined,
+                      //     onSuffixTap: () {
+                      //       if (_specializationOverlayEntry == null) {
+                      //         _showSpecializationDropdown();
+                      //       } else {
+                      //         _specializationOverlayEntry?.remove();
+                      //         _specializationOverlayEntry = null;
+                      //       }
+                      //     },
+                      //   ),
+                      // ),
+                      mSpacer17(),
+
+                      Row(
+                        /// Start year and end year text row
+                        children: [
+                          Text(
+                            "Start Year",
+                            style: mTextStyle14(),
+                          ),
+                          Spacer(),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 100.0),
                             child: Text(
-                                'There was some error in loading Details.'),
+                              "End Year",
+                              style: mTextStyle14(),
+                            ),
+                          )
+                        ],
+                      ),
+                      mSpacer(mHeight: 2.0),
+
+                      ///  College Start year and End year textfield
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 160,
+                            child: DatePickerField(
+                                controller: startCourseYearController),
+                          ),
+                          Spacer(),
+                          SizedBox(
+                            width: 160,
+                            child: DatePickerField(
+                                controller: endCourseYearController),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+
+                /// COURSES OPTIONS
+                // Column(
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                //     Text(
+                //       "Course",
+                //       style: mTextStyle14(),
+                //     ),
+                //     const Padding(
+                //       padding: EdgeInsets.only(right: 11.0),
+                //       // child: BlocBuilder<CourseBloc, CourseState>(
+                //       //     builder: (context, state) {
+                //       //   if (state is CourseLoading) {
+                //       //     return CircularProgressIndicator();
+                //       //   } else if (state is CourseLoaded) {
+                //       //     return Wrap(
+                //       //       spacing: 8,
+                //       //       runSpacing: 8,
+                //       //       children: state.courses.map((course) {
+                //       //         return OptionContainer(
+                //       //           title: course.title,
+                //       //           isSelected: selectedCourse == course.title,
+                //       //           onTap: () {
+                //       //             setState(() {
+                //       //               selectedCourse = course.title;
+                //       //             });
+                //       //           },
+                //       //         );
+                //       //       }).toList(),
+                //       //     );
+                //       //   } else if (state is CourseError) {
+                //       //     return Text('Error: ${state.message}');
+                //       //   } else {
+                //       //     return SizedBox.shrink();
+                //       //   }
+                //       // },),
+                //     ),
+                //     mSpacer(),
+                //     /// COLLEGES DETAILS
+                //     Text(
+                //       "College Name",
+                //       style: mTextStyle14(),
+                //     ),
+                //     CompositedTransformTarget(
+                //       link: _collegeLayerLink,
+                //       child: Container(
+                //         key: _collegeFieldKey,
+                //         child: CustomTextField(
+                //           controller: collegeController,
+                //           /// College Textfield
+                //           hintText: "College Name",
+                //           suffixIcon: Icons.keyboard_arrow_down_outlined,
+                //           onSuffixTap: () {
+                //             print("Suffix tapped");
+                //             if (_collegeOverLayEntry == null) {
+                //               _showDropdown();
+                //             } else {
+                //               _collegeOverLayEntry?.remove();
+                //               _collegeOverLayEntry = null;
+                //             }
+                //           },
+                //         ),
+                //       ),
+                //     ),
+                //     mSpacer17(),
+                //     /// SPECIALIZATION DETAILS
+                //     Text(
+                //       "Specialization",
+                //       style: mTextStyle14(),
+                //     ),
+                //     CompositedTransformTarget(
+                //       link: _specializationLayerLink,
+                //       child: CustomTextField(
+                //         key: _specializationKey,
+                //         controller: specializationController,
+                //         hintText: "Select Specialization",
+                //         suffixIcon: Icons.keyboard_arrow_down_outlined,
+                //         onSuffixTap: () {
+                //           if (_specializationOverlayEntry == null) {
+                //             _showSpecializationDropdown();
+                //           } else {
+                //             _specializationOverlayEntry?.remove();
+                //             _specializationOverlayEntry = null;
+                //           }
+                //         },
+                //       ),
+                //     ),
+                //     mSpacer17(),
+                //     Row(
+                //       /// Start year and end year text row
+                //       children: [
+                //         Text(
+                //           "Start Year",
+                //           style: mTextStyle14(),
+                //         ),
+                //         Spacer(),
+                //         Padding(
+                //           padding: const EdgeInsets.only(right: 100.0),
+                //           child: Text(
+                //             "End Year",
+                //             style: mTextStyle14(),
+                //           ),
+                //         )
+                //       ],
+                //     ),
+                //     mSpacer(mHeight: 2.0),
+                //     ///  College Start year and End year textfield
+                //     Row(
+                //       children: [
+                //         SizedBox(
+                //           width: 160,
+                //           child: DatePickerField(
+                //               controller: startCourseYearController),
+                //         ),
+                //         Spacer(),
+                //         SizedBox(
+                //           width: 160,
+                //           child: DatePickerField(
+                //               controller: endCourseYearController),
+                //         ),
+                //       ],
+                //     ),
+                //   ],
+                // ),
+
+                /// WHEN USER TYPE : WORKING PROFESSIONAL
+                if (selectedOption == JOBSEEKERTYPE.WorkingProffesional.name)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // mSpacer(mHeight: 20.0),
+                      Row(
+                        children: [
+                          Text(
+                            "Total Work Experience ",
+                            style: mTextStyle14(),
+                          ),
+                          Text(
+                            "*",
+                            style: TextStyle(color: Colors.red),
+                          )
+                        ],
+                      ),
+
+                      /// Total Working experience textfield
+                      CustomTextField(
+                        controller: totalWorkExp,
+                        hintText: "Select Experience",
+                        suffixIcon: Icons.keyboard_arrow_down_outlined,
+                      ),
+                      mSpacer17(),
+                      Row(
+                        children: [
+                          Text(
+                            "Current Job Role",
+                            style: mTextStyle14(),
+                          ),
+                          Text(
+                            "*",
+                            style: TextStyle(color: Colors.red),
+                          )
+                        ],
+                      ),
+
+                      BlocBuilder<DetailedSignupBloc, DetailedSignupState>(
+                        builder: (cntext, state) {
+                          if (state is DetailedSignupGetCollegeDetailsLoaded) {
+                            final jobRoles = state.jobRolesListResponse;
+                            return CustomAutocomplete(
+                              options: jobRoles.jobRoles,
+                              label: 'Job Roles',
+                              onSelected: (value) {
+                                showSnackbar('Selected $value', context);
+                                developer.log(
+                                    'Selected Job Roles variable : $value');
+                                selectedjobRole = value;
+                              },
+                            );
+                          } else {
+                            return Center(
+                              child: Text('Unhandled state : $state'),
+                            );
+                          }
+                        },
+                      ),
+
+                      /// Job role textfield
+                      // CompositedTransformTarget(
+                      //   link: _jobRoleLink,
+                      //   child: Container(
+                      //     key: _jobRoleFieldKey,
+                      //     child: CustomTextField(
+                      //       key: _jobRoleFieldKey,
+                      //       controller: jobRoleController,
+                      //       hintText: "Select Job Role",
+                      //       suffixIcon: Icons.keyboard_arrow_down_outlined,
+                      //       onSuffixTap: () {
+                      //         print("Suffix icon tapped");
+                      //         if (_jobRoleOverlayEntry == null) {
+                      //           _showJobRoleDropdown();
+                      //         } else {
+                      //           _jobRoleOverlayEntry?.remove();
+                      //           _jobRoleOverlayEntry = null;
+                      //         }
+                      //       },
+                      //     ),
+                      //   ),
+                      // ),
+                      mSpacer17(),
+                      Row(
+                        children: [
+                          Text(
+                            "Current Company",
+                            style: mTextStyle14(),
+                          ),
+                          Text(
+                            "*",
+                            style: TextStyle(color: Colors.red),
+                          )
+                        ],
+                      ),
+                      CustomTextField(
+                        controller: currentCompany,
+
+                        /// Current Company Textfield
+                        hintText:
+                            "Current Company", /*suffixIcon: Icons.keyboard_arrow_down_outlined,*/
+                      ),
+                      mSpacer17(),
+
+                      /// Start year and end year columns
+                      Row(
+                        // mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Start Year",
+                            style: mTextStyle14(),
+                          ),
+                          Spacer(),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 100.0),
+                            child: Text(
+                              "End Year",
+                              style: mTextStyle14(),
+                            ),
+                          )
+                        ],
+                      ),
+                      mSpacer(mHeight: 2.0),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 160,
+                            child: DatePickerField(
+                                controller: startJobYearController),
+                          ),
+                          Spacer(),
+                          SizedBox(
+                            width: 160,
+                            child: DatePickerField(
+                                controller: endJobYearController),
+                          ),
+                        ],
+                      ),
+                      mSpacer17(),
+                      Text(
+                        "Current or Latest annual Salary/CTC ",
+                        style: mTextStyle14(),
+                      ),
+                      SizedBox(
+                        height: 3,
+                      ),
+                      Text(
+                        "We will use this to find jobs matching/ exceeding your  current salary range.This information is not visible to employers.",
+                        style: TextStyle(fontSize: 11),
+                      ),
+                      SizedBox(
+                        height: 2,
+                      ),
+                      CustomTextField(
+                          controller: CTCController, hintText: "E.g 4,00,000"),
+                    ],
+                  ),
+
+                mSpacer(mHeight: 25.0),
+
+                /// END PART
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    nextButton(
+                      title: "Next",
+                      onTap: () {
+                        if (_formKey.currentState!.validate()) {
+                          developer.log('Valid Form');
+                          fillDataIntoParams();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignupPageYourSkills(
+                                params: widget.params,
+                              ),
+                            ),
                           );
                         } else {
-                          developer.log('Unhandeled state : of Load Details');
-                          return const SizedBox();
+                          showSnackbar(
+                              'Please fill all the required fields.', context);
                         }
                       },
                     ),
-
-                    // mSpacer17(),
-
-                    /// SPECIALIZATION DETAILS
-                    // Text(
-                    //   "Specialization",
-                    //   style: mTextStyle14(),
-                    // ),
-                    // CompositedTransformTarget(
-                    //   link: _specializationLayerLink,
-                    //   child: CustomTextField(
-                    //     key: _specializationKey,
-                    //     controller: specializationController,
-                    //     hintText: "Select Specialization",
-                    //     suffixIcon: Icons.keyboard_arrow_down_outlined,
-                    //     onSuffixTap: () {
-                    //       if (_specializationOverlayEntry == null) {
-                    //         _showSpecializationDropdown();
-                    //       } else {
-                    //         _specializationOverlayEntry?.remove();
-                    //         _specializationOverlayEntry = null;
-                    //       }
-                    //     },
-                    //   ),
-                    // ),
-                    mSpacer17(),
-
-                    Row(
-                      /// Start year and end year text row
-                      children: [
-                        Text(
-                          "Start Year",
-                          style: mTextStyle14(),
-                        ),
-                        Spacer(),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 100.0),
-                          child: Text(
-                            "End Year",
-                            style: mTextStyle14(),
-                          ),
-                        )
-                      ],
-                    ),
-                    mSpacer(mHeight: 2.0),
-
-                    ///  College Start year and End year textfield
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 160,
-                          child: DatePickerField(
-                              controller: startCourseYearController),
-                        ),
-                        Spacer(),
-                        SizedBox(
-                          width: 160,
-                          child: DatePickerField(
-                              controller: endCourseYearController),
-                        ),
-                      ],
-                    ),
                   ],
                 ),
-
-              /// COURSES OPTIONS
-              // Column(
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: [
-              //     Text(
-              //       "Course",
-              //       style: mTextStyle14(),
-              //     ),
-              //     const Padding(
-              //       padding: EdgeInsets.only(right: 11.0),
-              //       // child: BlocBuilder<CourseBloc, CourseState>(
-              //       //     builder: (context, state) {
-              //       //   if (state is CourseLoading) {
-              //       //     return CircularProgressIndicator();
-              //       //   } else if (state is CourseLoaded) {
-              //       //     return Wrap(
-              //       //       spacing: 8,
-              //       //       runSpacing: 8,
-              //       //       children: state.courses.map((course) {
-              //       //         return OptionContainer(
-              //       //           title: course.title,
-              //       //           isSelected: selectedCourse == course.title,
-              //       //           onTap: () {
-              //       //             setState(() {
-              //       //               selectedCourse = course.title;
-              //       //             });
-              //       //           },
-              //       //         );
-              //       //       }).toList(),
-              //       //     );
-              //       //   } else if (state is CourseError) {
-              //       //     return Text('Error: ${state.message}');
-              //       //   } else {
-              //       //     return SizedBox.shrink();
-              //       //   }
-              //       // },),
-              //     ),
-              //     mSpacer(),
-
-              //     /// COLLEGES DETAILS
-              //     Text(
-              //       "College Name",
-              //       style: mTextStyle14(),
-              //     ),
-              //     CompositedTransformTarget(
-              //       link: _collegeLayerLink,
-              //       child: Container(
-              //         key: _collegeFieldKey,
-              //         child: CustomTextField(
-              //           controller: collegeController,
-
-              //           /// College Textfield
-              //           hintText: "College Name",
-              //           suffixIcon: Icons.keyboard_arrow_down_outlined,
-              //           onSuffixTap: () {
-              //             print("Suffix tapped");
-              //             if (_collegeOverLayEntry == null) {
-              //               _showDropdown();
-              //             } else {
-              //               _collegeOverLayEntry?.remove();
-              //               _collegeOverLayEntry = null;
-              //             }
-              //           },
-              //         ),
-              //       ),
-              //     ),
-              //     mSpacer17(),
-
-              //     /// SPECIALIZATION DETAILS
-              //     Text(
-              //       "Specialization",
-              //       style: mTextStyle14(),
-              //     ),
-              //     CompositedTransformTarget(
-              //       link: _specializationLayerLink,
-              //       child: CustomTextField(
-              //         key: _specializationKey,
-              //         controller: specializationController,
-              //         hintText: "Select Specialization",
-              //         suffixIcon: Icons.keyboard_arrow_down_outlined,
-              //         onSuffixTap: () {
-              //           if (_specializationOverlayEntry == null) {
-              //             _showSpecializationDropdown();
-              //           } else {
-              //             _specializationOverlayEntry?.remove();
-              //             _specializationOverlayEntry = null;
-              //           }
-              //         },
-              //       ),
-              //     ),
-              //     mSpacer17(),
-
-              //     Row(
-              //       /// Start year and end year text row
-              //       children: [
-              //         Text(
-              //           "Start Year",
-              //           style: mTextStyle14(),
-              //         ),
-              //         Spacer(),
-              //         Padding(
-              //           padding: const EdgeInsets.only(right: 100.0),
-              //           child: Text(
-              //             "End Year",
-              //             style: mTextStyle14(),
-              //           ),
-              //         )
-              //       ],
-              //     ),
-              //     mSpacer(mHeight: 2.0),
-
-              //     ///  College Start year and End year textfield
-              //     Row(
-              //       children: [
-              //         SizedBox(
-              //           width: 160,
-              //           child: DatePickerField(
-              //               controller: startCourseYearController),
-              //         ),
-              //         Spacer(),
-              //         SizedBox(
-              //           width: 160,
-              //           child: DatePickerField(
-              //               controller: endCourseYearController),
-              //         ),
-              //       ],
-              //     ),
-              //   ],
-              // ),
-
-              /// WHEN USER TYPE : WORKING PROFESSIONAL
-              if (selectedOption == "Working Professional")
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // mSpacer(mHeight: 20.0),
-                    Row(
-                      children: [
-                        Text(
-                          "Total Work Experience ",
-                          style: mTextStyle14(),
-                        ),
-                        Text(
-                          "*",
-                          style: TextStyle(color: Colors.red),
-                        )
-                      ],
-                    ),
-
-                    /// Total Working experience textfield
-                    CustomTextField(
-                      controller: totalWorkExp,
-                      hintText: "Select Experience",
-                      suffixIcon: Icons.keyboard_arrow_down_outlined,
-                    ),
-                    mSpacer17(),
-                    Row(
-                      children: [
-                        Text(
-                          "Current Job Role",
-                          style: mTextStyle14(),
-                        ),
-                        Text(
-                          "*",
-                          style: TextStyle(color: Colors.red),
-                        )
-                      ],
-                    ),
-
-                    /// Job role textfield
-                    CompositedTransformTarget(
-                      link: _jobRoleLink,
-                      child: Container(
-                        key: _jobRoleFieldKey,
-                        child: CustomTextField(
-                          key: _jobRoleFieldKey,
-                          controller: jobRoleController,
-                          hintText: "Select Job Role",
-                          suffixIcon: Icons.keyboard_arrow_down_outlined,
-                          onSuffixTap: () {
-                            print("Suffix icon tapped");
-                            if (_jobRoleOverlayEntry == null) {
-                              _showJobRoleDropdown();
-                            } else {
-                              _jobRoleOverlayEntry?.remove();
-                              _jobRoleOverlayEntry = null;
-                            }
-                          },
-                        ),
-                      ),
-                    ),
-                    mSpacer17(),
-                    Row(
-                      children: [
-                        Text(
-                          "Current Company",
-                          style: mTextStyle14(),
-                        ),
-                        Text(
-                          "*",
-                          style: TextStyle(color: Colors.red),
-                        )
-                      ],
-                    ),
-                    CustomTextField(
-                      controller: currentCompany,
-
-                      /// Current Company Textfield
-                      hintText:
-                          "Current Company", /*suffixIcon: Icons.keyboard_arrow_down_outlined,*/
-                    ),
-                    mSpacer17(),
-
-                    /// Start year and end year columns
-                    Row(
-                      // mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Start Year",
-                          style: mTextStyle14(),
-                        ),
-                        Spacer(),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 100.0),
-                          child: Text(
-                            "End Year",
-                            style: mTextStyle14(),
-                          ),
-                        )
-                      ],
-                    ),
-                    mSpacer(mHeight: 2.0),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 160,
-                          child: DatePickerField(
-                              controller: startJobYearController),
-                        ),
-                        Spacer(),
-                        SizedBox(
-                          width: 160,
-                          child:
-                              DatePickerField(controller: endJobYearController),
-                        ),
-                      ],
-                    ),
-                    mSpacer17(),
-                    Text(
-                      "Current or Latest annual Salary/CTC ",
-                      style: mTextStyle14(),
-                    ),
-                    SizedBox(
-                      height: 3,
-                    ),
-                    Text(
-                      "We will use this to find jobs matching/ exceeding your  current salary range.This information is not visible to employers.",
-                      style: TextStyle(fontSize: 11),
-                    ),
-                    SizedBox(
-                      height: 2,
-                    ),
-                    CustomTextField(
-                        controller: CTCController, hintText: "E.g 4,00,000"),
-                  ],
-                ),
-
-              mSpacer(mHeight: 25.0),
-
-              /// END PART
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  nextButton(
-                    title: "Next",
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SignupPageYourSkills(
-                            firstName: firstnameController.text,
-                            surName: surnameController.text,
-                            email: emailController.text,
-                            phoneNumber: phoneController.text,
-                            DOB: DOBController.text,
-                            currentLocation: cityController.text,
-                            jobPreferenceLocation: JobLocationController.text,
-                            gender: genderController.text,
-                            userCategory: selectedOption,
-                            course: selectedCourse,
-                            currentJobRole: jobRoleController.text,
-                            CollegeName: collegeController.text,
-                            Specialization: specializationController.text,
-                            courseStartYear: startCourseYearController.text,
-                            courseEndYear: endCourseYearController.text,
-                            currentCompany: currentCompany.text,
-                            jobStartYear: startJobYearController.text,
-                            jobEndYear: endJobYearController.text,
-                            studentClass: selectedClass,
-                            totalWorkExp: totalWorkExp.text,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-              mSpacer(mHeight: 25.0),
-            ],
+                mSpacer(mHeight: 25.0),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+
+  void fillDataIntoParams() {
+    // firstName: firstnameController.text,
+    // surName: surnameController.text,
+    // email: emailController.text,
+    // phoneNumber: phoneController.text,
+    // DOB: DOBController.text,
+    // currentLocation: cityController.text,
+    // jobPreferenceLocation: JobLocationController.text,
+    // gender: genderController.text,
+    // userCategory: selectedOption,
+    // course: selectedCourse,
+    // currentJobRole: jobRoleController.text,
+    // CollegeName: collegeController.text,
+    // Specialization: specializationController.text,
+    // courseStartYear: startCourseYearController.text,
+    // courseEndYear: endCourseYearController.text,
+    // currentCompany: currentCompany.text,
+    // jobStartYear: startJobYearController.text,
+    // jobEndYear: endJobYearController.text,
+    // studentClass: selectedClass,
+    // totalWorkExp: totalWorkExp.text,
+    widget.params.addAll({
+      DETAILEDPROFILEPARAMS.firstName.name: firstnameController.text,
+      DETAILEDPROFILEPARAMS.lastName.name: surnameController.text,
+      DETAILEDPROFILEPARAMS.email.name: emailController.text,
+      DETAILEDPROFILEPARAMS.phone.name: phoneController.text,
+      DETAILEDPROFILEPARAMS.dob.name: DOBController.text,
+      DETAILEDPROFILEPARAMS.city.name: cityController.text,
+      DETAILEDPROFILEPARAMS.jobLocation.name: JobLocationController.text,
+      DETAILEDPROFILEPARAMS.gender.name: genderController.text,
+      DETAILEDPROFILEPARAMS.userType.name: selectedOption,
+      //course
+      DETAILEDPROFILEPARAMS.jobRole.name: selectedjobRole,
+      //college name
+      //specialization
+      //course start year
+      //course end year
+      DETAILEDPROFILEPARAMS.company.name: currentCompany.text,
+      DETAILEDPROFILEPARAMS.startDate.name: startJobYearController.text,
+      DETAILEDPROFILEPARAMS.endDate.name: endJobYearController.text,
+      // student class
+      // total experience
+    });
+
+    developer
+        .log('Params detials in sign up as anyone screen : ${widget.params}');
+  }
 }
-// }
 
 /// Drop down for years
 class DatePickerField extends StatelessWidget {

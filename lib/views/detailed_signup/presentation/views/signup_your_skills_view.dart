@@ -1,51 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:job_portal/views/detailed_signup/presentation/bloc/skill_bloc/skill_bloc.dart';
+import 'package:job_portal/views/detailed_signup/presentation/bloc/skill_bloc/skill_event.dart';
+import 'package:job_portal/views/detailed_signup/presentation/bloc/skill_bloc/skill_state.dart';
 import 'package:job_portal/views/detailed_signup/presentation/views/signup_your_preferences_view.dart';
 import 'package:job_portal/ui_helper/ui_helper.dart';
 import 'package:job_portal/widgets/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignupPageYourSkills extends StatefulWidget {
-  String firstName;
-  String surName;
-  String gender;
-  String DOB;
-  String phoneNumber;
-  String email;
-  String jobPreferenceLocation;
-  String currentLocation;
-  String? userCategory;
-  String totalWorkExp;
-  String currentJobRole;
-  String currentCompany;
-  String jobStartYear;
-  String jobEndYear;
-  String? studentClass;
-  String? course;
-  String CollegeName;
-  String Specialization;
-  String courseStartYear;
-  String courseEndYear;
-  SignupPageYourSkills(
-      {required this.firstName,
-      required this.surName,
-      required this.email,
-      required this.currentCompany,
-      required this.CollegeName,
-      this.course,
-      required this.courseEndYear,
-      required this.courseStartYear,
-      required this.currentJobRole,
-      required this.currentLocation,
-      required this.DOB,
-      required this.gender,
-      required this.jobEndYear,
-      required this.jobPreferenceLocation,
-      required this.jobStartYear,
-      required this.Specialization,
-      this.studentClass,
-      required this.totalWorkExp,
-      this.userCategory,
-      required this.phoneNumber});
+  Map<String, dynamic> params;
+  SignupPageYourSkills({super.key, required this.params});
 
   @override
   State<SignupPageYourSkills> createState() => _SignupPageYourSkillsState();
@@ -60,6 +25,13 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
   final LayerLink _domainLink = LayerLink();
   final GlobalKey _domainFieldKey = GlobalKey();
   OverlayEntry? _domainOverlayEntry;
+
+  List<String> allDomains = [];
+  List<String> selectedDomains = [];
+
+  Map<String, List<String>> subSkillsMap = {};
+  Map<String, List<String>> selectedSubSkillsPerDomain = {};
+  final Map<String, TextEditingController> courseCollegeControllers = {};
 
   void _showDomainDropdown(
       BuildContext context, TextEditingController controller) {
@@ -142,6 +114,14 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
     // _loadToken();
   }
 
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    final bloc = context.read<SkillBloc>();
+    bloc.add(const LoadDomains());
+    super.didChangeDependencies();
+  }
+
   void _loadToken() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -162,6 +142,7 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
         title: Text(""),
       ),
       body: SingleChildScrollView(
+        physics: ScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -195,30 +176,133 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("Areas of Interest", style: mTextStyle14()),
-                CompositedTransformTarget(
-                  link: _domainLink,
-                  child: CustomTextField(
-                    key: _domainFieldKey,
-                    controller: skillsSearchController,
-                    hintText: "Select Area of Interest",
-                    suffixIcon: Icons.search,
-                    onSuffixTap: () {
-                      if (_domainOverlayEntry == null) {
-                        _showDomainDropdown(context, skillsSearchController);
-                      } else {
-                        _domainOverlayEntry?.remove();
-                        _domainOverlayEntry = null;
+
+                BlocListener<SkillBloc, SkillState>(
+                  listener: (context, state) {
+                    if (state is SkillStateDomainLoaded) {
+                      setState(() {
+                        allDomains = state.domainAllResponse.domains;
+                      });
+                    } else if (state is SubSkillLoaded) {
+                      final data = state.subSkillResponse;
+                      final domain = state.domain;
+
+                      if (!subSkillsMap.containsKey(domain)) {
+                        setState(() {
+                          subSkillsMap[domain] = data.skills;
+                        });
+                      }
+                    }
+                  },
+                  child: CustomAutocomplete(
+                    options: allDomains,
+                    label: 'Select Area of interest',
+                    onSelected: (value) {
+                      if (!selectedDomains.contains(value)) {
+                        context.read<SkillBloc>().add(LoadSubSkills(value));
+                        setState(() {
+                          selectedDomains.add(value);
+                        });
                       }
                     },
                   ),
                 ),
+                // BlocBuilder<SkillBloc, SkillState>(
+                //   builder: (context, state) {
+                //     if (state is SkillStateDomainLoaded) {
+                //       final data = state.domainAllResponse;
+                //       return CustomAutocomplete(
+                //         options: data.domains,
+                //         label: 'Select Area of interest',
+                //         onSelected: (value) {
+                //           context.read<SkillBloc>().add(LoadSubSkills(value));
+                //           setState(() {
+                //             selectedDomains.add(value);
+                //           });
+                //         },
+                //       );
+                //     } else {
+                //       return Center(
+                //         child: Text('Unhandeled State : $state'),
+                //       );
+                //     }
+                //   },
+                // ),
+
                 mSpacer(mHeight: 16.0),
-                preferenceContainer(cName: "Digital Marketing", onTap: () {}),
-                mSpacer(),
-                preferenceContainer(cName: "Graphic Design", onTap: () {}),
-                mSpacer17(),
-                Text("Related skills you might know", style: mTextStyle12()),
-                SizedBox(height: 10),
+                // CompositedTransformTarget(
+                //   link: _domainLink,
+                //   child: CustomTextField(
+                //     key: _domainFieldKey,
+                //     controller: skillsSearchController,
+                //     hintText: "Select Area of Interest",
+                //     suffixIcon: Icons.search,
+                //     onSuffixTap: () {
+                //       if (_domainOverlayEntry == null) {
+                //         _showDomainDropdown(context, skillsSearchController);
+                //       } else {
+                //         _domainOverlayEntry?.remove();
+                //         _domainOverlayEntry = null;
+                //       }
+                //     },
+                //   ),
+                // ),
+                ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: selectedDomains.length,
+                  itemBuilder: (context, index) {
+                    final domain = selectedDomains[index];
+                    final subSkills = subSkillsMap[domain] ?? [];
+                    final selectedSkills =
+                        selectedSubSkillsPerDomain[domain] ?? [];
+
+                    // Initialize the controller if not already present
+                    courseCollegeControllers.putIfAbsent(
+                        domain, () => TextEditingController());
+
+                    return Column(
+                      children: [
+                        preferenceContainer(
+                          cName: domain,
+                          onTap: () {},
+                          subSkills: subSkills,
+                          selectedSubSkills: selectedSkills,
+                          onSkillTap: (skill) {
+                            setState(() {
+                              final selected =
+                                  selectedSubSkillsPerDomain[domain] ?? [];
+                              if (selected.contains(skill)) {
+                                selected.remove(skill);
+                              } else {
+                                selected.add(skill);
+                              }
+                              selectedSubSkillsPerDomain[domain] =
+                                  List.from(selected);
+                            });
+                          },
+                          courseCollegeController:
+                              courseCollegeControllers[domain]!,
+                        ),
+                        mSpacer(),
+                      ],
+                    );
+                  },
+                ),
+
+                // mSpacer(mHeight: 16.0),
+                // preferenceContainer(
+                //   cName: "Digital Marketing",
+                //   onTap: () {},
+                // ),
+                // mSpacer(),
+                // preferenceContainer(
+                //   cName: "Graphic Design",
+                //   onTap: () {},
+                // ),
+                // mSpacer17(),
+                // Text("Related skills you might know", style: mTextStyle12()),
+                // SizedBox(height: 10),
                 // BlocBuilder<RelatedSkillsBloc, RelatedSkillsState>(
                 //   builder: (context, state) {
                 //     if (state is RelatedSkillsLoading) {
@@ -241,11 +325,11 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
                 //     return SizedBox.shrink();
                 //   },
                 // ),
-                SizedBox(height: 6),
-                courseName(
-                    name: "See More",
-                    mIcon: Icons.add,
-                    bgColor: Color(0xff1961F3)),
+                // SizedBox(height: 6),
+                // courseName(
+                //     name: "See More",
+                //     mIcon: Icons.add,
+                //     bgColor: Color(0xff1961F3)),
                 mSpacer(mHeight: 24.0),
                 Row(
                   children: [
@@ -275,7 +359,8 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => SignupPageYourPreferences(
-                                /* firstName:
+                              params: widget.params,
+                              /* firstName:
                                 surName:
                                 gender:
                                 DOB:
@@ -295,13 +380,14 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
                             Specialization:
                                 courseStartYear:
                                  courseEndYear:*/
-                                ),
+                            ),
                           ),
                         );
                       },
                     ),
                   ],
-                )
+                ),
+                mSpacer(mHeight: 24.0),
               ],
             ),
           ],

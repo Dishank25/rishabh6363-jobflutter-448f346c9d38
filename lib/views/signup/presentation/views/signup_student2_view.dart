@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:job_portal/views/detailed_signup/presentation/bloc/detailed_signup_bloc.dart';
-import 'package:job_portal/views/detailed_signup/presentation/bloc/detailed_signup_event.dart';
-import 'package:job_portal/views/detailed_signup/presentation/bloc/detailed_signup_state.dart';
+import 'package:job_portal/views/detailed_signup/data/model/basic_user_data_response.dart';
+import 'package:job_portal/views/detailed_signup/presentation/bloc/signup_as_anyone_bloc/detailed_signup_bloc.dart';
+import 'package:job_portal/views/detailed_signup/presentation/bloc/signup_as_anyone_bloc/detailed_signup_event.dart';
+import 'package:job_portal/views/detailed_signup/presentation/bloc/signup_as_anyone_bloc/detailed_signup_state.dart';
+import 'package:job_portal/views/signup/data/models/signup_user_response.dart';
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../../widgets/widgets.dart';
 import '../../../login/presentation/views/login_page1_view.dart';
@@ -68,12 +70,12 @@ class SignUpStudent_2 extends StatelessWidget {
                 listener: (context, state) {
                   if (state is DetailedSignupGetBasicUserInfoLoaded) {
                     final data = state.basicUserInfoResponse;
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SignupAsAnyOne(
-                                  basicUserInfoResponse: data,
-                                )));
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => SignupAsAnyOne(
+                    //               basicUserInfoResponse: data,
+                    //             )));
                   }
                 },
                 child: commonRedContainer(
@@ -83,6 +85,22 @@ class SignUpStudent_2 extends StatelessWidget {
                     context
                         .read<DetailedSignupBloc>()
                         .add(DetailedSignupGetBasicUserInfo(emailMap));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SignupAsAnyOne(
+                          basicUserInfoResponse: BasicUserInfoResponse(
+                            message: 'Static screen push',
+                            user: BasicUser(
+                                id: 1,
+                                firstName: 'firstName',
+                                lastName: 'lastName',
+                                email: 'email',
+                                phone: 'phone'),
+                          ),
+                        ),
+                      ),
+                    );
                   },
                 ),
               ),

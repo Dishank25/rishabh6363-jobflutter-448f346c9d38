@@ -113,6 +113,7 @@ class _SignInPage_1State extends State<LogInPage1> {
 
                             final prefs = sl<PreferencesManager>();
                             prefs.setToken(data.token);
+                            prefs.setUserId(data.user.id.toString());
                           }
                         }
                       },

@@ -5,6 +5,9 @@ import 'package:job_portal/widgets/widgets.dart';
 
 class UserSkillsApprovalScreen extends StatelessWidget {
   TextEditingController skillSearchController = TextEditingController();
+  TextEditingController _1Controller = TextEditingController();
+  TextEditingController _2Controller = TextEditingController();
+  TextEditingController _3Controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +55,8 @@ class UserSkillsApprovalScreen extends StatelessWidget {
               preferenceContainer(
                   cName: "Digital Marketing",
                   cIcon: Icons.cancel,
-                  onTap: () {}),
+                  onTap: () {},
+                  courseCollegeController: _1Controller),
               SizedBox(
                 height: 16,
               ),
@@ -84,7 +88,10 @@ class UserSkillsApprovalScreen extends StatelessWidget {
                   bgColor: Color(0xff1961F3)),
               mSpacer(mHeight: 24.0),
               preferenceContainer(
-                  cName: "Python", cIcon: Icons.cancel, onTap: () {}),
+                  cName: "Python",
+                  cIcon: Icons.cancel,
+                  onTap: () {},
+                  courseCollegeController: _2Controller),
               Text(
                 "Related skills you might know",
                 style: mTextStyle12(),
@@ -118,6 +125,7 @@ class UserSkillsApprovalScreen extends StatelessWidget {
                   cName: "Python",
                   cIcon: Icons.cancel,
                   onTap: () {},
+                  courseCollegeController: _3Controller,
                   bgColor: Color(0xffFFF6E4)),
               SizedBox(
                 height: 24,

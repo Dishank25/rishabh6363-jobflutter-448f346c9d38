@@ -6,9 +6,6 @@ class DioClient {
   DioClient(String baseUrl)
       : _dio = Dio(
           BaseOptions(
-            // validateStatus: (status) {
-            //   return status == 200 || status == 201 || status == 409;
-            // },
             baseUrl: baseUrl,
             connectTimeout: const Duration(seconds: 15),
             receiveTimeout: const Duration(seconds: 15),
@@ -25,6 +22,9 @@ class DioClient {
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
         // can add bearer token here
+        String token =
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJqb2huZG9lQGV4YW1wbGUuY29tIiwicm9sZSI6IlNUVURFTlQiLCJpYXQiOjE3NTA5MjI4MDksImV4cCI6MTc1MTA5NTYwOX0.sXW8_OWdmMJ0lbMLbxhIteS1oY1g9d5XgpCC6g3x7IU';
+        options.headers.addAll({'Authorization': 'Bearer $token'});
         return handler.next(options);
       },
       onError: (DioException e, handler) {

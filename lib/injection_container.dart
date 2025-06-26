@@ -3,7 +3,11 @@ import 'package:job_portal/utils/constants/urls.dart';
 import 'package:job_portal/utils/network/dio_client.dart';
 import 'package:job_portal/utils/storage/shared_preference.dart';
 import 'package:job_portal/views/detailed_signup/data/data_source/detailed_api_service.dart';
-import 'package:job_portal/views/detailed_signup/presentation/bloc/detailed_signup_bloc.dart';
+import 'package:job_portal/views/detailed_signup/data/repository/skill_repository_impl.dart';
+import 'package:job_portal/views/detailed_signup/domain/repository/skill_repository.dart';
+import 'package:job_portal/views/detailed_signup/domain/usecases/skill_usecase.dart';
+import 'package:job_portal/views/detailed_signup/presentation/bloc/signup_as_anyone_bloc/detailed_signup_bloc.dart';
+import 'package:job_portal/views/detailed_signup/presentation/bloc/skill_bloc/skill_bloc.dart';
 import 'package:job_portal/views/login/data/data_source/login_api_service.dart';
 import 'package:job_portal/views/login/data/repository/login_repository_impl.dart';
 import 'package:job_portal/views/login/domain/repository/login_repository.dart';
@@ -47,16 +51,19 @@ Future<void> initializeDependencies() async {
       ));
   sl.registerFactory<RemoteLoginBloc>(() => RemoteLoginBloc(sl()));
   sl.registerFactory<DetailedSignupBloc>(() => DetailedSignupBloc(sl()));
+  sl.registerFactory<SkillBloc>(() => SkillBloc(sl()));
 
   // Use Cases
   sl.registerLazySingleton<SignupUsecase>(() => SignupUsecase(sl()));
   sl.registerLazySingleton<LoginUsecase>(() => LoginUsecase(sl()));
   sl.registerLazySingleton<DetailedSignupUsecase>(
       () => DetailedSignupUsecase(sl()));
+  sl.registerLazySingleton<SkillUsecase>(() => SkillUsecase(sl()));
 
   // Repository
   sl.registerLazySingleton<SignupRepository>(() => SignupRepositoryImpl(sl()));
   sl.registerLazySingleton<LoginRepository>(() => LoginRepositoryImpl(sl()));
   sl.registerLazySingleton<DetailedSignupRepository>(
       () => DetailedSignupRepositoryImpl(sl()));
+  sl.registerLazySingleton<SkillRepository>(() => SkillRepositoryImpl(sl()));
 }

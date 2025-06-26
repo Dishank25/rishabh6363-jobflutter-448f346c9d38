@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class PreferencesManager {
   // keys for storing data
   static const TOKEN = "token";
+  static const USER_ID = "userId";
 
   // Singleton instance
   static final PreferencesManager _instance = PreferencesManager._internal();
@@ -29,5 +30,13 @@ class PreferencesManager {
 
   Future<void> clear(String key) async {
     await _prefs.remove(key);
+  }
+
+  Future<void> setUserId(String userId) async {
+    await _prefs.setString(USER_ID, userId);
+  }
+
+  String? getUserId() {
+    return _prefs.getString(USER_ID);
   }
 }

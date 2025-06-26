@@ -2,6 +2,7 @@ import 'package:job_portal/utils/resourses/data_state.dart';
 import 'package:job_portal/views/detailed_signup/data/model/basic_user_data_response.dart';
 import 'package:job_portal/views/detailed_signup/data/model/colleges_response.dart';
 import 'package:job_portal/views/detailed_signup/data/model/courses_response.dart';
+import 'package:job_portal/views/detailed_signup/data/model/job_roles_response.dart';
 import 'package:job_portal/views/detailed_signup/data/model/specialization_response.dart';
 import 'package:job_portal/views/detailed_signup/domain/repository/detailed_signup_repository.dart';
 
@@ -28,6 +29,16 @@ class DetailedSignupUsecase {
 
   Future<DataState<CoursesListResponse>> getCourses() async {
     final response = await _repository.getCourses();
+    return response;
+  }
+
+  Future<DataState<JobRolesListResponse>> getJobRoles() async {
+    final response = await _repository.getJobRoles();
+    return response;
+  }
+
+  Future<DataState<JobRolesListResponse>> submitDetailedUserProfile() async {
+    final response = await _repository.submitDetailedUserProfile();
     return response;
   }
 }

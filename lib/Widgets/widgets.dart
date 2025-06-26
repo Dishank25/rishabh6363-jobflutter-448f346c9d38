@@ -405,7 +405,11 @@ Widget preferenceContainer({
   required String cName,
   IconData? cIcon,
   required VoidCallback onTap,
+  required TextEditingController courseCollegeController,
   Color? bgColor,
+  List<String>? subSkills,
+  List<String>? selectedSubSkills,
+  void Function(String skill)? onSkillTap,
 }) {
   return InkWell(
     onTap: onTap,
@@ -419,12 +423,15 @@ Widget preferenceContainer({
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min, // auto height
+        mainAxisSize: MainAxisSize.min,
         children: [
           Row(
             children: [
               courseName(
-                  name: cName, bgColor: const Color(0xff1961F3), mIcon: cIcon),
+                name: cName,
+                bgColor: const Color(0xff1961F3),
+                mIcon: cIcon,
+              ),
               const Spacer(),
               courseName(name: "Upload Certificate"),
               const SizedBox(width: 5),
@@ -444,7 +451,45 @@ Widget preferenceContainer({
             controller: courseCollegeController,
             hintText: "College/Company Name",
             fillColor: Colors.white,
-          )
+          ),
+          const SizedBox(height: 8),
+          Text("Related skills you might know", style: mTextStyle12()),
+          const SizedBox(height: 10),
+          if (subSkills != null && subSkills.isNotEmpty)
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: subSkills.map((skill) {
+                final isSelected = selectedSubSkills?.contains(skill) ?? false;
+                return GestureDetector(
+                  onTap: () => onSkillTap?.call(skill),
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? const Color(0xff1961F3)
+                          : Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: isSelected
+                            ? const Color(0xff1961F3)
+                            : Colors.grey.shade200,
+                      ),
+                    ),
+                    child: Text(
+                      skill,
+                      style: TextStyle(
+                        color: isSelected ? Colors.white : Colors.black,
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          subSkills == null
+              ? courseName(name: "See More", mIcon: Icons.add)
+              : const SizedBox(),
         ],
       ),
     ),
@@ -453,37 +498,41 @@ Widget preferenceContainer({
 
 /// Widget for course names
 
-Widget courseName(
-    {required String name,
-    IconData? mIcon,
-    Color? bgColor,
-    VoidCallback? onTap}) {
+Widget courseName({
+  required String name,
+  IconData? mIcon,
+  Color? bgColor,
+  Color? textColor,
+  VoidCallback? onTap,
+}) {
   final Color background = bgColor ?? Colors.grey[300]!; // Default grey
   final bool isDefaultGrey = background == Colors.grey[300];
-  final Color textColor = isDefaultGrey ? Colors.black : Colors.white;
+  final Color finalTextColor =
+      textColor ?? (isDefaultGrey ? Colors.black : Colors.white);
 
   return InkWell(
     onTap: onTap,
     child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      //height: 24,
       decoration: BoxDecoration(
         color: background,
         borderRadius: BorderRadius.circular(26),
         border: Border.all(color: const Color(0xffEFF0F6)),
       ),
       child: Row(
-        mainAxisSize:
-            MainAxisSize.min, // <<<<< This makes width shrink-wrap content
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             name,
-            style: TextStyle(fontSize: 13, color: textColor),
+            style: TextStyle(fontSize: 13, color: finalTextColor),
           ),
           if (mIcon != null) ...[
             const SizedBox(width: 6),
-            Icon(mIcon,
-                size: 12, color: textColor), // Match icon color to text color
+            Icon(
+              mIcon,
+              size: 12,
+              color: finalTextColor,
+            ),
           ],
         ],
       ),
@@ -574,11 +623,6 @@ class _CustomAutocompleteState extends State<CustomAutocomplete> {
                               return InkWell(
                                 onTap: () => onSelected(option),
                                 borderRadius: BorderRadius.circular(8),
-                                // child: ConsignerCard(
-                                //   addressText: option,
-                                //   isSelected: false,
-                                //   onTap: () => onSelected(option),
-                                // ),
                                 child: ListTile(
                                   title: Text(option),
                                 ),
@@ -602,13 +646,6 @@ class _CustomAutocompleteState extends State<CustomAutocomplete> {
                       decoration: InputDecoration(
                         fillColor: Colors.white,
                         isDense: true,
-                        // contentPadding: const EdgeInsets.symmetric(
-                        //     vertical: 4, horizontal: 12),
-                        // suffixIcon: const Icon(
-                        //   Icons.keyboard_arrow_down,
-                        //   color: Color.fromARGB(255, 200, 200, 200),
-                        //   size: 24,
-                        // ),
                         hintText: widget.label,
                         hintStyle: mTextStyle14(
                           mFontWeight: FontWeight.w500,

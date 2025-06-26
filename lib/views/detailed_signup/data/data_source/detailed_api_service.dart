@@ -3,7 +3,10 @@ import 'package:job_portal/utils/constants/urls.dart';
 import 'package:job_portal/views/detailed_signup/data/model/basic_user_data_response.dart';
 import 'package:job_portal/views/detailed_signup/data/model/colleges_response.dart';
 import 'package:job_portal/views/detailed_signup/data/model/courses_response.dart';
+import 'package:job_portal/views/detailed_signup/data/model/domian_all_response.dart';
+import 'package:job_portal/views/detailed_signup/data/model/job_roles_response.dart';
 import 'package:job_portal/views/detailed_signup/data/model/specialization_response.dart';
+import 'package:job_portal/views/detailed_signup/data/model/subskill_response.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'detailed_api_service.g.dart';
@@ -25,4 +28,18 @@ abstract class DetailedApiService {
 
   @GET(Urls.getCourses)
   Future<HttpResponse<CoursesListResponse>> getCourses();
+
+  @GET('${Urls.getSubSkills}/{domain}')
+  Future<HttpResponse<SubSkillResponse>> getSubSkills(@Path() String domain);
+
+  @GET(Urls.getDomainAll)
+  Future<HttpResponse<DomainAllResponse>> getDomains();
+
+  @GET(Urls.getJobRoles)
+  Future<HttpResponse<JobRolesListResponse>> getJobRoles();
+
+  @POST(Urls.submitDetailedUserProfile)
+  Future<HttpResponse<JobRolesListResponse>> submitDetailedUserProfile();
 }
+
+// List<dynamic>

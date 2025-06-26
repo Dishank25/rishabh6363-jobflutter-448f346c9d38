@@ -1,10 +1,14 @@
+import 'dart:developer' as developer show log;
+
 import 'package:flutter/material.dart';
+import 'package:job_portal/utils/constants/enums.dart';
 import 'package:job_portal/views/Bottom_Nav_Bar/Student_Bottom_Nav_Bar.dart';
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../../widgets/widgets.dart';
 import '../../../Job_Related_Screens/Job_Search_Screen.dart';
 
 class SignupPageYourPreferences extends StatefulWidget {
+  Map<String, dynamic> params;
   /* String firstName;
   String surName;
   String gender;
@@ -24,12 +28,8 @@ class SignupPageYourPreferences extends StatefulWidget {
   String CollegeName;
   String Specialization;
   String courseStartYear;
-  String courseEndYear;
-  SignupPageYourPreferences({required this.firstName,required this.surName, required this.email, required this.currentCompany, required this.CollegeName,
-    this.course, required this.courseEndYear, required this.courseStartYear, required this.currentJobRole, required this.currentLocation,
-    required this.DOB, required this.gender, required this.jobEndYear, required this.jobPreferenceLocation,
-    required this.jobStartYear, required this.Specialization, this.studentClass, required this.totalWorkExp, this.userCategory,
-    required this.phoneNumber});*/
+  String courseEndYear;*/
+  SignupPageYourPreferences({super.key, required this.params});
   @override
   _SignupPageYourPreferencesState createState() =>
       _SignupPageYourPreferencesState();
@@ -44,6 +44,7 @@ class _SignupPageYourPreferencesState extends State<SignupPageYourPreferences> {
       if (selectedPreferences.contains(title)) {
         selectedPreferences.remove(title);
       } else {
+        selectedPreferences.clear();
         selectedPreferences.add(title);
       }
     });
@@ -54,9 +55,54 @@ class _SignupPageYourPreferencesState extends State<SignupPageYourPreferences> {
       if (selectedWorkModes.contains(title)) {
         selectedWorkModes.remove(title);
       } else {
+        selectedWorkModes.clear();
         selectedWorkModes.add(title);
       }
     });
+  }
+
+  String cleanString(String input) {
+    return input.replaceAll('+', '').trim();
+  }
+
+  Future<void> onPressedFindOpportunities() async {
+    // add preferences to params
+    widget.params.addAll({
+      DETAILEDPROFILEPARAMS.currentlyLookingFor.name:
+          cleanString(selectedPreferences.first),
+      DETAILEDPROFILEPARAMS.workMode.name: cleanString(selectedWorkModes.first),
+    });
+
+    developer.log('Params in preferences screen : ${widget.params}');
+
+    Map<String, dynamic> payload = {
+      "userId": 58,
+      "firstName": "Megha",
+      "lastName": "Gupta",
+      "email": "a@gmail.com",
+      "phone": "58798598",
+      "dob": "1990-01-01",
+      "city": "Delhi",
+      "gender": "Female",
+      "userType": "Working Professional",
+      "jobLocation": "San Francisco",
+      "experiences": [
+        {
+          "userId": 57,
+          "companyRecruiterProfileId": "4",
+          "jobRole": "Software Engineer",
+          "company": "OriginCore",
+          "startDate": "2022-01-01",
+          "endDate": "2023-01-01",
+          "description": "Worked on backend development"
+        }
+      ],
+      "salaryDetails": "100000",
+      "currentlyLookingFor": "job",
+      "workMode": "Remote"
+    };
+
+    // developer.log('Detailed Profile Payload : $payload');
   }
 
   @override
@@ -87,7 +133,8 @@ class _SignupPageYourPreferencesState extends State<SignupPageYourPreferences> {
 
               /// Preferences Section
               Text("Currently looking for:", style: mTextStyle12()),
-              Row(
+              Wrap(
+                runSpacing: 12,
                 children: [
                   OptionContainer(
                     title: "Jobs +",
@@ -103,29 +150,30 @@ class _SignupPageYourPreferencesState extends State<SignupPageYourPreferences> {
                   SizedBox(width: 12),
                   OptionContainer(
                     title: "Projects  +",
-                    isSelected: selectedPreferences.contains("Projects  +"),
-                    onTap: () => togglePreference("Projects  +"),
+                    isSelected: selectedPreferences.contains("Projects +"),
+                    onTap: () => togglePreference("Projects +"),
                   ),
                 ],
               ),
               mSpacer(mHeight: 25.0),
 
-              /// Work Mode Section
+              // /// Work Mode Section
               Text("Work Mode:", style: mTextStyle12()),
-              Row(
+              Wrap(
+                runSpacing: 12,
                 children: [
                   OptionContainer(
                     title: "In-Office  +",
                     isSelected: selectedWorkModes.contains("In-Office  +"),
                     onTap: () => toggleWorkMode("In-Office  +"),
                   ),
-                  SizedBox(width: 12),
+                  const SizedBox(width: 12),
                   OptionContainer(
                     title: "Hybrid  +",
                     isSelected: selectedWorkModes.contains("Hybrid  +"),
                     onTap: () => toggleWorkMode("Hybrid  +"),
                   ),
-                  SizedBox(width: 12),
+                  const SizedBox(width: 12),
                   OptionContainer(
                     title: "Work From Home  +",
                     isSelected: selectedWorkModes.contains("Work From Home  +"),
@@ -141,11 +189,14 @@ class _SignupPageYourPreferencesState extends State<SignupPageYourPreferences> {
                   width: 139,
                   child: nextButton(
                     title: "Find opportunities",
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Student_Bottom_Nav_bar()));
+                    onTap: () async {
+                      await onPressedFindOpportunities();
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => const Student_Bottom_Nav_bar(),
+                      //   ),
+                      // );
                     },
                   ),
                 ),

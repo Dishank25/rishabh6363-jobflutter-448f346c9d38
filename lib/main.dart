@@ -5,7 +5,8 @@ import 'package:job_portal/injection_container.dart';
 import 'package:job_portal/utils/constants/urls.dart';
 import 'package:job_portal/utils/network/dio_client.dart';
 import 'package:job_portal/utils/storage/shared_preference.dart';
-import 'package:job_portal/views/detailed_signup/presentation/bloc/detailed_signup_bloc.dart';
+import 'package:job_portal/views/detailed_signup/presentation/bloc/signup_as_anyone_bloc/detailed_signup_bloc.dart';
+import 'package:job_portal/views/detailed_signup/presentation/bloc/skill_bloc/skill_bloc.dart';
 import 'package:job_portal/views/login/presentation/bloc/remote_login_bloc.dart';
 import 'package:job_portal/views/signup/presentation/bloc/remote_signup_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -61,6 +62,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => sl<RemoteSignupBloc>()),
         BlocProvider(create: (_) => sl<RemoteLoginBloc>()),
         BlocProvider(create: (_) => sl<DetailedSignupBloc>()),
+        BlocProvider(create: (_) => sl<SkillBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
