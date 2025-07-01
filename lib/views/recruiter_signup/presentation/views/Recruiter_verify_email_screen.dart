@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:job_portal/views/Post%20Internships%20Screens/Post%20Internships%20Screen.dart';
 
-import '../../ui_helper/ui_helper.dart';
-import '../../widgets/widgets.dart';
-import '../login/presentation/views/login_page1_view.dart';
+import '../../../../ui_helper/ui_helper.dart';
+import '../../../../widgets/widgets.dart';
+import '../../../login/presentation/views/login_page1_view.dart';
 
 class RecruiterVerifyEmailScreen extends StatelessWidget {
   TextEditingController timePassController = TextEditingController();

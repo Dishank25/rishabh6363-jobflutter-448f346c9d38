@@ -13,18 +13,30 @@ enum JOBSEEKERTYPE {
   WorkingProffesional,
 }
 
-// submit detailed profile params
 enum DETAILEDPROFILEPARAMS {
   userId,
+  email,
   firstName,
   lastName,
-  email,
   phone,
   dob,
   city,
-  gender,
-  userType,
   jobLocation,
+  gender,
+  languages,
+  userType,
+
+  // school student
+  educationStandard,
+
+  // college student / fresher
+  course,
+  collegeName,
+  specialization,
+  startYear,
+  endYear,
+
+  // Working professionals
   experiences,
   companyRecruiterProfileId,
   jobRole,
@@ -32,9 +44,22 @@ enum DETAILEDPROFILEPARAMS {
   startDate,
   endDate,
   description,
-  salaryDetails,
+
+  // preference page
   currentlyLookingFor,
   workMode,
+
+  // verification info
+  aboutus,
+  careerObjective,
+  resume,
+  isEmailVerified,
+  isPhoneVerified,
+  isGstVerified,
+  userprofilepic,
+  aadhaarNumber,
+  aadhaarCardFile,
+  isAadhaarVerified,
 }
 
 // Map<String, dynamic> payload = {
@@ -63,3 +88,27 @@ enum DETAILEDPROFILEPARAMS {
 //   "currentlyLookingFor": "job",
 //   "workMode": "Remote"
 // };
+// submit detailed profile params
+// enum DETAILEDPROFILEPARAMS {
+//   userId,
+//   firstName,
+//   lastName,
+//   email,
+//   phone,
+//   dob,
+//   city,
+//   gender,
+//   languages,
+//   userType,
+//   jobLocation,
+//   experiences,
+//   companyRecruiterProfileId,
+//   jobRole,
+//   company,
+//   startDate,
+//   endDate,
+//   description,
+//   salaryDetails,
+//   currentlyLookingFor,
+//   workMode,
+// }

@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:job_portal/views/detailed_signup/data/model/domian_all_response.dart';
+import 'package:job_portal/views/detailed_signup/data/model/skill_submission_response.dart';
 import 'package:job_portal/views/detailed_signup/data/model/subskill_response.dart';
 
 @immutable
@@ -43,4 +45,28 @@ class SkillStateDomainLoaded extends SkillState {
 
 class SkillStateDomainError extends SkillState {
   const SkillStateDomainError();
+}
+
+class SkillCertificatesLoaded extends SkillState {
+  final Map<String, dynamic> skillCertificates;
+
+  const SkillCertificatesLoaded(this.skillCertificates);
+}
+
+class SkillCertificateLoading extends SkillState {
+  const SkillCertificateLoading();
+}
+
+class SubmitSkillLoading extends SkillState {
+  const SubmitSkillLoading();
+}
+
+class SubmitSkillLoaded extends SkillState {
+  final SkillSubmitionResponse skillSubmitionResponse;
+
+  const SubmitSkillLoaded(this.skillSubmitionResponse);
+}
+
+class SubmitSkillError extends SkillState {
+  const SubmitSkillError();
 }

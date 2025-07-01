@@ -5,6 +5,7 @@ import 'package:job_portal/views/detailed_signup/data/model/colleges_response.da
 import 'package:job_portal/views/detailed_signup/data/model/courses_response.dart';
 import 'package:job_portal/views/detailed_signup/data/model/job_roles_response.dart';
 import 'package:job_portal/views/detailed_signup/data/model/specialization_response.dart';
+import 'package:job_portal/views/detailed_signup/data/model/submit_detailed_user_profile.dart';
 
 @immutable
 abstract class DetailedSignupState extends Equatable {
@@ -59,7 +60,9 @@ class DetailedSingupSubmitUserDetailsLoading extends DetailedSignupState {
 }
 
 class DetailedSingupSubmitUserDetailsLoaded extends DetailedSignupState {
-  const DetailedSingupSubmitUserDetailsLoaded();
+  final SubmitDetailedUserProfile submitDetailedUserProfile;
+
+  const DetailedSingupSubmitUserDetailsLoaded(this.submitDetailedUserProfile);
 }
 
 class DetailedSingupSubmitUserDetailsError extends DetailedSignupState {

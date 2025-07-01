@@ -25,9 +25,10 @@ class SignupAsAnyOne extends StatefulWidget {
 }
 
 class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
-  String? selectedOption;
+  String selectedOption = '';
   String? selectedClass;
   String? selectedCourse;
+  String? selectedSpecialization;
   String? selectedjobRole;
   TextEditingController totalWorkExp = TextEditingController();
 
@@ -827,9 +828,11 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
                                   options: course.courses,
                                   label: 'Course Names',
                                   onSelected: (value) {
-                                    showSnackbar('Selected $value', context);
+                                    selectedCourse = value;
+                                    showSnackbar(
+                                        'Selected $selectedCourse', context);
                                     developer.log(
-                                        'Selected Course variable : $selectedCollege');
+                                        'Selected Course variable : $selectedCourse');
                                   },
                                 ),
                                 mSpacer(),
@@ -856,9 +859,12 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
                                   options: specializations.specialization,
                                   label: 'Specialization Names',
                                   onSelected: (value) {
-                                    showSnackbar('Selected $value', context);
+                                    selectedSpecialization = value;
+                                    showSnackbar(
+                                        'Selected $selectedSpecialization',
+                                        context);
                                     developer.log(
-                                        'Selected Specialization variable : $selectedCollege');
+                                        'Selected Specialization variable : $selectedSpecialization');
                                   },
                                 ),
                               ],
@@ -1288,6 +1294,7 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
     // studentClass: selectedClass,
     // totalWorkExp: totalWorkExp.text,
     widget.params.addAll({
+      DETAILEDPROFILEPARAMS.userId.name: '59',
       DETAILEDPROFILEPARAMS.firstName.name: firstnameController.text,
       DETAILEDPROFILEPARAMS.lastName.name: surnameController.text,
       DETAILEDPROFILEPARAMS.email.name: emailController.text,
@@ -1297,18 +1304,46 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
       DETAILEDPROFILEPARAMS.jobLocation.name: JobLocationController.text,
       DETAILEDPROFILEPARAMS.gender.name: genderController.text,
       DETAILEDPROFILEPARAMS.userType.name: selectedOption,
-      //course
-      DETAILEDPROFILEPARAMS.jobRole.name: selectedjobRole,
-      //college name
-      //specialization
-      //course start year
-      //course end year
-      DETAILEDPROFILEPARAMS.company.name: currentCompany.text,
-      DETAILEDPROFILEPARAMS.startDate.name: startJobYearController.text,
-      DETAILEDPROFILEPARAMS.endDate.name: endJobYearController.text,
-      // student class
       // total experience
     });
+
+    // Remove all mutually exclusive keys first
+    widget.params
+      ..remove(DETAILEDPROFILEPARAMS.educationStandard.name)
+      ..remove(DETAILEDPROFILEPARAMS.course.name)
+      ..remove(DETAILEDPROFILEPARAMS.collegeName.name)
+      ..remove(DETAILEDPROFILEPARAMS.specialization.name)
+      ..remove(DETAILEDPROFILEPARAMS.startYear.name)
+      ..remove(DETAILEDPROFILEPARAMS.endYear.name)
+      ..remove(DETAILEDPROFILEPARAMS.experiences.name);
+
+    if (selectedOption == JOBSEEKERTYPE.SchoolStudent.name) {
+      widget.params.addAll({
+        DETAILEDPROFILEPARAMS.educationStandard.name: selectedClass,
+      });
+    } else if (selectedOption == JOBSEEKERTYPE.CollegeStudent.name ||
+        selectedOption == JOBSEEKERTYPE.Fresher.name) {
+      widget.params.addAll({
+        DETAILEDPROFILEPARAMS.course.name: selectedCourse,
+        DETAILEDPROFILEPARAMS.collegeName.name: selectedCollege,
+        DETAILEDPROFILEPARAMS.specialization.name: selectedSpecialization,
+        DETAILEDPROFILEPARAMS.startYear.name: startCourseYearController.text,
+        DETAILEDPROFILEPARAMS.endYear.name: endCourseYearController.text,
+      });
+    } else if (selectedOption == JOBSEEKERTYPE.WorkingProffesional.name) {
+      widget.params.addAll({
+        DETAILEDPROFILEPARAMS.experiences.name: [
+          {
+            DETAILEDPROFILEPARAMS.userId.name: '59',
+            // DETAILEDPROFILEPARAMS.companyRecruiterProfileId.name: 'x',
+            DETAILEDPROFILEPARAMS.jobRole.name: selectedjobRole,
+            DETAILEDPROFILEPARAMS.company.name: currentCompany.text,
+            DETAILEDPROFILEPARAMS.startDate.name: startJobYearController.text,
+            DETAILEDPROFILEPARAMS.endDate.name: endJobYearController.text,
+          }
+        ],
+      });
+    }
 
     developer
         .log('Params detials in sign up as anyone screen : ${widget.params}');

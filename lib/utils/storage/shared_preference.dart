@@ -1,9 +1,12 @@
+import 'dart:convert';
+import 'package:job_portal/views/detailed_signup/presentation/bloc/skill_bloc/skill_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferencesManager {
   // keys for storing data
   static const TOKEN = "token";
   static const USER_ID = "userId";
+  static const SKILL_PARAMS = "skill_params";
 
   // Singleton instance
   static final PreferencesManager _instance = PreferencesManager._internal();
@@ -38,5 +41,14 @@ class PreferencesManager {
 
   String? getUserId() {
     return _prefs.getString(USER_ID);
+  }
+
+  Future<void> setSkillParams(Map<String, dynamic> skillParams) async {
+    final skillInString = jsonEncode(skillParams);
+    await _prefs.setString(SKILL_PARAMS, skillInString);
+  }
+
+  String? getSkillParams() {
+    return _prefs.getString(SKILL_PARAMS);
   }
 }

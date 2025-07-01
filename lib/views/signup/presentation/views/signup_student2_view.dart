@@ -70,12 +70,12 @@ class SignUpStudent_2 extends StatelessWidget {
                 listener: (context, state) {
                   if (state is DetailedSignupGetBasicUserInfoLoaded) {
                     final data = state.basicUserInfoResponse;
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => SignupAsAnyOne(
-                    //               basicUserInfoResponse: data,
-                    //             )));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SignupAsAnyOne(
+                                  basicUserInfoResponse: data,
+                                )));
                   }
                 },
                 child: commonRedContainer(
@@ -85,22 +85,22 @@ class SignUpStudent_2 extends StatelessWidget {
                     context
                         .read<DetailedSignupBloc>()
                         .add(DetailedSignupGetBasicUserInfo(emailMap));
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SignupAsAnyOne(
-                          basicUserInfoResponse: BasicUserInfoResponse(
-                            message: 'Static screen push',
-                            user: BasicUser(
-                                id: 1,
-                                firstName: 'firstName',
-                                lastName: 'lastName',
-                                email: 'email',
-                                phone: 'phone'),
-                          ),
-                        ),
-                      ),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => SignupAsAnyOne(
+                    //       basicUserInfoResponse: BasicUserInfoResponse(
+                    //         message: 'Static screen push',
+                    //         user: BasicUser(
+                    //             id: 1,
+                    //             firstName: 'firstName',
+                    //             lastName: 'lastName',
+                    //             email: 'email',
+                    //             phone: 'phone'),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // );
                   },
                 ),
               ),

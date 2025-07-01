@@ -1,8 +1,12 @@
 import 'dart:developer' as developer show log;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:job_portal/utils/constants/enums.dart';
 import 'package:job_portal/views/Bottom_Nav_Bar/Student_Bottom_Nav_Bar.dart';
+import 'package:job_portal/views/detailed_signup/presentation/bloc/signup_as_anyone_bloc/detailed_signup_bloc.dart';
+import 'package:job_portal/views/detailed_signup/presentation/bloc/signup_as_anyone_bloc/detailed_signup_event.dart';
+import 'package:job_portal/views/detailed_signup/presentation/bloc/signup_as_anyone_bloc/detailed_signup_state.dart';
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../../widgets/widgets.dart';
 import '../../../Job_Related_Screens/Job_Search_Screen.dart';
@@ -72,6 +76,40 @@ class _SignupPageYourPreferencesState extends State<SignupPageYourPreferences> {
           cleanString(selectedPreferences.first),
       DETAILEDPROFILEPARAMS.workMode.name: cleanString(selectedWorkModes.first),
     });
+
+    final dummyMap = {
+      "userId": 63,
+      "firstName": "Megha",
+      "lastName": "Gupta",
+      "email": "axxa@gmail.com",
+      "phone": "58798598",
+      "dob": "1990-01-01",
+      "city": "Delhi",
+      "gender": "Female",
+      "userType": "Working Professional",
+      "jobLocation": "San Francisco",
+      "experiences": [
+        {
+          "userId": 63,
+          "companyRecruiterProfileId": "4",
+          "jobRole": "Software Engineer",
+          "company": "OriginCore",
+          "startDate": "2022-01-01",
+          "endDate": "2023-01-01",
+          "description": "Worked on backend development"
+        }
+      ],
+      "salaryDetails": "100000",
+      "currentlyLookingFor": "job",
+      "workMode": "Remote"
+    };
+
+    // context
+    //     .read<DetailedSignupBloc>()
+    //     .add(DetailedSingupSubmitUserDetails(widget.params));
+    context
+        .read<DetailedSignupBloc>()
+        .add(DetailedSingupSubmitUserDetails(dummyMap));
 
     developer.log('Params in preferences screen : ${widget.params}');
 
@@ -183,24 +221,48 @@ class _SignupPageYourPreferencesState extends State<SignupPageYourPreferences> {
               ),
               mSpacer(mHeight: 25.0),
 
-              /// Button
-              Center(
-                child: SizedBox(
-                  width: 139,
-                  child: nextButton(
-                    title: "Find opportunities",
-                    onTap: () async {
-                      await onPressedFindOpportunities();
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => const Student_Bottom_Nav_bar(),
-                      //   ),
-                      // );
-                    },
+              BlocListener<DetailedSignupBloc, DetailedSignupState>(
+                listener: (context, state) {
+                  if (state is DetailedSingupSubmitUserDetailsLoaded) {
+                    final data = state.submitDetailedUserProfile;
+
+                    if (data.message ==
+                        'User details and experiences added successfully.') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Student_Bottom_Nav_bar(),
+                        ),
+                      );
+                    } else {
+                      showSnackbar(data.message, context);
+                    }
+                  } else if (state is DetailedSingupSubmitUserDetailsError) {
+                    showSnackbar(
+                        'We encountered some error submiting your profile.',
+                        context);
+                  }
+                },
+                child: Center(
+                  child: SizedBox(
+                    width: 139,
+                    child: nextButton(
+                      title: "Find opportunities",
+                      onTap: () async {
+                        await onPressedFindOpportunities();
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => const Student_Bottom_Nav_bar(),
+                        //   ),
+                        // );
+                      },
+                    ),
                   ),
                 ),
               ),
+
+              /// Button
             ],
           ),
         ),

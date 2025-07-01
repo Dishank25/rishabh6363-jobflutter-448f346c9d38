@@ -5,7 +5,9 @@ import 'package:job_portal/views/detailed_signup/data/model/colleges_response.da
 import 'package:job_portal/views/detailed_signup/data/model/courses_response.dart';
 import 'package:job_portal/views/detailed_signup/data/model/domian_all_response.dart';
 import 'package:job_portal/views/detailed_signup/data/model/job_roles_response.dart';
+import 'package:job_portal/views/detailed_signup/data/model/skill_submission_response.dart';
 import 'package:job_portal/views/detailed_signup/data/model/specialization_response.dart';
+import 'package:job_portal/views/detailed_signup/data/model/submit_detailed_user_profile.dart';
 import 'package:job_portal/views/detailed_signup/data/model/subskill_response.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -39,7 +41,13 @@ abstract class DetailedApiService {
   Future<HttpResponse<JobRolesListResponse>> getJobRoles();
 
   @POST(Urls.submitDetailedUserProfile)
-  Future<HttpResponse<JobRolesListResponse>> submitDetailedUserProfile();
+  Future<HttpResponse<SubmitDetailedUserProfile>> submitDetailedUserProfile(
+      @Body() Map<String, dynamic> params);
+
+  @POST(Urls.baseurlIP + Urls.submitSkillsAndCertificates)
+  @MultiPart()
+  Future<HttpResponse<SkillSubmitionResponse>> submitSkillsAndCertificates(
+      @Body() FormData data);
 }
 
 // List<dynamic>

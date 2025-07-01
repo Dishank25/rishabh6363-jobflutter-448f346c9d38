@@ -1,0 +1,46 @@
+import 'dart:developer' as developer show log;
+import 'dart:io';
+import 'package:dio/dio.dart';
+import 'package:job_portal/utils/resourses/data_state.dart';
+import 'package:job_portal/views/recruiter_signup/data/data_source/recruiter_signup_api_service.dart';
+import 'package:job_portal/views/recruiter_signup/domain/entities/sigup_user_entity.dart';
+import 'package:job_portal/views/recruiter_signup/domain/repository/recruiter_signup_repository.dart';
+import 'package:job_portal/views/signup/data/models/signup_user_response.dart';
+
+class RecruiterSignupRepositoryImpl extends RecruiterSignupRepository {
+  final RecruiterSignupApiService _apiService;
+
+  RecruiterSignupRepositoryImpl(this._apiService);
+
+  @override
+  Future<DataState<SignUpUserEntity>> registerUser(
+      Map<String, dynamic> registerationMap) async {
+    developer.log('hey');
+    try {
+      final res = await _apiService.registerUser(registerationMap);
+      // int? statusCode = res.response.statusCode;
+      if (res.response.statusCode == HttpStatus.ok ||
+          res.response.statusCode == HttpStatus.created ||
+          res.response.statusCode == HttpStatus.conflict) {
+        developer.log('.checkk response in repository : ${res.data.message}');
+        return DataSuccess(res.data);
+      } else {
+        developer.log('..checkk response in repository : ${res.data.message}');
+        return DataFailed(DioException(
+            error: res.response.statusMessage,
+            response: res.response,
+            type: DioExceptionType.badResponse,
+            requestOptions: res.response.requestOptions));
+      }
+    } on DioException catch (e) {
+      final error = e.type;
+      // developer.log('....checkk  : ${error}');
+      if (error == DioExceptionType.badResponse) {
+        developer.log('...checkk response in repository : ${e.response}');
+        // final data = SignUpUserResponse.fromJson(e.response!.data);
+        return DataSuccess(e.response!.data);
+      }
+      return DataFailed(e);
+    }
+  }
+}

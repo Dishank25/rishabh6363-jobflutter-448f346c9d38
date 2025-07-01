@@ -222,12 +222,15 @@ class _DetailedApiService implements DetailedApiService {
   }
 
   @override
-  Future<HttpResponse<JobRolesListResponse>> submitDetailedUserProfile() async {
+  Future<HttpResponse<SubmitDetailedUserProfile>> submitDetailedUserProfile(
+    Map<String, dynamic> params,
+  ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HttpResponse<JobRolesListResponse>>(
+    final _data = <String, dynamic>{};
+    _data.addAll(params);
+    final _options = _setStreamType<HttpResponse<SubmitDetailedUserProfile>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -237,10 +240,45 @@ class _DetailedApiService implements DetailedApiService {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late JobRolesListResponse _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late SubmitDetailedUserProfile _value;
     try {
-      _value = JobRolesListResponse.fromJson(_result.data!);
+      _value = SubmitDetailedUserProfile.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<HttpResponse<SkillSubmitionResponse>> submitSkillsAndCertificates(
+    FormData data,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = data;
+    final _options = _setStreamType<HttpResponse<SkillSubmitionResponse>>(
+      Options(
+        method: 'POST',
+        headers: _headers,
+        extra: _extra,
+        contentType: 'multipart/form-data',
+      )
+          .compose(
+            _dio.options,
+            'http://212.95.51.83:3000/upload-skill',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late SkillSubmitionResponse _value;
+    try {
+      _value = SkillSubmitionResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

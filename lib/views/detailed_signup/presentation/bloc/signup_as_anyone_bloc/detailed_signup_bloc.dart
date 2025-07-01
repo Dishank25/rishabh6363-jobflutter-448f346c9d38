@@ -54,8 +54,9 @@ class DetailedSignupBloc
       Emitter<DetailedSignupState> emit) async {
     try {
       emit(const DetailedSingupSubmitUserDetailsLoading());
-      final response = await _detailedSignupUsecase.submitDetailedUserProfile();
-      emit(const DetailedSingupSubmitUserDetailsLoaded());
+      final response =
+          await _detailedSignupUsecase.submitDetailedUserProfile(event.params);
+      emit(DetailedSingupSubmitUserDetailsLoaded(response.data!));
     } catch (e) {
       emit(const DetailedSingupSubmitUserDetailsError());
     }

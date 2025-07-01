@@ -3,7 +3,7 @@ import 'package:job_portal/utils/constants/enums.dart';
 import 'package:job_portal/views/signup/presentation/views/signup_student2_view.dart';
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../login/presentation/views/login_page1_view.dart';
-import '../../../Recruiter_Screens/Recruiter_SignUp_Page.dart';
+import '../../../recruiter_signup/presentation/views/recruiter_signup_page.dart';
 import 'singup_student1_view.dart';
 
 class CreateAccount extends StatefulWidget {
@@ -55,34 +55,37 @@ class _CreateAccountState extends State<CreateAccount> {
                     setState(() {
                       selectedIndex = 0;
                     });
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SignUpStudent1(
+                                  // userType: "STUDENT",
+                                  userType: USERTYPE.STUDENT.name,
+                                )));
                     // Navigator.push(
                     //     context,
                     //     MaterialPageRoute(
-                    //         builder: (context) => SignUpStudent1(
-                    //               // userType: "STUDENT",
-                    //               userType: USERTYPE.STUDENT.name,
-                    //             )));
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                SignUpStudent_2(Email: 'a@gmail.com')));
+                    //         builder: (context) =>
+                    //             SignUpStudent_2(Email: 'a@gmail.com')));
                   }),
               mSpacer(mHeight: 24.0),
               OptionContainer(
-                  index: 1,
-                  isSelected: selectedIndex == 1,
-                  title1: "Sign up as a company ",
-                  title2: "Hire talent, Offer career opportunities",
-                  onTap: () {
-                    setState(() {
-                      selectedIndex = 1;
-                    });
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => RecruiterSignupPage()));
-                  }),
+                index: 1,
+                isSelected: selectedIndex == 1,
+                title1: "Sign up as a company ",
+                title2: "Hire talent, Offer career opportunities",
+                onTap: () {
+                  setState(() {
+                    selectedIndex = 1;
+                  });
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RecruiterSignupPage(),
+                    ),
+                  );
+                },
+              ),
               mSpacer(mHeight: 24.0),
               OptionContainer(
                   index: 2,

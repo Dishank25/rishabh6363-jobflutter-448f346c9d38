@@ -4,6 +4,7 @@ import 'package:job_portal/views/detailed_signup/data/model/colleges_response.da
 import 'package:job_portal/views/detailed_signup/data/model/courses_response.dart';
 import 'package:job_portal/views/detailed_signup/data/model/job_roles_response.dart';
 import 'package:job_portal/views/detailed_signup/data/model/specialization_response.dart';
+import 'package:job_portal/views/detailed_signup/data/model/submit_detailed_user_profile.dart';
 
 abstract class DetailedSignupRepository {
   Future<DataState<BasicUserInfoResponse>> getBasicUserInfo(
@@ -18,5 +19,6 @@ abstract class DetailedSignupRepository {
 
   Future<DataState<JobRolesListResponse>> getJobRoles();
 
-  Future<DataState<JobRolesListResponse>> submitDetailedUserProfile();
+  Future<DataState<SubmitDetailedUserProfile>> submitDetailedUserProfile(
+      Map<String, dynamic> params);
 }

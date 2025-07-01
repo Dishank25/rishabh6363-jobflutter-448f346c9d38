@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:job_portal/views/Job_Related_Screens/Job_details_Screen.dart';
 
-import '../../ui_helper/ui_helper.dart';
-import '../../widgets/widgets.dart';
+import '../../../../ui_helper/ui_helper.dart';
+import '../../../../widgets/widgets.dart';
 import 'Recruiter_View_Full_Application_screen.dart';
 import 'Recruiter_total_job_posts.dart';
 

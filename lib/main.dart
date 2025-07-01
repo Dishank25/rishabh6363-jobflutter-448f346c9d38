@@ -8,6 +8,7 @@ import 'package:job_portal/utils/storage/shared_preference.dart';
 import 'package:job_portal/views/detailed_signup/presentation/bloc/signup_as_anyone_bloc/detailed_signup_bloc.dart';
 import 'package:job_portal/views/detailed_signup/presentation/bloc/skill_bloc/skill_bloc.dart';
 import 'package:job_portal/views/login/presentation/bloc/remote_login_bloc.dart';
+import 'package:job_portal/views/recruiter_signup/presentation/bloc/recruiter_signup_bloc.dart';
 import 'package:job_portal/views/signup/presentation/bloc/remote_signup_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'views/Common_Screens/Forgot_password_Screen.dart';
@@ -22,16 +23,16 @@ import 'views/Recruiter_Profile_Screens/Recruiter_GST_Auth_Screen.dart';
 import 'views/Payment_Screens/Payment_Screen.dart';
 import 'views/Recruiter_Profile_Screens/Recruiter_ProfileScreen1.dart';
 import 'views/Recruiter_Profile_Screens/Recruiter_profile_Screen2.dart';
-import 'views/Recruiter_Screens/RecruiterApprovalScreen.dart';
-import 'views/Recruiter_Screens/Recruiter_Analytics_Reports.dart';
-import 'views/Recruiter_Screens/Recruiter_Applications_Screen.dart';
-import 'views/Recruiter_Screens/Recruiter_Dashboard.dart';
-import 'views/Recruiter_Screens/Recruiter_Setting_Panel.dart';
-import 'views/Recruiter_Screens/Recruiter_Upcoming_Interviews.dart';
-import 'views/Recruiter_Screens/Recruiter_View_Full_Application_screen.dart';
-import 'views/Recruiter_Screens/Recruiter_pending_tasks.dart';
-import 'views/Recruiter_Screens/Recruiter_pipeline_candidates.dart';
-import 'views/Recruiter_Screens/Recruiter_total_job_posts.dart';
+import 'views/recruiter_signup/presentation/views/RecruiterApprovalScreen.dart';
+import 'views/recruiter_signup/presentation/views/Recruiter_Analytics_Reports.dart';
+import 'views/recruiter_signup/presentation/views/Recruiter_Applications_Screen.dart';
+import 'views/recruiter_signup/presentation/views/Recruiter_Dashboard.dart';
+import 'views/recruiter_signup/presentation/views/Recruiter_Setting_Panel.dart';
+import 'views/recruiter_signup/presentation/views/Recruiter_Upcoming_Interviews.dart';
+import 'views/recruiter_signup/presentation/views/Recruiter_View_Full_Application_screen.dart';
+import 'views/recruiter_signup/presentation/views/Recruiter_pending_tasks.dart';
+import 'views/recruiter_signup/presentation/views/Recruiter_pipeline_candidates.dart';
+import 'views/recruiter_signup/presentation/views/Recruiter_total_job_posts.dart';
 import 'views/signup/presentation/views/login_with_email_otp_view.dart';
 import 'views/detailed_signup/presentation/views/signup_as_anyone_view.dart.dart';
 import 'views/User_Profile_Screens/Choose_Your_Template_Screen.dart';
@@ -63,6 +64,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => sl<RemoteLoginBloc>()),
         BlocProvider(create: (_) => sl<DetailedSignupBloc>()),
         BlocProvider(create: (_) => sl<SkillBloc>()),
+        BlocProvider(create: (_) => sl<RecruiterSignupBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

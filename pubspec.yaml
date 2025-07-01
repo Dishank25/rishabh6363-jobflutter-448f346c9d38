@@ -49,6 +49,8 @@ dependencies:
   # for api calling code creation
   retrofit: ^4.4.2
   json_annotation: ^4.9.0
+  image_picker: ^1.1.2
+  file_picker: ^10.2.0
 
 
 dev_dependencies:

@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:job_portal/views/Job_Related_Screens/Job_details_Screen.dart';
-import 'package:job_portal/views/Recruiter_Screens/Recruiter_Applications_Screen.dart';
+import 'package:job_portal/views/recruiter_signup/presentation/views/Recruiter_Applications_Screen.dart';
 
-import '../../ui_helper/ui_helper.dart';
-import '../../widgets/widgets.dart';
+import '../../../../ui_helper/ui_helper.dart';
+import '../../../../widgets/widgets.dart';
 import 'Recruiter_total_job_posts.dart';
 
 class RecruiterPendingTasks extends StatelessWidget {

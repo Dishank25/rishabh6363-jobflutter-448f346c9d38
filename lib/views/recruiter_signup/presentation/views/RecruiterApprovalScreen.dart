@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../ui_helper/ui_helper.dart';
-import '../../widgets/widgets.dart';
+import '../../../../ui_helper/ui_helper.dart';
+import '../../../../widgets/widgets.dart';
 import 'Recruiter_pipeline_candidates.dart';
 import 'Recruiter_total_job_posts.dart';
 

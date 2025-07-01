@@ -1,5 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:job_portal/utils/resourses/data_state.dart';
 import 'package:job_portal/views/detailed_signup/data/model/domian_all_response.dart';
+import 'package:job_portal/views/detailed_signup/data/model/skill_submission_response.dart';
 import 'package:job_portal/views/detailed_signup/data/model/subskill_response.dart';
 import 'package:job_portal/views/detailed_signup/domain/repository/skill_repository.dart';
 
@@ -15,6 +17,12 @@ class SkillUsecase {
 
   Future<DataState<SubSkillResponse>> getSubSkills(String domain) async {
     final response = await repository.getSubSkills(domain);
+    return response;
+  }
+
+  Future<DataState<SkillSubmitionResponse>> submitSkillsAndCertificates(
+      FormData data) async {
+    final response = await repository.submitSkillsAndCertificates(data);
     return response;
   }
 }

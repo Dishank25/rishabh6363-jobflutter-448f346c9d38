@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../ui_helper/ui_helper.dart';
-import '../../widgets/widgets.dart';
+import '../../../../ui_helper/ui_helper.dart';
+import '../../../../widgets/widgets.dart';
 
 class RecruiterSettingPanel extends StatelessWidget {
   TextEditingController searchOnlyController = TextEditingController();

@@ -15,4 +15,5 @@ class Urls {
   static const getSubSkills = "skills/by-domain";
   static const getJobRoles = "job-roles";
   static const submitDetailedUserProfile = "user-details/detail";
+  static const submitSkillsAndCertificates = "upload-skill";
 }

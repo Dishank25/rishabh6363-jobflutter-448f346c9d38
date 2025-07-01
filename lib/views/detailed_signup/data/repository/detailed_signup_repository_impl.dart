@@ -7,7 +7,9 @@ import 'package:job_portal/views/detailed_signup/data/model/basic_user_data_resp
 import 'package:job_portal/views/detailed_signup/data/model/colleges_response.dart';
 import 'package:job_portal/views/detailed_signup/data/model/courses_response.dart';
 import 'package:job_portal/views/detailed_signup/data/model/job_roles_response.dart';
+import 'package:job_portal/views/detailed_signup/data/model/skill_submission_response.dart';
 import 'package:job_portal/views/detailed_signup/data/model/specialization_response.dart';
+import 'package:job_portal/views/detailed_signup/data/model/submit_detailed_user_profile.dart';
 import 'package:job_portal/views/detailed_signup/domain/repository/detailed_signup_repository.dart';
 
 class DetailedSignupRepositoryImpl extends DetailedSignupRepository {
@@ -128,10 +130,13 @@ class DetailedSignupRepositoryImpl extends DetailedSignupRepository {
   }
 
   @override
-  Future<DataState<JobRolesListResponse>> submitDetailedUserProfile() async {
+  Future<DataState<SubmitDetailedUserProfile>> submitDetailedUserProfile(
+      Map<String, dynamic> params) async {
     try {
-      final res = await _apiService.submitDetailedUserProfile();
-      if (res.response.statusCode == HttpStatus.ok) {
+      final res = await _apiService.submitDetailedUserProfile(params);
+      if (res.response.statusCode == HttpStatus.ok ||
+          res.response.statusCode == HttpStatus.created ||
+          res.response.statusCode == HttpStatus.conflict) {
         developer.log('.checkk response in repository : ${res.data}');
         return DataSuccess(res.data);
       } else {
@@ -145,6 +150,11 @@ class DetailedSignupRepositoryImpl extends DetailedSignupRepository {
     } on DioException catch (e) {
       final error = e.type;
       developer.log('....checkk  : $error');
+      if (error == DioExceptionType.badResponse) {
+        developer.log('...checkk response in repository : ${e.response}');
+        final data = SubmitDetailedUserProfile.fromJson(e.response!.data);
+        return DataSuccess(data);
+      }
       return DataFailed(e);
     }
   }

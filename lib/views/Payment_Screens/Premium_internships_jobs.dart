@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:job_portal/views/Recruiter_Screens/Recruiter_pipeline_candidates.dart';
-import 'package:job_portal/views/Recruiter_Screens/Recruiter_total_job_posts.dart';
+import 'package:job_portal/views/recruiter_signup/presentation/views/Recruiter_pipeline_candidates.dart';
+import 'package:job_portal/views/recruiter_signup/presentation/views/Recruiter_total_job_posts.dart';
 import 'package:job_portal/widgets/widgets.dart';
 
 import '../../ui_helper/ui_helper.dart';

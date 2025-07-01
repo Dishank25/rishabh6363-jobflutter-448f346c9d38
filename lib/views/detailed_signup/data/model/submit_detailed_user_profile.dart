@@ -1,16 +1,18 @@
 class SubmitDetailedUserProfile {
   final String message;
-  final UserDetail userDetail;
+  final UserDetail? userDetail;
 
   SubmitDetailedUserProfile({
     required this.message,
-    required this.userDetail,
+    this.userDetail,
   });
 
   factory SubmitDetailedUserProfile.fromJson(Map<String, dynamic> json) {
     return SubmitDetailedUserProfile(
       message: json['message'] ?? '',
-      userDetail: UserDetail.fromJson(json['userDetail']),
+      userDetail: json.containsKey('userDetail') && json['userDetail'] != null
+          ? UserDetail.fromJson(json['userDetail'])
+          : null,
     );
   }
 }

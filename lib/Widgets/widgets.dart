@@ -1,8 +1,10 @@
 import 'dart:developer' as developer show log;
+import 'dart:math' as Math;
 import 'dart:ui';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:job_portal/utils/constants/image_string.dart';
 import '../UI_Helper/UI_Helper.dart';
 
 /// CUSTOMIZED APPBAR
@@ -64,13 +66,16 @@ Widget signInHeader({required VoidCallback onTap}) {
                 style: mTextStyle14(mColor: Colors.white),
               ),
               InkWell(
-                  onTap: onTap,
-                  child: const Text(" Sign Up",
-                      style: TextStyle(
-                        color: AppColors.mainRedColor,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      )))
+                onTap: onTap,
+                child: const Text(
+                  " Sign Up",
+                  style: TextStyle(
+                    color: AppColors.mainRedColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
             ],
           )
         ],
@@ -403,14 +408,24 @@ Widget mSpacer17() {
 /// PREFERENCE CONTAINER
 Widget preferenceContainer({
   required String cName,
+  String? fileName,
   IconData? cIcon,
   required VoidCallback onTap,
   required TextEditingController courseCollegeController,
   Color? bgColor,
   List<String>? subSkills,
   List<String>? selectedSubSkills,
+  final String? Function(String?)? validator,
   void Function(String skill)? onSkillTap,
+  void Function()? onUploadCertificateTap,
+  void Function()? onCrossTap,
 }) {
+  int fileNameLength = 0;
+  if (fileName != null) {
+    fileNameLength = Math.min(fileName!.length, 15);
+  }
+  // final certiColor = Color.fromARGB(255, 205, 207, 216);
+
   return InkWell(
     onTap: onTap,
     child: Container(
@@ -428,20 +443,61 @@ Widget preferenceContainer({
           Row(
             children: [
               courseName(
-                name: cName,
-                bgColor: const Color(0xff1961F3),
-                mIcon: cIcon,
-              ),
+                  name: cName,
+                  bgColor: const Color(0xff1961F3),
+                  // mIcon: cIcon,
+                  icon: Icon(
+                    Icons.close,
+                    color: Colors.white,
+                    size: 18,
+                  ),
+                  onCrossTap: onCrossTap),
               const Spacer(),
-              courseName(name: "Upload Certificate"),
-              const SizedBox(width: 5),
-              Padding(
-                padding: const EdgeInsets.only(right: 5.0),
-                child: InkWell(
-                  onTap: () {},
-                  child: SvgPicture.asset("assets/Icons/doubt_icon.svg"),
-                ),
-              )
+              fileName == null
+                  ? courseName(
+                      name: "Upload Certificate", onTap: onUploadCertificateTap)
+                  : SizedBox(),
+              // image seleted
+              fileName != null
+                  ? InkWell(
+                      onTap: onUploadCertificateTap,
+                      child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Color.fromARGB(255, 205, 207, 216)),
+                              borderRadius: BorderRadius.circular(12)),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
+                            child: Row(
+                              children: [
+                                SvgPicture.asset(
+                                  ImageString.certificate,
+                                  color: Color.fromARGB(255, 108, 114, 120),
+                                ),
+                                SizedBox(
+                                  width: 7,
+                                ),
+                                // const Icon(Icons.image),
+                                Text(
+                                  fileName.substring(0, fileNameLength),
+                                  style: TextStyle(
+                                    color: Color.fromARGB(255, 108, 114, 120),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
+                    )
+                  : const SizedBox(),
+              // const SizedBox(width: 5),
+              // Padding(
+              //   padding: const EdgeInsets.only(right: 5.0),
+              //   child: InkWell(
+              //     onTap: () {},
+              //     child: SvgPicture.asset("assets/Icons/doubt_icon.svg"),
+              //   ),
+              // )
             ],
           ),
           const SizedBox(height: 7),
@@ -451,6 +507,7 @@ Widget preferenceContainer({
             controller: courseCollegeController,
             hintText: "College/Company Name",
             fillColor: Colors.white,
+            validator: validator,
           ),
           const SizedBox(height: 8),
           Text("Related skills you might know", style: mTextStyle12()),
@@ -501,9 +558,11 @@ Widget preferenceContainer({
 Widget courseName({
   required String name,
   IconData? mIcon,
+  Icon? icon,
   Color? bgColor,
   Color? textColor,
   VoidCallback? onTap,
+  VoidCallback? onCrossTap,
 }) {
   final Color background = bgColor ?? Colors.grey[300]!; // Default grey
   final bool isDefaultGrey = background == Colors.grey[300];
@@ -534,6 +593,12 @@ Widget courseName({
               color: finalTextColor,
             ),
           ],
+          icon != null
+              ? InkWell(
+                  onTap: onCrossTap,
+                  child: icon,
+                )
+              : const SizedBox()
         ],
       ),
     ),

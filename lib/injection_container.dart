@@ -13,6 +13,11 @@ import 'package:job_portal/views/login/data/repository/login_repository_impl.dar
 import 'package:job_portal/views/login/domain/repository/login_repository.dart';
 import 'package:job_portal/views/login/domain/usecases/login_usecase.dart';
 import 'package:job_portal/views/login/presentation/bloc/remote_login_bloc.dart';
+import 'package:job_portal/views/recruiter_signup/data/data_source/recruiter_signup_api_service.dart';
+import 'package:job_portal/views/recruiter_signup/data/repository/recruiter_signup_repository_impl.dart';
+import 'package:job_portal/views/recruiter_signup/domain/repository/recruiter_signup_repository.dart';
+import 'package:job_portal/views/recruiter_signup/domain/usecases/recruiter_signup_usecase.dart';
+import 'package:job_portal/views/recruiter_signup/presentation/bloc/recruiter_signup_bloc.dart';
 import 'package:job_portal/views/signup/data/data_source/signup_api_service.dart';
 import 'package:job_portal/views/detailed_signup/data/repository/detailed_signup_repository_impl.dart';
 import 'package:job_portal/views/signup/data/repository/signup_repository_impl.dart';
@@ -43,6 +48,8 @@ Future<void> initializeDependencies() async {
       LoginApiService(sl<DioClient>().instance));
   sl.registerSingleton<DetailedApiService>(
       DetailedApiService(sl<DioClient>().instance));
+  sl.registerSingleton<RecruiterSignupApiService>(
+      RecruiterSignupApiService(sl<DioClient>().instance));
 
   // Blocs
   sl.registerFactory<RemoteSignupBloc>(() => RemoteSignupBloc(
@@ -52,6 +59,7 @@ Future<void> initializeDependencies() async {
   sl.registerFactory<RemoteLoginBloc>(() => RemoteLoginBloc(sl()));
   sl.registerFactory<DetailedSignupBloc>(() => DetailedSignupBloc(sl()));
   sl.registerFactory<SkillBloc>(() => SkillBloc(sl()));
+  sl.registerFactory<RecruiterSignupBloc>(() => RecruiterSignupBloc(sl()));
 
   // Use Cases
   sl.registerLazySingleton<SignupUsecase>(() => SignupUsecase(sl()));
@@ -59,6 +67,8 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<DetailedSignupUsecase>(
       () => DetailedSignupUsecase(sl()));
   sl.registerLazySingleton<SkillUsecase>(() => SkillUsecase(sl()));
+  sl.registerLazySingleton<RecruiterSignupUsecase>(
+      () => RecruiterSignupUsecase(sl()));
 
   // Repository
   sl.registerLazySingleton<SignupRepository>(() => SignupRepositoryImpl(sl()));
@@ -66,4 +76,6 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<DetailedSignupRepository>(
       () => DetailedSignupRepositoryImpl(sl()));
   sl.registerLazySingleton<SkillRepository>(() => SkillRepositoryImpl(sl()));
+  sl.registerLazySingleton<RecruiterSignupRepository>(
+      () => RecruiterSignupRepositoryImpl(sl()));
 }

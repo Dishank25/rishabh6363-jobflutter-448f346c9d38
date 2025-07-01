@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:job_portal/utils/resourses/data_state.dart';
 import 'package:job_portal/views/detailed_signup/data/data_source/detailed_api_service.dart';
 import 'package:job_portal/views/detailed_signup/data/model/domian_all_response.dart';
+import 'package:job_portal/views/detailed_signup/data/model/skill_submission_response.dart';
 import 'package:job_portal/views/detailed_signup/data/model/subskill_response.dart';
 import 'package:job_portal/views/detailed_signup/domain/repository/skill_repository.dart';
 
@@ -34,6 +35,25 @@ class SkillRepositoryImpl extends SkillRepository {
   Future<DataState<SubSkillResponse>> getSubSkills(String domain) async {
     try {
       final response = await apiService.getSubSkills(domain);
+      if (response.response.statusCode == HttpStatus.ok) {
+        return DataSuccess(response.data);
+      } else {
+        return DataFailed(DioException(
+            requestOptions: response.response.requestOptions,
+            type: DioExceptionType.badResponse,
+            error: response.response.statusMessage,
+            response: response.response));
+      }
+    } on DioException catch (e) {
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<SkillSubmitionResponse>> submitSkillsAndCertificates(
+      FormData data) async {
+    try {
+      final response = await apiService.submitSkillsAndCertificates(data);
       if (response.response.statusCode == HttpStatus.ok) {
         return DataSuccess(response.data);
       } else {

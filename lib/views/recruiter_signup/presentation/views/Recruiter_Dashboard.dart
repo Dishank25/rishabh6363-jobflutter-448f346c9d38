@@ -2,16 +2,16 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:job_portal/views/Recruiter_Screens/Recruiter_Analytics_Reports.dart';
-import 'package:job_portal/views/Recruiter_Screens/Recruiter_Setting_Panel.dart';
-import 'package:job_portal/views/Recruiter_Screens/Recruiter_Upcoming_Interviews.dart';
-import 'package:job_portal/views/Recruiter_Screens/Recruiter_pending_tasks.dart';
-import 'package:job_portal/views/Recruiter_Screens/Recruiter_pipeline_candidates.dart';
+import 'package:job_portal/views/recruiter_signup/presentation/views/Recruiter_Analytics_Reports.dart';
+import 'package:job_portal/views/recruiter_signup/presentation/views/Recruiter_Setting_Panel.dart';
+import 'package:job_portal/views/recruiter_signup/presentation/views/Recruiter_Upcoming_Interviews.dart';
+import 'package:job_portal/views/recruiter_signup/presentation/views/Recruiter_pending_tasks.dart';
+import 'package:job_portal/views/recruiter_signup/presentation/views/Recruiter_pipeline_candidates.dart';
 import 'package:job_portal/views/User_Profile_Screens/User_messages_screen.dart';
 
-import '../../ui_helper/ui_helper.dart';
-import '../../widgets/widgets.dart';
-import '../User_Profile_Screens/User_Notifications_Screen.dart';
+import '../../../../ui_helper/ui_helper.dart';
+import '../../../../widgets/widgets.dart';
+import '../../../User_Profile_Screens/User_Notifications_Screen.dart';
 import 'Recruiter_total_job_posts.dart';
 
 class RecruiterDashboard extends StatefulWidget {

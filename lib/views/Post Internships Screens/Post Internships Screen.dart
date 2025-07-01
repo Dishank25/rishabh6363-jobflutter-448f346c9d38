@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:job_portal/views/Bottom_Nav_Bar/Recruiter_Bottom_Nav_Bar.dart';
-import 'package:job_portal/views/Recruiter_Screens/Recruiter_Dashboard.dart';
+import 'package:job_portal/views/recruiter_signup/presentation/views/Recruiter_Dashboard.dart';
 import 'package:job_portal/ui_helper/ui_helper.dart';
 import 'package:job_portal/widgets/widgets.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';

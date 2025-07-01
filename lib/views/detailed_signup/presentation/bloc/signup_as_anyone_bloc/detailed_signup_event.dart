@@ -32,10 +32,11 @@ class DetailedSignupGetCollegeDetails extends DetailedSignupEvent {
 }
 
 class DetailedSingupSubmitUserDetails extends DetailedSignupEvent {
-  const DetailedSingupSubmitUserDetails();
+  final Map<String, dynamic> params;
+  const DetailedSingupSubmitUserDetails(this.params);
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [params];
 }
 
 // class DetailedSignupGetColleges extends DetailedSignupEvent {

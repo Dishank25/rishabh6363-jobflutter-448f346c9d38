@@ -48,7 +48,9 @@ class _SignInPage_1State extends State<LogInPage1> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CreateAccount()),
+                  MaterialPageRoute(
+                    builder: (context) => CreateAccount(),
+                  ),
                 );
               },
             ),
@@ -169,14 +171,16 @@ class _SignInPage_1State extends State<LogInPage1> {
                         onTap: () {}),
                     mSpacer(),
                     belowBars(
-                        text: "Login with OTP",
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      LoginWithEmailOtpScreen()));
-                        }),
+                      text: "Login with OTP",
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginWithEmailOtpScreen(),
+                          ),
+                        );
+                      },
+                    ),
                     SizedBox(height: 20),
                   ],
                 ),
