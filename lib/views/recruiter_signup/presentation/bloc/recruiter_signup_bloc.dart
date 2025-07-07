@@ -1,3 +1,5 @@
+import 'dart:developer' as developer show log;
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:job_portal/views/recruiter_signup/domain/usecases/recruiter_signup_usecase.dart';
 import 'package:job_portal/views/recruiter_signup/presentation/bloc/recruiter_signup_state.dart';
@@ -17,8 +19,11 @@ class RecruiterSignupBloc
       emit(const RecruiterSignupLoading());
       final response =
           await _recruiterSignupUsecase(params: event.registerationMap);
+      developer.log(
+          'Check recruiter signup in bloc before emiting : ${response.data?.message}');
       emit(RecruiterSignupLoaded(response.data!));
     } catch (e) {
+      developer.log('Error encounter on email already exist in rec bloc : $e');
       emit(const RecruiterSignupError());
     }
   }

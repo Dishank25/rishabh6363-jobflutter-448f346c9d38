@@ -9,7 +9,7 @@ import 'package:job_portal/views/detailed_signup/presentation/bloc/signup_as_any
 import 'package:job_portal/views/detailed_signup/presentation/bloc/signup_as_anyone_bloc/detailed_signup_state.dart';
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../../widgets/widgets.dart';
-import '../../../Job_Related_Screens/Job_Search_Screen.dart';
+import '../../../job_related/presentation/views/job_search_view.dart';
 
 class SignupPageYourPreferences extends StatefulWidget {
   Map<String, dynamic> params;
@@ -245,17 +245,18 @@ class _SignupPageYourPreferencesState extends State<SignupPageYourPreferences> {
                 },
                 child: Center(
                   child: SizedBox(
-                    width: 139,
+                    width: 160,
                     child: nextButton(
                       title: "Find opportunities",
                       onTap: () async {
-                        await onPressedFindOpportunities();
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => const Student_Bottom_Nav_bar(),
-                        //   ),
-                        // );
+                        // await onPressedFindOpportunities();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const Student_Bottom_Nav_bar(),
+                          ),
+                        );
                       },
                     ),
                   ),

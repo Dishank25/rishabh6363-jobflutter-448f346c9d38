@@ -7,17 +7,20 @@ import 'package:job_portal/utils/network/dio_client.dart';
 import 'package:job_portal/utils/storage/shared_preference.dart';
 import 'package:job_portal/views/detailed_signup/presentation/bloc/signup_as_anyone_bloc/detailed_signup_bloc.dart';
 import 'package:job_portal/views/detailed_signup/presentation/bloc/skill_bloc/skill_bloc.dart';
+import 'package:job_portal/views/job_related/presentation/bloc/job_bloc/job_bloc.dart';
+import 'package:job_portal/views/job_related/presentation/bloc/job_details_bloc/job_details_bloc.dart';
 import 'package:job_portal/views/login/presentation/bloc/remote_login_bloc.dart';
+import 'package:job_portal/views/post_opportunities/presentation/bloc/opportunity_bloc.dart';
 import 'package:job_portal/views/recruiter_signup/presentation/bloc/recruiter_signup_bloc.dart';
 import 'package:job_portal/views/signup/presentation/bloc/remote_signup_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'views/Common_Screens/Forgot_password_Screen.dart';
-import 'views/Job_Related_Screens/Feed_Screen_2.dart';
+import 'views/job_related/presentation/views/Feed_Screen_2.dart';
 import 'views/login/presentation/views/login_page1_view.dart';
 import 'views/Payment_Screens/Default_payment_gateway.dart';
 import 'views/Payment_Screens/Payment_type_Screen.dart';
 import 'views/Payment_Screens/Premium_internships_jobs.dart';
-import 'views/Post Internships Screens/Post Internships Screen.dart';
+import 'views/post_opportunities/presentation/views/post_opportunity_screen.dart';
 import 'views/Recruiter_Profile_Screens/Recruiter_Create_Quick_Ticket.dart';
 import 'views/Recruiter_Profile_Screens/Recruiter_GST_Auth_Screen.dart';
 import 'views/Payment_Screens/Payment_Screen.dart';
@@ -51,7 +54,7 @@ import 'user_authentication_and_approval_screens/User_Skills_Approval_Screen.dar
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDependencies();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -65,6 +68,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => sl<DetailedSignupBloc>()),
         BlocProvider(create: (_) => sl<SkillBloc>()),
         BlocProvider(create: (_) => sl<RecruiterSignupBloc>()),
+        BlocProvider(create: (_) => sl<OpportunityBloc>()),
+        BlocProvider(create: (_) => sl<JobBloc>()),
+        BlocProvider(create: (_) => sl<JobDetailsBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

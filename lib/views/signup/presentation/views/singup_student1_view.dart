@@ -195,6 +195,9 @@ class _SignUpStudent1State extends State<SignUpStudent1> {
                           .read<RemoteSignupBloc>()
                           .add(RemoteSignupData(body));
                     }
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => SignUpStudent_2(
+                            Email: emailController.text.trim())));
                   },
                 ),
               ),

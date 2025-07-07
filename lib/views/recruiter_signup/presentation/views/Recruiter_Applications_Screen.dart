@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:job_portal/views/Job_Related_Screens/Job_details_Screen.dart';
+import 'package:job_portal/views/job_related/presentation/views/job_details_view.dart';
 
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../../widgets/widgets.dart';

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:job_portal/views/AI_Prediction_Screens/AI_Prediction_Screens.dart';
-import 'package:job_portal/views/Job_Related_Screens/Feed_Screen.dart';
-import 'package:job_portal/views/Job_Related_Screens/Job_Search_Screen.dart';
+import 'package:job_portal/views/job_related/presentation/views/Feed_Screen.dart';
+import 'package:job_portal/views/job_related/presentation/views/job_search_view.dart';
 import 'package:job_portal/views/User_Profile_Screens/User_Profile_Screen__1.dart';
 import 'package:job_portal/ui_helper/ui_helper.dart';
 import 'package:job_portal/widgets/widgets.dart';
-import '../Job_Related_Screens/Company_filtered_jobs.dart';
-import '../Job_Related_Screens/Job_details_Screen.dart';
+import '../job_related/presentation/views/Company_filtered_jobs.dart';
+import '../job_related/presentation/views/job_details_view.dart';
 
 class Student_Bottom_Nav_bar extends StatefulWidget {
   const Student_Bottom_Nav_bar({super.key});

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:job_portal/views/Bottom_Nav_Bar/Student_Bottom_Nav_Bar.dart';
-import '../../ui_helper/ui_helper.dart';
-import '../../widgets/widgets.dart';
-import '../User_Profile_Screens/User_messages_screen.dart';
-import 'Job_Search_Screen.dart';
+import '../../../../ui_helper/ui_helper.dart';
+import '../../../../widgets/widgets.dart';
+import '../../../User_Profile_Screens/User_messages_screen.dart';
+import 'job_search_view.dart';
 
 class JobFiltersScreen extends StatefulWidget {
   const JobFiltersScreen({super.key});

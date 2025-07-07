@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:job_portal/utils/constants/urls.dart';
 import 'package:job_portal/views/recruiter_signup/data/models/recruiter_signup_response.dart';
-import 'package:job_portal/views/signup/data/models/signup_user_response.dart';
 import 'package:retrofit/dio.dart';
 import 'package:retrofit/error_logger.dart';
 import 'package:retrofit/http.dart';

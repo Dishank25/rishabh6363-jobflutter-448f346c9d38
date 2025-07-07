@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:job_portal/views/Job_Related_Screens/Job_details_Screen.dart';
+import 'package:job_portal/views/job_related/presentation/views/job_details_view.dart';
 import 'package:job_portal/views/recruiter_signup/presentation/views/Recruiter_Applications_Screen.dart';
 
 import '../../../../ui_helper/ui_helper.dart';

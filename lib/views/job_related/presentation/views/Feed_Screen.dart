@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:job_portal/views/Job_Related_Screens/Feed_Screen_2.dart';
-
-import '../../ui_helper/ui_helper.dart';
-import '../../widgets/widgets.dart';
-import '../User_Profile_Screens/User_messages_screen.dart';
-import 'Job_details_Screen.dart';
+import 'package:job_portal/views/job_related/presentation/views/Feed_Screen_2.dart';
+import '../../../../ui_helper/ui_helper.dart';
+import '../../../../widgets/widgets.dart';
+import '../../../User_Profile_Screens/User_messages_screen.dart';
+import 'job_details_view.dart';
 
 class FeedScreen extends StatefulWidget {
   final bool showFeed2;

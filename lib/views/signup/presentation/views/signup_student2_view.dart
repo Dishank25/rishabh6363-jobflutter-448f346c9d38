@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:job_portal/views/Bottom_Nav_Bar/Student_Bottom_Nav_Bar.dart';
 import 'package:job_portal/views/detailed_signup/data/model/basic_user_data_response.dart';
 import 'package:job_portal/views/detailed_signup/presentation/bloc/signup_as_anyone_bloc/detailed_signup_bloc.dart';
 import 'package:job_portal/views/detailed_signup/presentation/bloc/signup_as_anyone_bloc/detailed_signup_event.dart';
@@ -71,11 +72,13 @@ class SignUpStudent_2 extends StatelessWidget {
                   if (state is DetailedSignupGetBasicUserInfoLoaded) {
                     final data = state.basicUserInfoResponse;
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SignupAsAnyOne(
-                                  basicUserInfoResponse: data,
-                                )));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SignupAsAnyOne(
+                          basicUserInfoResponse: data,
+                        ),
+                      ),
+                    );
                   }
                 },
                 child: commonRedContainer(
@@ -99,6 +102,14 @@ class SignUpStudent_2 extends StatelessWidget {
                     //             phone: 'phone'),
                     //       ),
                     //     ),
+                    //   ),
+                    // );
+
+                    // temp navigation cuz backend is closed.
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const Student_Bottom_Nav_bar(),
                     //   ),
                     // );
                   },

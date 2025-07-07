@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:job_portal/views/Bottom_Nav_Bar/Student_Bottom_Nav_Bar.dart';
-import '../../widgets/widgets.dart';
-import '../User_Profile_Screens/User_messages_screen.dart';
+import '../../../../ui_helper/ui_helper.dart';
+import '../../../../widgets/widgets.dart';
+import '../../../User_Profile_Screens/User_messages_screen.dart';
+import 'job_details_view.dart';
 import 'Job_filters_Screen.dart';
 
-import '../../ui_helper/ui_helper.dart';
-import 'Job_details_Screen.dart';
-
-class JobSearchScreen extends StatefulWidget {
-  final VoidCallback? onCallBackFromJobDetailsPage;
-  JobSearchScreen({this.onCallBackFromJobDetailsPage});
+class CompanyFilteredJobsScreen extends StatefulWidget {
+  VoidCallback? onBack;
+  CompanyFilteredJobsScreen({this.onBack});
 
   @override
-  State<JobSearchScreen> createState() => _JobSearchScreenState();
+  State<CompanyFilteredJobsScreen> createState() => _CompanyFilteredJobsState();
 }
 
-class _JobSearchScreenState extends State<JobSearchScreen> {
-  TextEditingController jSearchController = TextEditingController();
+class _CompanyFilteredJobsState extends State<CompanyFilteredJobsScreen> {
+  TextEditingController jobSearchController = TextEditingController();
 
-  List<Map<String, dynamic>> mList = [
+  List<Map<String, dynamic>> vList = [
     {
       "job_title": "Digital Marketing Executive",
       "company_name": "Uber",
@@ -30,19 +28,17 @@ class _JobSearchScreenState extends State<JobSearchScreen> {
       "salary": "INR 3,00,000",
       "status": "Actively Hiring",
       "posted": "2 weeks ago",
-      "match": "92% match"
     },
     {
-      "job_title": "Web Developer",
-      "company_name": "GitHub",
+      "job_title": "UX Designer",
+      "company_name": "Uber",
       "image":
-          "https://seekvectors.com/files/download/e58196130297806acd58a2bf536ac0bc.jpg",
+          "https://static-00.iconduck.com/assets.00/uber-icon-1024x1024-4icncyyo.png",
       "location": "Remote",
       "experience": "2-4 years",
       "salary": "INR 6,00,000",
       "status": "Actively Hiring",
-      "posted": "1 week ago",
-      "match": "88% match"
+      "posted": "2 week ago",
     },
   ];
 
@@ -50,8 +46,8 @@ class _JobSearchScreenState extends State<JobSearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+          title: const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.0),
             child: Text(
               "LOGO",
               style: TextStyle(
@@ -64,8 +60,12 @@ class _JobSearchScreenState extends State<JobSearchScreen> {
           actions: [
             InkWell(
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MessagesScreen()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MessagesScreen(),
+                  ),
+                );
               },
               child: Padding(
                 padding: const EdgeInsets.only(right: 20.0),
@@ -104,36 +104,27 @@ class _JobSearchScreenState extends State<JobSearchScreen> {
                               SizedBox(
                                 height: 25,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 11.0),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6,
-                                        child: CustomTextField(
-                                          controller: jSearchController,
-                                          hintText: "Search",
-                                          suffixIcon: Icons.search,
-                                          fillColor: Colors.white,
-                                        )),
-                                    SizedBox(
-                                      width: 6,
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        JobFiltersScreen()));
-                                          },
-                                          child: SvgPicture.asset(
-                                              "assets/Icons/settings-sliders 1.svg")),
-                                    )
-                                  ],
-                                ),
+                              Row(
+                                children: [
+                                  SizedBox(
+                                      width: 300,
+                                      child: CustomTextField(
+                                        controller: jobSearchController,
+                                        hintText: "Search",
+                                        suffixIcon: Icons.search,
+                                      )),
+                                  Spacer(),
+                                  InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    JobFiltersScreen()));
+                                      },
+                                      child: SvgPicture.asset(
+                                          "assets/Icons/settings-sliders 1.svg"))
+                                ],
                               ),
                               SizedBox(
                                 height: 30,
@@ -142,20 +133,16 @@ class _JobSearchScreenState extends State<JobSearchScreen> {
                                   child: ListView.builder(
                                 shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),
-                                itemCount: mList.length,
+                                itemCount: vList.length,
                                 itemBuilder: (context, index) {
-                                  final job = mList[index];
+                                  final job = vList[index];
                                   return JobCard(
                                     onTap: () {
-                                      setState(() {
-                                        if (widget
-                                                .onCallBackFromJobDetailsPage !=
-                                            null) {
-                                          widget
-                                              .onCallBackFromJobDetailsPage!();
-                                        }
-                                      });
-                                      //  Navigator.push(context, MaterialPageRoute(builder: (context)=>JobDetailsScreen()));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  JobDetailsScreen()));
                                     },
                                     imageUrl: job['image'],
                                     jobTitle: job['job_title'],
@@ -165,7 +152,6 @@ class _JobSearchScreenState extends State<JobSearchScreen> {
                                     salary: job['salary'],
                                     status: job['status'],
                                     posted: job['posted'],
-                                    match: job['match'],
                                   );
                                 },
                               ))
@@ -183,8 +169,7 @@ class JobCard extends StatelessWidget {
       experience,
       salary,
       status,
-      posted,
-      match;
+      posted;
   VoidCallback onTap;
 
   JobCard({
@@ -196,7 +181,6 @@ class JobCard extends StatelessWidget {
     required this.salary,
     required this.status,
     required this.posted,
-    required this.match,
     required this.onTap,
   });
 
@@ -218,7 +202,7 @@ class JobCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // First Row - Icon + Title + Company + Right Tags
+            /// First Row - Icon + Title + Company + Right Tags
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -247,7 +231,6 @@ class JobCard extends StatelessWidget {
                     SizedBox(height: 6),
                     greyContainer(text: posted, bgColor: Color(0xffEFF0F6)),
                     SizedBox(height: 6),
-                    greyContainer(text: match, bgColor: Color(0xff00B34B)),
                   ],
                 )
               ],

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:job_portal/views/Post%20Internships%20Screens/Post%20Internships%20Screen.dart';
-
+import 'package:job_portal/views/post_opportunities/presentation/views/post_opportunity_screen.dart';
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../../widgets/widgets.dart';
 import '../../../login/presentation/views/login_page1_view.dart';
@@ -11,16 +10,17 @@ class RecruiterVerifyEmailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(""),
-        ),
-        body: Container(
-          width: double.infinity,
-          height: 710,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      appBar: AppBar(
+        title: Text(""),
+      ),
+      body: Container(
+        width: double.infinity,
+        height: 710,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               mSpacer(mHeight: 20.0),
               Text(
                 "Verify your email",
@@ -47,15 +47,19 @@ class RecruiterVerifyEmailScreen extends StatelessWidget {
                       fillColor: Colors.white)),
               mSpacer(),
               SizedBox(
-                  width: double.infinity,
-                  child: commonRedContainer(
-                      text: "Verify Email",
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PostInternshipsScreen()));
-                      })),
+                width: double.infinity,
+                child: commonRedContainer(
+                  text: "Verify Email",
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PostInternshipsScreen(),
+                      ),
+                    );
+                  },
+                ),
+              ),
               mSpacer(),
               Center(
                 child: Row(
@@ -107,8 +111,10 @@ class RecruiterVerifyEmailScreen extends StatelessWidget {
                       ))
                 ],
               ),
-            ]),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

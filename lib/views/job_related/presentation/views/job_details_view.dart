@@ -1,10 +1,14 @@
+import 'dart:developer' as developer show log;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:job_portal/views/Bottom_Nav_Bar/Student_Bottom_Nav_Bar.dart';
-import '../../ui_helper/ui_helper.dart';
-import '../../widgets/widgets.dart';
-import 'Job_Search_Screen.dart';
-
+import 'package:job_portal/views/job_related/presentation/bloc/job_details_bloc/job_details_bloc.dart';
+import 'package:job_portal/views/job_related/presentation/bloc/job_details_bloc/job_details_event.dart';
+import 'package:job_portal/views/job_related/presentation/bloc/job_details_bloc/job_details_state.dart';
+import '../../../../ui_helper/ui_helper.dart';
+import '../../../../widgets/widgets.dart';
+import 'job_search_view.dart';
 import 'Company_filtered_jobs.dart';
 
 class JobDetailsScreen extends StatefulWidget {
@@ -17,6 +21,15 @@ class JobDetailsScreen extends StatefulWidget {
 }
 
 class _JobDetailsScreenState extends State<JobDetailsScreen> {
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+
+    final map = {'jobId': '2'};
+    context.read<JobDetailsBloc>().add(LoadJobDetail(map));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,13 +46,24 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  BlocListener<JobDetailsBloc, JobDetailsState>(
+                    listener: (context, state) {
+                      if (state is JobDetailsLoaded) {
+                        final data = state.jobDetailsEntity;
+                        developer
+                            .log("Details of job data : ${data.jobProfile}");
+                      }
+                    },
+                    child: SizedBox(),
+                  ),
                   Container(
                     height: 93,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border:
-                            Border.all(color: Color(0xffEDF1F3), width: 1.0)),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                          color: const Color(0xffEDF1F3), width: 1.0),
+                    ),
                     child: Row(
                       children: [
                         Padding(
@@ -164,20 +188,31 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
   }
 }
 
-Widget greyContainer({required String text, required Color bgColor}) {
-  final Color textColor =
-      bgColor == Color(0xffEFF0F6) ? Color(0xff6C7278) : Colors.white;
+Widget greyContainer(
+    {required String text,
+    required Color bgColor,
+    Color? txtClr,
+    bool? border}) {
   return Container(
     width: 100,
-    decoration:
-        BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(26)),
-    child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 6.0),
-      child: Center(
-          child: Text(
-        text,
-        style: TextStyle(fontSize: 12, color: textColor),
-      )),
+    padding: const EdgeInsets.symmetric(horizontal: 6.0),
+    alignment: Alignment.center,
+    decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(90),
+        border: border != null
+            ? Border.all(color: const Color.fromARGB(255, 225, 225, 225))
+            : null),
+    child: Text(
+      text,
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(
+        fontSize: 12,
+        color: txtClr ??
+            (bgColor == const Color(0xffEFF0F6)
+                ? const Color(0xff6C7278)
+                : Colors.white),
+      ),
     ),
   );
 }

@@ -561,6 +561,7 @@ Widget courseName({
   Icon? icon,
   Color? bgColor,
   Color? textColor,
+  Color? borderColor,
   VoidCallback? onTap,
   VoidCallback? onCrossTap,
 }) {
@@ -576,7 +577,7 @@ Widget courseName({
       decoration: BoxDecoration(
         color: background,
         borderRadius: BorderRadius.circular(26),
-        border: Border.all(color: const Color(0xffEFF0F6)),
+        border: Border.all(color: borderColor ?? Color(0xffEFF0F6)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

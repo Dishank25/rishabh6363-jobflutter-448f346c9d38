@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:job_portal/utils/resourses/data_state.dart';
 import 'package:job_portal/views/recruiter_signup/data/data_source/recruiter_signup_api_service.dart';
+import 'package:job_portal/views/recruiter_signup/data/models/recruiter_signup_response.dart';
 import 'package:job_portal/views/recruiter_signup/domain/entities/sigup_user_entity.dart';
 import 'package:job_portal/views/recruiter_signup/domain/repository/recruiter_signup_repository.dart';
-import 'package:job_portal/views/signup/data/models/signup_user_response.dart';
 
 class RecruiterSignupRepositoryImpl extends RecruiterSignupRepository {
   final RecruiterSignupApiService _apiService;
@@ -37,8 +37,9 @@ class RecruiterSignupRepositoryImpl extends RecruiterSignupRepository {
       // developer.log('....checkk  : ${error}');
       if (error == DioExceptionType.badResponse) {
         developer.log('...checkk response in repository : ${e.response}');
-        // final data = SignUpUserResponse.fromJson(e.response!.data);
-        return DataSuccess(e.response!.data);
+        final responseData = SignUpRecruiterResponse.fromJson(e.response!.data);
+        // return DataSuccess(e.response!.data);
+        return DataSuccess(responseData);
       }
       return DataFailed(e);
     }

@@ -182,22 +182,31 @@ class RecruiterSignupPage extends StatelessWidget {
                         );
                       } else if (data.message == "Email already exists") {
                         showSnackbar('Email already exists', context);
+                      } else {
+                        showSnackbar(
+                            'Unknown error while recruiter signup.', context);
                       }
                     }
                   },
                   child: commonRedContainer(
                     text: "Register",
                     onTap: () {
-                      if (_formKey.currentState!.validate()) {
-                        final registerationMap = createSignupParams();
-                        developer
-                            .log('Recruiter params log : $registerationMap');
-                        context
-                            .read<RecruiterSignupBloc>()
-                            .add(RecruiterSignupData(registerationMap));
-                      } else {
-                        showSnackbar('Please fill all the details.', context);
-                      }
+                      // if (_formKey.currentState!.validate()) {
+                      //   final registerationMap = createSignupParams();
+                      //   developer
+                      //       .log('Recruiter params log : $registerationMap');
+                      //   context
+                      //       .read<RecruiterSignupBloc>()
+                      //       .add(RecruiterSignupData(registerationMap));
+                      // } else {
+                      //   showSnackbar('Please fill all the details.', context);
+                      // }
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RecruiterVerifyEmailScreen(),
+                        ),
+                      );
                     },
                   ),
                 ),

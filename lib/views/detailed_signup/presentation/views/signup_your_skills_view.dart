@@ -173,7 +173,7 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
     final bloc = context.read<SkillBloc>();
     bloc.add(const LoadDomains());
 
-    context.read<SkillBloc>().add(LoadSubSkills(tempSelectedDomains.first));
+    // context.read<SkillBloc>().add(LoadSubSkills(tempSelectedDomains.first));
 
     super.didChangeDependencies();
   }
@@ -240,7 +240,6 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Areas of Interest", style: mTextStyle14()),
-
                   BlocListener<SkillBloc, SkillState>(
                     listener: (context, state) {
                       if (state is SkillStateDomainLoaded) {
@@ -487,34 +486,35 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
                             context
                                 .read<SkillBloc>()
                                 .add(SubmitSkills(skillData));
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => SignupPageYourPreferences(
-                            //       params: widget.params,
-                            //       /* firstName:
-                            //       surName:
-                            //       gender:
-                            //       DOB:
-                            //       phoneNumber:
-                            //       email:
-                            //   jobPreferenceLocation:
-                            //   currentLocation:
-                            //    userCategory:
-                            //    totalWorkExp:
-                            //    currentJobRole:
-                            //   currentCompany:
-                            //    jobStartYear:
-                            //    jobEndYear:
-                            //  studentClass:
-                            //  course:
-                            //  CollegeName:
-                            //   Specialization:
-                            //       courseStartYear:
-                            //        courseEndYear:*/
-                            //     ),
-                            //   ),
-                            // );
+                            _prefs.clear(PreferencesManager.SKILL_PARAMS);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SignupPageYourPreferences(
+                                  params: widget.params,
+                                  /* firstName:
+                                  surName:
+                                  gender:
+                                  DOB:
+                                  phoneNumber:
+                                  email:
+                              jobPreferenceLocation:
+                              currentLocation:
+                               userCategory:
+                               totalWorkExp:
+                               currentJobRole:
+                              currentCompany:
+                               jobStartYear:
+                               jobEndYear:
+                             studentClass:
+                             course:
+                             CollegeName:
+                              Specialization:
+                                  courseStartYear:
+                                   courseEndYear:*/
+                                ),
+                              ),
+                            );
                           } else {
                             showSnackbar(
                                 'Please enter all the details', context);

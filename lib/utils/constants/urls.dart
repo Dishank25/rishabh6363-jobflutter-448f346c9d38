@@ -16,4 +16,8 @@ class Urls {
   static const getJobRoles = "job-roles";
   static const submitDetailedUserProfile = "user-details/detail";
   static const submitSkillsAndCertificates = "upload-skill";
+  static const getInternshipFormMetadata = "internship-filters";
+  static const createJobPost = "jobpost/create";
+  static const opportunities = "opportunities";
+  static const jobDetails = "jobdetails/";
 }

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../../widgets/widgets.dart';
-import '../../../Job_Related_Screens/Job_Search_Screen.dart';
+import '../../../job_related/presentation/views/job_search_view.dart';
 import '../../../signup/presentation/views/create_account.dart';
 
 class EnterEmailOTpScreen extends StatefulWidget {

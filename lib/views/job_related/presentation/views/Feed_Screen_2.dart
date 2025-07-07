@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../User_Profile_Screens/User_messages_screen.dart';
+import '../../../User_Profile_Screens/User_messages_screen.dart';
 import 'Feed_Screen.dart';
-import 'Job_details_Screen.dart';
-
-import '../../ui_helper/ui_helper.dart';
-import '../../widgets/widgets.dart';
+import 'job_details_view.dart';
+import '../../../../ui_helper/ui_helper.dart';
+import '../../../../widgets/widgets.dart';
 
 class FeedScreen2 extends StatefulWidget {
   final VoidCallback? onBack;
