@@ -139,10 +139,14 @@ class _CompanyFilteredJobsState extends State<CompanyFilteredJobsScreen> {
                                   return JobCard(
                                     onTap: () {
                                       Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  JobDetailsScreen()));
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              JobDetailsScreen(
+                                                  // jobId: 0,
+                                                  ),
+                                        ),
+                                      );
                                     },
                                     imageUrl: job['image'],
                                     jobTitle: job['job_title'],

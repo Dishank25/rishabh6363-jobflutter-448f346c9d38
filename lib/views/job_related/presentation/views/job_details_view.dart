@@ -1,190 +1,270 @@
 import 'dart:developer' as developer show log;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:job_portal/utils/constants/constants.dart';
+import 'package:job_portal/utils/constants/image_string.dart';
 import 'package:job_portal/views/Bottom_Nav_Bar/Student_Bottom_Nav_Bar.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_details_bloc/job_details_bloc.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_details_bloc/job_details_event.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_details_bloc/job_details_state.dart';
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../../widgets/widgets.dart';
-import 'job_search_view.dart';
-import 'Company_filtered_jobs.dart';
 
 class JobDetailsScreen extends StatefulWidget {
   final VoidCallback? onCallBack;
   final VoidCallback? onShowCompanyJobs;
-  JobDetailsScreen({this.onCallBack, this.onShowCompanyJobs});
+  final int? jobId;
+  const JobDetailsScreen(
+      {super.key, this.onCallBack, this.onShowCompanyJobs, this.jobId});
 
   @override
   State<JobDetailsScreen> createState() => _JobDetailsScreenState();
 }
 
 class _JobDetailsScreenState extends State<JobDetailsScreen> {
+  String messageWhileLoadingDetails = '';
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
 
-    final map = {'jobId': '2'};
+    final map = {'jobId': widget.jobId.toString()};
     context.read<JobDetailsBloc>().add(LoadJobDetail(map));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      /// APP BAR
+      appBar: buildCustomAppBar(titleText: "LOGO"),
 
-        /// APP BAR
-        appBar: buildCustomAppBar(titleText: "LOGO"),
+      /// BODY CONTENT
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 5.0),
+          child: BlocBuilder<JobDetailsBloc, JobDetailsState>(
+            builder: (context, state) {
+              if (state is JobDetailsLoaded) {
+                final data = state.jobDetailsEntity;
+                // developer.log("Details of job data : ${data.jobProfile}");
 
-        /// BODY CONTENT
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 5.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  BlocListener<JobDetailsBloc, JobDetailsState>(
-                    listener: (context, state) {
-                      if (state is JobDetailsLoaded) {
-                        final data = state.jobDetailsEntity;
-                        developer
-                            .log("Details of job data : ${data.jobProfile}");
-                      }
-                    },
-                    child: SizedBox(),
-                  ),
-                  Container(
-                    height: 93,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                          color: const Color(0xffEDF1F3), width: 1.0),
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 93,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                            color: const Color(0xffEDF1F3), width: 1.0),
+                      ),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(4),
+                              child: Container(
+                                height: 60,
+                                width:
+                                    60, // make this square to avoid oval distortion
+                                color: Colors.grey[
+                                    200], // optional: placeholder background
+                                child: Image.network(
+                                  ImageString.dummyImageUrl,
+                                  fit: BoxFit
+                                      .cover, // Ensures the image fills the box correctly
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          // SizedBox(width: 10,),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 12.0, left: 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  // "Digital Marketing Executive",
+                                  data.jobProfile,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                Text(
+                                  data.companyName,
+                                  style: mTextStyle14(),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  children: [
+                                    greyContainer(
+                                        text: 'Actively Hiring',
+                                        bgColor: AppColors.mainRedColor),
+                                    SizedBox(
+                                      width: 18,
+                                    ),
+                                    greyContainer(
+                                        text: "2 weeks ago",
+                                        bgColor: Color(0xffEFF0F6))
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    child: Row(
+                    const SizedBox(
+                      height: 14,
+                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //   children: [
+                    //     jobRelatedOptions(
+                    //         title: "INR ${data.stipendMin}-${data.stipendMax}"),
+                    //     jobRelatedOptions(title: data.candidatePreferences),
+                    //     jobRelatedOptions(
+                    //         title: data.cityChoice ?? 'City Choice'),
+                    //     jobRelatedOptions(title: "45 Applicants")
+                    //   ],
+                    // ),
+                    Wrap(
+                      spacing: 8.0,
+                      runSpacing: 8.0,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Container(
-                            height: 60,
-                            width: 54,
-                            child: Image.asset("assets/Images/uber.png"),
-                          ),
-                        ),
-                        // SizedBox(width: 10,),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 12.0, left: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Digital Marketing Executive",
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w600),
-                              ),
-                              Text(
-                                "Uber",
-                                style: mTextStyle14(),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  greyContainer(
-                                      text: 'Actively Hiring',
-                                      bgColor: AppColors.mainRedColor),
-                                  SizedBox(
-                                    width: 18,
-                                  ),
-                                  greyContainer(
-                                      text: "2 weeks ago",
-                                      bgColor: Color(0xffEFF0F6))
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
+                        jobRelatedOptions(
+                            // title: "INR ${data.stipendMin}-${data.stipendMax}"
+                            title: "INR ${data.salary}"),
+                        jobRelatedOptions(
+                            title: data.candidatePreferences ??
+                                'Candidate Preference'),
+                        jobRelatedOptions(
+                            title: data.cityChoice ?? 'City Choice'),
+                        jobRelatedOptions(title: "45 Applicants"),
                       ],
                     ),
-                  ),
-                  SizedBox(
-                    height: 14,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      "Your Role",
+                      style: mTextStyle14(mFontWeight: FontWeight.w600),
+                    ),
+                    Text("• ${data.jobDescription}"),
+                    SizedBox(
+                      height: 11,
+                    ),
+                    Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("About ${data.companyName}",
+                              style:
+                                  mTextStyle14(mFontWeight: FontWeight.w600)),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          InkWell(
+                              onTap: () {
+                                if (widget.onShowCompanyJobs != null) {
+                                  widget.onShowCompanyJobs!();
+                                }
+                                ;
+                              },
+                              child: Text("More Job openings at Uber",
+                                  style: mTextStyle14().copyWith(
+                                    color: AppColors.blueTextColor,
+                                  ))),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Text(data.aboutCompany),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    // InkWell(
+                    //     onTap: () {
+                    //       showSnackbar("Apply tapped", context);
+                    //       // Navigator.pushReplacement(
+                    //       //     context,
+                    //       //     MaterialPageRoute(
+                    //       //         builder: (context) =>
+                    //       //             Student_Bottom_Nav_bar()));
+                    //     },
+                    //     child: commonRedContainer(text: "Apply")),
+                    SizedBox(
+                      height: 20,
+                    )
+                  ],
+                );
+              } else if (state is JobDetailsLoading) {
+                messageWhileLoadingDetails =
+                    'Hold tight we are loading details for you...';
+
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      jobRelatedOptions(title: "INR 3,00,000"),
-                      jobRelatedOptions(title: "1-2 years"),
-                      jobRelatedOptions(title: "Mumbai"),
-                      jobRelatedOptions(title: "45 Applicants")
+                      CircularProgressIndicator(
+                        color: appPrimaryColor,
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(messageWhileLoadingDetails),
                     ],
                   ),
-                  SizedBox(
-                    height: 15,
+                );
+              } else if (state is JobDetailsError) {
+                messageWhileLoadingDetails =
+                    'Oops. There was some error loading details.';
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(
+                        color: appPrimaryColor,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text(messageWhileLoadingDetails),
+                    ],
                   ),
-                  Text(
-                    "Your Role",
-                    style: mTextStyle14(mFontWeight: FontWeight.w600),
-                  ),
-                  Text(
-                      "* Create and implement inclusive digital marketing strategies by utilising different digital mediums and setting measurable KPIs.\n* Collaborate with other teams (like content, sales, and customer service) to ensure cohesive and effective marketing campaigns.Manage digital campaigns, monitor performance reports, analyse data, and make data-driven recommendations.\n* Optimise website performance, including organic traffic, bounce rate, and conversion rates to improve user experience and drive lead generation.\n* Conduct market research and competitive analysis to identify industry trends and new growth opportunities. "),
-                  SizedBox(
-                    height: 11,
-                  ),
-                  Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("About Uber",
-                            style: mTextStyle14(mFontWeight: FontWeight.w600)),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        InkWell(
-                            onTap: () {
-                              if (widget.onShowCompanyJobs != null) {
-                                widget.onShowCompanyJobs!();
-                              }
-                              ;
-                            },
-                            child: Text("More Job openings at Uber",
-                                style: mTextStyle14().copyWith(
-                                  color: AppColors.blueTextColor,
-                                ))),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                            "At Uber we’re reimagining the way the world moves for the better. That means being bold in our decisions and building for something bigger. For us, all of that starts with helping people go anywhere and get anything. It’s what we know and what we do best.That’s why people want to join us: because our solutions are implemented in real time and on thousands of city streets, they are a boon and a career to people all over the globe. The scope of this work means Uber will challenge you - put you up against complex problems that require ambitious solutions. We need bold people who can build with heart, who will chase solutions with fearless optimism. We are Uber. Are you?"),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  InkWell(
-                      onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("Applied Successfully")));
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    Student_Bottom_Nav_bar()));
-                      },
-                      child: commonRedContainer(text: "Apply")),
-                  SizedBox(
-                    height: 20,
-                  )
-                ],
-              ),
-            ),
+                );
+              } else {
+                return Center(
+                  child: Text('Unhandled state : $state'),
+                );
+              }
+            },
           ),
-        ));
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.all(24),
+        child: InkWell(
+            onTap: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Applied Successfully")));
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Student_Bottom_Nav_bar()));
+            },
+            child: commonRedContainer(text: "Apply")),
+      ),
+    );
   }
 }
 
@@ -193,6 +273,7 @@ Widget greyContainer(
     required Color bgColor,
     Color? txtClr,
     bool? border}) {
+  // developer.log(text);
   return Container(
     width: 100,
     padding: const EdgeInsets.symmetric(horizontal: 6.0),
@@ -217,19 +298,43 @@ Widget greyContainer(
   );
 }
 
+// Widget jobRelatedOptions({required String title}) {
+//   return Container(
+//     width: 90,
+//     decoration: BoxDecoration(
+//         borderRadius: BorderRadius.circular(26),
+//         border: Border.all(color: const Color(0xffEFF0F6), width: 1.0)),
+//     child: Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: 8.0),
+//       child: Center(
+//         child: Text(
+//           title,
+//           overflow: TextOverflow.ellipsis,
+//           style: const TextStyle(
+//             fontSize: 11,
+//             color: Color(0xff6C7278),
+//             fontWeight: FontWeight.w400,
+//           ),
+//         ),
+//       ),
+//     ),
+//   );
+// }
+
 Widget jobRelatedOptions({required String title}) {
   return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
     decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(26),
-        border: Border.all(color: Color(0xffEFF0F6), width: 1.0)),
-    child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Center(
-        child: Text(title,
-            style: TextStyle(
-                fontSize: 11,
-                color: Color(0xff6C7278),
-                fontWeight: FontWeight.w400)),
+      borderRadius: BorderRadius.circular(26),
+      border: Border.all(color: const Color(0xffEFF0F6), width: 1.0),
+    ),
+    child: Text(
+      title,
+      softWrap: true,
+      style: const TextStyle(
+        fontSize: 11,
+        color: Color(0xff6C7278),
+        fontWeight: FontWeight.w400,
       ),
     ),
   );

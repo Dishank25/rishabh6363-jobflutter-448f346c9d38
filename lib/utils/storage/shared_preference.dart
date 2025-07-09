@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:job_portal/views/detailed_signup/presentation/bloc/skill_bloc/skill_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferencesManager {
@@ -7,6 +6,7 @@ class PreferencesManager {
   static const TOKEN = "token";
   static const USER_ID = "userId";
   static const SKILL_PARAMS = "skill_params";
+  static const USER_TYPE = "user_type";
 
   // Singleton instance
   static final PreferencesManager _instance = PreferencesManager._internal();
@@ -31,10 +31,6 @@ class PreferencesManager {
     return _prefs.getString(TOKEN);
   }
 
-  Future<void> clear(String key) async {
-    await _prefs.remove(key);
-  }
-
   Future<void> setUserId(String userId) async {
     await _prefs.setString(USER_ID, userId);
   }
@@ -50,5 +46,17 @@ class PreferencesManager {
 
   String? getSkillParams() {
     return _prefs.getString(SKILL_PARAMS);
+  }
+
+  Future<void> setUserType(String userType) async {
+    await _prefs.setString(USER_TYPE, userType);
+  }
+
+  String? getUserType() {
+    return _prefs.getString(USER_TYPE);
+  }
+
+  Future<void> clear(String key) async {
+    await _prefs.remove(key);
   }
 }

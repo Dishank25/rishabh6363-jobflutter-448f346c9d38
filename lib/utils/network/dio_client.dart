@@ -23,7 +23,7 @@ class DioClient {
       onRequest: (options, handler) async {
         // can add bearer token here
         String token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJqb2huZG9lQGV4YW1wbGUuY29tIiwicm9sZSI6IlNUVURFTlQiLCJpYXQiOjE3NTE4OTQwNTIsImV4cCI6MTc1MjA2Njg1Mn0.PgMnHWdVOD6LZZGT_9Q6ax5w5pObElw6HIQKY6u3dHk";
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjksImVtYWlsIjoibW11ZGdhbDY3QGdtYWlsLmNvbSIsInJvbGUiOiJDT01QQU5ZIiwiaWF0IjoxNzUyMDUzNDYwLCJleHAiOjE3NTIyMjYyNjB9.ZMXhoZJ0CK_a32sXxV9enWdzku6QoqcflMYBI4bALks";
         options.headers.addAll({'Authorization': 'Bearer $token'});
         return handler.next(options);
       },

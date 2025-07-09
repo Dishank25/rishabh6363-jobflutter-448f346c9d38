@@ -2,12 +2,12 @@ import 'package:get_it/get_it.dart';
 import 'package:job_portal/utils/constants/urls.dart';
 import 'package:job_portal/utils/network/dio_client.dart';
 import 'package:job_portal/utils/storage/shared_preference.dart';
-import 'package:job_portal/views/detailed_signup/data/data_source/detailed_api_service.dart';
-import 'package:job_portal/views/detailed_signup/data/repository/skill_repository_impl.dart';
-import 'package:job_portal/views/detailed_signup/domain/repository/skill_repository.dart';
-import 'package:job_portal/views/detailed_signup/domain/usecases/skill_usecase.dart';
-import 'package:job_portal/views/detailed_signup/presentation/bloc/signup_as_anyone_bloc/detailed_signup_bloc.dart';
-import 'package:job_portal/views/detailed_signup/presentation/bloc/skill_bloc/skill_bloc.dart';
+import 'package:job_portal/views/detailed_signup_student/data/data_source/detailed_api_service.dart';
+import 'package:job_portal/views/detailed_signup_student/data/repository/skill_repository_impl.dart';
+import 'package:job_portal/views/detailed_signup_student/domain/repository/skill_repository.dart';
+import 'package:job_portal/views/detailed_signup_student/domain/usecases/skill_usecase.dart';
+import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_bloc.dart';
+import 'package:job_portal/views/detailed_signup_student/presentation/bloc/skill_bloc/skill_bloc.dart';
 import 'package:job_portal/views/job_related/data/data_source/job_screens_api_service.dart';
 import 'package:job_portal/views/job_related/data/repository/jobs_repository_impl.dart';
 import 'package:job_portal/views/job_related/domain/repository/jobs_repository.dart';
@@ -24,19 +24,21 @@ import 'package:job_portal/views/post_opportunities/data/repository/opportunitie
 import 'package:job_portal/views/post_opportunities/domain/repository/opportunity_repository.dart';
 import 'package:job_portal/views/post_opportunities/domain/usecases/metadata_usecase.dart';
 import 'package:job_portal/views/post_opportunities/presentation/bloc/opportunity_bloc.dart';
-import 'package:job_portal/views/recruiter_signup/data/data_source/recruiter_signup_api_service.dart';
-import 'package:job_portal/views/recruiter_signup/data/repository/recruiter_signup_repository_impl.dart';
-import 'package:job_portal/views/recruiter_signup/domain/repository/recruiter_signup_repository.dart';
-import 'package:job_portal/views/recruiter_signup/domain/usecases/recruiter_signup_usecase.dart';
-import 'package:job_portal/views/recruiter_signup/presentation/bloc/recruiter_signup_bloc.dart';
-import 'package:job_portal/views/signup/data/data_source/signup_api_service.dart';
-import 'package:job_portal/views/detailed_signup/data/repository/detailed_signup_repository_impl.dart';
-import 'package:job_portal/views/signup/data/repository/signup_repository_impl.dart';
-import 'package:job_portal/views/detailed_signup/domain/repository/detailed_signup_repository.dart';
-import 'package:job_portal/views/signup/domain/repository/signup_repository.dart';
-import 'package:job_portal/views/detailed_signup/domain/usecases/detailed_signup_usecase.dart';
-import 'package:job_portal/views/signup/domain/usecase/signup_usecase.dart';
-import 'package:job_portal/views/signup/presentation/bloc/remote_signup_bloc.dart';
+import 'package:job_portal/views/signup_recruiter/data/data_source/recruiter_signup_api_service.dart';
+import 'package:job_portal/views/signup_recruiter/data/repository/recruiter_signup_repository_impl.dart';
+import 'package:job_portal/views/signup_recruiter/domain/repository/recruiter_signup_repository.dart';
+import 'package:job_portal/views/signup_recruiter/domain/usecases/recruiter_signup_usecase.dart';
+import 'package:job_portal/views/signup_recruiter/presentation/bloc/recruiter_signup_bloc/recruiter_signup_bloc.dart';
+import 'package:job_portal/views/signup_recruiter/presentation/bloc/verify_otp_recruiter_bloc/verify_otp_recruiter_bloc.dart';
+import 'package:job_portal/views/signup_student/data/data_source/signup_api_service.dart';
+import 'package:job_portal/views/detailed_signup_student/data/repository/detailed_signup_repository_impl.dart';
+import 'package:job_portal/views/signup_student/data/repository/signup_repository_impl.dart';
+import 'package:job_portal/views/detailed_signup_student/domain/repository/detailed_signup_repository.dart';
+import 'package:job_portal/views/signup_student/domain/repository/signup_repository.dart';
+import 'package:job_portal/views/detailed_signup_student/domain/usecases/detailed_signup_usecase.dart';
+import 'package:job_portal/views/signup_student/domain/usecase/signup_usecase.dart';
+import 'package:job_portal/views/signup_student/presentation/bloc/remote_signup_bloc/remote_signup_bloc.dart';
+import 'package:job_portal/views/signup_student/presentation/bloc/verify_otp_bloc/verify_otp_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final sl = GetIt.instance;
@@ -67,21 +69,18 @@ Future<void> initializeDependencies() async {
       JobScreensApiService(sl<DioClient>().instance));
 
   // Blocs
-  sl.registerFactory<RemoteSignupBloc>(() => RemoteSignupBloc(
-        sl(),
-        // sl()
-      ));
+  sl.registerFactory<RemoteSignupBloc>(() => RemoteSignupBloc(sl(), sl()));
   sl.registerFactory<RemoteLoginBloc>(() => RemoteLoginBloc(sl()));
   sl.registerFactory<DetailedSignupBloc>(() => DetailedSignupBloc(sl()));
   sl.registerFactory<SkillBloc>(() => SkillBloc(sl()));
-  sl.registerFactory<RecruiterSignupBloc>(() => RecruiterSignupBloc(sl()));
+  sl.registerFactory<RecruiterSignupBloc>(
+      () => RecruiterSignupBloc(sl(), sl()));
   sl.registerFactory<OpportunityBloc>(() => OpportunityBloc(sl(), sl()));
-  sl.registerFactory<JobBloc>(() => JobBloc(
-        sl(),
-      ));
-  sl.registerFactory<JobDetailsBloc>(() => JobDetailsBloc(
-        sl(),
-      ));
+  sl.registerFactory<JobBloc>(() => JobBloc(sl()));
+  sl.registerFactory<JobDetailsBloc>(() => JobDetailsBloc(sl()));
+  sl.registerFactory<VerifyOtpBloc>(() => VerifyOtpBloc(sl()));
+  sl.registerFactory<VerifyOtpRecruiterBloc>(
+      () => VerifyOtpRecruiterBloc(sl()));
 
   // Use Cases
   sl.registerLazySingleton<SignupUsecase>(() => SignupUsecase(sl()));
@@ -96,6 +95,14 @@ Future<void> initializeDependencies() async {
       () => CreateJobPostUsecase(sl()));
   sl.registerLazySingleton<JobsUsecase>(() => JobsUsecase(sl()));
   sl.registerLazySingleton<JobsDetailsUsecase>(() => JobsDetailsUsecase(sl()));
+  sl.registerLazySingleton<SendOtpEmailUsecase>(
+      () => SendOtpEmailUsecase(sl()));
+  sl.registerLazySingleton<VerifyOtpEmailUsecase>(
+      () => VerifyOtpEmailUsecase(sl()));
+  sl.registerLazySingleton<VerifyOtpEmailRecruiterUsecase>(
+      () => VerifyOtpEmailRecruiterUsecase(sl()));
+  sl.registerLazySingleton<SendOtpEmailRecruiterUsecase>(
+      () => SendOtpEmailRecruiterUsecase(sl()));
 
   // Repository
   sl.registerLazySingleton<SignupRepository>(() => SignupRepositoryImpl(sl()));

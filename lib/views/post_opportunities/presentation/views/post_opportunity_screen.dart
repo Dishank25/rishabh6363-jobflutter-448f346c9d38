@@ -49,6 +49,8 @@ class _PostInternshipsScreenState extends State<PostInternshipsScreen> {
   final List<String> stipendBasis = ["/Weekly", "/Monthly", "Lump-sum"];
   final List<String> IncentivesBasis = ["/Weekly", "/Monthly", "Lump-sum"];
   final List<int> days = [1, 2, 3, 4, 5];
+  Set<String> selectedCourses = {};
+
   final List<String> options = [
     "Certificate",
     "Letter of recommendation",
@@ -130,8 +132,8 @@ class _PostInternshipsScreenState extends State<PostInternshipsScreen> {
       "phoneContact": '',
       "alternatePhoneNumber": alterPhoneController.text.trim(),
       "internshipDuration": internshipDurationController.text.trim(),
-      "internshipStartDate":
-          internshipStartTimingsTypes[selectedStartTimingIndex ?? 0],
+      // "internshipStartDate":
+      //     internshipStartTimingsTypes[selectedStartTimingIndex ?? 0],
       "internshipFromDate": selectedStartTimingIndex == 1
           ? startDateController.text.trim()
           : null,
@@ -139,7 +141,7 @@ class _PostInternshipsScreenState extends State<PostInternshipsScreen> {
           selectedStartTimingIndex == 1 ? endDateController.text.trim() : null,
       "isCustomInternshipDate": selectedStartTimingIndex == 1,
       "collegeName": _collegeNameController.text.trim(),
-      "course": '',
+      "course": selectedCourses.join(', '),
     };
 
     developer.log('This is the opportunity post params : $map');
@@ -191,13 +193,13 @@ class _PostInternshipsScreenState extends State<PostInternshipsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            // actions: [
-            //   IconButton(
-            //     onPressed: createParamsForJobPost,
-            //     icon: const Icon(Icons.print),
-            //   )
-            // ],
-            ),
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.double_arrow),
+            )
+          ],
+        ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -309,7 +311,9 @@ class _PostInternshipsScreenState extends State<PostInternshipsScreen> {
                 CustomAutocomplete(
                   options: metadata != null ? metadata!.domains : [],
                   label: 'E.g Digital Marketing',
-                  onSelected: (value) {},
+                  onSelected: (value) {
+                    InternshipProfileController.text = value;
+                  },
                 ),
 
                 ///Skills required TEXT FIELD
@@ -1016,20 +1020,27 @@ class _PostInternshipsScreenState extends State<PostInternshipsScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          Expanded(
+                            child: SizedBox(
+                                // width: 170,
+                                child: CustomTextField(
+                              controller: minStipendController,
+                              hintText: "min. Stipend",
+                              fillColor: Color(0xffFFF7FB),
+                            )),
+                          ),
                           SizedBox(
-                              width: 170,
-                              child: CustomTextField(
-                                controller: minStipendController,
-                                hintText: "min. Stipend",
-                                fillColor: Color(0xffFFF7FB),
-                              )),
-                          SizedBox(
-                              width: 170,
-                              child: CustomTextField(
-                                controller: maxStipendController,
-                                hintText: "max. Stipend",
-                                fillColor: Color(0xffFFF7FB),
-                              )),
+                            width: 18,
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                                // width: 170,
+                                child: CustomTextField(
+                              controller: maxStipendController,
+                              hintText: "max. Stipend",
+                              fillColor: Color(0xffFFF7FB),
+                            )),
+                          ),
                         ],
                       ),
                       SizedBox(
@@ -1103,7 +1114,7 @@ class _PostInternshipsScreenState extends State<PostInternshipsScreen> {
                       SizedBox(width: 18),
                       Expanded(
                           child: CustomTextField(
-                        controller: maxStipendController,
+                        controller: maxIncentivesController,
                         hintText: "max. Incentive",
                         fillColor: Color(0xffFFF7FB),
                       ))
@@ -1212,17 +1223,26 @@ class _PostInternshipsScreenState extends State<PostInternshipsScreen> {
                   style: mTextStyle12(),
                 ),
                 Wrap(
-                  spacing: 8, // horizontal spacing between children
-                  runSpacing: 8, // vertical spacing between lines
-                  children: courses
-                      .map((course) => courseName(
-                            name: course,
-                            bgColor: Colors.white,
-                            textColor: Colors.black,
-                            borderColor: Colors.grey,
-                            onTap: () {},
-                          ))
-                      .toList(),
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: courses.map((course) {
+                    final isSelected = selectedCourses.contains(course);
+                    return courseName(
+                      name: course,
+                      bgColor: isSelected ? Colors.blue : Colors.white,
+                      textColor: isSelected ? Colors.white : Colors.black,
+                      borderColor: isSelected ? Colors.blue : Colors.grey,
+                      onTap: () {
+                        setState(() {
+                          if (isSelected) {
+                            selectedCourses.remove(course);
+                          } else {
+                            selectedCourses.add(course);
+                          }
+                        });
+                      },
+                    );
+                  }).toList(),
                 ),
                 const SizedBox(
                   height: 6,
@@ -1413,21 +1433,24 @@ class _PostInternshipsScreenState extends State<PostInternshipsScreen> {
                           showSnackbar('Processing', context);
                         }
                       },
-                      child: nextButton(
-                          title: "Post Internship",
-                          onTap: () {
-                            // createParamsForJobPost();
-                            // ScaffoldMessenger.of(context).showSnackBar(
-                            //     const SnackBar(
-                            //         content: Text(
-                            //             "Internship Posted Successfully!!!")));
+                      child: SizedBox(
+                        width: 150,
+                        child: nextButton(
+                            title: "Post Internship",
+                            onTap: () {
+                              createParamsForJobPost();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text(
+                                          "Internship Posted Successfully!!!")));
 
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        RecruiterBottomNavBar()));
-                          }),
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          RecruiterBottomNavBar()));
+                            }),
+                      ),
                     )
                   ],
                 ),

@@ -1,9 +1,12 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:developer' as developer show log;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:job_portal/utils/constants/image_string.dart';
 import 'package:job_portal/views/job_related/domain/entities/all_jobs_entity.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_bloc/job_bloc.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_bloc/job_event.dart';
@@ -77,7 +80,7 @@ class _JobSearchScreenState extends State<JobSearchScreen> {
   String formatDaysAgoFromString(String daysStr) {
     final days = int.tryParse(daysStr.trim());
 
-    if (days == null) return 'Invalid input';
+    if (days == null) return 'Recently posted';
     if (days < 0) return 'In the future';
 
     if (days == 0) return 'Today';
@@ -239,7 +242,9 @@ class _JobSearchScreenState extends State<JobSearchScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => JobDetailsScreen(),
+                                  builder: (context) => JobDetailsScreen(
+                                    jobId: job.jobId,
+                                  ),
                                 ),
                               );
                             },
@@ -253,10 +258,10 @@ class _JobSearchScreenState extends State<JobSearchScreen> {
                             // posted: job['posted'],
                             // match: job['match'],
                             // imageUrl: job.logoUrl,
-                            imageUrl: "https://picsum.photos/200",
+                            imageUrl: ImageString.dummyImageUrl,
                             jobTitle: job.jobProfile,
                             company: job.companyName,
-                            location: 'Job Location',
+                            location: job.cityChoice ?? 'City Choice',
                             experience: job.experience,
                             salary: formatSalaryRangeToINR(job.salary),
                             status: job.hiringStatus,
@@ -326,7 +331,7 @@ class JobCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(4),
                   child: Image.network(imageUrl,
                       height: 48, width: 48, fit: BoxFit.cover),
                 ),
@@ -347,10 +352,12 @@ class JobCard extends StatelessWidget {
                   children: [
                     greyContainer(
                         text: status, bgColor: AppColors.mainRedColor),
-                    SizedBox(height: 6),
-                    greyContainer(text: posted, bgColor: Color(0xffEFF0F6)),
-                    SizedBox(height: 6),
-                    greyContainer(text: match, bgColor: Color(0xff00B34B)),
+                    const SizedBox(height: 6),
+                    greyContainer(
+                        text: posted, bgColor: const Color(0xffEFF0F6)),
+                    const SizedBox(height: 6),
+                    greyContainer(
+                        text: match, bgColor: const Color(0xff00B34B)),
                   ],
                 )
               ],

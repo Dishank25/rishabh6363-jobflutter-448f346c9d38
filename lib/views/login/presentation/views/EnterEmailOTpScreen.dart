@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../../widgets/widgets.dart';
 import '../../../job_related/presentation/views/job_search_view.dart';
-import '../../../signup/presentation/views/create_account.dart';
+import '../../../signup_student/presentation/views/create_account.dart';
 
 class EnterEmailOTpScreen extends StatefulWidget {
   final String email;

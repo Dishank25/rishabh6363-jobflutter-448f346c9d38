@@ -10,7 +10,7 @@ part of 'opportunities_api_service.dart';
 
 class _OpportunitiesApiService implements OpportunitiesApiService {
   _OpportunitiesApiService(this._dio, {this.baseUrl, this.errorLogger}) {
-    baseUrl ??= 'http://212.95.51.83:3000/api/';
+    baseUrl ??= 'http://212.95.51.83:5000/api/';
   }
 
   final Dio _dio;

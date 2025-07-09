@@ -20,7 +20,7 @@ class JobDetailsBloc extends Bloc<JobDetailsEvent, JobDetailsState> {
       developer.log("Details of job in bloc : ${response.data}");
       emit(JobDetailsLoaded(response.data!));
     } catch (e) {
-      developer.log("Error of details of job in bloc : ${e}");
+      developer.log("Error of details of job in bloc : $e");
       emit(const JobDetailsError());
     }
   }

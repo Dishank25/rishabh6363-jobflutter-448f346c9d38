@@ -51,6 +51,8 @@ class OpportunitiesRepositoryImpl extends OpportunityRepository {
             requestOptions: res.response.requestOptions));
       }
     } on DioException catch (e) {
+      developer.log('...checkk response in repository : ${e.error}');
+
       return DataFailed(e);
     }
   }

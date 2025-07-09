@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:job_portal/views/Recruiter_Profile_Screens/Recruiter_ProfileScreen1.dart';
-import 'package:job_portal/views/recruiter_signup/presentation/views/Recruiter_Dashboard.dart';
-import 'package:job_portal/views/recruiter_signup/presentation/views/Recruiter_feed_Screen.dart';
+import 'package:job_portal/views/signup_recruiter/presentation/views/Recruiter_Dashboard.dart';
+import 'package:job_portal/views/signup_recruiter/presentation/views/Recruiter_feed_Screen.dart';
 import 'package:job_portal/ui_helper/ui_helper.dart';
-import '../recruiter_signup/presentation/views/RecruiterApprovalScreen.dart';
+import '../signup_recruiter/presentation/views/RecruiterApprovalScreen.dart';
 
 class RecruiterBottomNavBar extends StatefulWidget {
   @override

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:job_portal/views/login/presentation/views/login_page1_view.dart';
+import 'package:job_portal/views/login/presentation/views/login_page_first_view.dart';
 
 import '../../ui_helper/ui_helper.dart';
 import '../../widgets/widgets.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../../widgets/widgets.dart';
-import '../../../signup/presentation/views/create_account.dart';
+import '../../../signup_student/presentation/views/create_account.dart';
 import 'EnterEmailOTpScreen.dart';
 
 class UserEmailVerificationAfterRegistration extends StatefulWidget {
