@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:job_portal/views/detailed_signup_student/data/model/domian_all_response.dart';
 import 'package:job_portal/views/detailed_signup_student/data/model/skill_submission_response.dart';
 import 'package:job_portal/views/detailed_signup_student/data/model/subskill_response.dart';

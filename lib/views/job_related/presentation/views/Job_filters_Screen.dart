@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:job_portal/utils/constants/image_string.dart';
 import 'package:job_portal/views/Bottom_Nav_Bar/Student_Bottom_Nav_Bar.dart';
+import 'package:job_portal/views/User_Profile_Screens/User_Notifications_Screen.dart';
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../../widgets/widgets.dart';
 import '../../../User_Profile_Screens/User_messages_screen.dart';
@@ -27,23 +29,31 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        title: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: Text(
-            "LOGO",
-            style: TextStyle(
-                fontSize: 20,
-                fontFamily: "Inter",
-                fontWeight: FontWeight.w700,
-                color: AppColors.mainIndigoColor),
-          ),
+        backgroundColor: Colors.white,
+        // title: Padding(
+        //   padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        //   child: Text(
+        //     "LOGO",
+        //     style: TextStyle(
+        //         fontSize: 20,
+        //         fontFamily: "Inter",
+        //         fontWeight: FontWeight.w700,
+        //         color: AppColors.mainIndigoColor),
+        //   ),
+        // ),
+        title: SvgPicture.asset(
+          ImageString.jobPortalLogo,
+          height: 30,
         ),
         actions: [
           InkWell(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MessagesScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const MessagesScreen()));
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 20.0),
@@ -51,7 +61,12 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
             ),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const NotificationsScreen()));
+            },
             child: Padding(
               padding: const EdgeInsets.only(right: 20.0),
               child: SvgPicture.asset("assets/Icons/notifications_icon.svg"),

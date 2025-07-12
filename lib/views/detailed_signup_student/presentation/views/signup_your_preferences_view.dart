@@ -2,14 +2,16 @@ import 'dart:developer' as developer show log;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:job_portal/utils/constants/enums.dart';
+import 'package:job_portal/utils/constants/image_string.dart';
 import 'package:job_portal/views/Bottom_Nav_Bar/Student_Bottom_Nav_Bar.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_bloc.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_event.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_state.dart';
+import 'package:job_portal/views/job_related/presentation/views/job_search_view.dart';
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../../widgets/widgets.dart';
-import '../../../job_related/presentation/views/job_search_view.dart';
 
 class SignupPageYourPreferences extends StatefulWidget {
   Map<String, dynamic> params;
@@ -146,16 +148,43 @@ class _SignupPageYourPreferencesState extends State<SignupPageYourPreferences> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("")),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text(""),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Student_Bottom_Nav_bar()));
+            },
+            icon: Icon(Icons.double_arrow),
+          )
+        ],
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Logo",
-                  style: mTextStyle15(
-                      mColor: Color(0xff032466), mFontWeight: FontWeight.w700)),
+              // Text("Logo",
+              //     style: mTextStyle15(
+              //         mColor: Color(0xff032466), mFontWeight: FontWeight.w700)),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: SvgPicture.asset(
+                  // ImageString.progressBar1,
+                  ImageString.jobPortalLogo,
+                  height: 30,
+                  // width: 40,
+                  fit: BoxFit.contain,
+                  allowDrawingOutsideViewBox: true, // optional
+                ),
+                // child: Image.asset(ImageString.pngLogo),
+              ),
               mSpacer17(),
               Container(
                 height: 42,
@@ -163,14 +192,17 @@ class _SignupPageYourPreferencesState extends State<SignupPageYourPreferences> {
                 child: Text("Your Preferences",
                     style: mTextStyle32(mColor: Color(0xff1A1C1E))),
               ),
+              mSpacer(mHeight: 10.0),
               Text("Help us match you with the best career opportunities",
                   style: mTextStyle12()),
               mSpacer(mHeight: 25.0),
+              SvgPicture.asset(ImageString.progressBar3),
               SizedBox(height: 3),
               mSpacer(mHeight: 25.0),
 
               /// Preferences Section
               Text("Currently looking for:", style: mTextStyle12()),
+              mSpacer(mHeight: 8.0),
               Wrap(
                 runSpacing: 12,
                 children: [
@@ -197,6 +229,7 @@ class _SignupPageYourPreferencesState extends State<SignupPageYourPreferences> {
 
               // /// Work Mode Section
               Text("Work Mode:", style: mTextStyle12()),
+              mSpacer(mHeight: 8.0),
               Wrap(
                 runSpacing: 12,
                 children: [
@@ -249,14 +282,14 @@ class _SignupPageYourPreferencesState extends State<SignupPageYourPreferences> {
                     child: nextButton(
                       title: "Find opportunities",
                       onTap: () async {
-                        // await onPressedFindOpportunities();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const Student_Bottom_Nav_bar(),
-                          ),
-                        );
+                        await onPressedFindOpportunities();
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) =>
+                        //         const Student_Bottom_Nav_bar(),
+                        //   ),
+                        // );
                       },
                     ),
                   ),

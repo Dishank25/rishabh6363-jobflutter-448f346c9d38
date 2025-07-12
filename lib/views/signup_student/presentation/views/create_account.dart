@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:job_portal/utils/constants/enums.dart';
-import 'package:job_portal/views/signup_student/presentation/views/signup_student2_view.dart';
+import 'package:job_portal/utils/constants/image_string.dart';
 import 'package:job_portal/views/signup_university/presentation/views/signup_university_view.dart';
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../login/presentation/views/login_page_first_view.dart';
@@ -16,128 +16,219 @@ class CreateAccount extends StatefulWidget {
 
 class _CreateAccountState extends State<CreateAccount> {
   int? selectedIndex;
+
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isSmallDevice = screenHeight < 700;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Logo",
-          style: mTextStyle15(
-              mColor: Color(0xff032466), mFontWeight: FontWeight.w700),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                height: 84,
-                width: double.infinity,
-                child: Text(
-                  "Create a new\naccount",
-                  style: mTextStyle32(mColor: Color(0xff1A1C1E)),
-                ),
-              ),
-              mSpacer(mHeight: 12.0),
-              Text(
-                "Join us and find your dream job or recruit talented\ncandidates.",
-                style: mTextStyle12(),
-              ),
-              mSpacer(),
-              OptionContainer(
-                  index: 0,
-                  isSelected: selectedIndex == 0,
-                  title1: "Sign up as a Student/Professional",
-                  title2: "Apply for jobs, Learn",
-                  onTap: () {
-                    setState(() {
-                      selectedIndex = 0;
-                    });
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SignUpStudent1(
-                                  // userType: "STUDENT",
-                                  userType: USERTYPE.STUDENT.name,
-                                )));
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) =>
-                    //             SignUpStudent_2(Email: 'a@gmail.com')));
-                  }),
-              mSpacer(mHeight: 24.0),
-              OptionContainer(
-                index: 1,
-                isSelected: selectedIndex == 1,
-                title1: "Sign up as a company ",
-                title2: "Hire talent, Offer career opportunities",
-                onTap: () {
-                  setState(() {
-                    selectedIndex = 1;
-                  });
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RecruiterSignupPage(),
-                    ),
-                  );
-                },
-              ),
-              mSpacer(mHeight: 24.0),
-              OptionContainer(
-                  index: 2,
-                  isSelected: selectedIndex == 2,
-                  title1: "Sign up as a University",
-                  title2: "Find best placements for students ",
-                  onTap: () {
-                    setState(() {
-                      selectedIndex = 2;
-                    });
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SignupUniversityView(),
-                      ),
-                    );
-                  }),
-              SizedBox(
-                height: 250,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 18.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+      body: CustomScrollView(
+        slivers: [
+          /// Top illustration and header
+          SliverToBoxAdapter(
+            child: LayoutBuilder(builder: (context, constraints) {
+              return SizedBox(
+                height: screenHeight * 0.45,
+                child: Stack(
+                  clipBehavior: Clip.none,
                   children: [
-                    Text(
-                      "Already have an account?",
-                      style: mTextStyle12(),
+                    // Curved background
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      child: CustomPaint(
+                        size: Size(screenWidth, screenHeight * 0.3),
+                        painter: HalfCurvePainter(),
+                      ),
                     ),
-                    InkWell(
-                        onTap: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LogInPage1()));
-                        },
-                        child: Text(
-                          " Login",
-                          style: mTextStyle12(
-                              mColor: AppColors.blueTextColor,
-                              mFontWeight: FontWeight.w600),
-                        ))
+
+                    // Illustration
+                    // Align(
+                    //   alignment: Alignment.topCenter,
+                    //   child: Padding(
+                    //     padding: EdgeInsets.only(
+                    //       top: screenHeight * 0.08,
+                    //       left: screenWidth * 0.1,
+                    //       right: screenWidth * 0.1,
+                    //     ),
+                    //     child: Image.asset(
+                    //       ImageString.createAccountIllPng,
+                    //       // width: screenWidth * 0.6,
+                    //       // fit: BoxFit.contain,
+                    //     ),
+                    //   ),
+                    // ),
+                    Positioned(
+                      top: screenHeight * 0.08,
+                      left: 0,
+                      right: 0,
+                      child: Image.asset(
+                        ImageString.createAccountIllPng,
+                        width: screenWidth,
+                        fit: BoxFit
+                            .fitWidth, // Or use BoxFit.cover for a different look
+                      ),
+                    ),
+
+                    // Back button
+                    Positioned(
+                      top: screenHeight * 0.06,
+                      left: screenWidth * 0.04,
+                      child: IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: const Icon(Icons.arrow_back_ios),
+                      ),
+                    ),
+
+                    // Title & description
+                    Positioned(
+                      bottom: -120,
+                      left: screenWidth * 0.05,
+                      right: screenWidth * 0.05,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Create a new account",
+                            style: mTextStyle32(
+                              mColor: const Color(0xff1A1C1E),
+                            ),
+                          ),
+                          SizedBox(height: screenHeight * 0.01),
+                          Text(
+                            "Join us and find your dream job or recruit talented candidates.",
+                            style: mTextStyle12(),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
-              )
-            ],
+              );
+            }),
           ),
-        ),
+
+          /// Spacer for content to clear top overlay
+          SliverToBoxAdapter(child: SizedBox(height: screenHeight * 0.17)),
+
+          /// Form options
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.06),
+              child: Column(
+                children: [
+                  OptionContainer(
+                    index: 0,
+                    isSelected: selectedIndex == 0,
+                    title1: "Sign up as a Student/Professional",
+                    title2: "Apply for Jobs, Learn",
+                    onTap: () {
+                      setState(() => selectedIndex = 0);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              SignUpStudent1(userType: USERTYPE.STUDENT.name),
+                        ),
+                      );
+                    },
+                  ),
+                  SizedBox(height: screenHeight * 0.02),
+
+                  OptionContainer(
+                    index: 1,
+                    isSelected: selectedIndex == 1,
+                    title1: "Sign up as a Company",
+                    title2: "Hire talent, Offer career opportunities",
+                    onTap: () {
+                      setState(() => selectedIndex = 1);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => RecruiterSignupPage()),
+                      );
+                    },
+                  ),
+                  SizedBox(height: screenHeight * 0.02),
+
+                  OptionContainer(
+                    index: 2,
+                    isSelected: selectedIndex == 2,
+                    title1: "Sign up as a University",
+                    title2: "Find best placements for students",
+                    onTap: () {
+                      setState(() => selectedIndex = 2);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => SignupUniversityView()),
+                      );
+                    },
+                  ),
+
+                  SizedBox(height: screenHeight * 0.03),
+
+                  /// Login prompt
+                  Padding(
+                    padding: EdgeInsets.only(bottom: screenHeight * 0.02),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Already have an account?", style: mTextStyle12()),
+                        InkWell(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (_) => LogInPage1()),
+                            );
+                          },
+                          child: Text(
+                            " Login",
+                            style: mTextStyle12(
+                              mColor: AppColors.blueTextColor,
+                              mFontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  SizedBox(height: screenHeight * 0.05),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
+}
+
+class HalfCurvePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.lightBlue.shade200
+      ..style = PaintingStyle.fill;
+
+    final path = Path();
+
+    path.moveTo(-100, -100); // Start at top left
+    path.lineTo(size.width * 3, 0); // Horizontal to half width
+    path.quadraticBezierTo(
+      size.width * 0.6, 500, // Control point
+      0, 370, // End point of curve
+    );
+    path.close();
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 /// OPTION CONTAINER TO SIGN UP AS STUDENT/COMPANY/UNIVERSITY

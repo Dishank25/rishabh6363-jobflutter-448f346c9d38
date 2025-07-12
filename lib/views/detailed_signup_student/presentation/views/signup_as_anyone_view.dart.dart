@@ -2,7 +2,9 @@ import 'dart:developer' as developer show log;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:job_portal/utils/constants/enums.dart';
+import 'package:job_portal/utils/constants/image_string.dart';
 import 'package:job_portal/views/detailed_signup_student/data/model/basic_user_data_response.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_bloc.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_event.dart';
@@ -30,6 +32,8 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
   String selectedOption = '';
   String? selectedClass;
   String? selectedCourse;
+  String? selectedCurrentCity;
+  String? selectedPreferredCity;
   String? selectedSpecialization;
   String? selectedjobRole;
   TextEditingController totalWorkExp = TextEditingController();
@@ -43,6 +47,8 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
 
   String selectedCollege = '';
   List<String> collegeNames = [];
+  List<String> cities = [];
+  List<String> selectedCourses = [];
 
   @override
   void dispose() {
@@ -430,8 +436,21 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
   Widget build(BuildContext context) {
     /// MAIN UI PERSPECTIVE CODE
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(""),
+        backgroundColor: Colors.white,
+        title: const Text(""),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SignupPageYourSkills(params: {})));
+            },
+            icon: const Icon(Icons.double_arrow),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -446,11 +465,13 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
                   listener: (context, state) {
                     if (state is DetailedSignupGetBasicUserInfoLoaded) {
                       final data = state.basicUserInfoResponse;
+                      final locations = state.locations;
                       setState(() {
                         firstnameController.text = data.user.firstName;
                         surnameController.text = data.user.lastName;
                         emailController.text = data.user.email;
                         phoneController.text = data.user.phone;
+                        cities = locations.locations;
                       });
                       final emailMap = {'email': widget.email};
                       context
@@ -462,10 +483,22 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
                 ),
 
                 /// HEADER
-                Text(
-                  "Logo",
-                  style: mTextStyle15(
-                      mColor: Color(0xff032466), mFontWeight: FontWeight.w700),
+                // Text(
+                //   "Logo",
+                //   style: mTextStyle15(
+                //       mColor: Color(0xff032466), mFontWeight: FontWeight.w700),
+                // ),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: SvgPicture.asset(
+                    ImageString.jobPortalLogo,
+                    height: 30,
+                    // width: 40,
+                    fit: BoxFit.contain,
+                    allowDrawingOutsideViewBox: true, // optional
+                  ),
+                  // child: Image.asset(ImageString.pngLogo),
                 ),
                 mSpacer17(),
                 Container(
@@ -476,6 +509,8 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
                     style: mTextStyle32(mColor: Color(0xff1A1C1E)),
                   ),
                 ),
+                SvgPicture.asset(ImageString.progressBar1),
+                mSpacer17(),
 
                 /// BODY PART
                 Row(
@@ -569,11 +604,8 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
                   "Date of Birth",
                   style: mTextStyle14(),
                 ),
-                CustomTextField(
-                  controller: DOBController,
-                  hintText: "",
-                  suffixIcon: Icons.calendar_month_outlined,
-                  onSuffixTap: () async {
+                InkWell(
+                  onTap: () async {
                     DateTime? pickedDate = await showDatePicker(
                       context: context,
                       initialDate: DateTime.now()
@@ -583,19 +615,97 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
                     );
 
                     if (pickedDate != null) {
-                      // Format the picked date (e.g., dd-MM-yyyy)
                       String formattedDate =
                           "${pickedDate.day.toString().padLeft(2, '0')}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.year}";
                       DOBController.text = formattedDate;
                     }
                   },
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'DOB is required';
-                    }
-                    return null;
-                  },
+                  child: IgnorePointer(
+                    child: TextFormField(
+                      controller: DOBController,
+                      style: mTextStyle14(),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'DOB is required';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        hintText: "Select your DOB",
+                        hintStyle: mTextStyle14(
+                          mFontWeight: FontWeight.w500,
+                          mColor: const Color(0xffBCC1CA),
+                        ),
+                        suffixIcon: const Icon(
+                          Icons.keyboard_arrow_down,
+                          size: 18,
+                          color: Color(0xffBCC1CA),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 14), // match height
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                              width: 1, color: Color(0xffBCC1CA)),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                              width: 1, color: Color(0xffBCC1CA)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                              width: 1.5,
+                              color: Theme.of(context).primaryColor),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              const BorderSide(width: 1, color: Colors.red),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              const BorderSide(width: 1.5, color: Colors.red),
+                        ),
+                        errorStyle: const TextStyle(
+                          fontSize: 12,
+                          height: 1.0,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
+
+                // CustomTextField(
+                //   controller: DOBController,
+                //   hintText: "",
+                //   suffixIcon: Icons.calendar_month_outlined,
+                //   onSuffixTap: () async {
+                //     DateTime? pickedDate = await showDatePicker(
+                //       context: context,
+                //       initialDate: DateTime.now()
+                //           .subtract(const Duration(days: 365 * 40)),
+                //       firstDate: DateTime(1960),
+                //       lastDate: DateTime.now(),
+                //     );
+                //     if (pickedDate != null) {
+                //       // Format the picked date (e.g., dd-MM-yyyy)
+                //       String formattedDate =
+                //           "${pickedDate.day.toString().padLeft(2, '0')}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.year}";
+                //       DOBController.text = formattedDate;
+                //     }
+                //   },
+                //   validator: (value) {
+                //     if (value == null || value.trim().isEmpty) {
+                //       return 'DOB is required';
+                //     }
+                //     return null;
+                //   },
+                // ),
                 mSpacer17(),
 
                 /// CURRENT CITY TEXT FIELD
@@ -603,16 +713,30 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
                   "Current City",
                   style: mTextStyle14(),
                 ),
-                CustomTextField(
-                  controller: cityController,
-                  hintText: "",
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'Current City is required';
-                    }
-                    return null;
+                // Text(
+                //   "Course",
+                //   style: mTextStyle14(),
+                // ),
+                CustomAutocomplete(
+                  options: cities,
+                  label: 'Current City',
+                  onSelected: (value) {
+                    selectedCurrentCity = value;
+                    // showSnackbar('Selected $selectedCurrentCity', context);
+                    developer
+                        .log('Selected Course variable : $selectedCurrentCity');
                   },
                 ),
+                // CustomTextField(
+                //   controller: cityController,
+                //   hintText: "",
+                //   validator: (value) {
+                //     if (value == null || value.trim().isEmpty) {
+                //       return 'Current City is required';
+                //     }
+                //     return null;
+                //   },
+                // ),
                 mSpacer17(),
 
                 /// JOB LOCATION TEXTFIELD
@@ -620,29 +744,39 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
                   "Preferred Job Location",
                   style: mTextStyle14(),
                 ),
-                CompositedTransformTarget(
-                  link: _jobLocationLink,
-                  child: CustomTextField(
-                    key: _jobLocationFieldKey,
-                    controller: JobLocationController,
-                    hintText: "Select Preferred Job Location",
-                    suffixIcon: Icons.keyboard_arrow_down_outlined,
-                    onSuffixTap: () {
-                      if (_jobLocationOverlayEntry == null) {
-                        _showJobLocationDropdown();
-                      } else {
-                        _jobLocationOverlayEntry?.remove();
-                        _jobLocationOverlayEntry = null;
-                      }
-                    },
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Preferred Job Location is required';
-                      }
-                      return null;
-                    },
-                  ),
+                CustomAutocomplete(
+                  options: cities,
+                  label: 'Preferred Job Location',
+                  onSelected: (value) {
+                    selectedPreferredCity = value;
+                    // showSnackbar('Selected $selectedPreferredCity', context);
+                    developer.log(
+                        'Selected Course variable : $selectedPreferredCity');
+                  },
                 ),
+                // CompositedTransformTarget(
+                //   link: _jobLocationLink,
+                //   child: CustomTextField(
+                //     key: _jobLocationFieldKey,
+                //     controller: JobLocationController,
+                //     hintText: "Select Preferred Job Location",
+                //     suffixIcon: Icons.keyboard_arrow_down_outlined,
+                //     onSuffixTap: () {
+                //       if (_jobLocationOverlayEntry == null) {
+                //         _showJobLocationDropdown();
+                //       } else {
+                //         _jobLocationOverlayEntry?.remove();
+                //         _jobLocationOverlayEntry = null;
+                //       }
+                //     },
+                //     validator: (value) {
+                //       if (value == null || value.trim().isEmpty) {
+                //         return 'Preferred Job Location is required';
+                //       }
+                //       return null;
+                //     },
+                //   ),
+                // ),
                 mSpacer17(),
 
                 /// GENDER TEXTFIELD
@@ -650,24 +784,34 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
                   "Gender",
                   style: mTextStyle14(),
                 ),
-                CompositedTransformTarget(
-                  link: _genderLayerLink,
-                  child: Container(
-                    key: _genderKey,
-                    child: CustomTextField(
-                      controller: genderController,
-                      hintText: "",
-                      suffixIcon: Icons.keyboard_arrow_down_outlined,
-                      onSuffixTap: _toggleGenderDropdown,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Gender is required';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
+                CustomAutocomplete(
+                  options: const ['Male', 'Female'],
+                  label: 'Gender',
+                  onSelected: (value) {
+                    genderController.text = value;
+                    // showSnackbar('Selected ${genderController.text}', context);
+                    developer.log(
+                        'Selected Course variable : ${genderController.text}');
+                  },
                 ),
+                // CompositedTransformTarget(
+                //   link: _genderLayerLink,
+                //   child: Container(
+                //     key: _genderKey,
+                //     child: CustomTextField(
+                //       controller: genderController,
+                //       hintText: "",
+                //       suffixIcon: Icons.keyboard_arrow_down_outlined,
+                //       onSuffixTap: _toggleGenderDropdown,
+                //       validator: (value) {
+                //         if (value == null || value.trim().isEmpty) {
+                //           return 'Gender is required';
+                //         }
+                //         return null;
+                //       },
+                //     ),
+                //   ),
+                // ),
                 mSpacer17(),
 
                 /// USER TYPE
@@ -842,17 +986,53 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
                                   "Course",
                                   style: mTextStyle14(),
                                 ),
-                                CustomAutocomplete(
-                                  options: course.courses,
-                                  label: 'Course Names',
-                                  onSelected: (value) {
-                                    selectedCourse = value;
-                                    showSnackbar(
-                                        'Selected $selectedCourse', context);
-                                    developer.log(
-                                        'Selected Course variable : $selectedCourse');
-                                  },
+                                const SizedBox(
+                                  height: 7,
                                 ),
+                                Wrap(
+                                  spacing: 8,
+                                  runSpacing: 8,
+                                  children: course.courses.map((course) {
+                                    final isSelected =
+                                        selectedCourses.contains(course);
+                                    return courseName(
+                                      name: course,
+                                      bgColor: isSelected
+                                          ? const Color(0xff1961F3)
+                                          : Colors.white,
+                                      textColor: isSelected
+                                          ? Colors.white
+                                          : Colors.black,
+                                      borderColor: isSelected
+                                          ? const Color(0xff1961F3)
+                                          : Colors.grey,
+                                      onTap: () {
+                                        setState(() {
+                                          if (isSelected) {
+                                            selectedCourses.remove(course);
+                                          } else {
+                                            selectedCourses.add(course);
+                                          }
+                                        });
+                                      }, // optional or remove if unused
+                                    );
+                                  }).toList(),
+                                ),
+                                // Text(
+                                //   "Course",
+                                //   style: mTextStyle14(),
+                                // ),
+                                // CustomAutocomplete(
+                                //   options: course.courses,
+                                //   label: 'Course Names',
+                                //   onSelected: (value) {
+                                //     selectedCourse = value;
+                                //     showSnackbar(
+                                //         'Selected $selectedCourse', context);
+                                //     developer.log(
+                                //         'Selected Course variable : $selectedCourse');
+                                //   },
+                                // ),
                                 mSpacer(),
                                 Text(
                                   "College Name",
@@ -931,38 +1111,47 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
                       // ),
                       mSpacer17(),
 
+                      /// Start Year and End Year labels row
                       Row(
-                        /// Start year and end year text row
                         children: [
-                          Text(
-                            "Start Year",
-                            style: mTextStyle14(),
-                          ),
-                          Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 100.0),
-                            child: Text(
-                              "End Year",
-                              style: mTextStyle14(),
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Start Year",
+                                style: mTextStyle14(),
+                              ),
                             ),
-                          )
+                          ),
+                          const SizedBox(width: 18),
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "End Year",
+                                style: mTextStyle14(),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
+
+                      /// Small vertical space
                       mSpacer(mHeight: 2.0),
 
-                      ///  College Start year and End year textfield
+                      /// Start Year and End Year date picker fields
                       Row(
                         children: [
-                          SizedBox(
-                            width: 160,
+                          Expanded(
                             child: DatePickerField(
-                                controller: startCourseYearController),
+                              controller: startCourseYearController,
+                            ),
                           ),
-                          Spacer(),
-                          SizedBox(
-                            width: 160,
+                          const SizedBox(width: 18),
+                          Expanded(
                             child: DatePickerField(
-                                controller: endCourseYearController),
+                              controller: endCourseYearController,
+                            ),
                           ),
                         ],
                       ),
@@ -1201,35 +1390,48 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
 
                       /// Start year and end year columns
                       Row(
-                        // mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(
-                            "Start Year",
-                            style: mTextStyle14(),
-                          ),
-                          Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 100.0),
-                            child: Text(
-                              "End Year",
-                              style: mTextStyle14(),
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Start Year",
+                                style: mTextStyle14(),
+                              ),
                             ),
-                          )
+                          ),
+                          const SizedBox(width: 18),
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "End Year",
+                                style: mTextStyle14(),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
+
                       mSpacer(mHeight: 2.0),
                       Row(
                         children: [
-                          SizedBox(
-                            width: 160,
-                            child: DatePickerField(
-                                controller: startJobYearController),
+                          Expanded(
+                            child: SizedBox(
+                              width: 160,
+                              child: DatePickerField(
+                                  controller: startJobYearController),
+                            ),
                           ),
-                          Spacer(),
                           SizedBox(
-                            width: 160,
-                            child: DatePickerField(
-                                controller: endJobYearController),
+                            width: 18,
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              width: 160,
+                              child: DatePickerField(
+                                  controller: endJobYearController),
+                            ),
                           ),
                         ],
                       ),
@@ -1386,10 +1588,11 @@ class DatePickerField extends StatelessWidget {
       readOnly: true,
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: TextStyle(fontSize: 13, color: Colors.grey),
+        hintStyle: const TextStyle(fontSize: 13, color: Colors.grey),
         suffixIcon: const Icon(
-          Icons.calendar_today,
-          size: 16,
+          Icons.keyboard_arrow_down,
+          size: 18,
+          color: Color(0xffBCC1CA),
         ),
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 10),

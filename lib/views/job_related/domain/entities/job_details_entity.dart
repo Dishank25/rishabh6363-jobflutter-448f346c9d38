@@ -90,7 +90,7 @@ class JobDetailsEntity {
   final String? jobType;
   final String jobProfile;
   final String? jobDescription;
-  final int? jobTime;
+  final String? jobTime;
   final int? daysInOffice;
   final String? cityChoice;
   final List<String> skillsRequired;

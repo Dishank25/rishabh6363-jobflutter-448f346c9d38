@@ -52,6 +52,9 @@ dependencies:
   image_picker: ^1.1.2
   file_picker: ^10.2.0
   intl: ^0.20.2
+  flutter_intl_phone_field: ^0.0.7
+  # for delay in api calling when typing in search field
+  flutter_hooks: ^0.21.2
 
 
 dev_dependencies:

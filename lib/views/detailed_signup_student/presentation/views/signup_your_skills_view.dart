@@ -5,9 +5,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:job_portal/injection_container.dart';
+import 'package:job_portal/utils/constants/image_string.dart';
 import 'package:job_portal/utils/storage/shared_preference.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/skill_bloc/skill_bloc.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/skill_bloc/skill_event.dart';
@@ -194,8 +196,22 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
     // }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: const Text(""),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          SignupPageYourPreferences(params: {})));
+            },
+            icon: const Icon(Icons.double_arrow),
+          )
+        ],
         leading: IconButton(
             onPressed: () async {
               await cacheSkills();
@@ -213,12 +229,24 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
             mainAxisSize: MainAxisSize.min,
             children: [
               /// HEADER
-              Text(
-                "Logo",
-                style: mTextStyle15(
-                  mColor: Color(0xff032466),
-                  mFontWeight: FontWeight.w700,
+              // Text(
+              //   "Logo",
+              //   style: mTextStyle15(
+              //     mColor: Color(0xff032466),
+              //     mFontWeight: FontWeight.w700,
+              //   ),
+              // ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: SvgPicture.asset(
+                  // ImageString.progressBar1,
+                  ImageString.jobPortalLogo,
+                  height: 30,
+                  // width: 40,
+                  fit: BoxFit.contain,
+                  allowDrawingOutsideViewBox: true, // optional
                 ),
+                // child: Image.asset(ImageString.pngLogo),
               ),
               mSpacer17(),
               Container(
@@ -234,12 +262,14 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
                 style: mTextStyle12(),
               ),
               mSpacer(mHeight: 25.0),
+              SvgPicture.asset(ImageString.progressBar2),
               const SizedBox(height: 3),
               mSpacer(mHeight: 25.0),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Areas of Interest", style: mTextStyle14()),
+                  mSpacer(mHeight: 8.0),
                   BlocListener<SkillBloc, SkillState>(
                     listener: (context, state) {
                       if (state is SkillStateDomainLoaded) {
@@ -460,7 +490,9 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
                   Row(
                     children: [
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
                         child: Container(
                           height: 40,
                           width: 100,
@@ -471,8 +503,11 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Icon(Icons.arrow_back, size: 16),
-                              Text("Back", style: mTextStyle14()),
+                              const Icon(Icons.arrow_back, size: 16),
+                              Text(
+                                "Back",
+                                style: mTextStyle14(),
+                              ),
                             ],
                           ),
                         ),

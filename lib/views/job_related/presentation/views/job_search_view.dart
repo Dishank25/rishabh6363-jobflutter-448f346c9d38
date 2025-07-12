@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:job_portal/utils/constants/image_string.dart';
+import 'package:job_portal/views/User_Profile_Screens/User_Notifications_Screen.dart';
 import 'package:job_portal/views/job_related/domain/entities/all_jobs_entity.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_bloc/job_bloc.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_bloc/job_event.dart';
@@ -113,18 +114,12 @@ class _JobSearchScreenState extends State<JobSearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0),
-          child: Text(
-            "LOGO",
-            style: TextStyle(
-              fontSize: 20,
-              fontFamily: "Inter",
-              fontWeight: FontWeight.w700,
-              color: AppColors.mainIndigoColor,
-            ),
-          ),
+        backgroundColor: Colors.white,
+        title: SvgPicture.asset(
+          ImageString.jobPortalLogo,
+          height: 30,
         ),
         actions: [
           InkWell(
@@ -140,7 +135,12 @@ class _JobSearchScreenState extends State<JobSearchScreen> {
             ),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => NotificationsScreen()));
+            },
             child: Padding(
               padding: const EdgeInsets.only(right: 20.0),
               child: SvgPicture.asset("assets/Icons/notifications_icon.svg"),
@@ -191,13 +191,14 @@ class _JobSearchScreenState extends State<JobSearchScreen> {
                       child: Row(
                         children: [
                           Expanded(
-                              flex: 6,
-                              child: CustomTextField(
-                                controller: jSearchController,
-                                hintText: "Search",
-                                suffixIcon: Icons.search,
-                                fillColor: Colors.white,
-                              )),
+                            flex: 6,
+                            child: SearchTextField(
+                              onTextChanged: (value) {
+                                // Call your API here
+                                print("API call for: $value");
+                              },
+                            ),
+                          ),
                           const SizedBox(
                             width: 6,
                           ),
@@ -332,8 +333,19 @@ class JobCard extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(4),
-                  child: Image.network(imageUrl,
-                      height: 48, width: 48, fit: BoxFit.cover),
+                  // child: SvgPicture.asset(
+                  //   ImageString.logoipsum,
+                  //   // height: 38,
+                  //   width: 48,
+                  //   // fit: BoxFit.cover,
+                  // )
+                  child: Image.asset(
+                    ImageString.placeHolderImage,
+                    height: 48,
+                    color: Colors.grey[300],
+                  ),
+                  // child: Image.network(imageUrl,
+                  //     height: 48, width: 48, fit: BoxFit.cover),
                 ),
                 SizedBox(width: 12),
                 Expanded(

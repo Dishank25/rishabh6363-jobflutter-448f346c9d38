@@ -33,6 +33,11 @@ class DetailedSignupUsecase {
     return response;
   }
 
+  Future<DataState<LocationsListResponse>> getLocations() async {
+    final response = await _repository.getLocations();
+    return response;
+  }
+
   Future<DataState<JobRolesListResponse>> getJobRoles() async {
     final response = await _repository.getJobRoles();
     return response;

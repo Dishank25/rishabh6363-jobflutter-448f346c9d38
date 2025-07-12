@@ -1,9 +1,12 @@
 import 'dart:developer' as developer show log;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:job_portal/utils/constants/constants.dart';
 import 'package:job_portal/utils/constants/image_string.dart';
 import 'package:job_portal/views/Bottom_Nav_Bar/Student_Bottom_Nav_Bar.dart';
+import 'package:job_portal/views/User_Profile_Screens/User_Notifications_Screen.dart';
+import 'package:job_portal/views/User_Profile_Screens/User_messages_screen.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_details_bloc/job_details_bloc.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_details_bloc/job_details_event.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_details_bloc/job_details_state.dart';
@@ -35,8 +38,43 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
+
       /// APP BAR
-      appBar: buildCustomAppBar(titleText: "LOGO"),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: SvgPicture.asset(
+          ImageString.jobPortalLogo,
+          height: 30,
+        ),
+        actions: [
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const MessagesScreen()));
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 20.0),
+              child: SvgPicture.asset("assets/Icons/message_icon.svg"),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const NotificationsScreen()));
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 20.0),
+              child: SvgPicture.asset("assets/Icons/notifications_icon.svg"),
+            ),
+          ),
+        ],
+      ),
+      // appBar: buildCustomAppBar(titleText: "LOGO"),
 
       /// BODY CONTENT
       body: SingleChildScrollView(
@@ -70,10 +108,16 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                 height: 60,
                                 width:
                                     60, // make this square to avoid oval distortion
-                                color: Colors.grey[
-                                    200], // optional: placeholder background
-                                child: Image.network(
-                                  ImageString.dummyImageUrl,
+                                // color: Colors.grey[
+                                //     200], // optional: placeholder background
+                                // child: Image.network(
+                                //   ImageString.dummyImageUrl,
+                                //   fit: BoxFit
+                                //       .cover, // Ensures the image fills the box correctly
+                                // ),
+                                child: Image.asset(
+                                  ImageString.placeHolderImage,
+                                  color: Colors.grey[300],
                                   fit: BoxFit
                                       .cover, // Ensures the image fills the box correctly
                                 ),
@@ -168,7 +212,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                           Text("About ${data.companyName}",
                               style:
                                   mTextStyle14(mFontWeight: FontWeight.w600)),
-                          SizedBox(
+                          const SizedBox(
                             height: 15,
                           ),
                           InkWell(
@@ -182,14 +226,14 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                   style: mTextStyle14().copyWith(
                                     color: AppColors.blueTextColor,
                                   ))),
-                          SizedBox(
+                          const SizedBox(
                             height: 15,
                           ),
                           Text(data.aboutCompany),
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     // InkWell(
@@ -202,7 +246,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                     //       //             Student_Bottom_Nav_bar()));
                     //     },
                     //     child: commonRedContainer(text: "Apply")),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     )
                   ],

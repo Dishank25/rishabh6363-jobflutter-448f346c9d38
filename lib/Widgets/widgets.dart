@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:developer' as developer show log;
 import 'dart:math' as Math;
 import 'dart:ui';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_intl_phone_field/flutter_intl_phone_field.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:job_portal/utils/constants/image_string.dart';
 import '../UI_Helper/UI_Helper.dart';
@@ -11,11 +13,12 @@ import '../UI_Helper/UI_Helper.dart';
 
 PreferredSizeWidget buildCustomAppBar({required String titleText}) {
   return AppBar(
+    backgroundColor: Colors.white,
     title: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Text(
         titleText,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 20,
           fontFamily: "Inter",
           fontWeight: FontWeight.w700,
@@ -62,17 +65,19 @@ Widget signInHeader({required VoidCallback onTap}) {
           Row(
             children: [
               Text(
-                "Don't have an account?",
+                "Don't have an account? ",
                 style: mTextStyle14(mColor: Colors.white),
               ),
               InkWell(
                 onTap: onTap,
                 child: const Text(
-                  " Sign Up",
+                  "Sign Up",
                   style: TextStyle(
                     color: AppColors.mainRedColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
+                    decoration: TextDecoration.underline,
+                    decorationColor: Colors.red, // underline color
                   ),
                 ),
               ),
@@ -166,7 +171,10 @@ Widget belowBars({required String text, String? imgUrl, VoidCallback? onTap}) {
     width: double.infinity,
     decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.grey.shade500)),
+        border: Border.all(
+          color: const Color.fromARGB(255, 217, 218, 223),
+          // color: Colors.grey.shade500,
+        )),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -234,7 +242,7 @@ class CustomTextField extends StatelessWidget {
           style: mTextStyle14(),
           decoration: InputDecoration(
             filled: true,
-            fillColor: fillColor ?? const Color(0xffFFF7FB),
+            fillColor: fillColor ?? Colors.white,
             hintText: hintText,
             labelText: labelText,
             hintStyle: mTextStyle14(
@@ -332,7 +340,7 @@ Widget OptionContainer(
           borderRadius: BorderRadius.circular(25.69),
           border: Border.all(
               color: Colors.grey.shade400 /*Color(0xffEDF1F3,)*/, width: 1.0),
-          color: isSelected == true ? Color(0xff1961F3) : Color(0xffFFF7FB)),
+          color: isSelected == true ? Color(0xff1961F3) : Colors.white),
       child: Padding(
         padding: const EdgeInsets.only(top: 6.0, bottom: 6.0),
         child: Row(
@@ -717,28 +725,6 @@ class _CustomAutocompleteState extends State<CustomAutocomplete> {
                           mFontWeight: FontWeight.w500,
                           mColor: const Color(0xffBCC1CA),
                         ),
-                        // hintStyle: const TextStyle(
-                        //   color: Color.fromARGB(255, 51, 51, 51),
-                        // ),
-                        // border: const OutlineInputBorder(
-                        //   borderRadius: BorderRadius.vertical(
-                        //     top: Radius.circular(12),
-                        //   ),
-                        // ),
-                        // enabledBorder: OutlineInputBorder(
-                        //   borderSide: BorderSide(
-                        //     color: Color.fromARGB(255, 227, 227, 227),
-                        //   ),
-                        //   borderRadius:
-                        //       BorderRadius.vertical(top: Radius.circular(12)),
-                        // ),
-                        // focusedBorder: OutlineInputBorder(
-                        //   borderSide: BorderSide(
-                        //     color: Color.fromARGB(255, 227, 227, 227),
-                        //   ),
-                        //   borderRadius:
-                        //       BorderRadius.vertical(top: Radius.circular(12)),
-                        // ),
                         contentPadding: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 14), // maintain height
                         border: OutlineInputBorder(
@@ -769,7 +755,11 @@ class _CustomAutocompleteState extends State<CustomAutocomplete> {
                         ),
                         errorStyle: const TextStyle(
                           fontSize: 12,
-                          height: 1.0, // Control line height
+                          height: 1.0,
+                        ),
+                        suffixIcon: const Icon(
+                          Icons.keyboard_arrow_down,
+                          color: Color(0xffBCC1CA),
                         ),
                       ),
                     );
@@ -779,6 +769,139 @@ class _CustomAutocompleteState extends State<CustomAutocomplete> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class CustomPhoneField extends StatelessWidget {
+  final TextEditingController controller;
+
+  const CustomPhoneField({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 68,
+      child: IntlPhoneField(
+        flagsButtonPadding: const EdgeInsets.all(9),
+        dropdownIconPosition: IconPosition.trailing,
+        showDropdownIcon: true,
+        dropdownIcon: const Icon(Icons.keyboard_arrow_down),
+        initialCountryCode: 'IN',
+        onChanged: (phone) {
+          controller.text = phone.number;
+        },
+        decoration: InputDecoration(
+          hintText: '7895674320',
+          hintStyle: const TextStyle(color: Color(0xffBCC1CA)),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(width: 1, color: Color(0xffBCC1CA)),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(width: 1, color: Color(0xffBCC1CA)),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide:
+                BorderSide(width: 1.5, color: Theme.of(context).primaryColor),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(width: 1, color: Colors.red),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(width: 1.5, color: Colors.red),
+          ),
+          errorStyle: const TextStyle(
+            fontSize: 12,
+            height: 1.0,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class SearchTextField extends StatefulWidget {
+  final Function(String) onTextChanged;
+
+  const SearchTextField({Key? key, required this.onTextChanged})
+      : super(key: key);
+
+  @override
+  State<SearchTextField> createState() => _SearchTextFieldState();
+}
+
+class _SearchTextFieldState extends State<SearchTextField> {
+  final TextEditingController _controller = TextEditingController();
+  Timer? _debounce;
+
+  void _onSearchChanged(String query) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 400), () {
+      widget.onTextChanged(query);
+    });
+  }
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 52,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      margin: const EdgeInsets.symmetric(vertical: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(32),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.25),
+            blurRadius: 11,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          // const Icon(Icons.search, color: Colors.grey),
+          const SizedBox(width: 8),
+          Expanded(
+            child: TextField(
+              controller: _controller,
+              onChanged: _onSearchChanged,
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                isDense: true,
+                hintText: 'Search',
+                hintStyle: TextStyle(
+                    color: Color(0xFFBCC1CA),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500),
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          GestureDetector(
+            onTap: () {
+              // Add your filter tap logic here
+              print("Filter tapped");
+            },
+            child: const Icon(Icons.search, color: Colors.grey),
+          ),
+        ],
       ),
     );
   }

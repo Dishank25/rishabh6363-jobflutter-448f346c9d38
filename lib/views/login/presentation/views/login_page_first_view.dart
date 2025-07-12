@@ -1,8 +1,10 @@
 import 'dart:developer' as developer show log;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:job_portal/injection_container.dart';
 import 'package:job_portal/utils/constants/enums.dart';
+import 'package:job_portal/utils/constants/image_string.dart';
 import 'package:job_portal/utils/storage/shared_preference.dart';
 import 'package:job_portal/views/Bottom_Nav_Bar/Student_Bottom_Nav_Bar.dart';
 import 'package:job_portal/views/Common_Screens/Forgot_password_Screen.dart';
@@ -33,13 +35,23 @@ class _SignInPage_1State extends State<LogInPage1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        foregroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        centerTitle: false,
         title: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: Text(
-            "LOGO",
-            style: mTextStyle12(mColor: Colors.white),
+          child: SvgPicture.asset(
+            // ImageString.progressBar1,
+            ImageString.jobPortalLogo,
+            height: 30,
+            // width: 40,
+            fit: BoxFit.contain,
+            allowDrawingOutsideViewBox: true, // optional
           ),
+          // child: Image.asset(ImageString.pngLogo),
         ),
         backgroundColor: AppColors.mainIndigoColor,
       ),

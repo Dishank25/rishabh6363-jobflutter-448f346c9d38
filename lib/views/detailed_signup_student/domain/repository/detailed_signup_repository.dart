@@ -17,6 +17,8 @@ abstract class DetailedSignupRepository {
 
   Future<DataState<CoursesListResponse>> getCourses();
 
+  Future<DataState<LocationsListResponse>> getLocations();
+
   Future<DataState<JobRolesListResponse>> getJobRoles();
 
   Future<DataState<SubmitDetailedUserProfile>> submitDetailedUserProfile(

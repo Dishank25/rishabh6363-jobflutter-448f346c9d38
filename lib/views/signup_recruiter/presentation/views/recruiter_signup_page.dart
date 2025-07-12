@@ -36,7 +36,9 @@ class RecruiterSignupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: const Text(""),
         actions: [
           IconButton(
@@ -163,20 +165,21 @@ class RecruiterSignupPage extends StatelessWidget {
                 ),
                 mSpacer(),
                 Text("Phone Number", style: mTextStyle12()),
-                CustomTextField(
-                  controller: phoneController,
-                  hintText: "7895674320",
-                  keyboardType: TextInputType.number,
-                  suffixIcon: Icons.call,
-                  fillColor: Color(0xffFFF7FB),
-                  validator: (value) {
-                    if (value == null || value.isEmpty)
-                      return 'Phone Number required';
-                    if (value.length < 10 || value.length > 10)
-                      return 'Phone Number must be 10 digits';
-                    return null;
-                  },
-                ),
+                // CustomTextField(
+                //   controller: phoneController,
+                //   hintText: "7895674320",
+                //   keyboardType: TextInputType.number,
+                //   suffixIcon: Icons.call,
+                //   fillColor: Color(0xffFFF7FB),
+                //   validator: (value) {
+                //     if (value == null || value.isEmpty)
+                //       return 'Phone Number required';
+                //     if (value.length < 10 || value.length > 10)
+                //       return 'Phone Number must be 10 digits';
+                //     return null;
+                //   },
+                // ),
+                CustomPhoneField(controller: phoneController),
                 mSpacer(),
                 BlocListener<RecruiterSignupBloc, RecruiterSignupState>(
                   listener: (context, state) {
@@ -262,18 +265,20 @@ class RecruiterSignupPage extends StatelessWidget {
                       onTap: () {},
                       child: Text(
                         " Terms and Conditions",
-                        style: mTextStyle12(mFontWeight: FontWeight.w900),
+                        style: mTextStyle12(
+                            mFontWeight: FontWeight.w700,
+                            mColor: Color.fromARGB(255, 17, 24, 39)),
                       ),
                     ),
                   ],
                 ),
                 mSpacer(mHeight: 26.0),
-                dividerLine(),
+                // dividerLine(),
                 mSpacer(),
-                belowBars(
-                    text: "Continue with Google",
-                    imgUrl: "assets/Icons/google.svg"),
-                mSpacer(mHeight: 60.0),
+                // belowBars(
+                //     text: "Continue with Google",
+                //     imgUrl: "assets/Icons/google.svg"),
+                mSpacer(mHeight: 120.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -294,7 +299,7 @@ class RecruiterSignupPage extends StatelessWidget {
                         " Login",
                         style: mTextStyle12(
                             mColor: AppColors.blueTextColor,
-                            mFontWeight: FontWeight.w600),
+                            mFontWeight: FontWeight.w700),
                       ),
                     ),
                   ],

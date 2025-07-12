@@ -48,6 +48,9 @@ abstract class DetailedApiService {
   @MultiPart()
   Future<HttpResponse<SkillSubmitionResponse>> submitSkillsAndCertificates(
       @Body() FormData data);
+
+  @GET(Urls.getLocations)
+  Future<HttpResponse<LocationsListResponse>> getLocations();
 }
 
 // List<dynamic>

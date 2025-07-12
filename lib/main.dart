@@ -15,6 +15,7 @@ import 'package:job_portal/views/signup_recruiter/presentation/bloc/recruiter_si
 import 'package:job_portal/views/signup_recruiter/presentation/bloc/verify_otp_recruiter_bloc/verify_otp_recruiter_bloc.dart';
 import 'package:job_portal/views/signup_student/presentation/bloc/remote_signup_bloc/remote_signup_bloc.dart';
 import 'package:job_portal/views/signup_student/presentation/bloc/verify_otp_bloc/verify_otp_bloc.dart';
+import 'package:job_portal/views/signup_university/presentation/blocs/university_signup_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'views/Common_Screens/Forgot_password_Screen.dart';
 import 'views/job_related/presentation/views/Feed_Screen_2.dart';
@@ -75,6 +76,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => sl<JobDetailsBloc>()),
         BlocProvider(create: (_) => sl<VerifyOtpBloc>()),
         BlocProvider(create: (_) => sl<VerifyOtpRecruiterBloc>()),
+        BlocProvider(create: (_) => sl<UniversitySignupBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

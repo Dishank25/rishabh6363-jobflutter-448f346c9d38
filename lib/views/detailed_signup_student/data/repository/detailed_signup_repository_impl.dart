@@ -108,6 +108,28 @@ class DetailedSignupRepositoryImpl extends DetailedSignupRepository {
   }
 
   @override
+  Future<DataState<LocationsListResponse>> getLocations() async {
+    try {
+      final res = await _apiService.getLocations();
+      if (res.response.statusCode == HttpStatus.ok) {
+        developer.log('.checkk response in repository : ${res.data}');
+        return DataSuccess(res.data);
+      } else {
+        developer.log('..checkk response in repository : ${res.data}');
+        return DataFailed(DioException(
+            error: res.response.statusMessage,
+            response: res.response,
+            type: DioExceptionType.badResponse,
+            requestOptions: res.response.requestOptions));
+      }
+    } on DioException catch (e) {
+      final error = e.type;
+      developer.log('....checkk  : $error');
+      return DataFailed(e);
+    }
+  }
+
+  @override
   Future<DataState<JobRolesListResponse>> getJobRoles() async {
     try {
       final res = await _apiService.getJobRoles();

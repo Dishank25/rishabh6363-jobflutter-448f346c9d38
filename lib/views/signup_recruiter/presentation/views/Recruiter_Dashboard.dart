@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:job_portal/utils/constants/image_string.dart';
 import 'package:job_portal/views/signup_recruiter/presentation/views/Recruiter_Analytics_Reports.dart';
 import 'package:job_portal/views/signup_recruiter/presentation/views/Recruiter_Setting_Panel.dart';
 import 'package:job_portal/views/signup_recruiter/presentation/views/Recruiter_Upcoming_Interviews.dart';
@@ -25,18 +26,25 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
+
       /// APP BAR
       appBar: AppBar(
-        title: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: Text(
-            "LOGO",
-            style: TextStyle(
-                fontSize: 20,
-                fontFamily: "Inter",
-                fontWeight: FontWeight.w700,
-                color: AppColors.mainIndigoColor),
-          ),
+        backgroundColor: Colors.white,
+        // title: Padding(
+        //   padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        //   child: Text(
+        //     "LOGO",
+        //     style: TextStyle(
+        //         fontSize: 20,
+        //         fontFamily: "Inter",
+        //         fontWeight: FontWeight.w700,
+        //         color: AppColors.mainIndigoColor),
+        //   ),
+        // ),
+        title: SvgPicture.asset(
+          ImageString.jobPortalLogo,
+          height: 30,
         ),
         actions: [
           InkWell(
@@ -76,26 +84,40 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
                 "DashBoard",
                 style: mTextStyle32(mColor: Colors.black),
               ),
-              SizedBox(
-                height: 25,
+              const SizedBox(
+                height: 15,
               ),
 
               /// SEARCH BAR
-              Row(
-                children: [
-                  SizedBox(
-                    width: 320,
-                    child: customSearchBar(
-                        controller: findingController, hint: "Search "),
-                  ),
-                  Spacer(),
-                  InkWell(
-                      onTap: () {
-                        //  Navigator.push(context, MaterialPageRoute(builder: (context)=>JobFiltersScreen()));
-                      },
-                      child: SvgPicture.asset(
-                          "assets/Icons/settings-sliders 1.svg"))
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                child: Row(
+                  children: [
+                    // SizedBox(
+                    //   width: 320,
+                    //   child: customSearchBar(
+                    //       controller: findingController, hint: "Search "),
+                    // ),
+                    Expanded(
+                      child: SizedBox(
+                        height: 80,
+                        child: SearchTextField(onTextChanged: (value) {
+                          print("API call for: $value");
+                        }),
+                      ),
+                    ),
+                    // Spacer(),
+                    SizedBox(
+                      width: 18,
+                    ),
+                    InkWell(
+                        onTap: () {
+                          //  Navigator.push(context, MaterialPageRoute(builder: (context)=>JobFiltersScreen()));
+                        },
+                        child: SvgPicture.asset(
+                            "assets/Icons/settings-sliders 1.svg"))
+                  ],
+                ),
               ),
 
               /// DASHBOARD CONTAINERS

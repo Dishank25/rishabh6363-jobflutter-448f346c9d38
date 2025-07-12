@@ -69,7 +69,7 @@ class _DetailedApiService implements DetailedApiService {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
+    final _result = await _dio.fetch<List<String>>(_options);
     late CollegesListResponse _value;
     try {
       _value = CollegesListResponse.fromJson(_result.data!);
@@ -97,7 +97,7 @@ class _DetailedApiService implements DetailedApiService {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
+    final _result = await _dio.fetch<List<String>>(_options);
     late SpecializationListResponse _value;
     try {
       _value = SpecializationListResponse.fromJson(_result.data!);
@@ -125,7 +125,7 @@ class _DetailedApiService implements DetailedApiService {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
+    final _result = await _dio.fetch<List<String>>(_options);
     late CoursesListResponse _value;
     try {
       _value = CoursesListResponse.fromJson(_result.data!);
@@ -209,7 +209,7 @@ class _DetailedApiService implements DetailedApiService {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
+    final _result = await _dio.fetch<List<String>>(_options);
     late JobRolesListResponse _value;
     try {
       _value = JobRolesListResponse.fromJson(_result.data!);
@@ -279,6 +279,34 @@ class _DetailedApiService implements DetailedApiService {
     late SkillSubmitionResponse _value;
     try {
       _value = SkillSubmitionResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<HttpResponse<LocationsListResponse>> getLocations() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<HttpResponse<LocationsListResponse>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'locations',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<List<String>>(_options);
+    late LocationsListResponse _value;
+    try {
+      _value = LocationsListResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

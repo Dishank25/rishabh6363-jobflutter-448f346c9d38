@@ -14,21 +14,19 @@ class DetailedSignupBloc
     on<DetailedSignupGetBasicUserInfo>(_onGetBasicUserInfo);
     on<DetailedSignupGetCollegeDetails>(_onGetCollegeDetails);
     on<DetailedSingupSubmitUserDetails>(_onSubmitUserDetails);
-    // on<DetailedSignupGetColleges>(_onGetColleges);
-    // on<DetailedSignupGetSpecialization>(_onGetSpecialization);
-    // on<DetailedSignupGetCourses>(_onGetCourses);
-    // on<DetailedSignupGetJobRoles>(_onGetJobRoles);
   }
 
   Future<void> _onGetBasicUserInfo(DetailedSignupGetBasicUserInfo event,
       Emitter<DetailedSignupState> emit) async {
     try {
       emit(const DetailedSignupGetBasicUserInfoLoading());
-      final response =
+      final responseUserInfo =
           await _detailedSignupUsecase.getBasicUserInfo(event.emailMap);
-      developer
-          .log('Response of get basic user info : ${response.data!.message}');
-      emit(DetailedSignupGetBasicUserInfoLoaded(response.data!));
+      final responseLocations = await _detailedSignupUsecase.getLocations();
+      developer.log(
+          'Response of get basic user info : ${responseUserInfo.data!.message}');
+      emit(DetailedSignupGetBasicUserInfoLoaded(
+          responseUserInfo.data!, responseLocations.data!));
     } catch (e) {
       developer.log('Ending up in error get basic user info : $e');
       emit(const DetailedSignupGetBasicUserInfoError());

@@ -6,6 +6,7 @@ import 'package:job_portal/views/signup_student/presentation/bloc/remote_signup_
 import 'package:job_portal/views/signup_student/presentation/bloc/remote_signup_bloc/remote_signup_event.dart';
 import 'package:job_portal/views/signup_student/presentation/bloc/remote_signup_bloc/remote_signup_state.dart';
 import 'package:job_portal/views/signup_student/presentation/views/signup_student2_view.dart';
+import 'package:job_portal/views/signup_university/presentation/views/verify_university_email.dart';
 import 'package:job_portal/widgets/widgets.dart';
 
 class SignupUniversityView extends StatelessWidget {
@@ -30,7 +31,8 @@ class SignupUniversityView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Sign Up", style: mTextStyle32(mColor: Color(0xff1A1C1E))),
+              Text("Sign Up",
+                  style: mTextStyle32(mColor: const Color(0xff1A1C1E))),
               mSpacer(),
               Text("Create an account to continue!", style: mTextStyle14()),
               mSpacer(mHeight: 24.0),
@@ -39,7 +41,7 @@ class SignupUniversityView extends StatelessWidget {
                 controller: clgNameController,
                 hintText: "NCU",
                 suffixIcon: Icons.person,
-                fillColor: Color(0xffFFF7FB),
+                fillColor: const Color(0xffFFF7FB),
                 validator: (value) => value == null || value.isEmpty
                     ? 'College name required'
                     : null,
@@ -115,7 +117,7 @@ class SignupUniversityView extends StatelessWidget {
                       showSnackbar('Email already exists', context);
                       // this is for temp testing of send otp api
                       Map<String, dynamic> emailMap = {
-                        'email': "mmudgal67@gmail.com"
+                        'email': emailController.text.trim()
                       };
                       context
                           .read<RemoteSignupBloc>()
@@ -167,9 +169,9 @@ class SignupUniversityView extends StatelessWidget {
                           .read<RemoteSignupBloc>()
                           .add(RemoteSignupData(body));
                     }
-                    // Navigator.of(context).push(MaterialPageRoute(
-                    //     builder: (context) => SignUpStudent_2(
-                    //         Email: emailController.text.trim())));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => VerifyUniversityEmail(
+                            email: emailController.text.trim())));
                   },
                 ),
               ),
@@ -192,12 +194,9 @@ class SignupUniversityView extends StatelessWidget {
                 ],
               ),
               mSpacer(mHeight: 20.0),
-              // dividerLine(),
-              // mSpacer(),
-              // belowBars(
-              //     text: "Continue with Google",
-              //     imgUrl: "assets/Icons/google.svg"),
-              // mSpacer(mHeight: 20.0),
+              const SizedBox(
+                height: 220,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -219,7 +218,7 @@ class SignupUniversityView extends StatelessWidget {
                   )
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
             ],
           ),
         ),

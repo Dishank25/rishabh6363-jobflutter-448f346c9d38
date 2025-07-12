@@ -26,8 +26,10 @@ class DetailedSignupGetBasicUserInfoLoading extends DetailedSignupState {
 
 class DetailedSignupGetBasicUserInfoLoaded extends DetailedSignupState {
   final BasicUserInfoResponse basicUserInfoResponse;
+  final LocationsListResponse locations;
 
-  const DetailedSignupGetBasicUserInfoLoaded(this.basicUserInfoResponse);
+  const DetailedSignupGetBasicUserInfoLoaded(
+      this.basicUserInfoResponse, this.locations);
 }
 
 class DetailedSignupGetBasicUserInfoError extends DetailedSignupState {

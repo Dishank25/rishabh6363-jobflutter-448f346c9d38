@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:job_portal/views/Bottom_Nav_Bar/Student_Bottom_Nav_Bar.dart';
-import 'package:job_portal/views/detailed_signup_student/data/model/basic_user_data_response.dart';
-import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_bloc.dart';
-import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_event.dart';
-import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_state.dart';
-import 'package:job_portal/views/signup_student/data/models/signup_user_response.dart';
 import 'package:job_portal/views/signup_student/presentation/bloc/verify_otp_bloc/verify_otp_bloc.dart';
 import 'package:job_portal/views/signup_student/presentation/bloc/verify_otp_bloc/verify_otp_event.dart';
 import 'package:job_portal/views/signup_student/presentation/bloc/verify_otp_bloc/verify_otp_state.dart';
@@ -22,8 +16,25 @@ class SignUpStudent_2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text(""),
+          backgroundColor: Colors.white,
+          title: const Text(""),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SignupAsAnyOne(
+                        // basicUserInfoResponse: data,
+                        email: Email,
+                      ),
+                    ),
+                  );
+                },
+                icon: Icon(Icons.double_arrow))
+          ],
         ),
         body: Container(
           width: double.infinity,
@@ -182,13 +193,15 @@ class SignUpStudent_2 extends StatelessWidget {
                 ),
               ),
               mSpacer(mHeight: 44.0),
-              Container(
-                height: 36,
-                width: 313,
-                child: Text(
-                  "Can't find our mail? Check your spam folder or promotions tab too",
-                  style: mTextStyle12(),
-                  textAlign: TextAlign.center,
+              Center(
+                child: Container(
+                  height: 36,
+                  width: 313,
+                  child: Text(
+                    "Can't find our mail? Check your spam folder or promotions tab too",
+                    style: mTextStyle12(),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
               mSpacer(mHeight: 243.0),
