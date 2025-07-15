@@ -26,7 +26,7 @@ class _UniversitySignupApiService implements UniversitySignupApiService {
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<CoursesListResponse>>(
-      Options(method: 'POST', headers: _headers, extra: _extra)
+      Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
             'courses',
@@ -35,7 +35,7 @@ class _UniversitySignupApiService implements UniversitySignupApiService {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<String>>(_options);
+    final _result = await _dio.fetch<List<dynamic>>(_options);
     late CoursesListResponse _value;
     try {
       _value = CoursesListResponse.fromJson(_result.data!);

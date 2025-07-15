@@ -219,349 +219,353 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
             },
             icon: const Icon(Icons.arrow_back_ios)),
       ),
-      body: SingleChildScrollView(
-        physics: ScrollPhysics(),
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              /// HEADER
-              // Text(
-              //   "Logo",
-              //   style: mTextStyle15(
-              //     mColor: Color(0xff032466),
-              //     mFontWeight: FontWeight.w700,
-              //   ),
-              // ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: SvgPicture.asset(
-                  // ImageString.progressBar1,
-                  ImageString.jobPortalLogo,
-                  height: 30,
-                  // width: 40,
-                  fit: BoxFit.contain,
-                  allowDrawingOutsideViewBox: true, // optional
+      body: SafeArea(
+        child: SingleChildScrollView(
+          physics: ScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                /// HEADER
+                // Text(
+                //   "Logo",
+                //   style: mTextStyle15(
+                //     mColor: Color(0xff032466),
+                //     mFontWeight: FontWeight.w700,
+                //   ),
+                // ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: SvgPicture.asset(
+                    // ImageString.progressBar1,
+                    ImageString.jobPortalLogo,
+                    height: 30,
+                    // width: 40,
+                    fit: BoxFit.contain,
+                    allowDrawingOutsideViewBox: true, // optional
+                  ),
+                  // child: Image.asset(ImageString.pngLogo),
                 ),
-                // child: Image.asset(ImageString.pngLogo),
-              ),
-              mSpacer17(),
-              Container(
-                height: 42,
-                width: double.infinity,
-                child: Text(
-                  "Your Skills",
-                  style: mTextStyle32(mColor: Color(0xff1A1C1E)),
+                mSpacer17(),
+                Container(
+                  height: 42,
+                  width: double.infinity,
+                  child: Text(
+                    "Your Skills",
+                    style: mTextStyle32(mColor: Color(0xff1A1C1E)),
+                  ),
                 ),
-              ),
-              Text(
-                "Help us match you with the best career opportunities",
-                style: mTextStyle12(),
-              ),
-              mSpacer(mHeight: 25.0),
-              SvgPicture.asset(ImageString.progressBar2),
-              const SizedBox(height: 3),
-              mSpacer(mHeight: 25.0),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Areas of Interest", style: mTextStyle14()),
-                  mSpacer(mHeight: 8.0),
-                  BlocListener<SkillBloc, SkillState>(
-                    listener: (context, state) {
-                      if (state is SkillStateDomainLoaded) {
-                        // if ()
-                        setState(() {
-                          allDomains = state.domainAllResponse.domains;
-                        });
-                      } else if (state is SubSkillLoaded) {
-                        final data = state.subSkillResponse;
-                        final domain = state.domain;
-
-                        if (!subSkillsMap.containsKey(domain)) {
+                Text(
+                  "Help us match you with the best career opportunities",
+                  style: mTextStyle12(),
+                ),
+                mSpacer(mHeight: 25.0),
+                SvgPicture.asset(ImageString.progressBar2),
+                const SizedBox(height: 3),
+                mSpacer(mHeight: 25.0),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Areas of Interest", style: mTextStyle14()),
+                    mSpacer(mHeight: 8.0),
+                    BlocListener<SkillBloc, SkillState>(
+                      listener: (context, state) {
+                        if (state is SkillStateDomainLoaded) {
+                          // if ()
                           setState(() {
-                            subSkillsMap[domain] = data.skills;
+                            allDomains = state.domainAllResponse.domains;
                           });
-                        }
-                      } else if (state is SkillCertificatesLoaded) {
-                        final certificates = state.skillCertificates;
+                        } else if (state is SubSkillLoaded) {
+                          final data = state.subSkillResponse;
+                          final domain = state.domain;
 
-                        setState(() {
-                          certificateImages = certificates;
-                        });
-
-                        developer.log('Certificates : $certificates');
-                      } else if (state is SkillCertificateLoading) {
-                        developer.log('Picking Certificate.');
-                      }
-                    },
-                    child: Container(
-                      key: _autoCompleteKey,
-                      child: CustomAutocomplete(
-                        options: allDomains,
-                        label: 'Select Area of interest',
-                        onSelected: (value) {
-                          if (!selectedDomains.contains(value)) {
-                            context.read<SkillBloc>().add(LoadSubSkills(value));
+                          if (!subSkillsMap.containsKey(domain)) {
                             setState(() {
-                              selectedDomains.add(value);
-                              _autoCompleteKey = UniqueKey();
-                            });
-                          } else {
-                            showSnackbar('Skill already selected.', context);
-                            setState(() {
-                              _autoCompleteKey = UniqueKey();
+                              subSkillsMap[domain] = data.skills;
                             });
                           }
-                        },
-                      ),
-                    ),
-                  ),
-                  // BlocBuilder<SkillBloc, SkillState>(
-                  //   builder: (context, state) {
-                  //     if (state is SkillStateDomainLoaded) {
-                  //       final data = state.domainAllResponse;
-                  //       return CustomAutocomplete(
-                  //         options: data.domains,
-                  //         label: 'Select Area of interest',
-                  //         onSelected: (value) {
-                  //           context.read<SkillBloc>().add(LoadSubSkills(value));
-                  //           setState(() {
-                  //             selectedDomains.add(value);
-                  //           });
-                  //         },
-                  //       );
-                  //     } else {
-                  //       return Center(
-                  //         child: Text('Unhandeled State : $state'),
-                  //       );
-                  //     }
-                  //   },
-                  // ),
-                  mSpacer(mHeight: 16.0),
-                  // CompositedTransformTarget(
-                  //   link: _domainLink,
-                  //   child: CustomTextField(
-                  //     key: _domainFieldKey,
-                  //     controller: skillsSearchController,
-                  //     hintText: "Select Area of Interest",
-                  //     suffixIcon: Icons.search,
-                  //     onSuffixTap: () {
-                  //       if (_domainOverlayEntry == null) {
-                  //         _showDomainDropdown(context, skillsSearchController);
-                  //       } else {
-                  //         _domainOverlayEntry?.remove();
-                  //         _domainOverlayEntry = null;
-                  //       }
-                  //     },
-                  //   ),
-                  // ),
-                  ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: selectedDomains.length,
-                    itemBuilder: (context, index) {
-                      final domain = selectedDomains[index];
-                      final subSkills = subSkillsMap[domain] ?? [];
-                      final selectedSkills =
-                          selectedSubSkillsPerDomain[domain] ?? [];
+                        } else if (state is SkillCertificatesLoaded) {
+                          final certificates = state.skillCertificates;
 
-                      // Initialize the controller if not already present
-                      courseCollegeControllers.putIfAbsent(
-                          domain, () => TextEditingController());
+                          setState(() {
+                            certificateImages = certificates;
+                          });
 
-                      return Column(
-                        children: [
-                          preferenceContainer(
-                            cName: domain,
-                            fileName:
-                                certificateImages[domain]?.files.first.name,
-                            onTap: () {},
-                            subSkills: subSkills,
-                            selectedSubSkills: selectedSkills,
-                            onSkillTap: (skill) {
+                          developer.log('Certificates : $certificates');
+                        } else if (state is SkillCertificateLoading) {
+                          developer.log('Picking Certificate.');
+                        }
+                      },
+                      child: Container(
+                        key: _autoCompleteKey,
+                        child: CustomAutocomplete(
+                          options: allDomains,
+                          label: 'Select Area of interest',
+                          onSelected: (value) {
+                            if (!selectedDomains.contains(value)) {
+                              context
+                                  .read<SkillBloc>()
+                                  .add(LoadSubSkills(value));
                               setState(() {
-                                final selected =
-                                    selectedSubSkillsPerDomain[domain] ?? [];
-                                if (selected.contains(skill)) {
-                                  selected.remove(skill);
-                                } else {
-                                  selected.add(skill);
-                                }
-                                selectedSubSkillsPerDomain[domain] =
-                                    List.from(selected);
+                                selectedDomains.add(value);
+                                _autoCompleteKey = UniqueKey();
                               });
-                            },
-                            courseCollegeController:
-                                courseCollegeControllers[domain]!,
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return 'Please enter the details';
-                              }
-                              return null;
-                            },
-                            onUploadCertificateTap: () {
-                              // context.read<SkillBloc>().add(PickImages());
-                              // developer.log('Upload certificate tap.');
-                              if (domain.isNotEmpty) {
-                                // developer.log('Upload certificate tap.1');
-                                // Only allow if one skill is selected
-                                // final skill = selectedSkills.length == 1
-                                //     ? selectedSkills.first
-                                //     : null;
-                                final skill = domain;
-                                developer.log('Skill : $skill');
-                                if (skill != null) {
-                                  context
-                                      .read<SkillBloc>()
-                                      .add(PickCertificate(skillName: skill));
-                                } else {
-                                  // show snackbar or dialog to tell user to select only one
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text(
-                                            'Please select only one skill to upload certificate.')),
-                                  );
-                                }
-                              }
-                            },
-                            onCrossTap: () {
+                            } else {
+                              showSnackbar('Skill already selected.', context);
                               setState(() {
-                                courseCollegeControllers.remove(domain);
-                                // remove the certificate for this skill too
-                                context
-                                    .read<SkillBloc>()
-                                    .add(RemoveCertificate(skillName: domain));
-                                selectedSubSkillsPerDomain.remove(domain);
-                                selectedDomains.removeAt(index);
+                                _autoCompleteKey = UniqueKey();
                               });
-                            },
-                          ),
-                          mSpacer(),
-                        ],
-                      );
-                    },
-                  ),
-
-                  // mSpacer(mHeight: 16.0),
-                  // preferenceContainer(
-                  //   cName: "Digital Marketing",
-                  //   onTap: () {},
-                  // ),
-                  // mSpacer(),
-                  // preferenceContainer(
-                  //   cName: "Graphic Design",
-                  //   onTap: () {},
-                  // ),
-                  // mSpacer17(),
-                  // Text("Related skills you might know", style: mTextStyle12()),
-                  // SizedBox(height: 10),
-                  // BlocBuilder<RelatedSkillsBloc, RelatedSkillsState>(
-                  //   builder: (context, state) {
-                  //     if (state is RelatedSkillsLoading) {
-                  //       return Center(child: CircularProgressIndicator());
-                  //     } else if (state is RelatedSkillsLoaded) {
-                  //       return Wrap(
-                  //         spacing: 8,
-                  //         runSpacing: 8,
-                  //         children: state.skills.map((skill) {
-                  //           return courseName(
-                  //             name: skill.skillName,
-                  //             mIcon: Icons.add,
-                  //           );
-                  //         }).toList(),
-                  //       );
-                  //     } else if (state is RelatedSkillsError) {
-                  //       return Text(state.message,
-                  //           style: TextStyle(color: Colors.red));
-                  //     }
-                  //     return SizedBox.shrink();
-                  //   },
-                  // ),
-                  // SizedBox(height: 6),
-                  // courseName(
-                  //     name: "See More",
-                  //     mIcon: Icons.add,
-                  //     bgColor: Color(0xff1961F3)),
-                  mSpacer(mHeight: 24.0),
-                  Row(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          height: 40,
-                          width: 100,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: Color(0xff6C7278)),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              const Icon(Icons.arrow_back, size: 16),
-                              Text(
-                                "Back",
-                                style: mTextStyle14(),
-                              ),
-                            ],
-                          ),
+                            }
+                          },
                         ),
                       ),
-                      Spacer(),
-                      nextButton(
-                        title: "Next",
-                        onTap: () async {
-                          if (_formKey.currentState!.validate()) {
-                            final skillData = await createParamsForSkill();
-                            context
-                                .read<SkillBloc>()
-                                .add(SubmitSkills(skillData));
-                            _prefs.clear(PreferencesManager.SKILL_PARAMS);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SignupPageYourPreferences(
-                                  params: widget.params,
-                                  /* firstName:
-                                  surName:
-                                  gender:
-                                  DOB:
-                                  phoneNumber:
-                                  email:
-                              jobPreferenceLocation:
-                              currentLocation:
-                               userCategory:
-                               totalWorkExp:
-                               currentJobRole:
-                              currentCompany:
-                               jobStartYear:
-                               jobEndYear:
-                             studentClass:
-                             course:
-                             CollegeName:
-                              Specialization:
-                                  courseStartYear:
-                                   courseEndYear:*/
+                    ),
+                    // BlocBuilder<SkillBloc, SkillState>(
+                    //   builder: (context, state) {
+                    //     if (state is SkillStateDomainLoaded) {
+                    //       final data = state.domainAllResponse;
+                    //       return CustomAutocomplete(
+                    //         options: data.domains,
+                    //         label: 'Select Area of interest',
+                    //         onSelected: (value) {
+                    //           context.read<SkillBloc>().add(LoadSubSkills(value));
+                    //           setState(() {
+                    //             selectedDomains.add(value);
+                    //           });
+                    //         },
+                    //       );
+                    //     } else {
+                    //       return Center(
+                    //         child: Text('Unhandeled State : $state'),
+                    //       );
+                    //     }
+                    //   },
+                    // ),
+                    mSpacer(mHeight: 16.0),
+                    // CompositedTransformTarget(
+                    //   link: _domainLink,
+                    //   child: CustomTextField(
+                    //     key: _domainFieldKey,
+                    //     controller: skillsSearchController,
+                    //     hintText: "Select Area of Interest",
+                    //     suffixIcon: Icons.search,
+                    //     onSuffixTap: () {
+                    //       if (_domainOverlayEntry == null) {
+                    //         _showDomainDropdown(context, skillsSearchController);
+                    //       } else {
+                    //         _domainOverlayEntry?.remove();
+                    //         _domainOverlayEntry = null;
+                    //       }
+                    //     },
+                    //   ),
+                    // ),
+                    ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: selectedDomains.length,
+                      itemBuilder: (context, index) {
+                        final domain = selectedDomains[index];
+                        final subSkills = subSkillsMap[domain] ?? [];
+                        final selectedSkills =
+                            selectedSubSkillsPerDomain[domain] ?? [];
+
+                        // Initialize the controller if not already present
+                        courseCollegeControllers.putIfAbsent(
+                            domain, () => TextEditingController());
+
+                        return Column(
+                          children: [
+                            preferenceContainer(
+                              cName: domain,
+                              fileName:
+                                  certificateImages[domain]?.files.first.name,
+                              onTap: () {},
+                              subSkills: subSkills,
+                              selectedSubSkills: selectedSkills,
+                              onSkillTap: (skill) {
+                                setState(() {
+                                  final selected =
+                                      selectedSubSkillsPerDomain[domain] ?? [];
+                                  if (selected.contains(skill)) {
+                                    selected.remove(skill);
+                                  } else {
+                                    selected.add(skill);
+                                  }
+                                  selectedSubSkillsPerDomain[domain] =
+                                      List.from(selected);
+                                });
+                              },
+                              courseCollegeController:
+                                  courseCollegeControllers[domain]!,
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'Please enter the details';
+                                }
+                                return null;
+                              },
+                              onUploadCertificateTap: () {
+                                // context.read<SkillBloc>().add(PickImages());
+                                // developer.log('Upload certificate tap.');
+                                if (domain.isNotEmpty) {
+                                  // developer.log('Upload certificate tap.1');
+                                  // Only allow if one skill is selected
+                                  // final skill = selectedSkills.length == 1
+                                  //     ? selectedSkills.first
+                                  //     : null;
+                                  final skill = domain;
+                                  developer.log('Skill : $skill');
+                                  if (skill != null) {
+                                    context
+                                        .read<SkillBloc>()
+                                        .add(PickCertificate(skillName: skill));
+                                  } else {
+                                    // show snackbar or dialog to tell user to select only one
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text(
+                                              'Please select only one skill to upload certificate.')),
+                                    );
+                                  }
+                                }
+                              },
+                              onCrossTap: () {
+                                setState(() {
+                                  courseCollegeControllers.remove(domain);
+                                  // remove the certificate for this skill too
+                                  context.read<SkillBloc>().add(
+                                      RemoveCertificate(skillName: domain));
+                                  selectedSubSkillsPerDomain.remove(domain);
+                                  selectedDomains.removeAt(index);
+                                });
+                              },
+                            ),
+                            mSpacer(),
+                          ],
+                        );
+                      },
+                    ),
+
+                    // mSpacer(mHeight: 16.0),
+                    // preferenceContainer(
+                    //   cName: "Digital Marketing",
+                    //   onTap: () {},
+                    // ),
+                    // mSpacer(),
+                    // preferenceContainer(
+                    //   cName: "Graphic Design",
+                    //   onTap: () {},
+                    // ),
+                    // mSpacer17(),
+                    // Text("Related skills you might know", style: mTextStyle12()),
+                    // SizedBox(height: 10),
+                    // BlocBuilder<RelatedSkillsBloc, RelatedSkillsState>(
+                    //   builder: (context, state) {
+                    //     if (state is RelatedSkillsLoading) {
+                    //       return Center(child: CircularProgressIndicator());
+                    //     } else if (state is RelatedSkillsLoaded) {
+                    //       return Wrap(
+                    //         spacing: 8,
+                    //         runSpacing: 8,
+                    //         children: state.skills.map((skill) {
+                    //           return courseName(
+                    //             name: skill.skillName,
+                    //             mIcon: Icons.add,
+                    //           );
+                    //         }).toList(),
+                    //       );
+                    //     } else if (state is RelatedSkillsError) {
+                    //       return Text(state.message,
+                    //           style: TextStyle(color: Colors.red));
+                    //     }
+                    //     return SizedBox.shrink();
+                    //   },
+                    // ),
+                    // SizedBox(height: 6),
+                    // courseName(
+                    //     name: "See More",
+                    //     mIcon: Icons.add,
+                    //     bgColor: Color(0xff1961F3)),
+                    mSpacer(mHeight: 24.0),
+                    Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            height: 40,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: Color(0xff6C7278)),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                const Icon(Icons.arrow_back, size: 16),
+                                Text(
+                                  "Back",
+                                  style: mTextStyle14(),
                                 ),
-                              ),
-                            );
-                          } else {
-                            showSnackbar(
-                                'Please enter all the details', context);
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                  mSpacer(mHeight: 24.0),
-                ],
-              ),
-            ],
+                              ],
+                            ),
+                          ),
+                        ),
+                        Spacer(),
+                        nextButton(
+                          title: "Next",
+                          onTap: () async {
+                            if (_formKey.currentState!.validate()) {
+                              final skillData = await createParamsForSkill();
+                              context
+                                  .read<SkillBloc>()
+                                  .add(SubmitSkills(skillData));
+                              _prefs.clear(PreferencesManager.SKILL_PARAMS);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      SignupPageYourPreferences(
+                                    params: widget.params,
+                                    /* firstName:
+                                    surName:
+                                    gender:
+                                    DOB:
+                                    phoneNumber:
+                                    email:
+                                jobPreferenceLocation:
+                                currentLocation:
+                                 userCategory:
+                                 totalWorkExp:
+                                 currentJobRole:
+                                currentCompany:
+                                 jobStartYear:
+                                 jobEndYear:
+                               studentClass:
+                               course:
+                               CollegeName:
+                                Specialization:
+                                    courseStartYear:
+                                     courseEndYear:*/
+                                  ),
+                                ),
+                              );
+                            } else {
+                              showSnackbar(
+                                  'Please enter all the details', context);
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                    mSpacer(mHeight: 24.0),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -570,6 +574,7 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
 
   Future<FormData> createParamsForSkill() async {
     final _prefs = sl<PreferencesManager>();
+    // final userId = '1';
     final userId = _prefs.getUserId() ?? '1';
 
     // Step 1: Construct skill list
@@ -580,6 +585,7 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
       final authority = courseCollegeControllers[skill]?.text ?? '';
 
       skillList.add({
+        // 'skill_id': 1,
         "skill": skill,
         "authority": authority,
       });

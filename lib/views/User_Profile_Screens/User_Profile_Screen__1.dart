@@ -7,7 +7,7 @@ import 'package:job_portal/views/User_Profile_Screens/User_messages_screen.dart'
 import 'package:job_portal/views/User_Profile_Screens/User_terms_conditions_screen.dart';
 
 import '../../ui_helper/ui_helper.dart';
-import '../Bottom_Nav_Bar/Student_Bottom_Nav_Bar.dart';
+import '../bottom_nav_bar/student_bottom_nav_bar.dart';
 import 'User_Profile_Screen_2.dart';
 import 'User_my_applications.dart';
 

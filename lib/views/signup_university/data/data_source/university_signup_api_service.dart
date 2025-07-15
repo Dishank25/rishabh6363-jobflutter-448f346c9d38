@@ -10,7 +10,7 @@ abstract class UniversitySignupApiService {
   factory UniversitySignupApiService(Dio dio, {String? baseUrl}) =
       _UniversitySignupApiService;
 
-  @POST(Urls.getCourses)
+  @GET(Urls.getCourses)
   Future<HttpResponse<CoursesListResponse>> getCourses();
 }
 

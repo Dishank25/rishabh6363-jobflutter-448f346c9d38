@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:job_portal/injection_container.dart';
+import 'package:job_portal/utils/storage/shared_preference.dart';
 
 class DioClient {
   final Dio _dio;
@@ -22,8 +24,14 @@ class DioClient {
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
         // can add bearer token here
+
         String token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjksImVtYWlsIjoibW11ZGdhbDY3QGdtYWlsLmNvbSIsInJvbGUiOiJDT01QQU5ZIiwiaWF0IjoxNzUyMzQzMzM3LCJleHAiOjE3NTI1MTYxMzd9.l1jsknq6oKaWpew92cS8OTBsPrck-v8jRHgibo4uv8s";
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjksImVtYWlsIjoibW11ZGdhbDY3QGdtYWlsLmNvbSIsInJvbGUiOiJDT01QQU5ZIiwiaWF0IjoxNzUyNDg0Mjg0LCJleHAiOjE3NTI2NTcwODR9.W_DpdydE2ZuXaLUX103TUl2m275HD9MRBWVnZ2s5w6w";
+        final _prefs = sl<PreferencesManager>();
+        final storedToken = _prefs.getToken();
+        if (storedToken != null && storedToken != '') {
+          token = storedToken;
+        }
         options.headers.addAll({'Authorization': 'Bearer $token'});
         return handler.next(options);
       },

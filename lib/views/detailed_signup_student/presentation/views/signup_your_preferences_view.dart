@@ -3,9 +3,11 @@ import 'dart:developer' as developer show log;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:job_portal/injection_container.dart';
 import 'package:job_portal/utils/constants/enums.dart';
 import 'package:job_portal/utils/constants/image_string.dart';
-import 'package:job_portal/views/Bottom_Nav_Bar/Student_Bottom_Nav_Bar.dart';
+import 'package:job_portal/utils/storage/shared_preference.dart';
+import 'package:job_portal/views/bottom_nav_bar/student_bottom_nav_bar.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_bloc.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_event.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_state.dart';
@@ -45,6 +47,8 @@ class _SignupPageYourPreferencesState extends State<SignupPageYourPreferences> {
   final Set<String> selectedPreferences = {};
   final Set<String> selectedWorkModes = {};
 
+  final _prefs = sl<PreferencesManager>();
+
   void togglePreference(String title) {
     setState(() {
       if (selectedPreferences.contains(title)) {
@@ -80,7 +84,7 @@ class _SignupPageYourPreferencesState extends State<SignupPageYourPreferences> {
     });
 
     final dummyMap = {
-      "userId": 63,
+      "userId": _prefs.getUserId() ?? 63,
       "firstName": "Megha",
       "lastName": "Gupta",
       "email": "axxa@gmail.com",
@@ -92,7 +96,7 @@ class _SignupPageYourPreferencesState extends State<SignupPageYourPreferences> {
       "jobLocation": "San Francisco",
       "experiences": [
         {
-          "userId": 63,
+          "userId": _prefs.getUserId() ?? 63,
           "companyRecruiterProfileId": "4",
           "jobRole": "Software Engineer",
           "company": "OriginCore",
@@ -111,7 +115,7 @@ class _SignupPageYourPreferencesState extends State<SignupPageYourPreferences> {
     //     .add(DetailedSingupSubmitUserDetails(widget.params));
     context
         .read<DetailedSignupBloc>()
-        .add(DetailedSingupSubmitUserDetails(dummyMap));
+        .add(DetailedSingupSubmitUserDetails(widget.params));
 
     developer.log('Params in preferences screen : ${widget.params}');
 
@@ -156,148 +160,154 @@ class _SignupPageYourPreferencesState extends State<SignupPageYourPreferences> {
           IconButton(
             onPressed: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Student_Bottom_Nav_bar()));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const Student_Bottom_Nav_bar(),
+                ),
+              );
             },
-            icon: Icon(Icons.double_arrow),
+            icon: const Icon(Icons.double_arrow),
           )
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Text("Logo",
-              //     style: mTextStyle15(
-              //         mColor: Color(0xff032466), mFontWeight: FontWeight.w700)),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: SvgPicture.asset(
-                  // ImageString.progressBar1,
-                  ImageString.jobPortalLogo,
-                  height: 30,
-                  // width: 40,
-                  fit: BoxFit.contain,
-                  allowDrawingOutsideViewBox: true, // optional
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Text("Logo",
+                //     style: mTextStyle15(
+                //         mColor: Color(0xff032466), mFontWeight: FontWeight.w700)),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: SvgPicture.asset(
+                    // ImageString.progressBar1,
+                    ImageString.jobPortalLogo,
+                    height: 30,
+                    // width: 40,
+                    fit: BoxFit.contain,
+                    allowDrawingOutsideViewBox: true, // optional
+                  ),
+                  // child: Image.asset(ImageString.pngLogo),
                 ),
-                // child: Image.asset(ImageString.pngLogo),
-              ),
-              mSpacer17(),
-              Container(
-                height: 42,
-                width: double.infinity,
-                child: Text("Your Preferences",
-                    style: mTextStyle32(mColor: Color(0xff1A1C1E))),
-              ),
-              mSpacer(mHeight: 10.0),
-              Text("Help us match you with the best career opportunities",
-                  style: mTextStyle12()),
-              mSpacer(mHeight: 25.0),
-              SvgPicture.asset(ImageString.progressBar3),
-              SizedBox(height: 3),
-              mSpacer(mHeight: 25.0),
+                mSpacer17(),
+                Container(
+                  height: 42,
+                  width: double.infinity,
+                  child: Text("Your Preferences",
+                      style: mTextStyle32(mColor: Color(0xff1A1C1E))),
+                ),
+                mSpacer(mHeight: 10.0),
+                Text("Help us match you with the best career opportunities",
+                    style: mTextStyle12()),
+                mSpacer(mHeight: 25.0),
+                SvgPicture.asset(ImageString.progressBar3),
+                SizedBox(height: 3),
+                mSpacer(mHeight: 25.0),
 
-              /// Preferences Section
-              Text("Currently looking for:", style: mTextStyle12()),
-              mSpacer(mHeight: 8.0),
-              Wrap(
-                runSpacing: 12,
-                children: [
-                  OptionContainer(
-                    title: "Jobs +",
-                    isSelected: selectedPreferences.contains("Jobs +"),
-                    onTap: () => togglePreference("Jobs +"),
-                  ),
-                  SizedBox(width: 12),
-                  OptionContainer(
-                    title: "Internships +",
-                    isSelected: selectedPreferences.contains("Internships +"),
-                    onTap: () => togglePreference("Internships +"),
-                  ),
-                  SizedBox(width: 12),
-                  OptionContainer(
-                    title: "Projects  +",
-                    isSelected: selectedPreferences.contains("Projects +"),
-                    onTap: () => togglePreference("Projects +"),
-                  ),
-                ],
-              ),
-              mSpacer(mHeight: 25.0),
+                /// Preferences Section
+                Text("Currently looking for:", style: mTextStyle12()),
+                mSpacer(mHeight: 8.0),
+                Wrap(
+                  runSpacing: 12,
+                  children: [
+                    OptionContainer(
+                      title: "Jobs +",
+                      isSelected: selectedPreferences.contains("Jobs +"),
+                      onTap: () => togglePreference("Jobs +"),
+                    ),
+                    SizedBox(width: 12),
+                    OptionContainer(
+                      title: "Internships +",
+                      isSelected: selectedPreferences.contains("Internships +"),
+                      onTap: () => togglePreference("Internships +"),
+                    ),
+                    SizedBox(width: 12),
+                    OptionContainer(
+                      title: "Projects  +",
+                      isSelected: selectedPreferences.contains("Projects +"),
+                      onTap: () => togglePreference("Projects +"),
+                    ),
+                  ],
+                ),
+                mSpacer(mHeight: 25.0),
 
-              // /// Work Mode Section
-              Text("Work Mode:", style: mTextStyle12()),
-              mSpacer(mHeight: 8.0),
-              Wrap(
-                runSpacing: 12,
-                children: [
-                  OptionContainer(
-                    title: "In-Office  +",
-                    isSelected: selectedWorkModes.contains("In-Office  +"),
-                    onTap: () => toggleWorkMode("In-Office  +"),
-                  ),
-                  const SizedBox(width: 12),
-                  OptionContainer(
-                    title: "Hybrid  +",
-                    isSelected: selectedWorkModes.contains("Hybrid  +"),
-                    onTap: () => toggleWorkMode("Hybrid  +"),
-                  ),
-                  const SizedBox(width: 12),
-                  OptionContainer(
-                    title: "Work From Home  +",
-                    isSelected: selectedWorkModes.contains("Work From Home  +"),
-                    onTap: () => toggleWorkMode("Work From Home  +"),
-                  ),
-                ],
-              ),
-              mSpacer(mHeight: 25.0),
+                // /// Work Mode Section
+                Text("Work Mode:", style: mTextStyle12()),
+                mSpacer(mHeight: 8.0),
+                Wrap(
+                  runSpacing: 12,
+                  children: [
+                    OptionContainer(
+                      title: "In-Office  +",
+                      isSelected: selectedWorkModes.contains("In-Office  +"),
+                      onTap: () => toggleWorkMode("In-Office  +"),
+                    ),
+                    const SizedBox(width: 12),
+                    OptionContainer(
+                      title: "Hybrid  +",
+                      isSelected: selectedWorkModes.contains("Hybrid  +"),
+                      onTap: () => toggleWorkMode("Hybrid  +"),
+                    ),
+                    const SizedBox(width: 12),
+                    OptionContainer(
+                      title: "Work From Home  +",
+                      isSelected:
+                          selectedWorkModes.contains("Work From Home  +"),
+                      onTap: () => toggleWorkMode("Work From Home  +"),
+                    ),
+                  ],
+                ),
+                mSpacer(mHeight: 25.0),
 
-              BlocListener<DetailedSignupBloc, DetailedSignupState>(
-                listener: (context, state) {
-                  if (state is DetailedSingupSubmitUserDetailsLoaded) {
-                    final data = state.submitDetailedUserProfile;
+                BlocListener<DetailedSignupBloc, DetailedSignupState>(
+                  listener: (context, state) {
+                    if (state is DetailedSingupSubmitUserDetailsLoaded) {
+                      final data = state.submitDetailedUserProfile;
 
-                    if (data.message ==
-                        'User details and experiences added successfully.') {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Student_Bottom_Nav_bar(),
-                        ),
-                      );
-                    } else {
-                      showSnackbar(data.message, context);
+                      if (data.message ==
+                          'User details and experiences added successfully.') {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const Student_Bottom_Nav_bar(),
+                          ),
+                        );
+                      } else {
+                        showSnackbar(data.message, context);
+                      }
+                    } else if (state is DetailedSingupSubmitUserDetailsError) {
+                      showSnackbar(
+                          'We encountered some error submiting your profile.',
+                          context);
                     }
-                  } else if (state is DetailedSingupSubmitUserDetailsError) {
-                    showSnackbar(
-                        'We encountered some error submiting your profile.',
-                        context);
-                  }
-                },
-                child: Center(
-                  child: SizedBox(
-                    width: 160,
-                    child: nextButton(
-                      title: "Find opportunities",
-                      onTap: () async {
-                        await onPressedFindOpportunities();
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) =>
-                        //         const Student_Bottom_Nav_bar(),
-                        //   ),
-                        // );
-                      },
+                  },
+                  child: Center(
+                    child: SizedBox(
+                      width: 160,
+                      child: nextButton(
+                        title: "Find opportunities",
+                        onTap: () async {
+                          await onPressedFindOpportunities();
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) =>
+                          //         const Student_Bottom_Nav_bar(),
+                          //   ),
+                          // );
+                        },
+                      ),
                     ),
                   ),
                 ),
-              ),
 
-              /// Button
-            ],
+                /// Button
+              ],
+            ),
           ),
         ),
       ),

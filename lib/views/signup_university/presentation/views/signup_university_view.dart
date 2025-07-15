@@ -23,7 +23,21 @@ class SignupUniversityView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("")),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: const Text(""),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => VerifyUniversityEmail(
+                      email: emailController.text.trim())));
+            },
+            icon: const Icon(Icons.double_arrow),
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Form(
@@ -41,7 +55,7 @@ class SignupUniversityView extends StatelessWidget {
                 controller: clgNameController,
                 hintText: "NCU",
                 suffixIcon: Icons.person,
-                fillColor: const Color(0xffFFF7FB),
+                // fillColor: const Color(0xffFFF7FB),
                 validator: (value) => value == null || value.isEmpty
                     ? 'College name required'
                     : null,
@@ -62,7 +76,7 @@ class SignupUniversityView extends StatelessWidget {
                 controller: emailController,
                 hintText: "abc@gmail.com",
                 suffixIcon: Icons.email,
-                fillColor: Color(0xffFFF7FB),
+                // fillColor: Color(0xffFFF7FB),
                 validator: (value) {
                   if (value == null || value.isEmpty) return 'Email required';
                   if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value))
@@ -76,7 +90,7 @@ class SignupUniversityView extends StatelessWidget {
                 controller: passwordController,
                 hintText: "*******",
                 suffixIcon: Icons.visibility_off_outlined,
-                fillColor: Color(0xffFFF7FB),
+                // fillColor: Color(0xffFFF7FB),
                 validator: (value) {
                   if (value == null || value.isEmpty)
                     return 'Password required';
@@ -87,19 +101,22 @@ class SignupUniversityView extends StatelessWidget {
               ),
               mSpacer(mHeight: 15.0),
               Text("Phone Number", style: mTextStyle12()),
-              CustomTextField(
+              // CustomTextField(
+              //   controller: phoneController,
+              //   hintText: "7895674320",
+              //   keyboardType: TextInputType.number,
+              //   suffixIcon: Icons.call,
+              //   fillColor: Color(0xffFFF7FB),
+              //   validator: (value) {
+              //     if (value == null || value.isEmpty)
+              //       return 'Phone Number required';
+              //     if (value.length < 10 || value.length > 10)
+              //       return 'Phone Number must be 10 digits';
+              //     return null;
+              //   },
+              // ),
+              CustomPhoneField(
                 controller: phoneController,
-                hintText: "7895674320",
-                keyboardType: TextInputType.number,
-                suffixIcon: Icons.call,
-                fillColor: Color(0xffFFF7FB),
-                validator: (value) {
-                  if (value == null || value.isEmpty)
-                    return 'Phone Number required';
-                  if (value.length < 10 || value.length > 10)
-                    return 'Phone Number must be 10 digits';
-                  return null;
-                },
               ),
               mSpacer(),
 
@@ -169,9 +186,13 @@ class SignupUniversityView extends StatelessWidget {
                           .read<RemoteSignupBloc>()
                           .add(RemoteSignupData(body));
                     }
-                    Navigator.of(context).push(MaterialPageRoute(
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
                         builder: (context) => VerifyUniversityEmail(
-                            email: emailController.text.trim())));
+                          email: emailController.text.trim(),
+                        ),
+                      ),
+                    );
                   },
                 ),
               ),
@@ -186,8 +207,8 @@ class SignupUniversityView extends StatelessWidget {
                     child: Text(
                       " Terms and Conditions",
                       style: mTextStyle14(
-                        mFontWeight: FontWeight.w900,
-                        mColor: AppColors.blueTextColor,
+                        mFontWeight: FontWeight.w700,
+                        mColor: Color.fromARGB(255, 17, 24, 39),
                       ),
                     ),
                   )
@@ -211,8 +232,9 @@ class SignupUniversityView extends StatelessWidget {
                     child: Text(
                       " Login",
                       style: mTextStyle14(
+                        // mColor: Color.fromARGB(255, 77, 129, 231),
                         mColor: AppColors.blueTextColor,
-                        mFontWeight: FontWeight.w900,
+                        mFontWeight: FontWeight.w700,
                       ),
                     ),
                   )

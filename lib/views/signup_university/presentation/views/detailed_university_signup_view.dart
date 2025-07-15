@@ -2,10 +2,13 @@ import 'dart:developer' as developer show log;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:job_portal/utils/constants/enums.dart';
+import 'package:job_portal/utils/constants/image_string.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_bloc.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_event.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_state.dart';
+import 'package:job_portal/views/login/presentation/views/login_page_first_view.dart';
 import 'package:job_portal/views/signup_university/presentation/blocs/university_signup_bloc.dart';
 import 'package:job_portal/views/signup_university/presentation/blocs/university_signup_event.dart';
 import 'package:job_portal/views/signup_university/presentation/blocs/university_signup_state.dart';
@@ -39,6 +42,7 @@ class _DetailedUniversitySignupViewState
 
   String selectedCollege = '';
   List<String> coursesList = [];
+  List<String> selectedCourses = [];
 
   @override
   void dispose() {
@@ -56,7 +60,7 @@ class _DetailedUniversitySignupViewState
   final pinCodeController = TextEditingController();
   final collegeController = TextEditingController();
 
-  /// API CALLED TO FETCH BASIC USER DATA
+  // API CALLED TO FETCH BASIC USER DATA
   @override
   void initState() {
     super.initState();
@@ -93,8 +97,10 @@ class _DetailedUniversitySignupViewState
   Widget build(BuildContext context) {
     /// MAIN UI PERSPECTIVE CODE
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(""),
+        backgroundColor: Colors.white,
+        title: const Text(""),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -133,14 +139,20 @@ class _DetailedUniversitySignupViewState
                       });
                     }
                   },
-                  child: SizedBox(),
+                  child: const SizedBox(),
                 ),
 
                 /// HEADER
-                Text(
-                  "Logo",
-                  style: mTextStyle15(
-                      mColor: Color(0xff032466), mFontWeight: FontWeight.w700),
+                // Text(
+                //   "Logo",
+                //   style: mTextStyle15(
+                //       mColor: Color(0xff032466), mFontWeight: FontWeight.w700),
+                // ),
+                SvgPicture.asset(
+                  ImageString.jobPortalLogo,
+                  height: 30,
+                  fit: BoxFit.contain,
+                  allowDrawingOutsideViewBox: true, // optional
                 ),
                 mSpacer17(),
                 Container(
@@ -152,7 +164,7 @@ class _DetailedUniversitySignupViewState
                   ),
                 ),
 
-                /// BODY PART
+                // BODY PART
                 Text(
                   "College Name",
                   style: mTextStyle14(),
@@ -227,17 +239,20 @@ class _DetailedUniversitySignupViewState
                   "Phone Number",
                   style: mTextStyle14(),
                 ),
-                CustomTextField(
+                // CustomTextField(
+                //   controller: phoneController,
+                //   hintText: "",
+                //   validator: (value) {
+                //     if (value == null || value.trim().isEmpty) {
+                //       return 'Phone Number is required';
+                //     }
+                //     return null;
+                //   },
+                // ),
+                CustomPhoneField(
                   controller: phoneController,
-                  hintText: "",
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'Phone Number is required';
-                    }
-                    return null;
-                  },
                 ),
-                mSpacer17(),
+                // mSpacer17(),
 
                 /// EMAIL TEXTFIELD
                 Text(
@@ -273,38 +288,108 @@ class _DetailedUniversitySignupViewState
                   },
                 ),
                 mSpacer17(),
-                const Text('Courses'),
+                Text(
+                  'Courses',
+                  style: mTextStyle14(),
+                ),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: coursesList.map((course) {
+                    final isSelected = selectedCourses.contains(course);
+                    return courseName(
+                      name: course,
+                      bgColor:
+                          isSelected ? const Color(0xff1961F3) : Colors.white,
+                      textColor: isSelected ? Colors.white : Colors.black,
+                      borderColor:
+                          isSelected ? const Color(0xff1961F3) : Colors.grey,
+                      onTap: () {
+                        setState(() {
+                          if (isSelected) {
+                            selectedCourses.remove(course);
+                          } else {
+                            selectedCourses.add(course);
+                          }
+                        });
+                      }, // optional or remove if unused
+                    );
+                  }).toList(),
+                ),
 
                 mSpacer(mHeight: 2.0),
 
                 mSpacer(mHeight: 25.0),
-
-                /// END PART
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    nextButton(
-                      title: "Next",
+                    Text("Already have an account?", style: mTextStyle12()),
+                    InkWell(
                       onTap: () {
-                        if (_formKey.currentState!.validate()) {
-                          developer.log('Valid Form');
-                          // fillDataIntoParams();
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => SignupPageYourSkills(
-                          //       params: widget.params,
-                          //     ),
-                          //   ),
-                          // );
-                        } else {
-                          showSnackbar(
-                              'Please fill all the required fields.', context);
-                        }
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (_) => LogInPage1()),
+                        );
                       },
-                    ),
+                      child: Text(
+                        " Login",
+                        style: mTextStyle14(
+                          // mColor: Color.fromARGB(255, 77, 129, 231),
+                          mColor: AppColors.blueTextColor,
+                          mFontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    )
                   ],
                 ),
+                mSpacer(mHeight: 25.0),
+
+                /// END PART
+                commonRedContainer(
+                  text: "Register",
+                  onTap: () {
+                    if (_formKey.currentState!.validate()) {
+                      developer.log('Valid Form');
+                      // fillDataIntoParams();
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => SignupPageYourSkills(
+                      //       params: widget.params,
+                      //     ),
+                      //   ),
+                      // );
+                    } else {
+                      showSnackbar(
+                          'Please fill all the required fields.', context);
+                    }
+                  },
+                ),
+                mSpacer(mHeight: 25.0),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("By signing up, you agree to our",
+                        style: mTextStyle12()),
+                    InkWell(
+                      onTap: () {},
+                      child: Text(
+                        " Terms and Conditions",
+                        style: mTextStyle14(
+                          mFontWeight: FontWeight.w700,
+                          mColor: const Color.fromARGB(255, 17, 24, 39),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                mSpacer(mHeight: 20.0),
+                // const SizedBox(
+                //   height: 220,
+                // ),
+
+                const SizedBox(height: 20),
                 mSpacer(mHeight: 25.0),
               ],
             ),
@@ -327,7 +412,6 @@ class _DetailedUniversitySignupViewState
   //     DETAILEDPROFILEPARAMS.userType.name: selectedOption,
   //     // total experience
   //   });
-
   //   // Remove all mutually exclusive keys first
   //   widget.params
   //     ..remove(DETAILEDPROFILEPARAMS.educationStandard.name)
@@ -337,7 +421,6 @@ class _DetailedUniversitySignupViewState
   //     ..remove(DETAILEDPROFILEPARAMS.startYear.name)
   //     ..remove(DETAILEDPROFILEPARAMS.endYear.name)
   //     ..remove(DETAILEDPROFILEPARAMS.experiences.name);
-
   //   if (selectedOption == JOBSEEKERTYPE.SchoolStudent.name) {
   //     widget.params.addAll({});
   //   } else if (selectedOption == JOBSEEKERTYPE.CollegeStudent.name ||
@@ -360,7 +443,6 @@ class _DetailedUniversitySignupViewState
   //       ],
   //     });
   //   }
-
   //   developer
   //       .log('Params detials in sign up as anyone screen : ${widget.params}');
   // }

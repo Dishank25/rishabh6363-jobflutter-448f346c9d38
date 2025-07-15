@@ -1,0 +1,36 @@
+import 'dart:developer' as develop show log;
+import 'dart:io';
+import 'package:dio/dio.dart';
+import 'package:job_portal/utils/resourses/data_state.dart';
+import 'package:job_portal/views/feed/data/data_sources/feed_api_service.dart';
+import 'package:job_portal/views/feed/domain/entities/feed_entity.dart';
+import 'package:job_portal/views/feed/domain/repository/feed_repository.dart';
+
+class FeedRepositoryImpl extends FeedRepository {
+  final FeedApiService _apiService;
+
+  FeedRepositoryImpl(this._apiService);
+
+  @override
+  Future<DataState<FeedEntity>> getFeedPosts() async {
+    try {
+      final response = await _apiService.getFeedPosts();
+
+      if (response.response.statusCode == HttpStatus.ok) {
+        return DataSuccess(response.data);
+      } else {
+        develop.log('.Ending up in repo error : ${response.response}');
+        return DataFailed(
+          DioException(
+              error: response.response.statusMessage,
+              requestOptions: response.response.requestOptions,
+              response: response.response,
+              type: DioExceptionType.badResponse),
+        );
+      }
+    } on DioException catch (e) {
+      develop.log('Ending up in repo error : $e');
+      return DataFailed(e);
+    }
+  }
+}

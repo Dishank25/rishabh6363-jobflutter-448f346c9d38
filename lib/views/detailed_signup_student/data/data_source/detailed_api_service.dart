@@ -44,7 +44,7 @@ abstract class DetailedApiService {
   Future<HttpResponse<SubmitDetailedUserProfile>> submitDetailedUserProfile(
       @Body() Map<String, dynamic> params);
 
-  @POST(Urls.baseurlIP + Urls.submitSkillsAndCertificates)
+  @POST(Urls.submitSkillsAndCertificates)
   @MultiPart()
   Future<HttpResponse<SkillSubmitionResponse>> submitSkillsAndCertificates(
       @Body() FormData data);

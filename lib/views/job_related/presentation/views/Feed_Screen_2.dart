@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../User_Profile_Screens/User_messages_screen.dart';
-import 'Feed_Screen.dart';
+import '../../../feed/presentation/views/feed_view.dart';
 import 'job_details_view.dart';
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../../widgets/widgets.dart';
@@ -136,11 +136,13 @@ class _FeedScreen2State extends State<FeedScreen2> {
                     height: 32,
                   ),
                   FeedCard(
+                    bodyText:
+                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ',
                     imageUrl:
                         "https://static-00.iconduck.com/assets.00/uber-icon-1024x1024-4icncyyo.png",
                     company: "Uber",
                     posted: "2 days",
-                    No_followers: "123,456 followers",
+                    noFollowers: "123,456 followers",
                     mainImage: "assets/Images/uber_driver.jpg",
                   ),
                   SizedBox(

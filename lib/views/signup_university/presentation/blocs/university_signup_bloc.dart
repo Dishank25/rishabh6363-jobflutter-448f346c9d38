@@ -17,7 +17,9 @@ class UniversitySignupBloc
       LoadCourses event, Emitter<UniversitySignupState> emit) async {
     try {
       emit(const CoursesLoading());
+
       final response = await _coursesUsecase();
+
       emit(CoursesLoaded(response.data!)); // pass result
     } catch (e) {
       developer.log('Error in load courses in bloc : $e');

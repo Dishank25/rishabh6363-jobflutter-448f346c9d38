@@ -8,6 +8,11 @@ import 'package:job_portal/views/detailed_signup_student/domain/repository/skill
 import 'package:job_portal/views/detailed_signup_student/domain/usecases/skill_usecase.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_bloc.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/skill_bloc/skill_bloc.dart';
+import 'package:job_portal/views/feed/data/data_sources/feed_api_service.dart';
+import 'package:job_portal/views/feed/data/repository/feed_repository_impl.dart';
+import 'package:job_portal/views/feed/domain/repository/feed_repository.dart';
+import 'package:job_portal/views/feed/domain/usecases/feed_usecase.dart';
+import 'package:job_portal/views/feed/presentation/bloc/feed_bloc.dart';
 import 'package:job_portal/views/job_related/data/data_source/job_screens_api_service.dart';
 import 'package:job_portal/views/job_related/data/repository/jobs_repository_impl.dart';
 import 'package:job_portal/views/job_related/domain/repository/jobs_repository.dart';
@@ -74,10 +79,12 @@ Future<void> initializeDependencies() async {
       JobScreensApiService(sl<DioClient>().instance));
   sl.registerSingleton<UniversitySignupApiService>(
       UniversitySignupApiService(sl<DioClient>().instance));
+  sl.registerSingleton<FeedApiService>(
+      FeedApiService(sl<DioClient>().instance));
 
   // Blocs
   sl.registerFactory<RemoteSignupBloc>(() => RemoteSignupBloc(sl(), sl()));
-  sl.registerFactory<RemoteLoginBloc>(() => RemoteLoginBloc(sl()));
+  sl.registerFactory<RemoteLoginBloc>(() => RemoteLoginBloc(sl(), sl(), sl()));
   sl.registerFactory<DetailedSignupBloc>(() => DetailedSignupBloc(sl()));
   sl.registerFactory<SkillBloc>(() => SkillBloc(sl()));
   sl.registerFactory<RecruiterSignupBloc>(
@@ -89,6 +96,7 @@ Future<void> initializeDependencies() async {
   sl.registerFactory<VerifyOtpRecruiterBloc>(
       () => VerifyOtpRecruiterBloc(sl()));
   sl.registerFactory<UniversitySignupBloc>(() => UniversitySignupBloc(sl()));
+  sl.registerFactory<FeedBloc>(() => FeedBloc(sl()));
 
   // Use Cases
   sl.registerLazySingleton<SignupUsecase>(() => SignupUsecase(sl()));
@@ -112,6 +120,11 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<SendOtpEmailRecruiterUsecase>(
       () => SendOtpEmailRecruiterUsecase(sl()));
   sl.registerLazySingleton<CoursesUsecase>(() => CoursesUsecase(sl()));
+  sl.registerLazySingleton<LoginSendOtpEmailUsecase>(
+      () => LoginSendOtpEmailUsecase(sl()));
+  sl.registerLazySingleton<LoginVerifyOtpEmailUsecase>(
+      () => LoginVerifyOtpEmailUsecase(sl()));
+  sl.registerLazySingleton<FeedUsecase>(() => FeedUsecase(sl()));
 
   // Repository
   sl.registerLazySingleton<SignupRepository>(() => SignupRepositoryImpl(sl()));
@@ -126,4 +139,5 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<JobsRepository>(() => JobsRepositoryImpl(sl()));
   sl.registerLazySingleton<UniversitySignupRepository>(
       () => UniversitySignupRepositoryImpl(sl()));
+  sl.registerLazySingleton<FeedRepository>(() => FeedRepositoryImpl(sl()));
 }

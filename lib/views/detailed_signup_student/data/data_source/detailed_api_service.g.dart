@@ -69,7 +69,7 @@ class _DetailedApiService implements DetailedApiService {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<String>>(_options);
+    final _result = await _dio.fetch<List<dynamic>>(_options);
     late CollegesListResponse _value;
     try {
       _value = CollegesListResponse.fromJson(_result.data!);
@@ -97,7 +97,7 @@ class _DetailedApiService implements DetailedApiService {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<String>>(_options);
+    final _result = await _dio.fetch<List<dynamic>>(_options);
     late SpecializationListResponse _value;
     try {
       _value = SpecializationListResponse.fromJson(_result.data!);
@@ -125,7 +125,7 @@ class _DetailedApiService implements DetailedApiService {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<String>>(_options);
+    final _result = await _dio.fetch<List<dynamic>>(_options);
     late CoursesListResponse _value;
     try {
       _value = CoursesListResponse.fromJson(_result.data!);
@@ -209,7 +209,7 @@ class _DetailedApiService implements DetailedApiService {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<String>>(_options);
+    final _result = await _dio.fetch<List<dynamic>>(_options);
     late JobRolesListResponse _value;
     try {
       _value = JobRolesListResponse.fromJson(_result.data!);
@@ -269,7 +269,7 @@ class _DetailedApiService implements DetailedApiService {
       )
           .compose(
             _dio.options,
-            'http://212.95.51.83:5000/upload-skill',
+            'upload-skill',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -303,7 +303,7 @@ class _DetailedApiService implements DetailedApiService {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<String>>(_options);
+    final _result = await _dio.fetch<List<dynamic>>(_options);
     late LocationsListResponse _value;
     try {
       _value = LocationsListResponse.fromJson(_result.data!);

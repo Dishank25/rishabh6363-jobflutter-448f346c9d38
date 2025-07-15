@@ -5,6 +5,8 @@ import 'package:job_portal/utils/resourses/data_state.dart';
 import 'package:job_portal/views/login/data/data_source/login_api_service.dart';
 import 'package:job_portal/views/login/data/models/login_user_response.dart';
 import 'package:job_portal/views/login/domain/repository/login_repository.dart';
+import 'package:job_portal/views/signup_student/domain/entities/send_otp_email_entity.dart';
+import 'package:job_portal/views/signup_student/domain/entities/verify_otp_entity.dart';
 
 class LoginRepositoryImpl extends LoginRepository {
   final LoginApiService _apiService;
@@ -29,6 +31,44 @@ class LoginRepositoryImpl extends LoginRepository {
       }
     } on DioException catch (e) {
       develop.log('Ending up in repo error : $e');
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<SendOtpEmailEntity>> sendOtpEmail(
+      Map<String, dynamic> emailMap) async {
+    try {
+      final response = await _apiService.sendOtpEmail(emailMap);
+      if (response.response.statusCode == HttpStatus.ok) {
+        return DataSuccess(response.data);
+      } else {
+        return DataFailed(DioException(
+            error: response.response.statusMessage,
+            response: response.response,
+            type: DioExceptionType.badResponse,
+            requestOptions: response.response.requestOptions));
+      }
+    } on DioException catch (e) {
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<VerifyOtpEntity>> verifyOtpResponse(
+      Map<String, dynamic> emailOtpMap) async {
+    try {
+      final response = await _apiService.verifyOtpEmail(emailOtpMap);
+      if (response.response.statusCode == HttpStatus.ok) {
+        return DataSuccess(response.data);
+      } else {
+        return DataFailed(DioException(
+            error: response.response.statusMessage,
+            response: response.response,
+            type: DioExceptionType.badResponse,
+            requestOptions: response.response.requestOptions));
+      }
+    } on DioException catch (e) {
       return DataFailed(e);
     }
   }

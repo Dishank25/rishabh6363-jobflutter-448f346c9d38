@@ -1,15 +1,18 @@
 class SignUpUserResponse {
   final String message;
+  final String? token;
   final User? user;
 
   SignUpUserResponse({
     required this.message,
+    this.token,
     this.user,
   });
 
   factory SignUpUserResponse.fromJson(Map<String, dynamic> json) {
     return SignUpUserResponse(
-      message: json['message'],
+      message: json['message'] ?? '',
+      token: json['token'],
       user: json['user'] != null ? User.fromJson(json['user']) : null,
     );
   }
@@ -17,7 +20,8 @@ class SignUpUserResponse {
   Map<String, dynamic> toJson() {
     return {
       'message': message,
-      'user': user?.toJson(),
+      if (token != null) 'token': token,
+      if (user != null) 'user': user!.toJson(),
     };
   }
 }

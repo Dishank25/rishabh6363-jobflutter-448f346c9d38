@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:job_portal/utils/constants/constants.dart';
 import 'package:job_portal/utils/constants/image_string.dart';
-import 'package:job_portal/views/Bottom_Nav_Bar/Student_Bottom_Nav_Bar.dart';
+import 'package:job_portal/views/bottom_nav_bar/student_bottom_nav_bar.dart';
 import 'package:job_portal/views/User_Profile_Screens/User_Notifications_Screen.dart';
 import 'package:job_portal/views/User_Profile_Screens/User_messages_screen.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_details_bloc/job_details_bloc.dart';

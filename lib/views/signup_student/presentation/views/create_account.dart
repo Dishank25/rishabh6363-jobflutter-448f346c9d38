@@ -5,7 +5,7 @@ import 'package:job_portal/views/signup_university/presentation/views/signup_uni
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../login/presentation/views/login_page_first_view.dart';
 import '../../../signup_recruiter/presentation/views/recruiter_signup_page.dart';
-import 'singup_student1_view.dart';
+import 'signup_student1_view.dart';
 
 class CreateAccount extends StatefulWidget {
   const CreateAccount({super.key});
@@ -84,7 +84,7 @@ class _CreateAccountState extends State<CreateAccount> {
 
                     // Title & description
                     Positioned(
-                      bottom: -120,
+                      bottom: -140,
                       left: screenWidth * 0.05,
                       right: screenWidth * 0.05,
                       child: Column(
@@ -111,7 +111,7 @@ class _CreateAccountState extends State<CreateAccount> {
           ),
 
           /// Spacer for content to clear top overlay
-          SliverToBoxAdapter(child: SizedBox(height: screenHeight * 0.17)),
+          SliverToBoxAdapter(child: SizedBox(height: screenHeight * 0.2)),
 
           /// Form options
           SliverToBoxAdapter(
@@ -179,9 +179,12 @@ class _CreateAccountState extends State<CreateAccount> {
                         Text("Already have an account?", style: mTextStyle12()),
                         InkWell(
                           onTap: () {
-                            Navigator.pushReplacement(
+                            Navigator.pushAndRemoveUntil(
                               context,
-                              MaterialPageRoute(builder: (_) => LogInPage1()),
+                              MaterialPageRoute(
+                                builder: (_) => LogInPage1(),
+                              ),
+                              (Route route) => false,
                             );
                           },
                           child: Text(
@@ -195,7 +198,6 @@ class _CreateAccountState extends State<CreateAccount> {
                       ],
                     ),
                   ),
-
                   SizedBox(height: screenHeight * 0.05),
                 ],
               ),

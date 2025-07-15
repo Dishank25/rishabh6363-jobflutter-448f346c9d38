@@ -686,8 +686,11 @@ class _CustomAutocompleteState extends State<CustomAutocomplete> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12),
                         child: ConstrainedBox(
-                          constraints:
-                              BoxConstraints(maxWidth: constraints.maxWidth),
+                          constraints: BoxConstraints(
+                            maxWidth: constraints.maxWidth,
+                            maxHeight:
+                                250, // Limit height to make it scrollable
+                          ),
                           child: ListView.builder(
                             padding: const EdgeInsets.symmetric(vertical: 8),
                             shrinkWrap: true,
@@ -899,7 +902,11 @@ class _SearchTextFieldState extends State<SearchTextField> {
               // Add your filter tap logic here
               print("Filter tapped");
             },
-            child: const Icon(Icons.search, color: Colors.grey),
+            child: SvgPicture.asset(
+              ImageString.searchicon,
+              height: 20,
+            ),
+            // child: const Icon(Icons.search, color: Colors.grey),
           ),
         ],
       ),

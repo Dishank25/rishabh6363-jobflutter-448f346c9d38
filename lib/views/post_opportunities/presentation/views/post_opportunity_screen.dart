@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:job_portal/utils/constants/image_string.dart';
-import 'package:job_portal/views/Bottom_Nav_Bar/Recruiter_Bottom_Nav_Bar.dart';
+import 'package:job_portal/views/bottom_nav_bar/recruiter_bottom_nav_bar.dart';
 import 'package:job_portal/ui_helper/ui_helper.dart';
 import 'package:job_portal/views/post_opportunities/domain/entities/internship_metadata_entity.dart';
 import 'package:job_portal/views/post_opportunities/presentation/bloc/opportunity_bloc.dart';
@@ -1375,7 +1375,7 @@ class _PostInternshipsScreenState extends State<PostInternshipsScreen> {
               //       "+ Add more questions (Optional) ",
               //       style: mTextStyle12(mColor: AppColors.blueTextColor),
               //     )),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Text(

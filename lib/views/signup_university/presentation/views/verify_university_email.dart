@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:job_portal/views/signup_student/presentation/bloc/verify_otp_bloc/verify_otp_bloc.dart';
-import 'package:job_portal/views/signup_student/presentation/bloc/verify_otp_bloc/verify_otp_event.dart';
 import 'package:job_portal/views/signup_student/presentation/bloc/verify_otp_bloc/verify_otp_state.dart';
 import 'package:job_portal/views/signup_university/presentation/views/detailed_university_signup_view.dart';
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../../widgets/widgets.dart';
 import '../../../login/presentation/views/login_page_first_view.dart';
-import '../../../detailed_signup_student/presentation/views/signup_as_anyone_view.dart.dart';
+import '../../../detailed_signup_student/presentation/views/signup_as_anyone_view.dart';
 
 class VerifyUniversityEmail extends StatelessWidget {
   final String email;
@@ -17,8 +16,26 @@ class VerifyUniversityEmail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
+          backgroundColor: Colors.white,
           title: const Text(""),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailedUniversitySignupView(
+                      // email: email,
+                      email: "mmudgal67@gmail.com",
+                    ),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.double_arrow),
+            ),
+          ],
         ),
         body: Container(
           width: double.infinity,
@@ -42,15 +59,17 @@ class VerifyUniversityEmail extends StatelessWidget {
                 "Enter OTP to verify your email",
                 style: mTextStyle12(),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 2,
               ),
               SizedBox(
-                  width: double.infinity,
-                  child: CustomTextField(
-                      controller: enterOTP,
-                      hintText: "Enter OTP",
-                      fillColor: Colors.white)),
+                width: double.infinity,
+                child: CustomTextField(
+                  controller: enterOTP,
+                  hintText: "Enter OTP",
+                  fillColor: Colors.white,
+                ),
+              ),
               mSpacer(),
               BlocListener<VerifyOtpBloc, VerifyOtpState>(
                 listener: (context, state) {

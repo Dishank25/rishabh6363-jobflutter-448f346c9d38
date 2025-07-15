@@ -14,3 +14,21 @@ class RemoteLoginData extends RemoteLoginEvent {
   @override
   List<Object?> get props => [loginMap];
 }
+
+class RemoteLoginSentOtpData extends RemoteLoginEvent {
+  final Map<String, dynamic> emailMap;
+
+  const RemoteLoginSentOtpData(this.emailMap);
+
+  @override
+  List<Object?> get props => [emailMap];
+}
+
+class RemoteLoginVerifyOtpData extends RemoteLoginEvent {
+  final Map<String, dynamic> emailOtpMap;
+
+  const RemoteLoginVerifyOtpData(this.emailOtpMap);
+
+  @override
+  List<Object?> get props => [emailOtpMap];
+}

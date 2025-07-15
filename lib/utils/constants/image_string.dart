@@ -3,9 +3,9 @@ class ImageString {
 
   static const certificate = '${imageFolder}features-alt.svg';
 
-  // static const dummyImageUrl = "https://picsum.photos/200";
-  static const dummyImageUrl =
-      "https://placehold.co/800?text=Hello+World&font=roboto";
+  static const dummyImageUrl = "https://picsum.photos/200";
+  // static const dummyImageUrl =
+  //     "https://placehold.co/800?text=Hello+World&font=roboto";
   static const progressBar2 = "${imageFolder}progressBar2.svg";
   static const progressBar1 = "${imageFolder}progressBar1.svg";
   static const progressBar3 = "${imageFolder}progressBar3.svg";
@@ -14,4 +14,6 @@ class ImageString {
   static const createAccountIllPng = "${imageFolder}cai.png";
   static const logoipsum = "${imageFolder}logoipsum.svg";
   static const placeHolderImage = "${imageFolder}placeHolderImage.png";
+  static const searchicon = "${imageFolder}searchicon.svg";
+  static const uberIcon = "${imageFolder}uberIcon.svg";
 }
