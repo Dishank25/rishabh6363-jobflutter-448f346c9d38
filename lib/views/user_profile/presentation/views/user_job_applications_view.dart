@@ -1,13 +1,11 @@
 import 'dart:ui';
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:job_portal/views/job_related/presentation/views/job_details_view.dart';
 import 'package:job_portal/ui_helper/ui_helper.dart';
 
-class student_job_applications extends StatelessWidget {
-  const student_job_applications({super.key});
+class StudentJobApplications extends StatelessWidget {
+  const StudentJobApplications({super.key});
 
   @override
   Widget build(BuildContext context) {

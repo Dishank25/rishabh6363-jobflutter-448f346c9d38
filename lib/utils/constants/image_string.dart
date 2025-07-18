@@ -16,4 +16,11 @@ class ImageString {
   static const placeHolderImage = "${imageFolder}placeHolderImage.png";
   static const searchicon = "${imageFolder}searchicon.svg";
   static const uberIcon = "${imageFolder}uberIcon.svg";
+  static const eyeIcon = "${imageFolder}eye.svg";
+  static const resume1 = "${imageFolder}resume1.svg";
+  static const resume3 = "${imageFolder}resume3.svg";
+  static const resume4 = "${imageFolder}resume4.svg";
+  static const resume1Png = "${imageFolder}resume1.png";
+  static const resume3Png = "${imageFolder}resume3.png";
+  static const resume4Png = "${imageFolder}resume4.png";
 }

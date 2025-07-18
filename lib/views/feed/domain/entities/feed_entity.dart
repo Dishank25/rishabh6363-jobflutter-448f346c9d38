@@ -59,11 +59,13 @@ class UserEntity {
   final String firstName;
   final String lastName;
   final String? profilePic;
+  final int followersCount;
 
   const UserEntity({
     required this.id,
     required this.firstName,
     required this.lastName,
     required this.profilePic,
+    required this.followersCount,
   });
 }

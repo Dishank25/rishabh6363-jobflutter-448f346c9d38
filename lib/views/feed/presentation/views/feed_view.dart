@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:job_portal/utils/constants/image_string.dart';
-import 'package:job_portal/views/User_Profile_Screens/User_Notifications_Screen.dart';
+import 'package:job_portal/views/user_profile/presentation/views/User_Notifications_Screen.dart';
 import 'package:job_portal/views/feed/domain/entities/feed_entity.dart';
 import 'package:job_portal/views/feed/presentation/bloc/feed_bloc.dart';
 import 'package:job_portal/views/feed/presentation/bloc/feed_event.dart';
@@ -11,7 +11,7 @@ import 'package:job_portal/views/feed/presentation/bloc/feed_state.dart';
 import 'package:job_portal/views/job_related/presentation/views/Feed_Screen_2.dart';
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../../widgets/widgets.dart';
-import '../../../User_Profile_Screens/User_messages_screen.dart';
+import '../../../user_profile/presentation/views/User_messages_screen.dart';
 import '../../../job_related/presentation/views/job_details_view.dart';
 
 class FeedScreen extends StatefulWidget {
@@ -37,6 +37,26 @@ class _FeedScreenState extends State<FeedScreen> {
       "mainImage": "assets/Images/uber_driver.jpg"
     },
   ];
+
+  String getPostedDaysAgo(String isoDateString) {
+    final postDate = DateTime.parse(isoDateString).toLocal();
+    final now = DateTime.now();
+    final difference = now.difference(postDate);
+
+    if (difference.inDays == 0) {
+      if (difference.inHours > 0) {
+        return '${difference.inHours} hour${difference.inHours > 1 ? 's' : ''} ago';
+      } else if (difference.inMinutes > 0) {
+        return '${difference.inMinutes} minute${difference.inMinutes > 1 ? 's' : ''} ago';
+      } else {
+        return 'Just now';
+      }
+    } else if (difference.inDays == 1) {
+      return 'Yesterday';
+    } else {
+      return '${difference.inDays} days ago';
+    }
+  }
 
   FeedEntity? feedPostsData;
   @override
@@ -109,15 +129,13 @@ class _FeedScreenState extends State<FeedScreen> {
               listener: (context, state) {
                 if (state is FeedPostsLoaded) {
                   final data = state.feedEntity;
-
                   setState(() {
                     feedPostsData = data;
                   });
-
                   developer.log('Feed posts data : ${data.posts.first.id}');
                 }
               },
-              child: SizedBox(),
+              child: const SizedBox(),
             ),
             Row(
               children: [
@@ -163,10 +181,14 @@ class _FeedScreenState extends State<FeedScreen> {
                         // imageUrl: item["image"],
                         imageUrl: ImageString.dummyImageUrl,
                         company: item!.user.firstName,
-                        posted: '1 day ago',
-                        bodyText: item.caption,
-                        noFollowers: "123,456 followers",
-                        mainImage: item.image,
+                        // posted: '1 day ago',
+                        posted: getPostedDaysAgo(item.createdAt.toString()),
+                        // bodyText: item.caption,
+                        bodyText:
+                            'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.\n\nThe standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.',
+                        noFollowers: "${item.user.followersCount} followers",
+                        // mainImage: item.image,
+                        mainImage: ImageString.placeHolderImage,
                       ),
                     );
                   },
@@ -174,7 +196,7 @@ class _FeedScreenState extends State<FeedScreen> {
               ),
             const SizedBox(
               height: 30,
-            )
+            ),
           ],
         ),
       ),
@@ -183,19 +205,27 @@ class _FeedScreenState extends State<FeedScreen> {
 }
 
 /// FEED CARD WIDGET
-class FeedCard extends StatelessWidget {
+class FeedCard extends StatefulWidget {
   final String imageUrl, company, posted, noFollowers;
   final String? mainImage;
   final String bodyText;
 
-  const FeedCard(
-      {super.key,
-      required this.imageUrl,
-      required this.company,
-      required this.posted,
-      required this.noFollowers,
-      this.mainImage,
-      required this.bodyText});
+  const FeedCard({
+    super.key,
+    required this.imageUrl,
+    required this.company,
+    required this.posted,
+    required this.noFollowers,
+    this.mainImage,
+    required this.bodyText,
+  });
+
+  @override
+  State<FeedCard> createState() => _FeedCardState();
+}
+
+class _FeedCardState extends State<FeedCard> {
+  bool isExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -218,25 +248,16 @@ class FeedCard extends StatelessWidget {
             children: [
               CircleAvatar(
                 backgroundColor: Colors.transparent,
-                backgroundImage: NetworkImage(
-                  imageUrl,
-                  // fit: BoxFit.cover,
-                ),
-                // backgroundImage: Image.network(
-                //   imageUrl,
-                //   height: 48,
-                //   width: 48,
-                //   // fit: BoxFit.cover,
-                // ),
+                backgroundImage: NetworkImage(widget.imageUrl),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Text(jobTitle, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                    Text(company, style: const TextStyle(color: Colors.grey)),
-                    Text(noFollowers)
+                    Text(widget.company,
+                        style: const TextStyle(color: Colors.grey)),
+                    Text(widget.noFollowers),
                   ],
                 ),
               ),
@@ -245,43 +266,72 @@ class FeedCard extends StatelessWidget {
           ),
           const SizedBox(height: 12),
 
-          /// Second Row - Grey Containers aligned Left under the Icon
+          /// Tags
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              greyContainer(text: posted, bgColor: const Color(0xffEFF0F6)),
+              greyContainer(
+                  text: widget.posted, bgColor: const Color(0xffEFF0F6)),
               const SizedBox(width: 8),
               greyContainer(
-                text: "Sponsored",
-                bgColor: const Color(0xffEFF0F6),
-              ),
+                  text: "Sponsored", bgColor: const Color(0xffEFF0F6)),
             ],
           ),
-          // SizedBox(height: 10,),
-          if (mainImage != null)
+
+          /// Optional Image
+          if (widget.mainImage != null)
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 2.0, vertical: 6.0),
-              child: Container(
-                height: 200,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(14),
-                ),
+              padding: const EdgeInsets.fromLTRB(2.0, 6.0, 2.0, 20.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(14),
                 child: Image.asset(
-                  mainImage!,
+                  widget.mainImage!,
                   fit: BoxFit.cover,
+                  color: Colors.grey[400],
+                  // color: Color.fromARGB(255, 240, 55, 41).withOpacity(0.3),
+                  // color: Colors.blue.shade200,
+                  // colorBlendMode: BlendMode.modulate,
                 ),
               ),
             ),
-          Text(
-            bodyText,
-            style: mTextStyle12(mFontWeight: FontWeight.w400),
+
+          /// Body Text with Read More
+          AnimatedCrossFade(
+            firstChild: Text(
+              widget.bodyText,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: mTextStyle12(
+                  mFontWeight: FontWeight.w400,
+                  mColor: const Color.fromARGB(255, 84, 76, 76)),
+            ),
+            secondChild: Text(
+              widget.bodyText,
+              style: mTextStyle12(
+                  mFontWeight: FontWeight.w400,
+                  mColor: const Color.fromARGB(255, 84, 76, 76)),
+            ),
+            crossFadeState: isExpanded
+                ? CrossFadeState.showSecond
+                : CrossFadeState.showFirst,
+            duration: const Duration(milliseconds: 300),
           ),
-          Text(
-            "Read more...",
-            style: mTextStyle12(mColor: const Color(0xff8F8F8F)),
-          )
+
+          /// Read more / Read less button
+          // if (widget.bodyText.length > 100)
+          GestureDetector(
+            onTap: () => setState(() => isExpanded = !isExpanded),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Text(
+                isExpanded ? "Read less..." : "Read more...",
+                style: mTextStyle12(
+                  // mColor: const Color(0xff8F8F8F),
+                  mColor: Colors.blue,
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );

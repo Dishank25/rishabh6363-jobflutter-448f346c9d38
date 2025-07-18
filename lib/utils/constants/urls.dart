@@ -23,4 +23,7 @@ class Urls {
   static const jobDetails = "jobdetails/";
   static const getLocations = "locations";
   static const getFeedPosts = "feed/posts";
+  static const getPublicProfile = "user-details/public-profile/";
+  static const getUserDetails = "user-details/detail/";
+  static const getTermsAndConditions = "user-details/getTermsAndCondition";
 }

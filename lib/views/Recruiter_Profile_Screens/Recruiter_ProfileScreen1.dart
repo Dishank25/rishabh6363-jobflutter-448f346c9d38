@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../ui_helper/ui_helper.dart';
-import '../User_Profile_Screens/User_Notifications_Screen.dart';
-import '../User_Profile_Screens/User_messages_screen.dart';
+import '../user_profile/presentation/views/User_Notifications_Screen.dart';
+import '../user_profile/presentation/views/User_messages_screen.dart';
 
 class RecruiterProfilescreen1 extends StatefulWidget {
   const RecruiterProfilescreen1({super.key});

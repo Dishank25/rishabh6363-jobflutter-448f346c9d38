@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:job_portal/views/AI_Prediction_Screens/AI_Prediction_Screens.dart';
 import 'package:job_portal/views/feed/presentation/views/feed_view.dart';
 import 'package:job_portal/views/job_related/presentation/views/job_search_view.dart';
-import 'package:job_portal/views/User_Profile_Screens/User_Profile_Screen__1.dart';
+import 'package:job_portal/views/user_profile/presentation/views/profile_view.dart';
 import 'package:job_portal/ui_helper/ui_helper.dart';
 import 'package:job_portal/widgets/widgets.dart';
 import '../job_related/presentation/views/Company_filtered_jobs.dart';
@@ -67,7 +67,7 @@ class _Student_Bottom_Nav_barState extends State<Student_Bottom_Nav_bar> {
                     )))
           : JobSearchScreen(),
       AIPredictionScreen(),
-      UserProfileScreen_1(
+      UserProfileScreen1(
         showUserProfile2: ShowUserProfileScreen2,
         onCallBackFromProfileScreen2: () {
           setState(() {

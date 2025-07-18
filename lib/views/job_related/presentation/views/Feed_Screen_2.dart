@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../../User_Profile_Screens/User_messages_screen.dart';
+import '../../../user_profile/presentation/views/User_messages_screen.dart';
 import '../../../feed/presentation/views/feed_view.dart';
 import 'job_details_view.dart';
 import '../../../../ui_helper/ui_helper.dart';

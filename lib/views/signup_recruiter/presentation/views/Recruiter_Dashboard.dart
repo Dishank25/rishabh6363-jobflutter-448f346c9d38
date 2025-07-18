@@ -7,10 +7,10 @@ import 'package:job_portal/views/signup_recruiter/presentation/views/Recruiter_S
 import 'package:job_portal/views/signup_recruiter/presentation/views/Recruiter_Upcoming_Interviews.dart';
 import 'package:job_portal/views/signup_recruiter/presentation/views/Recruiter_pending_tasks.dart';
 import 'package:job_portal/views/signup_recruiter/presentation/views/Recruiter_pipeline_candidates.dart';
-import 'package:job_portal/views/User_Profile_Screens/User_messages_screen.dart';
+import 'package:job_portal/views/user_profile/presentation/views/User_messages_screen.dart';
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../../widgets/widgets.dart';
-import '../../../User_Profile_Screens/User_Notifications_Screen.dart';
+import '../../../user_profile/presentation/views/User_Notifications_Screen.dart';
 import 'Recruiter_total_job_posts.dart';
 
 class RecruiterDashboard extends StatefulWidget {

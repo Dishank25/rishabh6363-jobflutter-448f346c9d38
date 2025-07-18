@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:job_portal/views/User_Profile_Screens/User_Notifications_Screen.dart';
+import 'package:job_portal/views/user_profile/presentation/views/User_Notifications_Screen.dart';
 
-import '../../ui_helper/ui_helper.dart';
+import '../../../../ui_helper/ui_helper.dart';
 
 class MessagesScreen extends StatefulWidget {
   const MessagesScreen({super.key});

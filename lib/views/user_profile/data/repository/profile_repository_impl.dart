@@ -1,0 +1,87 @@
+import 'dart:developer' as develop show log;
+import 'dart:io';
+
+import 'package:dio/dio.dart';
+import 'package:job_portal/utils/resourses/data_state.dart';
+import 'package:job_portal/views/user_profile/data/data_sources/profile_api_service.dart';
+import 'package:job_portal/views/user_profile/data/models/public_profile_model.dart';
+import 'package:job_portal/views/user_profile/data/models/user_details_response.dart';
+import 'package:job_portal/views/user_profile/domain/entities/public_profile_entity.dart';
+import 'package:job_portal/views/user_profile/domain/entities/terms_and_conditions_entity.dart';
+import 'package:job_portal/views/user_profile/domain/entities/user_details_entity.dart';
+import 'package:job_portal/views/user_profile/domain/repository/profile_repository.dart';
+
+class ProfileRepositoryImpl extends ProfileRepository {
+  final ProfileApiService _apiService;
+
+  ProfileRepositoryImpl(this._apiService);
+
+  @override
+  Future<DataState<UserProfileModel>> getPublicProfile(String id) async {
+    try {
+      final response = await _apiService.getPublicProfile(id);
+
+      if (response.response.statusCode == HttpStatus.ok) {
+        return DataSuccess(response.data);
+      } else {
+        develop.log('.Ending up in repo error : ${response.response}');
+        return DataFailed(
+          DioException(
+              error: response.response.statusMessage,
+              requestOptions: response.response.requestOptions,
+              response: response.response,
+              type: DioExceptionType.badResponse),
+        );
+      }
+    } on DioException catch (e) {
+      develop.log('Ending up in repo error : $e');
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<UserDetailEntity>> getUserDetails(String id) async {
+    try {
+      final response = await _apiService.getUserDetails(id);
+
+      if (response.response.statusCode == HttpStatus.ok) {
+        return DataSuccess(response.data);
+      } else {
+        develop.log('.Ending up in repo error : ${response.response}');
+        return DataFailed(
+          DioException(
+              error: response.response.statusMessage,
+              requestOptions: response.response.requestOptions,
+              response: response.response,
+              type: DioExceptionType.badResponse),
+        );
+      }
+    } on DioException catch (e) {
+      develop.log('Ending up in repo error : $e');
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<TermsAndConditionEntity>> getTermsAndConditions() async {
+    try {
+      final response = await _apiService.getTermsAndConditions();
+
+      if (response.response.statusCode == HttpStatus.ok) {
+        return DataSuccess(response.data);
+      } else {
+        develop.log('.Ending up in repo error : ${response.response}');
+        return DataFailed(
+          DioException(
+              error: response.response.statusMessage,
+              requestOptions: response.response.requestOptions,
+              response: response.response,
+              type: DioExceptionType.badResponse),
+        );
+      }
+    } on DioException catch (e) {
+      develop.log('Ending up in repo error : $e');
+      return DataFailed(e);
+    }
+  }
+}

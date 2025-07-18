@@ -49,6 +49,13 @@ import 'package:job_portal/views/signup_university/data/repository/university_si
 import 'package:job_portal/views/signup_university/domain/repository/university_signup_repository.dart';
 import 'package:job_portal/views/signup_university/domain/usecase/university_signup_usecase.dart';
 import 'package:job_portal/views/signup_university/presentation/blocs/university_signup_bloc.dart';
+import 'package:job_portal/views/user_profile/data/data_sources/profile_api_service.dart';
+import 'package:job_portal/views/user_profile/data/repository/profile_repository_impl.dart';
+import 'package:job_portal/views/user_profile/domain/repository/profile_repository.dart';
+import 'package:job_portal/views/user_profile/domain/usecases/profile_usecases.dart';
+import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/my_profile_bloc.dart';
+import 'package:job_portal/views/user_profile/presentation/bloc/profile_bloc/profile_bloc.dart';
+import 'package:job_portal/views/user_profile/presentation/bloc/terms_and_conditions_bloc/terms_and_conditions_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final sl = GetIt.instance;
@@ -81,6 +88,8 @@ Future<void> initializeDependencies() async {
       UniversitySignupApiService(sl<DioClient>().instance));
   sl.registerSingleton<FeedApiService>(
       FeedApiService(sl<DioClient>().instance));
+  sl.registerSingleton<ProfileApiService>(
+      ProfileApiService(sl<DioClient>().instance));
 
   // Blocs
   sl.registerFactory<RemoteSignupBloc>(() => RemoteSignupBloc(sl(), sl()));
@@ -97,6 +106,10 @@ Future<void> initializeDependencies() async {
       () => VerifyOtpRecruiterBloc(sl()));
   sl.registerFactory<UniversitySignupBloc>(() => UniversitySignupBloc(sl()));
   sl.registerFactory<FeedBloc>(() => FeedBloc(sl()));
+  sl.registerFactory<ProfileBloc>(() => ProfileBloc(sl()));
+  sl.registerFactory<MyProfileBloc>(() => MyProfileBloc(sl()));
+  sl.registerFactory<TermsAndConditionsBloc>(
+      () => TermsAndConditionsBloc(sl()));
 
   // Use Cases
   sl.registerLazySingleton<SignupUsecase>(() => SignupUsecase(sl()));
@@ -125,6 +138,10 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<LoginVerifyOtpEmailUsecase>(
       () => LoginVerifyOtpEmailUsecase(sl()));
   sl.registerLazySingleton<FeedUsecase>(() => FeedUsecase(sl()));
+  sl.registerLazySingleton<ProfileUsecase>(() => ProfileUsecase(sl()));
+  sl.registerLazySingleton<UserDetailUsecase>(() => UserDetailUsecase(sl()));
+  sl.registerLazySingleton<TermsAndConditionsUsecase>(
+      () => TermsAndConditionsUsecase(sl()));
 
   // Repository
   sl.registerLazySingleton<SignupRepository>(() => SignupRepositoryImpl(sl()));
@@ -140,4 +157,6 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<UniversitySignupRepository>(
       () => UniversitySignupRepositoryImpl(sl()));
   sl.registerLazySingleton<FeedRepository>(() => FeedRepositoryImpl(sl()));
+  sl.registerLazySingleton<ProfileRepository>(
+      () => ProfileRepositoryImpl(sl()));
 }
