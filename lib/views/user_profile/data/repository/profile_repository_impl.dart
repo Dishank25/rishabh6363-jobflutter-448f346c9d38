@@ -8,6 +8,8 @@ import 'package:job_portal/views/user_profile/data/models/public_profile_model.d
 import 'package:job_portal/views/user_profile/data/models/user_details_response.dart';
 import 'package:job_portal/views/user_profile/domain/entities/public_profile_entity.dart';
 import 'package:job_portal/views/user_profile/domain/entities/terms_and_conditions_entity.dart';
+import 'package:job_portal/views/user_profile/domain/entities/update_user_email_entity.dart';
+import 'package:job_portal/views/user_profile/domain/entities/update_user_profile_entity.dart';
 import 'package:job_portal/views/user_profile/domain/entities/user_details_entity.dart';
 import 'package:job_portal/views/user_profile/domain/repository/profile_repository.dart';
 
@@ -66,6 +68,54 @@ class ProfileRepositoryImpl extends ProfileRepository {
   Future<DataState<TermsAndConditionEntity>> getTermsAndConditions() async {
     try {
       final response = await _apiService.getTermsAndConditions();
+
+      if (response.response.statusCode == HttpStatus.ok) {
+        return DataSuccess(response.data);
+      } else {
+        develop.log('.Ending up in repo error : ${response.response}');
+        return DataFailed(
+          DioException(
+              error: response.response.statusMessage,
+              requestOptions: response.response.requestOptions,
+              response: response.response,
+              type: DioExceptionType.badResponse),
+        );
+      }
+    } on DioException catch (e) {
+      develop.log('Ending up in repo error : $e');
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<UpdateUserProfileEntity>> updateUserDetailsById(
+      String id, Map<String, dynamic> params) async {
+    try {
+      final response = await _apiService.updateUserDetailsById(id, params);
+
+      if (response.response.statusCode == HttpStatus.ok) {
+        return DataSuccess(response.data);
+      } else {
+        develop.log('.Ending up in repo error : ${response.response}');
+        return DataFailed(
+          DioException(
+              error: response.response.statusMessage,
+              requestOptions: response.response.requestOptions,
+              response: response.response,
+              type: DioExceptionType.badResponse),
+        );
+      }
+    } on DioException catch (e) {
+      develop.log('Ending up in repo error : $e');
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<UpdateUserEmailEntity>> changeUserEmail(
+      Map<String, dynamic> params) async {
+    try {
+      final response = await _apiService.changeUserEmail(params);
 
       if (response.response.statusCode == HttpStatus.ok) {
         return DataSuccess(response.data);

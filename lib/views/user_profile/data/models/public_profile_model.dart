@@ -8,6 +8,9 @@ class PublicProfileModel extends PublicProfileEntity {
     required super.lastName,
     required super.userType,
     required super.email,
+    required super.language,
+    required super.aboutus,
+    required super.careerObjective,
   });
 
   factory PublicProfileModel.fromJson(Map<String, dynamic> json) {
@@ -16,6 +19,9 @@ class PublicProfileModel extends PublicProfileEntity {
       lastName: json['lastName'] ?? '',
       userType: json['userType'] ?? '',
       email: json['email'] ?? '',
+      language: json['language'] ?? '',
+      aboutus: json['aboutus'] ?? '',
+      careerObjective: json['careerObjective'] ?? '',
     );
   }
 
@@ -25,6 +31,9 @@ class PublicProfileModel extends PublicProfileEntity {
       'lastName': lastName,
       'userType': userType,
       'email': email,
+      'language': language,
+      'aboutus': aboutus,
+      'careerObjective': careerObjective,
     };
   }
 }
@@ -43,7 +52,9 @@ class UserProfileModel extends UserProfileEntity {
       skills: (json['skills'] as List<dynamic>)
           .map((e) => SkillModel.fromJson(e))
           .toList(),
-      activity: List<String>.from(json['activity'] ?? []),
+      activity: (json['activity'] as List<dynamic>)
+          .map((e) => ActivityModel.fromJson(e))
+          .toList(),
       experiences: List<String>.from(json['experiences'] ?? []),
     );
   }
@@ -51,8 +62,8 @@ class UserProfileModel extends UserProfileEntity {
   Map<String, dynamic> toJson() {
     return {
       'publicProfile': (publicProfile as PublicProfileModel).toJson(),
-      'skills': skills,
-      'activity': activity,
+      'skills': skills.map((e) => (e as SkillModel).toJson()).toList(),
+      'activity': activity.map((e) => (e as ActivityModel).toJson()).toList(),
       'experiences': experiences,
     };
   }
@@ -67,5 +78,33 @@ class SkillModel extends SkillEntity {
 
   Map<String, dynamic> toJson() => {
         'skill': skill,
+      };
+}
+
+class ActivityModel extends ActivityEntity {
+  const ActivityModel({
+    required super.caption,
+    required super.image,
+    required super.likeCount,
+    required super.commentCount,
+    required super.createdAt,
+  });
+
+  factory ActivityModel.fromJson(Map<String, dynamic> json) {
+    return ActivityModel(
+      caption: json['caption'] ?? '',
+      image: json['image'] ?? '',
+      likeCount: json['likeCount'] ?? 0,
+      commentCount: json['commentCount'] ?? 0,
+      createdAt: DateTime.parse(json['createdAt']),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'caption': caption,
+        'image': image,
+        'likeCount': likeCount,
+        'commentCount': commentCount,
+        'createdAt': createdAt.toIso8601String(),
       };
 }

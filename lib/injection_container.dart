@@ -2,6 +2,11 @@ import 'package:get_it/get_it.dart';
 import 'package:job_portal/utils/constants/urls.dart';
 import 'package:job_portal/utils/network/dio_client.dart';
 import 'package:job_portal/utils/storage/shared_preference.dart';
+import 'package:job_portal/utils/upload_file_get_url/data/data_source/upload_file_api_service.dart';
+import 'package:job_portal/utils/upload_file_get_url/data/repository/upload_file_repository_impl.dart';
+import 'package:job_portal/utils/upload_file_get_url/domain/repository/upload_file_repository.dart';
+import 'package:job_portal/utils/upload_file_get_url/domain/usecases/upload_file_usecase.dart';
+import 'package:job_portal/utils/upload_file_get_url/presentation/bloc/upload_file_bloc.dart';
 import 'package:job_portal/views/detailed_signup_student/data/data_source/detailed_api_service.dart';
 import 'package:job_portal/views/detailed_signup_student/data/repository/skill_repository_impl.dart';
 import 'package:job_portal/views/detailed_signup_student/domain/repository/skill_repository.dart';
@@ -17,6 +22,7 @@ import 'package:job_portal/views/job_related/data/data_source/job_screens_api_se
 import 'package:job_portal/views/job_related/data/repository/jobs_repository_impl.dart';
 import 'package:job_portal/views/job_related/domain/repository/jobs_repository.dart';
 import 'package:job_portal/views/job_related/domain/usecases/jobs_usecase.dart';
+import 'package:job_portal/views/job_related/presentation/bloc/job_apply_bloc/job_apply_bloc.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_bloc/job_bloc.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_details_bloc/job_details_bloc.dart';
 import 'package:job_portal/views/login/data/data_source/login_api_service.dart';
@@ -53,6 +59,7 @@ import 'package:job_portal/views/user_profile/data/data_sources/profile_api_serv
 import 'package:job_portal/views/user_profile/data/repository/profile_repository_impl.dart';
 import 'package:job_portal/views/user_profile/domain/repository/profile_repository.dart';
 import 'package:job_portal/views/user_profile/domain/usecases/profile_usecases.dart';
+import 'package:job_portal/views/user_profile/presentation/bloc/manage_account_bloc/manage_account_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/my_profile_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/terms_and_conditions_bloc/terms_and_conditions_bloc.dart';
@@ -90,6 +97,8 @@ Future<void> initializeDependencies() async {
       FeedApiService(sl<DioClient>().instance));
   sl.registerSingleton<ProfileApiService>(
       ProfileApiService(sl<DioClient>().instance));
+  sl.registerSingleton<UploadFileApiService>(
+      UploadFileApiService(sl<DioClient>().instance));
 
   // Blocs
   sl.registerFactory<RemoteSignupBloc>(() => RemoteSignupBloc(sl(), sl()));
@@ -100,16 +109,19 @@ Future<void> initializeDependencies() async {
       () => RecruiterSignupBloc(sl(), sl()));
   sl.registerFactory<OpportunityBloc>(() => OpportunityBloc(sl(), sl()));
   sl.registerFactory<JobBloc>(() => JobBloc(sl()));
-  sl.registerFactory<JobDetailsBloc>(() => JobDetailsBloc(sl()));
+  sl.registerFactory<JobDetailsBloc>(() => JobDetailsBloc(sl(), sl()));
   sl.registerFactory<VerifyOtpBloc>(() => VerifyOtpBloc(sl()));
   sl.registerFactory<VerifyOtpRecruiterBloc>(
       () => VerifyOtpRecruiterBloc(sl()));
   sl.registerFactory<UniversitySignupBloc>(() => UniversitySignupBloc(sl()));
-  sl.registerFactory<FeedBloc>(() => FeedBloc(sl()));
+  sl.registerFactory<FeedBloc>(() => FeedBloc(sl(), sl(), sl()));
   sl.registerFactory<ProfileBloc>(() => ProfileBloc(sl()));
-  sl.registerFactory<MyProfileBloc>(() => MyProfileBloc(sl()));
+  sl.registerFactory<MyProfileBloc>(() => MyProfileBloc(sl(), sl()));
   sl.registerFactory<TermsAndConditionsBloc>(
       () => TermsAndConditionsBloc(sl()));
+  sl.registerFactory<ManageAccountBloc>(() => ManageAccountBloc(sl()));
+  sl.registerFactory<JobApplyBloc>(() => JobApplyBloc(sl()));
+  sl.registerFactory<UploadFileBloc>(() => UploadFileBloc(sl()));
 
   // Use Cases
   sl.registerLazySingleton<SignupUsecase>(() => SignupUsecase(sl()));
@@ -142,6 +154,16 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<UserDetailUsecase>(() => UserDetailUsecase(sl()));
   sl.registerLazySingleton<TermsAndConditionsUsecase>(
       () => TermsAndConditionsUsecase(sl()));
+  sl.registerLazySingleton<UpdateUserProfileUsecase>(
+      () => UpdateUserProfileUsecase(sl()));
+  sl.registerLazySingleton<UpdateUserEmailUsecase>(
+      () => UpdateUserEmailUsecase(sl()));
+  sl.registerLazySingleton<FeedPostLikeUsecase>(
+      () => FeedPostLikeUsecase(sl()));
+  sl.registerLazySingleton<FeedPostCommentUsecase>(
+      () => FeedPostCommentUsecase(sl()));
+  sl.registerLazySingleton<JobApplyUsecase>(() => JobApplyUsecase(sl()));
+  sl.registerLazySingleton<UploadFileUsecase>(() => UploadFileUsecase(sl()));
 
   // Repository
   sl.registerLazySingleton<SignupRepository>(() => SignupRepositoryImpl(sl()));
@@ -159,4 +181,6 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<FeedRepository>(() => FeedRepositoryImpl(sl()));
   sl.registerLazySingleton<ProfileRepository>(
       () => ProfileRepositoryImpl(sl()));
+  sl.registerLazySingleton<UploadFileRepository>(
+      () => UploadFileRepositoryImpl(sl()));
 }

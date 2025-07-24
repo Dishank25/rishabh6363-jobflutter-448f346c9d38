@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:job_portal/injection_container.dart';
+import 'package:job_portal/utils/upload_file_get_url/presentation/bloc/upload_file_bloc.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_bloc.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/skill_bloc/skill_bloc.dart';
 import 'package:job_portal/views/feed/presentation/bloc/feed_bloc.dart';
+import 'package:job_portal/views/job_related/presentation/bloc/job_apply_bloc/job_apply_bloc.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_bloc/job_bloc.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_details_bloc/job_details_bloc.dart';
 import 'package:job_portal/views/login/presentation/bloc/remote_login_bloc.dart';
@@ -13,6 +15,7 @@ import 'package:job_portal/views/signup_recruiter/presentation/bloc/verify_otp_r
 import 'package:job_portal/views/signup_student/presentation/bloc/remote_signup_bloc/remote_signup_bloc.dart';
 import 'package:job_portal/views/signup_student/presentation/bloc/verify_otp_bloc/verify_otp_bloc.dart';
 import 'package:job_portal/views/signup_university/presentation/blocs/university_signup_bloc.dart';
+import 'package:job_portal/views/user_profile/presentation/bloc/manage_account_bloc/manage_account_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/my_profile_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/terms_and_conditions_bloc/terms_and_conditions_bloc.dart';
@@ -45,6 +48,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => sl<ProfileBloc>()),
         BlocProvider(create: (_) => sl<MyProfileBloc>()),
         BlocProvider(create: (_) => sl<TermsAndConditionsBloc>()),
+        BlocProvider(create: (_) => sl<ManageAccountBloc>()),
+        BlocProvider(create: (_) => sl<JobApplyBloc>()),
+        BlocProvider(create: (_) => sl<UploadFileBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

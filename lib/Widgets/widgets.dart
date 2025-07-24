@@ -451,15 +451,16 @@ Widget preferenceContainer({
           Row(
             children: [
               courseName(
-                  name: cName,
-                  bgColor: const Color(0xff1961F3),
-                  // mIcon: cIcon,
-                  icon: Icon(
-                    Icons.close,
-                    color: Colors.white,
-                    size: 18,
-                  ),
-                  onCrossTap: onCrossTap),
+                name: cName,
+                bgColor: const Color(0xff1961F3),
+                // mIcon: cIcon,
+                icon: const Icon(
+                  Icons.close,
+                  color: Colors.white,
+                  size: 18,
+                ),
+                onCrossTap: onCrossTap,
+              ),
               const Spacer(),
               fileName == null
                   ? courseName(

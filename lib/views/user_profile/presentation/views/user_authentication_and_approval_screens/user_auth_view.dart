@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:job_portal/widgets/widgets.dart';
 
-import '../ui_helper/ui_helper.dart';
+import '../../../../../ui_helper/ui_helper.dart';
 
 class UserAuthScreen extends StatelessWidget {
   /*final VoidCallback ? onCallBack;
@@ -20,7 +20,9 @@ class UserAuthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
+          backgroundColor: Colors.white,
           actions: [
             InkWell(
               onTap: () {},

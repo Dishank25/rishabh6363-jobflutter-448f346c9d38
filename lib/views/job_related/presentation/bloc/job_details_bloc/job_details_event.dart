@@ -11,5 +11,17 @@ class LoadJobDetail extends JobDetailsEvent {
   const LoadJobDetail(this.jobId);
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [jobId];
 }
+
+// class LoadJobApply extends JobDetailsEvent {
+//   final String jobId;
+//   // final Map<String, dynamic> params;
+
+//   const LoadJobApply(
+//     this.jobId,
+//   );
+
+//   @override
+//   List<Object?> get props => [jobId];
+// }

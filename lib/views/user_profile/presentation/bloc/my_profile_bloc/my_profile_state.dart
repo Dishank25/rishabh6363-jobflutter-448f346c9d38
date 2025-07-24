@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart' show immutable;
+import 'package:job_portal/views/user_profile/domain/entities/update_user_profile_entity.dart';
 import 'package:job_portal/views/user_profile/domain/entities/user_details_entity.dart';
 
 @immutable
@@ -39,4 +40,18 @@ class MyProfileDetailsLoaded extends MyProfileState {
 
 class MyProfileDetailsError extends MyProfileState {
   const MyProfileDetailsError();
+}
+
+class UpdateProfileLoading extends MyProfileState {
+  const UpdateProfileLoading();
+}
+
+class UpdateProfileLoaded extends MyProfileState {
+  final UpdateUserProfileEntity updateUserProfileEntity;
+
+  const UpdateProfileLoaded(this.updateUserProfileEntity);
+}
+
+class UpdateProfileError extends MyProfileState {
+  const UpdateProfileError();
 }

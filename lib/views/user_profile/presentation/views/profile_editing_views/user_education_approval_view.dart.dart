@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
-import '../ui_helper/ui_helper.dart';
-import '../widgets/widgets.dart';
+import '../../../../../ui_helper/ui_helper.dart';
+import '../../../../../widgets/widgets.dart';
 
 class UserEducationApprovalScreen extends StatelessWidget {
   TextEditingController collController = TextEditingController();
@@ -13,7 +12,9 @@ class UserEducationApprovalScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
+          backgroundColor: Colors.white,
           actions: [
             InkWell(
               onTap: () {},

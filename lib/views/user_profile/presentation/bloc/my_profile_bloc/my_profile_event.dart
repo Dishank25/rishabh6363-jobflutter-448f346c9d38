@@ -21,3 +21,14 @@ class LoadMyProfileDetails extends MyProfileEvent {
   // TODO: implement props
   List<Object?> get props => [id];
 }
+
+class LoadUpdateProfile extends MyProfileEvent {
+  final String id;
+  final Map<String, dynamic> params;
+
+  const LoadUpdateProfile(this.id, this.params);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [id, params];
+}

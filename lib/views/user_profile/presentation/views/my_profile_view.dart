@@ -9,11 +9,14 @@ import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/
 import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/my_profile_event.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/my_profile_state.dart';
 import 'package:job_portal/views/user_profile/presentation/views/choose_your_template_view.dart';
+import 'package:job_portal/views/user_profile/presentation/views/profile_editing_views/edit_about_view.dart';
+import 'package:job_portal/views/user_profile/presentation/views/profile_editing_views/edit_career_objective_view.dart';
+import 'package:job_portal/views/user_profile/presentation/views/profile_editing_views/edit_language_view.dart';
 import '../../../../ui_helper/ui_helper.dart';
-import '../../../../user_authentication_and_approval_screens/User_Auth_Screen.dart';
-import '../../../../user_authentication_and_approval_screens/User_Education_Approval_Screen.dart';
-import '../../../../user_authentication_and_approval_screens/User_Experience_Approval_Screen.dart';
-import '../../../../user_authentication_and_approval_screens/User_Skills_Approval_Screen.dart';
+import 'user_authentication_and_approval_screens/user_auth_view.dart';
+import 'profile_editing_views/user_education_approval_view.dart.dart';
+import 'profile_editing_views/user_work_experience_view.dart';
+import 'profile_editing_views/user_skills_approval_view.dart';
 import 'User_Notifications_Screen.dart';
 import 'User_messages_screen.dart';
 
@@ -27,6 +30,7 @@ class UserProfileScreen2 extends StatefulWidget {
 
 class _UserProfileScreen2State extends State<UserProfileScreen2> {
   var userProfileDetails;
+
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
@@ -40,6 +44,91 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
     final userId = _prefs.getUserId();
 
     bloc.add(LoadMyProfileDetails(userId ?? '6'));
+  }
+
+  void _showEditAboutDialog(BuildContext context, String currentAbout) {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.2), // for dimmed effect
+
+      builder: (context) => BlocProvider.value(
+        value: context.read<MyProfileBloc>(),
+        child: EditAboutDialog(about: currentAbout),
+      ),
+    ).then(
+      (updatedAbout) {
+        if (updatedAbout != null) {
+          // Use updated about string
+          print("Updated About: $updatedAbout");
+
+          final bloc = context.read<MyProfileBloc>();
+
+          // ignore: unused_local_variable
+          final _prefs = sl<PreferencesManager>();
+
+          final userId = _prefs.getUserId();
+
+          bloc.add(LoadMyProfileDetails(userId ?? '6'));
+        }
+      },
+    );
+  }
+
+  void _showEditCareerObjectiveDialog(
+      BuildContext context, String careerObjective) {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.2), // for dimmed effect
+
+      builder: (context) => BlocProvider.value(
+        value: context.read<MyProfileBloc>(),
+        child: EditCareerObjectiveView(careerObjective: careerObjective),
+      ),
+    ).then(
+      (updatedAbout) {
+        if (updatedAbout != null) {
+          // Use updated about string
+          print("Updated careerObjective: $careerObjective");
+
+          final bloc = context.read<MyProfileBloc>();
+
+          // ignore: unused_local_variable
+          final _prefs = sl<PreferencesManager>();
+
+          final userId = _prefs.getUserId();
+
+          bloc.add(LoadMyProfileDetails(userId ?? '6'));
+        }
+      },
+    );
+  }
+
+  void _showEditLanguageDialog(BuildContext context, String language) {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.2), // for dimmed effect
+
+      builder: (context) => BlocProvider.value(
+        value: context.read<MyProfileBloc>(),
+        child: EditLanguageView(language: language),
+      ),
+    ).then(
+      (updatedAbout) {
+        if (updatedAbout != null) {
+          // Use updated about string
+          print("Updated language: $language");
+
+          final bloc = context.read<MyProfileBloc>();
+
+          // ignore: unused_local_variable
+          final _prefs = sl<PreferencesManager>();
+
+          final userId = _prefs.getUserId();
+
+          bloc.add(LoadMyProfileDetails(userId ?? '6'));
+        }
+      },
+    );
   }
 
   @override
@@ -98,14 +187,14 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                     children: [
                       Text(
                         // "Aman Gupta",
-                        data.firstName + " " + data.lastName,
-                        style: TextStyle(
+                        "${data.firstName} ${data.lastName}",
+                        style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w700),
                       ),
                       Text(
                           // "Aman@gmail.com",
                           data.email,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 13, fontWeight: FontWeight.w400)),
                       const SizedBox(
                         height: 15,
@@ -125,8 +214,7 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                             ),
                             Text(
                                 // "Hi, I am Aman working as a designer from 3 years...",
-                                data.aboutUs ??
-                                    "Hi, I am Aman working as a designer from 3 years...",
+                                data.aboutUs ?? "Add about yourself...",
                                 style: mTextStyle12(
                                   mColor: const Color(0xff9095A0),
                                 )),
@@ -143,7 +231,31 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                                           mColor: AppColors.blueTextColor),
                                     )),
                                 InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      // Navigator.push(
+                                      //   context,
+                                      //   MaterialPageRoute(
+                                      //     builder: (_) => EditAboutView(
+                                      //         about: data.aboutUs ??
+                                      //             "Hi, I am Aman working as a designer from 3 years..."),
+                                      //   ),
+                                      // ).then((value) {
+                                      //   final bloc =
+                                      //       context.read<MyProfileBloc>();
+
+                                      //   // ignore: unused_local_variable
+                                      //   final _prefs = sl<PreferencesManager>();
+
+                                      //   final userId = _prefs.getUserId();
+
+                                      //   bloc.add(LoadMyProfileDetails(
+                                      //       userId ?? '6'));
+                                      // });
+                                      _showEditAboutDialog(
+                                          context,
+                                          data.aboutUs ??
+                                              "Add about yourself...");
+                                    },
                                     child: Text("Edit About",
                                         style: mTextStyle12(
                                             mColor: AppColors.blueTextColor))),
@@ -160,7 +272,9 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                             const SizedBox(
                               height: 3,
                             ),
-                            Text(data.careerObjective ?? "lorem ipsum",
+                            Text(
+                                data.careerObjective ??
+                                    "Add your career objective.",
                                 style: mTextStyle12(
                                   mColor: const Color(0xff9095A0),
                                 )),
@@ -177,7 +291,12 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                                           mColor: AppColors.blueTextColor),
                                     )),
                                 InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      _showEditCareerObjectiveDialog(
+                                          context,
+                                          data.careerObjective ??
+                                              "Add your career objective.");
+                                    },
                                     child: Text("Edit ",
                                         style: mTextStyle12(
                                             mColor: AppColors.blueTextColor))),
@@ -248,7 +367,16 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                                     builder: (context) =>
                                         UserSkillsApprovalScreen(),
                                   ),
-                                );
+                                ).then((value) {
+                                  final bloc = context.read<MyProfileBloc>();
+
+                                  // ignore: unused_local_variable
+                                  final _prefs = sl<PreferencesManager>();
+
+                                  final userId = _prefs.getUserId();
+
+                                  bloc.add(LoadMyProfileDetails(userId ?? '6'));
+                                });
                               },
                               editText: "Add Skills",
                             ),
@@ -263,10 +391,21 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                               ],
                               onEditTap: () {
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            UserExperienceApprovalScreen()));
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const UserExperienceApprovalScreen(),
+                                  ),
+                                ).then((value) {
+                                  final bloc = context.read<MyProfileBloc>();
+
+                                  // ignore: unused_local_variable
+                                  final _prefs = sl<PreferencesManager>();
+
+                                  final userId = _prefs.getUserId();
+
+                                  bloc.add(LoadMyProfileDetails(userId ?? '6'));
+                                });
                               },
                               editText: "Add Work Experience",
                             ),
@@ -294,7 +433,10 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                               statusList: [
                                 true,
                               ],
-                              onEditTap: () {},
+                              onEditTap: () {
+                                _showEditLanguageDialog(
+                                    context, data.language ?? "English");
+                              },
                               editText: "Add Language",
                             ),
                             profileSection(
@@ -319,16 +461,24 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                           ],
                         ),
                       ),
+                      const SizedBox(
+                        height: 130,
+                      )
                     ],
                   );
                 } else if (state is MyProfileDetailsLoading) {
                   developer.log('MyProfileDetailsLoading');
                   return const Center(
-                    child: Column(
-                      children: [
-                        CircularProgressIndicator(),
-                        Text('MyProfileDetailsLoading')
-                      ],
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 200.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(),
+                          Text('MyProfileDetailsLoading')
+                        ],
+                      ),
                     ),
                   );
                 } else if (state is MyProfileDetailsError) {

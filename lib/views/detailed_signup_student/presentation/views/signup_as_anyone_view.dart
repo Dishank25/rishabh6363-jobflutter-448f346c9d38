@@ -1600,11 +1600,13 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
 class DatePickerField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
+  final Color? fillColor;
 
   const DatePickerField({
     required this.controller,
     this.hintText = 'Select Date',
     super.key,
+    this.fillColor,
   });
 
   @override
@@ -1613,6 +1615,8 @@ class DatePickerField extends StatelessWidget {
       controller: controller,
       readOnly: true,
       decoration: InputDecoration(
+        filled: true,
+        fillColor: fillColor ?? Colors.transparent,
         hintText: hintText,
         hintStyle: const TextStyle(fontSize: 13, color: Colors.grey),
         suffixIcon: const Icon(

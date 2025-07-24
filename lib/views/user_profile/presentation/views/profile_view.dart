@@ -10,8 +10,8 @@ import 'package:job_portal/views/user_profile/presentation/bloc/profile_bloc/pro
 import 'package:job_portal/views/user_profile/presentation/bloc/profile_bloc/profile_event.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/profile_bloc/profile_state.dart';
 import 'package:job_portal/views/user_profile/presentation/views/User_Notifications_Screen.dart';
-import 'package:job_portal/views/user_profile/presentation/views/User_change_email_screen.dart';
-import 'package:job_portal/views/user_profile/presentation/views/User_change_password_screen.dart';
+import 'package:job_portal/views/user_profile/presentation/views/change_email_password_views/change_email_view.dart';
+import 'package:job_portal/views/user_profile/presentation/views/change_email_password_views/User_change_password_screen.dart';
 import 'package:job_portal/views/user_profile/presentation/views/User_messages_screen.dart';
 import 'package:job_portal/views/user_profile/presentation/views/my_profile_view.dart';
 import 'package:job_portal/views/user_profile/presentation/views/public_profile_view.dart';
@@ -372,8 +372,7 @@ class _UserProfileScreen1State extends State<UserProfileScreen1> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          UserChangeEmailPage(),
+                                      builder: (context) => ChangeEmailView(),
                                     ),
                                   );
                                 },

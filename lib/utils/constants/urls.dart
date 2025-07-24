@@ -26,4 +26,12 @@ class Urls {
   static const getPublicProfile = "user-details/public-profile/";
   static const getUserDetails = "user-details/detail/";
   static const getTermsAndConditions = "user-details/getTermsAndCondition";
+  static const updateUserDetailsById = "user-details/detail/";
+  static const changeUserEmail = "users/changeEmail";
+  static const feedPostLike1 = "feed/posts/";
+  static const feedPostLike2 = "/like";
+  static const feedPostComment1 = "feed/posts/";
+  static const feedPostComment2 = "/comment";
+  static const applyForJob = "jobpost/apply/{jobId}";
+  static const uploadFileGetUrl = "upload-image";
 }

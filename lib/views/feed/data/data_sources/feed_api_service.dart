@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:job_portal/utils/constants/urls.dart';
+import 'package:job_portal/views/feed/data/models/feed_post_comment_model.dart';
+import 'package:job_portal/views/feed/data/models/feed_post_like_model.dart';
 import 'package:job_portal/views/feed/data/models/feed_response.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -11,4 +13,12 @@ abstract class FeedApiService {
 
   @GET(Urls.getFeedPosts)
   Future<HttpResponse<FeedResponseModel>> getFeedPosts();
+
+  @POST("${Urls.feedPostLike1}{feedPostId}${Urls.feedPostLike2}")
+  Future<HttpResponse<FeedPostLikeModel>> feedPostLike(
+      @Path() String feedPostId, @Body() Map<String, dynamic> params);
+
+  @POST("${Urls.feedPostComment1}{feedPostId}${Urls.feedPostComment2}")
+  Future<HttpResponse<FeedPostCommentModel>> feedPostComment(
+      @Path() String feedPostId, @Body() Map<String, dynamic> params);
 }

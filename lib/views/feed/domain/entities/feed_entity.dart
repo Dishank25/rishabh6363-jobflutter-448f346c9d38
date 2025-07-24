@@ -43,7 +43,7 @@ class PostEntity {
 }
 
 class CommentEntity {
-  final int userId;
+  final dynamic userId;
   final String comment;
   final DateTime createdAt;
 

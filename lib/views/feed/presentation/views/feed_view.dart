@@ -2,7 +2,10 @@ import 'dart:developer' as developer show log;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:job_portal/injection_container.dart';
 import 'package:job_portal/utils/constants/image_string.dart';
+import 'package:job_portal/utils/storage/shared_preference.dart';
+import 'package:job_portal/views/feed/data/models/feed_response.dart';
 import 'package:job_portal/views/user_profile/presentation/views/User_Notifications_Screen.dart';
 import 'package:job_portal/views/feed/domain/entities/feed_entity.dart';
 import 'package:job_portal/views/feed/presentation/bloc/feed_bloc.dart';
@@ -26,6 +29,10 @@ class FeedScreen extends StatefulWidget {
 
 class _FeedScreenState extends State<FeedScreen> {
   TextEditingController feedSearchController = TextEditingController();
+  String? activePostId;
+  final TextEditingController _commentController = TextEditingController();
+  final TextEditingController newPostController = TextEditingController();
+  final FocusNode _commentFocusNode = FocusNode();
 
   List<Map<String, dynamic>> uList = [
     {
@@ -66,7 +73,152 @@ class _FeedScreenState extends State<FeedScreen> {
 
     final bloc = context.read<FeedBloc>();
 
-    bloc.add(LoadFeedPosts());
+    bloc.add(const LoadFeedPosts());
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _commentFocusNode.addListener(() {
+      if (!_commentFocusNode.hasFocus) {
+        setState(() => activePostId = null);
+      }
+    });
+  }
+
+  void commentBottomSheet(List<CommentEntity> comments) {
+    TextEditingController _commentController = TextEditingController();
+
+    // Make a local copy of comments so we can update it
+    List<CommentEntity> commentList = List.from(comments);
+
+    showModalBottomSheet(
+      isScrollControlled: true,
+      useSafeArea: true,
+      context: context,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      builder: (context) {
+        return StatefulBuilder(builder: (context, setSheetState) {
+          return DraggableScrollableSheet(
+            initialChildSize: 1,
+            minChildSize: 1,
+            maxChildSize: 1,
+            expand: false,
+            builder: (_, controller) {
+              return Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(25.0),
+                    topRight: Radius.circular(25.0),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Icon(Icons.remove, color: Colors.grey[600]),
+
+                    // Scrollable comment list
+                    Expanded(
+                      child: commentList.isNotEmpty
+                          ? ListView.builder(
+                              controller: controller,
+                              padding: const EdgeInsets.only(bottom: 70),
+                              itemCount: commentList.length,
+                              itemBuilder: (_, index) {
+                                final curr = commentList[index];
+                                return ListTile(
+                                  title: Text(curr.userId.toString()),
+                                  subtitle: Text(curr.comment),
+                                  leading: const Icon(Icons.person_sharp),
+                                );
+                              },
+                            )
+                          : const Center(
+                              child: Text(
+                                'Be the first one to comment...',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                    ),
+
+                    // Sticky TextField at bottom
+                    Padding(
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom,
+                        left: 12,
+                        right: 12,
+                        top: 8,
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: _commentController,
+                                  decoration: InputDecoration(
+                                    hintText: 'Write a comment...',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(90),
+                                    ),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 12, vertical: 8),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              IconButton(
+                                icon: const Icon(Icons.send, color: Colors.red),
+                                onPressed: () {
+                                  final text = _commentController.text.trim();
+                                  if (text.isNotEmpty) {
+                                    final _prefs = sl<PreferencesManager>();
+                                    final userId = _prefs.getUserId();
+
+                                    /// 🆕 Update UI immediately
+                                    setSheetState(() {
+                                      commentList.insert(
+                                        0,
+                                        CommentEntity(
+                                          userId: userId ?? '2',
+                                          comment: text,
+                                          createdAt: DateTime.now(),
+                                        ),
+                                      );
+                                    });
+
+                                    // Fire API call as before
+                                    context.read<FeedBloc>().add(
+                                          LoadFeedPostComment(
+                                            activePostId ?? '2',
+                                            {
+                                              "userId": userId ?? "2",
+                                              "comment": text,
+                                            },
+                                          ),
+                                        );
+
+                                    _commentController.clear();
+                                    FocusScope.of(context).unfocus();
+                                  }
+                                },
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 50),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              );
+            },
+          );
+        });
+      },
+    );
   }
 
   @override
@@ -121,83 +273,141 @@ class _FeedScreenState extends State<FeedScreen> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          children: [
-            BlocListener<FeedBloc, FeedState>(
-              listener: (context, state) {
-                if (state is FeedPostsLoaded) {
-                  final data = state.feedEntity;
-                  setState(() {
-                    feedPostsData = data;
-                  });
-                  developer.log('Feed posts data : ${data.posts.first.id}');
-                }
-              },
-              child: const SizedBox(),
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: SearchTextField(
-                    onTextChanged: (value) {
-                      print("search text changed.");
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  width: 40,
-                ),
-                SvgPicture.asset("assets/Icons/settings-sliders 1.svg")
-              ],
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            if (feedPostsData != null)
-              Expanded(
-                child: ListView.builder(
-                  itemCount: feedPostsData?.posts.length,
-                  padding: const EdgeInsets.only(bottom: 16),
-                  itemBuilder: (context, index) {
-                    // final item = uList[index];
-                    // return Padding(
-                    //   padding: const EdgeInsets.only(bottom: 20),
-                    //   child: FeedCard(
-                    //     // imageUrl: item["image"],
-                    //     imageUrl: ImageString.dummyImageUrl,
-                    //     company: item["company_name"],
-                    //     posted: item["posted"],
-                    //     noFollowers: item["No_followers"],
-                    //     mainImage: item["mainImage"],
-                    //   ),
-                    // );
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            children: [
+              BlocListener<FeedBloc, FeedState>(
+                listener: (context, state) {
+                  if (state is FeedPostsLoaded) {
+                    final data = state.feedEntity;
+                    setState(() {
+                      feedPostsData = data;
+                    });
+                    developer.log('Feed posts data : ${data.posts.first.id}');
+                  } else if (state is FeedPostCommentLoaded) {
+                    final data = state.feedPostCommentEntity;
+                    developer.log('Comment successfully posted.');
+                    showSnackbar(data.message, context);
+                    _commentController.clear();
+                    FocusScope.of(context).unfocus();
+                    setState(() => activePostId = null);
 
-                    final item = feedPostsData?.posts[index];
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 20),
-                      child: FeedCard(
-                        // imageUrl: item["image"],
-                        imageUrl: ImageString.dummyImageUrl,
-                        company: item!.user.firstName,
-                        // posted: '1 day ago',
-                        posted: getPostedDaysAgo(item.createdAt.toString()),
-                        // bodyText: item.caption,
-                        bodyText:
-                            'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.\n\nThe standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.',
-                        noFollowers: "${item.user.followersCount} followers",
-                        // mainImage: item.image,
-                        mainImage: ImageString.placeHolderImage,
-                      ),
-                    );
-                  },
-                ),
+                    context.read<FeedBloc>().add(const LoadFeedPosts());
+                  } else if (state is FeedPostCommentLoading) {
+                    developer.log('Commentting .');
+                  } else if (state is FeedPostCommentError) {
+                    developer.log('Comment posting error.');
+                  }
+                },
+                child: const SizedBox(),
               ),
-            const SizedBox(
-              height: 30,
-            ),
-          ],
+              Row(
+                children: [
+                  Expanded(
+                    child: SearchTextField(
+                      onTextChanged: (value) {
+                        print("search text changed.");
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 40,
+                  ),
+                  SvgPicture.asset("assets/Icons/settings-sliders 1.svg")
+                ],
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Row(
+                children: [
+                  // CircleAvatar(
+                  //   child: Image.asset(ImageString.placeHolderImage),
+                  // ),
+                  Container(
+                    // height: 88,
+                    // width: 64,
+                    child: SvgPicture.asset("assets/Icons/profile_icon.svg"),
+                  ),
+                  SizedBox(
+                    width: 18,
+                  ),
+                  Expanded(
+                    child: CustomTextField(
+                      controller: newPostController,
+                      hintText: 'Share something...',
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              feedPostsData != null
+                  ? ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: feedPostsData?.posts.length,
+                      padding: const EdgeInsets.only(bottom: 16),
+                      itemBuilder: (context, index) {
+                        // final item = uList[index];
+                        // return Padding(
+                        //   padding: const EdgeInsets.only(bottom: 20),
+                        //   child: FeedCard(
+                        //     // imageUrl: item["image"],
+                        //     imageUrl: ImageString.dummyImageUrl,
+                        //     company: item["company_name"],
+                        //     posted: item["posted"],
+                        //     noFollowers: item["No_followers"],
+                        //     mainImage: item["mainImage"],
+                        //   ),
+                        // );
+
+                        final item = feedPostsData?.posts[index];
+                        final feedPostId = item?.id ?? '2';
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 20),
+                          child: FeedCard(
+                            feedPostId: feedPostId.toString(),
+                            // imageUrl: item["image"],
+                            imageUrl: ImageString.dummyImageUrl,
+                            company: item!.user.firstName,
+                            // posted: '1 day ago',
+                            posted: getPostedDaysAgo(item.createdAt.toString()),
+                            bodyText: item.caption,
+                            // bodyText:
+                            //     'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.\n\nThe standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.',
+                            noFollowers:
+                                "${item.user.followersCount} followers",
+                            // mainImage: item.image,
+                            mainImage: ImageString.placeHolderImage,
+                            initialLiked: false,
+                            onCommentTap: () {
+                              setState(
+                                  () => activePostId = feedPostId.toString());
+                              // FocusScope.of(context)
+                              //     .requestFocus(_commentFocusNode);
+                              // Delayed focus ensures TextField is built first
+                              // WidgetsBinding.instance.addPostFrameCallback(
+                              //   (_) {
+                              //     FocusScope.of(context)
+                              //         .requestFocus(_commentFocusNode);
+                              //   },
+                              // );
+                              commentBottomSheet(item.comments);
+                            },
+                          ),
+                        );
+                      },
+                    )
+                  : const CircularProgressIndicator(),
+              const SizedBox(
+                height: 30,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -206,18 +416,24 @@ class _FeedScreenState extends State<FeedScreen> {
 
 /// FEED CARD WIDGET
 class FeedCard extends StatefulWidget {
+  final String feedPostId;
   final String imageUrl, company, posted, noFollowers;
   final String? mainImage;
   final String bodyText;
+  final bool initialLiked;
+  final VoidCallback onCommentTap;
 
   const FeedCard({
     super.key,
+    required this.feedPostId,
     required this.imageUrl,
     required this.company,
     required this.posted,
     required this.noFollowers,
     this.mainImage,
     required this.bodyText,
+    required this.initialLiked,
+    required this.onCommentTap,
   });
 
   @override
@@ -226,6 +442,14 @@ class FeedCard extends StatefulWidget {
 
 class _FeedCardState extends State<FeedCard> {
   bool isExpanded = false;
+  late bool liked;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    liked = widget.initialLiked;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -274,7 +498,9 @@ class _FeedCardState extends State<FeedCard> {
                   text: widget.posted, bgColor: const Color(0xffEFF0F6)),
               const SizedBox(width: 8),
               greyContainer(
-                  text: "Sponsored", bgColor: const Color(0xffEFF0F6)),
+                text: "Sponsored",
+                bgColor: const Color(0xffEFF0F6),
+              ),
             ],
           ),
 
@@ -331,6 +557,135 @@ class _FeedCardState extends State<FeedCard> {
                 ),
               ),
             ),
+          ),
+
+          const SizedBox(
+            height: 10,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              InkWell(
+                onTap: () {
+                  final _prefs = sl<PreferencesManager>();
+
+                  final userId = _prefs.getUserId();
+                  if (liked) {
+                    final map = {'userId': userId ?? '2', 'action': 'unlike'};
+                    context
+                        .read<FeedBloc>()
+                        .add(LoadFeedPostLike(widget.feedPostId, map));
+                  } else {
+                    final map = {'userId': userId ?? '2', 'action': 'like'};
+                    context
+                        .read<FeedBloc>()
+                        .add(LoadFeedPostLike(widget.feedPostId, map));
+                  }
+                },
+                child: Column(
+                  children: [
+                    // Icon(Icons.thumb_up_alt_outlined),
+                    BlocListener<FeedBloc, FeedState>(
+                      listener: (context, state) {
+                        if (state is FeedPostLikeLoading) {
+                          developer.log('Like loading');
+                        } else if (state is FeedPostLikeLoaded) {
+                          developer.log('Like loaded');
+                          final data = state.feedPostLikeEntity;
+                          setState(() {
+                            liked = !liked;
+                          });
+                          developer.log('Like loaded : ${data.message}');
+                        } else if (state is FeedPostLikeError) {
+                          developer.log('Like error');
+                        }
+                      },
+                      child: SizedBox(),
+                    ),
+                    SvgPicture.asset(
+                      ImageString.likeIcon,
+                      color: !liked
+                          ? Color.fromARGB(255, 88, 92, 96)
+                          : Colors.blue,
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    const Text(
+                      'Like',
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 88, 92, 96),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              InkWell(
+                onTap: widget.onCommentTap,
+                child: Column(
+                  children: [
+                    // Icon(Icons.comment),
+                    SvgPicture.asset(
+                      ImageString.commentIcon,
+                      color: const Color.fromARGB(255, 88, 92, 96),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+
+                    const Text(
+                      'Comment',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 88, 92, 96),
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+              ),
+              InkWell(
+                child: Column(
+                  children: [
+                    // Icon(Icons.share),
+                    SvgPicture.asset(
+                      ImageString.shareIcon,
+                      color: const Color.fromARGB(255, 88, 92, 96),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+
+                    const Text(
+                      'Share',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 88, 92, 96),
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+              ),
+              InkWell(
+                child: Column(
+                  children: [
+                    // Icon(Icons.send),
+                    SvgPicture.asset(
+                      ImageString.sendIcon,
+                      color: const Color.fromARGB(255, 88, 92, 96),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+
+                    const Text(
+                      'Send',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 88, 92, 96),
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ],
       ),

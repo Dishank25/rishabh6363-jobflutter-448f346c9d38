@@ -23,4 +23,8 @@ class ImageString {
   static const resume1Png = "${imageFolder}resume1.png";
   static const resume3Png = "${imageFolder}resume3.png";
   static const resume4Png = "${imageFolder}resume4.png";
+  static const likeIcon = "${imageFolder}likeIcon.svg";
+  static const commentIcon = "${imageFolder}comment_icon.svg";
+  static const shareIcon = "${imageFolder}share_icon.svg";
+  static const sendIcon = "${imageFolder}send_icon.svg";
 }

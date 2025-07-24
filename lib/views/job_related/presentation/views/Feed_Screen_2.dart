@@ -136,6 +136,7 @@ class _FeedScreen2State extends State<FeedScreen2> {
                     height: 32,
                   ),
                   FeedCard(
+                    feedPostId: '2',
                     bodyText:
                         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ',
                     imageUrl:
@@ -144,6 +145,8 @@ class _FeedScreen2State extends State<FeedScreen2> {
                     posted: "2 days",
                     noFollowers: "123,456 followers",
                     mainImage: "assets/Images/uber_driver.jpg",
+                    initialLiked: false,
+                    onCommentTap: () {},
                   ),
                   SizedBox(
                     height: 20,

@@ -4,6 +4,8 @@ import 'package:job_portal/views/user_profile/data/models/public_profile_model.d
 import 'package:job_portal/views/user_profile/data/models/user_details_response.dart';
 import 'package:job_portal/views/user_profile/domain/entities/public_profile_entity.dart';
 import 'package:job_portal/views/user_profile/domain/entities/terms_and_conditions_entity.dart';
+import 'package:job_portal/views/user_profile/domain/entities/update_user_email_entity.dart';
+import 'package:job_portal/views/user_profile/domain/entities/update_user_profile_entity.dart';
 import 'package:job_portal/views/user_profile/domain/entities/user_details_entity.dart';
 import 'package:job_portal/views/user_profile/domain/repository/profile_repository.dart';
 
@@ -41,5 +43,30 @@ class TermsAndConditionsUsecase
   Future<DataState<TermsAndConditionEntity>> call(
       {Map<String, dynamic>? params}) async {
     return _repository.getTermsAndConditions();
+  }
+}
+
+class UpdateUserProfileUsecase
+    implements
+        UseCase<DataState<UpdateUserProfileEntity>, Map<String, dynamic>> {
+  final ProfileRepository _repository;
+  UpdateUserProfileUsecase(this._repository);
+
+  @override
+  Future<DataState<UpdateUserProfileEntity>> call(
+      {Map<String, dynamic>? params}) async {
+    return _repository.updateUserDetailsById(params!['id'], params['params']);
+  }
+}
+
+class UpdateUserEmailUsecase
+    implements UseCase<DataState<UpdateUserEmailEntity>, Map<String, dynamic>> {
+  final ProfileRepository _repository;
+  UpdateUserEmailUsecase(this._repository);
+
+  @override
+  Future<DataState<UpdateUserEmailEntity>> call(
+      {Map<String, dynamic>? params}) async {
+    return _repository.changeUserEmail(params!['params']);
   }
 }

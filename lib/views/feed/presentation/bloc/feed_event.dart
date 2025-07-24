@@ -12,3 +12,23 @@ class LoadFeedPosts extends FeedEvent {
   @override
   List<Object?> get props => [];
 }
+
+class LoadFeedPostLike extends FeedEvent {
+  final String feedPostId;
+  final Map<String, dynamic> map;
+
+  const LoadFeedPostLike(this.feedPostId, this.map);
+
+  @override
+  List<Object?> get props => [feedPostId, map];
+}
+
+class LoadFeedPostComment extends FeedEvent {
+  final String feedPostId;
+  final Map<String, dynamic> map;
+
+  const LoadFeedPostComment(this.feedPostId, this.map);
+
+  @override
+  List<Object?> get props => [feedPostId, map];
+}

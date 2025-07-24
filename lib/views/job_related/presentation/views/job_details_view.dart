@@ -5,6 +5,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:job_portal/utils/constants/constants.dart';
 import 'package:job_portal/utils/constants/image_string.dart';
 import 'package:job_portal/views/bottom_nav_bar/student_bottom_nav_bar.dart';
+import 'package:job_portal/views/job_related/presentation/bloc/job_apply_bloc/job_apply_bloc.dart';
+import 'package:job_portal/views/job_related/presentation/bloc/job_apply_bloc/job_apply_event.dart';
+import 'package:job_portal/views/job_related/presentation/bloc/job_apply_bloc/job_apply_state.dart';
 import 'package:job_portal/views/user_profile/presentation/views/User_Notifications_Screen.dart';
 import 'package:job_portal/views/user_profile/presentation/views/User_messages_screen.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_details_bloc/job_details_bloc.dart';
@@ -26,6 +29,7 @@ class JobDetailsScreen extends StatefulWidget {
 
 class _JobDetailsScreenState extends State<JobDetailsScreen> {
   String messageWhileLoadingDetails = '';
+  bool areDetailsLoaded = false;
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
@@ -85,7 +89,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
               if (state is JobDetailsLoaded) {
                 final data = state.jobDetailsEntity;
                 // developer.log("Details of job data : ${data.jobProfile}");
-
+                areDetailsLoaded = true;
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -222,7 +226,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                 }
                                 ;
                               },
-                              child: Text("More Job openings at Uber",
+                              child: Text(
+                                  "More Job openings at ${data.companyName}",
                                   style: mTextStyle14().copyWith(
                                     color: AppColors.blueTextColor,
                                   ))),
@@ -296,17 +301,38 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(24),
-        child: InkWell(
-            onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("Applied Successfully")));
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Student_Bottom_Nav_bar()));
-            },
-            child: commonRedContainer(text: "Apply")),
+        padding: const EdgeInsets.all(24),
+        child: BlocListener<JobApplyBloc, JobApplyState>(
+          listener: (context, state) {
+            if (state is JobApplyLoading) {
+              developer.log('Job apply loading');
+            } else if (state is JobApplyLoaded) {
+              developer.log('Job apply loaded');
+              showSnackbar(state.jobApplyEntity.message, context);
+              Navigator.pop(context);
+            } else if (state is JobApplyError) {
+              showSnackbar(
+                  "Aadhaar is not verified. Please verify Aadhaar before applying.",
+                  context);
+              developer.log('Job apply error');
+            }
+          },
+          child: InkWell(
+              onTap: () {
+                if (areDetailsLoaded) {
+                  context
+                      .read<JobApplyBloc>()
+                      .add(LoadJobApply(widget.jobId.toString()));
+                }
+                // ScaffoldMessenger.of(context).showSnackBar(
+                //     SnackBar(content: Text("Applied Successfully")));
+                // Navigator.pushReplacement(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => Student_Bottom_Nav_bar()));
+              },
+              child: commonRedContainer(text: "Apply")),
+        ),
       ),
     );
   }

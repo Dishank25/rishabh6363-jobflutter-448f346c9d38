@@ -79,175 +79,174 @@ class _Student_Bottom_Nav_barState extends State<Student_Bottom_Nav_bar> {
 
     return Scaffold(
       extendBody: true,
-      floatingActionButton: selected_index == 0
-          ? Container(
-              height: 44,
-              width: 44,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(26),
-                  color: AppColors.mainRedColor,
-                  border: Border.all(width: 2.6, color: Colors.white)),
-              child: FloatingActionButton(
-                onPressed: () {
-                  showModalBottomSheet(
-                      context: context,
-                      builder: (_) {
-                        return Container(
-                          height: 450,
-                          width: double.infinity,
-                          color: AppColors.mainIndigoColor,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 32),
-                            child: Column(
-                              children: [
-                                Text(
-                                  "New Post",
-                                  style: mTextStyle32(),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  "Add value to your feed. What’s worth sharing?",
-                                  style: mTextStyle12(),
-                                ),
-                                SizedBox(
-                                  height: 16,
-                                ),
-                                Container(
-                                    height: 220,
-                                    width: 308,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(14),
-                                        color: Colors.black),
-                                    child: Stack(
-                                      children: [
-                                        Positioned(
-                                            bottom: 15,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 12, right: 12),
-                                              child: Container(
-                                                height: 90,
-                                                //  width: double.infinity,
-                                                width: 285,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(11),
-                                                ),
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(vertical: 8.0),
-                                                  child: Column(
-                                                    children: [
-                                                      Container(
-                                                        height: 25,
-                                                        width: 120,
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        12),
-                                                            color: AppColors
-                                                                .mainRedColor),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            InkWell(
-                                                                onTap: () {},
-                                                                child: Icon(
-                                                                  Icons.upload,
-                                                                  color: Colors
-                                                                      .white,
-                                                                  size: 18,
-                                                                )),
-                                                            Text(
-                                                                "  Browse Files",
-                                                                style: TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    fontSize: 9,
-                                                                    color: Colors
-                                                                        .white))
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      Text("Upload photos here",
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              fontSize: 9,
-                                                              color: Colors.grey
-                                                                  .shade500))
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ))
-                                      ],
-                                    )),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                SizedBox(
-                                    height: 36,
-                                    width: 308,
-                                    child: CustomTextField(
-                                      controller: addFeedController,
-                                      hintText: "Add Caption...",
-                                      suffixIcon: Icons.send,
-                                      onSuffixTap: () {
-                                        setState(() {
-                                          ShowFeedScreen2 = true;
-                                        });
-                                        Navigator.pop(context);
-                                      },
-                                    )),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 30.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      InkWell(
-                                          onTap: () {},
-                                          child: Icon(
-                                            Icons.more_horiz,
-                                            color: Colors.white,
-                                          )),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        );
-                      });
-                },
-                backgroundColor: Colors.red,
-                child: Icon(
-                  Icons.add,
-                  color: Colors.white,
-                  size: 24,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(26),
-                ),
-              ),
-            )
-          : null,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: selected_index == 0
+      //     ? Container(
+      //         height: 44,
+      //         width: 44,
+      //         decoration: BoxDecoration(
+      //             borderRadius: BorderRadius.circular(26),
+      //             color: AppColors.mainRedColor,
+      //             border: Border.all(width: 2.6, color: Colors.white)),
+      //         child: FloatingActionButton(
+      //           onPressed: () {
+      //             showModalBottomSheet(
+      //               context: context,
+      //               builder: (_) {
+      //                 return Container(
+      //                   height: 450,
+      //                   width: double.infinity,
+      //                   color: AppColors.mainIndigoColor,
+      //                   child: Padding(
+      //                     padding: const EdgeInsets.symmetric(
+      //                         horizontal: 24, vertical: 32),
+      //                     child: Column(
+      //                       children: [
+      //                         Text(
+      //                           "New Post",
+      //                           style: mTextStyle32(),
+      //                         ),
+      //                         SizedBox(
+      //                           height: 10,
+      //                         ),
+      //                         Text(
+      //                           "Add value to your feed. What’s worth sharing?",
+      //                           style: mTextStyle12(),
+      //                         ),
+      //                         SizedBox(
+      //                           height: 16,
+      //                         ),
+      //                         Container(
+      //                             height: 220,
+      //                             width: 308,
+      //                             decoration: BoxDecoration(
+      //                                 borderRadius: BorderRadius.circular(14),
+      //                                 color: Colors.black),
+      //                             child: Stack(
+      //                               children: [
+      //                                 Positioned(
+      //                                     bottom: 15,
+      //                                     child: Padding(
+      //                                       padding: const EdgeInsets.only(
+      //                                           left: 12, right: 12),
+      //                                       child: Container(
+      //                                         height: 90,
+      //                                         //  width: double.infinity,
+      //                                         width: 285,
+      //                                         decoration: BoxDecoration(
+      //                                           color: Colors.white,
+      //                                           borderRadius:
+      //                                               BorderRadius.circular(11),
+      //                                         ),
+      //                                         child: Padding(
+      //                                           padding:
+      //                                               const EdgeInsets.symmetric(
+      //                                                   vertical: 8.0),
+      //                                           child: Column(
+      //                                             children: [
+      //                                               Container(
+      //                                                 height: 25,
+      //                                                 width: 120,
+      //                                                 decoration: BoxDecoration(
+      //                                                     borderRadius:
+      //                                                         BorderRadius
+      //                                                             .circular(12),
+      //                                                     color: AppColors
+      //                                                         .mainRedColor),
+      //                                                 child: Row(
+      //                                                   mainAxisAlignment:
+      //                                                       MainAxisAlignment
+      //                                                           .center,
+      //                                                   children: [
+      //                                                     InkWell(
+      //                                                         onTap: () {},
+      //                                                         child: Icon(
+      //                                                           Icons.upload,
+      //                                                           color: Colors
+      //                                                               .white,
+      //                                                           size: 18,
+      //                                                         )),
+      //                                                     Text("  Browse Files",
+      //                                                         style: TextStyle(
+      //                                                             fontWeight:
+      //                                                                 FontWeight
+      //                                                                     .w500,
+      //                                                             fontSize: 9,
+      //                                                             color: Colors
+      //                                                                 .white))
+      //                                                   ],
+      //                                                 ),
+      //                                               ),
+      //                                               SizedBox(
+      //                                                 height: 15,
+      //                                               ),
+      //                                               Text("Upload photos here",
+      //                                                   style: TextStyle(
+      //                                                       fontWeight:
+      //                                                           FontWeight.w500,
+      //                                                       fontSize: 9,
+      //                                                       color: Colors
+      //                                                           .grey.shade500))
+      //                                             ],
+      //                                           ),
+      //                                         ),
+      //                                       ),
+      //                                     ))
+      //                               ],
+      //                             )),
+      //                         SizedBox(
+      //                           height: 10,
+      //                         ),
+      //                         SizedBox(
+      //                             height: 36,
+      //                             width: 308,
+      //                             child: CustomTextField(
+      //                               controller: addFeedController,
+      //                               hintText: "Add Caption...",
+      //                               suffixIcon: Icons.send,
+      //                               onSuffixTap: () {
+      //                                 setState(() {
+      //                                   ShowFeedScreen2 = true;
+      //                                 });
+      //                                 Navigator.pop(context);
+      //                               },
+      //                             )),
+      //                         SizedBox(
+      //                           height: 5,
+      //                         ),
+      //                         Padding(
+      //                           padding: const EdgeInsets.only(right: 30.0),
+      //                           child: Row(
+      //                             mainAxisAlignment: MainAxisAlignment.end,
+      //                             children: [
+      //                               InkWell(
+      //                                   onTap: () {},
+      //                                   child: Icon(
+      //                                     Icons.more_horiz,
+      //                                     color: Colors.white,
+      //                                   )),
+      //                             ],
+      //                           ),
+      //                         )
+      //                       ],
+      //                     ),
+      //                   ),
+      //                 );
+      //               },
+      //             );
+      //           },
+      //           backgroundColor: Colors.red,
+      //           child: Icon(
+      //             Icons.add,
+      //             color: Colors.white,
+      //             size: 24,
+      //           ),
+      //           shape: RoundedRectangleBorder(
+      //             borderRadius: BorderRadius.circular(26),
+      //           ),
+      //         ),
+      //       )
+      //     : null,
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: navTo[selected_index],
       bottomNavigationBar: BottomNavigationBar(
         items: [

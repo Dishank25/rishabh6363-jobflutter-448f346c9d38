@@ -318,14 +318,86 @@ class ActivityCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(content),
-            const SizedBox(height: 8),
+            const SizedBox(height: 15),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: const [
-                Icon(Icons.thumb_up_alt_outlined),
-                Icon(Icons.mode_comment_outlined),
-                Icon(Icons.share_outlined),
-                Icon(Icons.send_outlined),
+              children: [
+                Column(
+                  children: [
+                    // Icon(Icons.thumb_up_alt_outlined),
+
+                    SvgPicture.asset(
+                      ImageString.likeIcon,
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    const Text(
+                      'Like',
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 88, 92, 96),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    // Icon(Icons.comment),
+                    SvgPicture.asset(
+                      ImageString.commentIcon,
+                      color: const Color.fromARGB(255, 88, 92, 96),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+
+                    const Text(
+                      'Comment',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 88, 92, 96),
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    // Icon(Icons.share),
+                    SvgPicture.asset(
+                      ImageString.shareIcon,
+                      color: const Color.fromARGB(255, 88, 92, 96),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+
+                    const Text(
+                      'Share',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 88, 92, 96),
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    // Icon(Icons.send),
+                    SvgPicture.asset(
+                      ImageString.sendIcon,
+                      color: const Color.fromARGB(255, 88, 92, 96),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+
+                    const Text(
+                      'Send',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 88, 92, 96),
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
               ],
             ),
           ],
