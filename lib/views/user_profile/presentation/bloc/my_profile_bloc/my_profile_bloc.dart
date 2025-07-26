@@ -14,28 +14,28 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileState> {
 
   MyProfileBloc(this._userDetailUsecase, this._updateUserProfileUsecase)
       : super(const MyProfileInitial()) {
-    on<PickResume>(_onLoadCertificate);
+    // on<PickResume>(_onLoadCertificate);
     // on<RemoveCertificate>(_onRemoveCertificate);
     on<LoadMyProfileDetails>(_onLoadProfileDetails);
     on<LoadUpdateProfile>(_onUpdateUserProfile);
   }
 
-  Future<void> _onLoadCertificate(
-      PickResume event, Emitter<MyProfileState> emit) async {
-    try {
-      emit(const ResumeLoading());
-      final file = await FilePicker.platform.pickFiles();
+  // Future<void> _onLoadCertificate(
+  //     PickResume event, Emitter<MyProfileState> emit) async {
+  //   try {
+  //     emit(const ResumeLoading());
+  //     final file = await FilePicker.platform.pickFiles();
 
-      // if (file != null && event.skillName != null) {
-      // skillCertificates[event.skillName!] = file;
-      // developer.log(file.files.first.path ?? 'null path');
-      // }
-      emit(const ResumeLoaded());
-    } catch (e) {
-      developer.log('Error while picking resume: ${e.toString()}');
-      emit(const ResumeLoadError());
-    }
-  }
+  //     // if (file != null && event.skillName != null) {
+  //     // skillCertificates[event.skillName!] = file;
+  //     // developer.log(file.files.first.path ?? 'null path');
+  //     // }
+  //     emit(const ResumeLoaded());
+  //   } catch (e) {
+  //     developer.log('Error while picking resume: ${e.toString()}');
+  //     emit(const ResumeLoadError());
+  //   }
+  // }
 
   Future<void> _onLoadProfileDetails(
       LoadMyProfileDetails event, Emitter<MyProfileState> emit) async {

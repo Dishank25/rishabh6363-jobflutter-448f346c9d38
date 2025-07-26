@@ -6,11 +6,12 @@ import 'package:job_portal/injection_container.dart';
 import 'package:job_portal/utils/constants/image_string.dart';
 import 'package:job_portal/utils/storage/shared_preference.dart';
 import 'package:job_portal/views/feed/data/models/feed_response.dart';
+import 'package:job_portal/views/feed/presentation/views/create_feed_post_view.dart';
 import 'package:job_portal/views/user_profile/presentation/views/User_Notifications_Screen.dart';
 import 'package:job_portal/views/feed/domain/entities/feed_entity.dart';
-import 'package:job_portal/views/feed/presentation/bloc/feed_bloc.dart';
-import 'package:job_portal/views/feed/presentation/bloc/feed_event.dart';
-import 'package:job_portal/views/feed/presentation/bloc/feed_state.dart';
+import 'package:job_portal/views/feed/presentation/bloc/feed_bloc/feed_bloc.dart';
+import 'package:job_portal/views/feed/presentation/bloc/feed_bloc/feed_event.dart';
+import 'package:job_portal/views/feed/presentation/bloc/feed_bloc/feed_state.dart';
 import 'package:job_portal/views/job_related/presentation/views/Feed_Screen_2.dart';
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../../widgets/widgets.dart';
@@ -128,9 +129,18 @@ class _FeedScreenState extends State<FeedScreen> {
                               itemBuilder: (_, index) {
                                 final curr = commentList[index];
                                 return ListTile(
-                                  title: Text(curr.userId.toString()),
+                                  title: Text(
+                                    '${curr.firstName}_${curr.userId}',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w600),
+                                  ),
                                   subtitle: Text(curr.comment),
-                                  leading: const Icon(Icons.person_sharp),
+                                  // leading: const Icon(Icons.person_sharp),
+                                  leading: const CircleAvatar(
+                                    backgroundColor: Colors.transparent,
+                                    backgroundImage:
+                                        NetworkImage(ImageString.dummyImageUrl),
+                                  ),
                                 );
                               },
                             )
@@ -182,10 +192,12 @@ class _FeedScreenState extends State<FeedScreen> {
                                       commentList.insert(
                                         0,
                                         CommentEntity(
-                                          userId: userId ?? '2',
-                                          comment: text,
-                                          createdAt: DateTime.now(),
-                                        ),
+                                            userId: userId ?? '2',
+                                            comment: text,
+                                            createdAt: DateTime.now(),
+                                            firstName: 'You',
+                                            lastName: 'Last Name',
+                                            profilePic: 'profile picture'),
                                       );
                                     });
 
@@ -331,15 +343,60 @@ class _FeedScreenState extends State<FeedScreen> {
                     // width: 64,
                     child: SvgPicture.asset("assets/Icons/profile_icon.svg"),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 18,
                   ),
+                  // Expanded(
+                  //   child: CustomTextField(
+                  //     controller: newPostController,
+                  //     hintText: 'Share something...',
+                  //   ),
+                  // )
                   Expanded(
-                    child: CustomTextField(
-                      controller: newPostController,
+                      child: TextField(
+                    readOnly: true,
+                    decoration: InputDecoration(
                       hintText: 'Share something...',
+                      hintStyle:
+                          TextStyle(color: Color.fromRGBO(188, 193, 202, 1)),
+                      disabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(
+                          width: 1,
+                          color: Color.fromRGBO(237, 241, 243, 1),
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(
+                          width: 1,
+                          color: Color.fromRGBO(237, 241, 243, 1),
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(
+                          width: 1,
+                          color: Color.fromRGBO(237, 241, 243, 1),
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(
+                          width: 1,
+                          color: Color.fromRGBO(237, 241, 243, 1),
+                        ),
+                      ),
                     ),
-                  )
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const CreateFeedPostView(),
+                        ),
+                      );
+                    },
+                  )),
                 ],
               ),
               const SizedBox(
@@ -382,8 +439,9 @@ class _FeedScreenState extends State<FeedScreen> {
                             noFollowers:
                                 "${item.user.followersCount} followers",
                             // mainImage: item.image,
-                            mainImage: ImageString.placeHolderImage,
-                            initialLiked: false,
+                            mainImage: item.image,
+                            // mainImage:  ImageString.placeHolderImage,
+                            initialLiked: item.isLiked,
                             onCommentTap: () {
                               setState(
                                   () => activePostId = feedPostId.toString());
@@ -495,7 +553,12 @@ class _FeedCardState extends State<FeedCard> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               greyContainer(
-                  text: widget.posted, bgColor: const Color(0xffEFF0F6)),
+                text: widget.posted,
+                bgColor: Colors.white,
+                txtClr: Colors.grey[700],
+                border: true,
+                // bgColor: const Color(0xffEFF0F6),
+              ),
               const SizedBox(width: 8),
               greyContainer(
                 text: "Sponsored",
@@ -505,20 +568,32 @@ class _FeedCardState extends State<FeedCard> {
           ),
 
           /// Optional Image
-          if (widget.mainImage != null)
+          if (widget.mainImage != null &&
+              widget.mainImage != 'http://example.com/image.jpg' &&
+              widget.mainImage != '')
             Padding(
               padding: const EdgeInsets.fromLTRB(2.0, 6.0, 2.0, 20.0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(14),
-                child: Image.asset(
-                  widget.mainImage!,
-                  fit: BoxFit.cover,
-                  color: Colors.grey[400],
-                  // color: Color.fromARGB(255, 240, 55, 41).withOpacity(0.3),
-                  // color: Colors.blue.shade200,
-                  // colorBlendMode: BlendMode.modulate,
+                // child: Image.asset(
+                //   widget.mainImage!,
+                //   fit: BoxFit.cover,
+                //   color: Colors.grey[400],
+                // ),
+                child: FadeInImage.assetNetwork(
+                  placeholder: ImageString.placeHolderImage,
+                  placeholderColor: Colors.grey[400],
+                  placeholderFit: BoxFit.cover,
+                  image: widget.mainImage ?? "",
                 ),
               ),
+            ),
+
+          if (widget.mainImage == null ||
+              widget.mainImage == 'http://example.com/image.jpg' ||
+              widget.mainImage == '')
+            SizedBox(
+              height: 20,
             ),
 
           /// Body Text with Read More
@@ -581,31 +656,34 @@ class _FeedCardState extends State<FeedCard> {
                         .read<FeedBloc>()
                         .add(LoadFeedPostLike(widget.feedPostId, map));
                   }
+                  setState(() {
+                    liked = !liked;
+                  });
                 },
                 child: Column(
                   children: [
                     // Icon(Icons.thumb_up_alt_outlined),
-                    BlocListener<FeedBloc, FeedState>(
-                      listener: (context, state) {
-                        if (state is FeedPostLikeLoading) {
-                          developer.log('Like loading');
-                        } else if (state is FeedPostLikeLoaded) {
-                          developer.log('Like loaded');
-                          final data = state.feedPostLikeEntity;
-                          setState(() {
-                            liked = !liked;
-                          });
-                          developer.log('Like loaded : ${data.message}');
-                        } else if (state is FeedPostLikeError) {
-                          developer.log('Like error');
-                        }
-                      },
-                      child: SizedBox(),
-                    ),
+                    // BlocListener<FeedBloc, FeedState>(
+                    //   listener: (context, state) {
+                    //     if (state is FeedPostLikeLoading) {
+                    //       developer.log('Like loading');
+                    //     } else if (state is FeedPostLikeLoaded) {
+                    //       developer.log('Like loaded');
+                    //       final data = state.feedPostLikeEntity;
+                    //       setState(() {
+                    //         liked = !liked;
+                    //       });
+                    //       developer.log('Like loaded : ${data.message}');
+                    //     } else if (state is FeedPostLikeError) {
+                    //       developer.log('Like error');
+                    //     }
+                    //   },
+                    //   child: const SizedBox(),
+                    // ),
                     SvgPicture.asset(
                       ImageString.likeIcon,
                       color: !liked
-                          ? Color.fromARGB(255, 88, 92, 96)
+                          ? const Color.fromARGB(255, 88, 92, 96)
                           : Colors.blue,
                     ),
                     const SizedBox(

@@ -2,13 +2,14 @@ import 'dart:developer' as developer show log;
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:job_portal/views/feed/domain/usecases/feed_usecase.dart';
-import 'package:job_portal/views/feed/presentation/bloc/feed_event.dart';
-import 'package:job_portal/views/feed/presentation/bloc/feed_state.dart';
+import 'package:job_portal/views/feed/presentation/bloc/feed_bloc/feed_event.dart';
+import 'package:job_portal/views/feed/presentation/bloc/feed_bloc/feed_state.dart';
 
 class FeedBloc extends Bloc<FeedEvent, FeedState> {
   final FeedUsecase _feedUsecase;
   final FeedPostLikeUsecase _feedPostLikeUsecase;
   final FeedPostCommentUsecase _feedPostCommentUsecase;
+
   FeedBloc(this._feedUsecase, this._feedPostLikeUsecase,
       this._feedPostCommentUsecase)
       : super(const FeedInitial()) {

@@ -1,5 +1,6 @@
 import 'package:job_portal/utils/resourses/data_state.dart';
 import 'package:job_portal/utils/usecase/usecases.dart';
+import 'package:job_portal/views/feed/domain/entities/create_feed_post_entity.dart';
 import 'package:job_portal/views/feed/domain/entities/feed_entity.dart';
 import 'package:job_portal/views/feed/domain/entities/feed_post_comment_entity.dart';
 import 'package:job_portal/views/feed/domain/entities/feed_post_like_entity.dart';
@@ -37,5 +38,17 @@ class FeedPostCommentUsecase
   Future<DataState<FeedPostCommentEntity>> call(
       {Map<String, dynamic>? params}) async {
     return _repository.feedPostComment(params!['feedPostId'], params['params']);
+  }
+}
+
+class CreateFeedPostUsecase
+    implements UseCase<DataState<CreateFeedPostEntity>, Map<String, dynamic>> {
+  final FeedRepository _repository;
+  CreateFeedPostUsecase(this._repository);
+
+  @override
+  Future<DataState<CreateFeedPostEntity>> call(
+      {Map<String, dynamic>? params}) async {
+    return _repository.createFeedPost(params!);
   }
 }

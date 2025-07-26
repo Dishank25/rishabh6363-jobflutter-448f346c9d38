@@ -25,6 +25,7 @@ class PostEntity {
   final DateTime createdAt;
   final DateTime updatedAt;
   final UserEntity user;
+  final bool isLiked;
 
   const PostEntity({
     required this.id,
@@ -39,6 +40,7 @@ class PostEntity {
     required this.createdAt,
     required this.updatedAt,
     required this.user,
+    required this.isLiked,
   });
 }
 
@@ -46,13 +48,23 @@ class CommentEntity {
   final dynamic userId;
   final String comment;
   final DateTime createdAt;
+  final String firstName;
+  final String lastName;
+  final String? profilePic;
 
   const CommentEntity({
     required this.userId,
     required this.comment,
     required this.createdAt,
+    required this.firstName,
+    required this.lastName,
+    required this.profilePic,
   });
 }
+
+// "firstName": "Amarjeet",
+// "lastName": "Patel",
+// "profilePic": null
 
 class UserEntity {
   final int id;

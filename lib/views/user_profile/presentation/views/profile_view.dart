@@ -184,7 +184,8 @@ class _UserProfileScreen1State extends State<UserProfileScreen1> {
                                   ),
                                   Text(
                                     // "aman@gmail.com",
-                                    profileData.email,
+                                    // profileData.email,
+                                    "@${profileData.firstName.toLowerCase()}",
                                     style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,
@@ -210,10 +211,14 @@ class _UserProfileScreen1State extends State<UserProfileScreen1> {
                                   child: InkWell(
                                     onTap: () {
                                       Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const UserPublicProfileScreen()));
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              UserPublicProfileScreen(
+                                            userProfile: state.publicProfile,
+                                          ),
+                                        ),
+                                      );
                                     },
                                     child: Row(
                                       children: [
@@ -242,12 +247,20 @@ class _UserProfileScreen1State extends State<UserProfileScreen1> {
                   } else if (state is PublicProfileLoading) {
                     developer.log("Public profile loading");
                     return const Center(
-                      child: Text('Public profile loading'),
+                      // child: Text('Public profile loading'),
+                      child: CircularProgressIndicator(),
                     );
                   } else if (state is PublicProfileError) {
                     developer.log("Public profile error");
-                    return const Center(
-                      child: Text('Public profile error'),
+                    return Center(
+                      child: Text(
+                        'Oops... Try again later.',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                          color: Colors.grey[700],
+                        ),
+                      ),
                     );
                   } else {
                     return Center(

@@ -17,7 +17,8 @@ import 'package:job_portal/views/feed/data/data_sources/feed_api_service.dart';
 import 'package:job_portal/views/feed/data/repository/feed_repository_impl.dart';
 import 'package:job_portal/views/feed/domain/repository/feed_repository.dart';
 import 'package:job_portal/views/feed/domain/usecases/feed_usecase.dart';
-import 'package:job_portal/views/feed/presentation/bloc/feed_bloc.dart';
+import 'package:job_portal/views/feed/presentation/bloc/create_feed_post_bloc/create_feed_post_bloc.dart';
+import 'package:job_portal/views/feed/presentation/bloc/feed_bloc/feed_bloc.dart';
 import 'package:job_portal/views/job_related/data/data_source/job_screens_api_service.dart';
 import 'package:job_portal/views/job_related/data/repository/jobs_repository_impl.dart';
 import 'package:job_portal/views/job_related/domain/repository/jobs_repository.dart';
@@ -63,6 +64,7 @@ import 'package:job_portal/views/user_profile/presentation/bloc/manage_account_b
 import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/my_profile_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/terms_and_conditions_bloc/terms_and_conditions_bloc.dart';
+import 'package:job_portal/views/user_profile/presentation/bloc/upload_resume_bloc/upload_resume_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final sl = GetIt.instance;
@@ -122,6 +124,8 @@ Future<void> initializeDependencies() async {
   sl.registerFactory<ManageAccountBloc>(() => ManageAccountBloc(sl()));
   sl.registerFactory<JobApplyBloc>(() => JobApplyBloc(sl()));
   sl.registerFactory<UploadFileBloc>(() => UploadFileBloc(sl()));
+  sl.registerFactory<CreateFeedPostBloc>(() => CreateFeedPostBloc(sl()));
+  sl.registerFactory<UploadResumeBloc>(() => UploadResumeBloc());
 
   // Use Cases
   sl.registerLazySingleton<SignupUsecase>(() => SignupUsecase(sl()));
@@ -164,6 +168,8 @@ Future<void> initializeDependencies() async {
       () => FeedPostCommentUsecase(sl()));
   sl.registerLazySingleton<JobApplyUsecase>(() => JobApplyUsecase(sl()));
   sl.registerLazySingleton<UploadFileUsecase>(() => UploadFileUsecase(sl()));
+  sl.registerLazySingleton<CreateFeedPostUsecase>(
+      () => CreateFeedPostUsecase(sl()));
 
   // Repository
   sl.registerLazySingleton<SignupRepository>(() => SignupRepositoryImpl(sl()));

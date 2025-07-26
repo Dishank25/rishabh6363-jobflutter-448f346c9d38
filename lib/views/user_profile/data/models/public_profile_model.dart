@@ -55,7 +55,10 @@ class UserProfileModel extends UserProfileEntity {
       activity: (json['activity'] as List<dynamic>)
           .map((e) => ActivityModel.fromJson(e))
           .toList(),
-      experiences: List<String>.from(json['experiences'] ?? []),
+      // experiences: List<String>.from(json['experiences'] ?? []),
+      experiences: (json['experiences'] as List<dynamic>)
+          .map((e) => ExperienceModel.fromJson(e))
+          .toList(),
     );
   }
 
@@ -64,7 +67,8 @@ class UserProfileModel extends UserProfileEntity {
       'publicProfile': (publicProfile as PublicProfileModel).toJson(),
       'skills': skills.map((e) => (e as SkillModel).toJson()).toList(),
       'activity': activity.map((e) => (e as ActivityModel).toJson()).toList(),
-      'experiences': experiences,
+      'experiences':
+          experiences.map((e) => (e as ExperienceModel).toJson()).toList(),
     };
   }
 }
@@ -107,4 +111,34 @@ class ActivityModel extends ActivityEntity {
         'commentCount': commentCount,
         'createdAt': createdAt.toIso8601String(),
       };
+}
+
+class ExperienceModel extends ExperienceEntity {
+  const ExperienceModel({
+    super.companyRecruiterProfileId,
+    required super.totalExperience,
+    required super.currentJobRole,
+    required super.currentCompany,
+    required super.status,
+  });
+
+  factory ExperienceModel.fromJson(Map<String, dynamic> json) {
+    return ExperienceModel(
+      companyRecruiterProfileId: json['companyRecruiterProfileId'],
+      totalExperience: json['totalExperience'] ?? '',
+      currentJobRole: json['currentJobRole'] ?? '',
+      currentCompany: json['currentCompany'] ?? '',
+      status: json['status'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'companyRecruiterProfileId': companyRecruiterProfileId,
+      'totalExperience': totalExperience,
+      'currentJobRole': currentJobRole,
+      'currentCompany': currentCompany,
+      'status': status,
+    };
+  }
 }

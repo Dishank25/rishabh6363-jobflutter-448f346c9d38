@@ -33,7 +33,7 @@ class UserDetailEntity {
   final bool termsAndCondition;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final List<dynamic> experiences;
+  final List<UserExperienceEntity> experiences;
 
   UserDetailEntity({
     required this.id,
@@ -71,5 +71,27 @@ class UserDetailEntity {
     required this.createdAt,
     required this.updatedAt,
     required this.experiences,
+  });
+}
+
+class UserExperienceEntity {
+  final int id;
+  final int userDetailId;
+  final String? totalExperience;
+  final String? currentJobRole;
+  final String? currentCompany;
+  final String? status;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+
+  UserExperienceEntity({
+    required this.id,
+    required this.userDetailId,
+    this.totalExperience,
+    this.currentJobRole,
+    this.currentCompany,
+    this.status,
+    required this.createdAt,
+    required this.updatedAt,
   });
 }

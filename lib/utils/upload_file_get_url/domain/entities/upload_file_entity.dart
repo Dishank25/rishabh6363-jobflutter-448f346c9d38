@@ -1,5 +1,5 @@
 class UploadFileEntity {
-  final String message;
+  final List<dynamic> url;
 
-  const UploadFileEntity({required this.message});
+  const UploadFileEntity({required this.url});
 }

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:job_portal/utils/constants/image_string.dart';
+import 'package:job_portal/views/user_profile/domain/entities/public_profile_entity.dart';
 
 class UserPublicProfileScreen extends StatelessWidget {
-  const UserPublicProfileScreen({super.key});
+  final UserProfileEntity userProfile;
+  const UserPublicProfileScreen({super.key, required this.userProfile});
 
   @override
   Widget build(BuildContext context) {
@@ -61,23 +63,26 @@ class UserPublicProfileScreen extends StatelessWidget {
             const SizedBox(height: 40),
             Row(
               children: [
-                const Expanded(
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Aman Gupta',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20)),
-                      SizedBox(height: 4),
-                      Text('@amangupta09',
-                          style: TextStyle(color: Colors.grey)),
-                      SizedBox(height: 8),
-                      Text('Visual Designer'),
-                      SizedBox(height: 4),
                       Text(
-                          'Hi, I am Aman working as a designer from 3 years. My skills include Adobe Photoshop,...',
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis),
+                          "${userProfile.publicProfile.firstName} ${userProfile.publicProfile.lastName}",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20)),
+                      const SizedBox(height: 4),
+                      Text(
+                          '@${userProfile.publicProfile.firstName.toLowerCase()}',
+                          style: const TextStyle(color: Colors.grey)),
+                      const SizedBox(height: 8),
+                      const Text('Visual Designer'),
+                      const SizedBox(height: 4),
+                      Text(
+                        userProfile.publicProfile.aboutus,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ],
                   ),
                 ),

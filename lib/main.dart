@@ -4,7 +4,8 @@ import 'package:job_portal/injection_container.dart';
 import 'package:job_portal/utils/upload_file_get_url/presentation/bloc/upload_file_bloc.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_bloc.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/skill_bloc/skill_bloc.dart';
-import 'package:job_portal/views/feed/presentation/bloc/feed_bloc.dart';
+import 'package:job_portal/views/feed/presentation/bloc/create_feed_post_bloc/create_feed_post_bloc.dart';
+import 'package:job_portal/views/feed/presentation/bloc/feed_bloc/feed_bloc.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_apply_bloc/job_apply_bloc.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_bloc/job_bloc.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_details_bloc/job_details_bloc.dart';
@@ -19,6 +20,7 @@ import 'package:job_portal/views/user_profile/presentation/bloc/manage_account_b
 import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/my_profile_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/terms_and_conditions_bloc/terms_and_conditions_bloc.dart';
+import 'package:job_portal/views/user_profile/presentation/bloc/upload_resume_bloc/upload_resume_bloc.dart';
 import 'views/login/presentation/views/login_page_first_view.dart';
 
 void main() async {
@@ -51,6 +53,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => sl<ManageAccountBloc>()),
         BlocProvider(create: (_) => sl<JobApplyBloc>()),
         BlocProvider(create: (_) => sl<UploadFileBloc>()),
+        BlocProvider(create: (_) => sl<CreateFeedPostBloc>()),
+        BlocProvider(create: (_) => sl<UploadResumeBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

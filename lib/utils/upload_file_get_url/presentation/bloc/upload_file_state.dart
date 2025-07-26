@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:job_portal/utils/upload_file_get_url/domain/entities/upload_file_entity.dart';
 
 @immutable
 abstract class UploadFileState extends Equatable {
@@ -19,7 +20,9 @@ class UploadFileLoading extends UploadFileState {
 }
 
 class UploadFileLoaded extends UploadFileState {
-  const UploadFileLoaded();
+  final UploadFileEntity uploadFileEntity;
+
+  const UploadFileLoaded(this.uploadFileEntity);
 }
 
 class UploadFileError extends UploadFileState {

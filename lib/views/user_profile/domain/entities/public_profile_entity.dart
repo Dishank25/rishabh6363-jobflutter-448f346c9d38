@@ -40,7 +40,7 @@ class UserProfileEntity {
   final PublicProfileEntity publicProfile;
   final List<SkillEntity> skills;
   final List<ActivityEntity> activity;
-  final List<String> experiences;
+  final List<ExperienceEntity> experiences; // updated from List<String>
 
   const UserProfileEntity({
     required this.publicProfile,
@@ -55,4 +55,20 @@ class SkillEntity {
   final String skill;
 
   const SkillEntity({required this.skill});
+}
+
+class ExperienceEntity {
+  final String? companyRecruiterProfileId;
+  final String totalExperience;
+  final String currentJobRole;
+  final String currentCompany;
+  final String status;
+
+  const ExperienceEntity({
+    this.companyRecruiterProfileId,
+    required this.totalExperience,
+    required this.currentJobRole,
+    required this.currentCompany,
+    required this.status,
+  });
 }

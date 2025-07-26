@@ -33,6 +33,7 @@ class PostModel extends PostEntity {
     required super.createdAt,
     required super.updatedAt,
     required super.user,
+    required super.isLiked,
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
@@ -50,6 +51,7 @@ class PostModel extends PostEntity {
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
       user: UserModel.fromJson(json['User']),
+      isLiked: json['isLiked'],
     );
   }
 }
@@ -59,12 +61,18 @@ class CommentModel extends CommentEntity {
     required super.userId,
     required super.comment,
     required super.createdAt,
+    required super.firstName,
+    required super.lastName,
+    required super.profilePic,
   });
 
   factory CommentModel.fromJson(Map<String, dynamic> json) {
     return CommentModel(
       userId: json['userId'],
       comment: json['comment'],
+      firstName: json['firstName'],
+      lastName: json['lastName'],
+      profilePic: json['profilePic'],
       createdAt: DateTime.parse(json['createdAt']),
     );
   }

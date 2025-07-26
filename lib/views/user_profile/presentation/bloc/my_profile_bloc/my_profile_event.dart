@@ -6,8 +6,8 @@ abstract class MyProfileEvent extends Equatable {
   const MyProfileEvent();
 }
 
-class PickResume extends MyProfileEvent {
-  const PickResume();
+class PickCertificate extends MyProfileEvent {
+  const PickCertificate();
 
   @override
   List<Object?> get props => [];

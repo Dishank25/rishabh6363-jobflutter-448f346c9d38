@@ -76,7 +76,37 @@ class UserDetailModel extends UserDetailEntity {
       termsAndCondition: user['termsAndCondition'],
       createdAt: DateTime.parse(user['createdAt']),
       updatedAt: DateTime.parse(user['updatedAt']),
-      experiences: user['experiences'] ?? [],
+      // experiences: user['experiences'] ?? [],
+      experiences: (user['experiences'] as List<dynamic>?)
+              ?.map((e) => UserExperienceModel.fromJson(e))
+              .toList() ??
+          [],
+    );
+  }
+}
+
+class UserExperienceModel extends UserExperienceEntity {
+  UserExperienceModel({
+    required super.id,
+    required super.userDetailId,
+    super.totalExperience,
+    super.currentJobRole,
+    super.currentCompany,
+    super.status,
+    required super.createdAt,
+    required super.updatedAt,
+  });
+
+  factory UserExperienceModel.fromJson(Map<String, dynamic> json) {
+    return UserExperienceModel(
+      id: json['id'],
+      userDetailId: json['userDetailId'],
+      totalExperience: json['totalExperience'],
+      currentJobRole: json['currentJobRole'],
+      currentCompany: json['currentCompany'],
+      status: json['status'],
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
     );
   }
 }

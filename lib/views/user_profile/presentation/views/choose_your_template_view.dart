@@ -18,21 +18,25 @@ class _ChooseYourTemplateScreenState extends State<ChooseYourTemplateScreen> {
       "S.no": "1",
       "Title": "Template-1",
       'resume': ImageString.resume1Png,
+      // 'resume': ImageString.resume1,
     },
     {
       "S.no": "2",
       "Title": "Template-2",
       'resume': ImageString.resume1Png,
+      // 'resume': ImageString.resume1,
     },
     {
       "S.no": "3",
       "Title": "Template-3",
+      // 'resume': ImageString.resume3,
       'resume': ImageString.resume3Png,
     },
     {
       "S.no": "4",
       "Title": "Template-4",
       'resume': ImageString.resume4Png,
+      // 'resume': ImageString.resume4,
     },
   ];
 
@@ -96,6 +100,7 @@ class _ChooseYourTemplateScreenState extends State<ChooseYourTemplateScreen> {
                           width: double.infinity,
                           height: double.infinity,
                         ),
+                        // child: SvgPicture.asset(mTemplates[index]['resume']),
                       ),
                     );
                   },

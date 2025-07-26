@@ -27,4 +27,5 @@ class ImageString {
   static const commentIcon = "${imageFolder}comment_icon.svg";
   static const shareIcon = "${imageFolder}share_icon.svg";
   static const sendIcon = "${imageFolder}send_icon.svg";
+  static const pdfSvg = "${imageFolder}pdfVector.svg";
 }

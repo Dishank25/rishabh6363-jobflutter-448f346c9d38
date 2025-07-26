@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:job_portal/views/user_profile/data/models/public_profile_model.dart';
-import 'package:job_portal/views/user_profile/domain/entities/public_profile_entity.dart';
 
 @immutable
 abstract class ProfileState extends Equatable {

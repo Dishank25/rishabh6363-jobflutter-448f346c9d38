@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
@@ -7,9 +8,9 @@ abstract class UploadFileEvent extends Equatable {
 }
 
 class LoadUploadFile extends UploadFileEvent {
-  const LoadUploadFile();
+  final FormData data;
+  const LoadUploadFile(this.data);
 
   @override
-  // TODO: implement props
-  List<Object?> get props => [];
+  List<Object?> get props => [data];
 }

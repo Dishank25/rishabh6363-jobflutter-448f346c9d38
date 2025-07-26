@@ -48,7 +48,7 @@ class _UserExperienceApprovalScreenState
         "currentJobRole": curr.jobRoleController.text.trim(),
         "totalExperience": calculateExperience(
             curr.startYear.text.trim(), curr.endYear.text.trim()),
-        "status": "pending"
+        "status": "approved"
       };
       experiences.add(map);
     }
