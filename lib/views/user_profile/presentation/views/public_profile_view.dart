@@ -9,7 +9,7 @@ class UserPublicProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    // final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -51,9 +51,13 @@ class UserPublicProfileScreen extends StatelessWidget {
                 Positioned(
                   bottom: -20, // this overlaps below the image
                   left: 16,
-                  child: CircleAvatar(
-                    radius: 36,
-                    backgroundImage: NetworkImage(ImageString.dummyImageUrl),
+                  // child: CircleAvatar(
+                  //   radius: 36,
+                  //   backgroundImage: NetworkImage(ImageString.dummyImageUrl),
+                  // ),
+                  child: SvgPicture.asset(
+                    ImageString.profileIcon,
+                    height: 80,
                   ),
                 ),
               ],

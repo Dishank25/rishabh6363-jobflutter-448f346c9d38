@@ -1,5 +1,6 @@
 class ImageString {
   static const imageFolder = 'assets/Images/';
+  static const iconFolder = 'assets/Icons/';
 
   static const certificate = '${imageFolder}features-alt.svg';
 
@@ -28,4 +29,5 @@ class ImageString {
   static const shareIcon = "${imageFolder}share_icon.svg";
   static const sendIcon = "${imageFolder}send_icon.svg";
   static const pdfSvg = "${imageFolder}pdfVector.svg";
+  static const profileIcon = "${iconFolder}profile_icon.svg";
 }

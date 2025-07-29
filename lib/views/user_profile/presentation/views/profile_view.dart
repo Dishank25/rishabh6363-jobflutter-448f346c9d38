@@ -189,7 +189,7 @@ class _UserProfileScreen1State extends State<UserProfileScreen1> {
                                     style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,
-                                      color: Colors.white,
+                                      color: Color.fromARGB(255, 215, 215, 215),
                                     ),
                                   )
                                 ],
@@ -464,7 +464,9 @@ Widget UserProfileEnteries(
                 Text(
                   desc,
                   style: const TextStyle(
-                      fontSize: 11, fontWeight: FontWeight.w400),
+                      fontSize: 11,
+                      fontWeight: FontWeight.w400,
+                      color: Color.fromARGB(255, 150, 150, 150)),
                 )
             ],
           ),

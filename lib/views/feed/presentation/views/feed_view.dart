@@ -101,132 +101,155 @@ class _FeedScreenState extends State<FeedScreen> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       builder: (context) {
         return StatefulBuilder(builder: (context, setSheetState) {
-          return DraggableScrollableSheet(
-            initialChildSize: 1,
-            minChildSize: 1,
-            maxChildSize: 1,
-            expand: false,
-            builder: (_, controller) {
-              return Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(25.0),
-                    topRight: Radius.circular(25.0),
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Icon(Icons.remove, color: Colors.grey[600]),
-
-                    // Scrollable comment list
-                    Expanded(
-                      child: commentList.isNotEmpty
-                          ? ListView.builder(
-                              controller: controller,
-                              padding: const EdgeInsets.only(bottom: 70),
-                              itemCount: commentList.length,
-                              itemBuilder: (_, index) {
-                                final curr = commentList[index];
-                                return ListTile(
-                                  title: Text(
-                                    '${curr.firstName}_${curr.userId}',
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  subtitle: Text(curr.comment),
-                                  // leading: const Icon(Icons.person_sharp),
-                                  leading: const CircleAvatar(
-                                    backgroundColor: Colors.transparent,
-                                    backgroundImage:
-                                        NetworkImage(ImageString.dummyImageUrl),
-                                  ),
-                                );
-                              },
-                            )
-                          : const Center(
-                              child: Text(
-                                'Be the first one to comment...',
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w500),
-                              ),
-                            ),
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * 0.80,
+            child: DraggableScrollableSheet(
+              initialChildSize: 1,
+              minChildSize: 1,
+              maxChildSize: 1,
+              expand: false,
+              builder: (_, controller) {
+                return Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(25.0),
+                      topRight: Radius.circular(25.0),
                     ),
+                  ),
+                  child: Column(
+                    children: [
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //     Icon(Icons.remove, color: Colors.grey[600]),
+                      //     Icon(Icons.remove, color: Colors.grey[600]),
+                      //     Icon(Icons.remove, color: Colors.grey[600]),
+                      //     Icon(Icons.remove, color: Colors.grey[600]),
+                      //     Icon(Icons.remove, color: Colors.grey[600]),
+                      //     Icon(Icons.remove, color: Colors.grey[600]),
+                      //     Icon(Icons.remove, color: Colors.grey[600]),
+                      //   ],
+                      // ),
 
-                    // Sticky TextField at bottom
-                    Padding(
-                      padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom,
-                        left: 12,
-                        right: 12,
-                        top: 8,
+                      const Text(
+                        '___________',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w900, fontSize: 18),
                       ),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: TextField(
-                                  controller: _commentController,
-                                  decoration: InputDecoration(
-                                    hintText: 'Write a comment...',
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(90),
+
+                      // Scrollable comment list
+                      Expanded(
+                        child: commentList.isNotEmpty
+                            ? ListView.builder(
+                                controller: controller,
+                                padding: const EdgeInsets.only(bottom: 70),
+                                itemCount: commentList.length,
+                                itemBuilder: (_, index) {
+                                  final curr = commentList[index];
+                                  return ListTile(
+                                    title: Text(
+                                      '${curr.firstName}_${curr.userId}',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w600),
                                     ),
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 8),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              IconButton(
-                                icon: const Icon(Icons.send, color: Colors.red),
-                                onPressed: () {
-                                  final text = _commentController.text.trim();
-                                  if (text.isNotEmpty) {
-                                    final _prefs = sl<PreferencesManager>();
-                                    final userId = _prefs.getUserId();
-
-                                    /// 🆕 Update UI immediately
-                                    setSheetState(() {
-                                      commentList.insert(
-                                        0,
-                                        CommentEntity(
-                                            userId: userId ?? '2',
-                                            comment: text,
-                                            createdAt: DateTime.now(),
-                                            firstName: 'You',
-                                            lastName: 'Last Name',
-                                            profilePic: 'profile picture'),
-                                      );
-                                    });
-
-                                    // Fire API call as before
-                                    context.read<FeedBloc>().add(
-                                          LoadFeedPostComment(
-                                            activePostId ?? '2',
-                                            {
-                                              "userId": userId ?? "2",
-                                              "comment": text,
-                                            },
-                                          ),
-                                        );
-
-                                    _commentController.clear();
-                                    FocusScope.of(context).unfocus();
-                                  }
+                                    subtitle: Text(curr.comment),
+                                    // leading: const Icon(Icons.person_sharp),
+                                    leading: const CircleAvatar(
+                                      backgroundColor: Colors.transparent,
+                                      backgroundImage: NetworkImage(
+                                          ImageString.dummyImageUrl),
+                                    ),
+                                  );
                                 },
                               )
-                            ],
-                          ),
-                          const SizedBox(height: 50),
-                        ],
+                            : const Center(
+                                child: Text(
+                                  'Be the first one to comment...',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
                       ),
-                    )
-                  ],
-                ),
-              );
-            },
+
+                      // Sticky TextField at bottom
+                      Padding(
+                        padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom,
+                          left: 12,
+                          right: 12,
+                          top: 8,
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: TextField(
+                                    controller: _commentController,
+                                    decoration: InputDecoration(
+                                      hintText: 'Write a comment...',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(90),
+                                      ),
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 12, vertical: 8),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                IconButton(
+                                  icon:
+                                      const Icon(Icons.send, color: Colors.red),
+                                  onPressed: () {
+                                    final text = _commentController.text.trim();
+                                    if (text.isNotEmpty) {
+                                      final _prefs = sl<PreferencesManager>();
+                                      final userId = _prefs.getUserId();
+
+                                      /// 🆕 Update UI immediately
+                                      setSheetState(() {
+                                        commentList.insert(
+                                          0,
+                                          CommentEntity(
+                                              userId: userId ?? '2',
+                                              comment: text,
+                                              createdAt: DateTime.now(),
+                                              firstName: 'You',
+                                              lastName: 'Last Name',
+                                              profilePic: 'profile picture'),
+                                        );
+                                      });
+
+                                      // Fire API call as before
+                                      context.read<FeedBloc>().add(
+                                            LoadFeedPostComment(
+                                              activePostId ?? '2',
+                                              {
+                                                "userId": userId ?? "2",
+                                                "comment": text,
+                                              },
+                                            ),
+                                          );
+
+                                      _commentController.clear();
+                                      FocusScope.of(context).unfocus();
+                                    }
+                                  },
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 50),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              },
+            ),
           );
         });
       },

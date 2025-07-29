@@ -251,9 +251,11 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                       ),
                       Text(
                           // "Aman@gmail.com",
-                          data.email,
+                          "@${data.firstName.toLowerCase()}_${data.lastName.toLowerCase()}",
                           style: const TextStyle(
-                              fontSize: 13, fontWeight: FontWeight.w400)),
+                              fontSize: 13,
+                              fontWeight: FontWeight.w400,
+                              color: Color.fromARGB(255, 171, 171, 171))),
                       const SizedBox(
                         height: 15,
                       ),
@@ -281,13 +283,13 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                             ),
                             Row(
                               children: [
-                                InkWell(
-                                    onTap: () {},
-                                    child: Text(
-                                      "View/",
-                                      style: mTextStyle12(
-                                          mColor: AppColors.blueTextColor),
-                                    )),
+                                // InkWell(
+                                //     onTap: () {},
+                                //     child: Text(
+                                //       "View/",
+                                //       style: mTextStyle12(
+                                //           mColor: AppColors.blueTextColor),
+                                //     )),
                                 InkWell(
                                     onTap: () {
                                       // Navigator.push(
@@ -314,7 +316,7 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                                           data.aboutUs ??
                                               "Add about yourself...");
                                     },
-                                    child: Text("Edit About",
+                                    child: Text("View / Edit About",
                                         style: mTextStyle12(
                                             mColor: AppColors.blueTextColor))),
                               ],
@@ -341,13 +343,13 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                             ),
                             Row(
                               children: [
-                                InkWell(
-                                    onTap: () {},
-                                    child: Text(
-                                      "View/",
-                                      style: mTextStyle12(
-                                          mColor: AppColors.blueTextColor),
-                                    )),
+                                // InkWell(
+                                //     onTap: () {},
+                                //     child: Text(
+                                //       "View/",
+                                //       style: mTextStyle12(
+                                //           mColor: AppColors.blueTextColor),
+                                //     )),
                                 InkWell(
                                     onTap: () {
                                       _showEditCareerObjectiveDialog(
@@ -355,7 +357,7 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                                           data.careerObjective ??
                                               "Add your career objective.");
                                     },
-                                    child: Text("Edit ",
+                                    child: Text("View / Edit",
                                         style: mTextStyle12(
                                             mColor: AppColors.blueTextColor))),
                               ],
@@ -555,10 +557,16 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                             profileSection(
                               title: "Languages you know",
                               // items: ["English", "Hindi", "Spanish"],
-                              items: [data.language ?? 'English'],
-                              statusList: [
-                                true,
-                              ],
+                              // items: [data.language ?? 'English'],
+                              items: data.language?.split(',').toList() ??
+                                  ['English'],
+                              // statusList: [
+                              //   true,
+                              // ],
+                              statusList: List<bool>.generate(
+                                  data.language?.split(',').length ?? 0,
+                                  (int index) => true,
+                                  growable: true),
                               onEditTap: () {
                                 _showEditLanguageDialog(
                                     context, data.language ?? "English");

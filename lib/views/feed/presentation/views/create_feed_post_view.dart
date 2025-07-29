@@ -13,6 +13,7 @@ import 'package:job_portal/utils/upload_file_get_url/presentation/bloc/upload_fi
 import 'package:job_portal/views/feed/presentation/bloc/create_feed_post_bloc/create_feed_post_bloc.dart';
 import 'package:job_portal/views/feed/presentation/bloc/create_feed_post_bloc/create_feed_post_event.dart';
 import 'package:job_portal/views/feed/presentation/bloc/create_feed_post_bloc/create_feed_post_state.dart';
+import 'package:job_portal/views/feed/presentation/bloc/feed_bloc/feed_bloc.dart';
 import 'package:job_portal/views/feed/presentation/bloc/feed_bloc/feed_event.dart';
 import 'package:job_portal/widgets/widgets.dart';
 
@@ -68,18 +69,26 @@ class _CreateFeedPostViewState extends State<CreateFeedPostView> {
                     .read<CreateFeedPostBloc>()
                     .add(const PickImagesCreatePost());
               },
-              icon: const Icon(Icons.photo_outlined)),
+              icon: Icon(
+                Icons.photo_outlined,
+                color: Colors.grey[500],
+              )),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: InkWell(
               onTap: () {
-                onUploadPostImages();
+                if (imageFile != null) {
+                  onUploadPostImages();
+                } else if (_captionController.text.trim().isNotEmpty) {
+                  onUploadPost("http://example.com/image.jpg");
+                }
               },
               child: Container(
                 decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blue),
+                    border: Border.all(
+                        color: const Color.fromARGB(255, 3, 36, 102)),
                     borderRadius: BorderRadius.circular(999),
-                    color: Colors.blue),
+                    color: const Color.fromARGB(255, 3, 36, 102)),
                 child: const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 2),
                   child: Text(
@@ -106,6 +115,7 @@ class _CreateFeedPostViewState extends State<CreateFeedPostView> {
                   if (state is CreateFeedPostLoaded) {
                     final data = state.createFeedPostEntity;
                     showSnackbar(data.message, context);
+                    context.read<FeedBloc>().add(const LoadFeedPosts());
                     Navigator.pop(context);
                   } else if (state is CreateFeedPostLoading) {
                     developer.log('Create feed post is loading.');
@@ -131,6 +141,7 @@ class _CreateFeedPostViewState extends State<CreateFeedPostView> {
               ),
               TextFormField(
                 controller: _captionController,
+                maxLength: 255,
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Share your thoughts...',
