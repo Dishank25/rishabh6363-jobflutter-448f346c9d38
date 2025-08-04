@@ -74,9 +74,34 @@ class UserDetailEntity {
   });
 }
 
+// class UserExperienceEntity {
+//   final int id;
+//   final int userDetailId;
+//   final String? totalExperience;
+//   final String? currentJobRole;
+//   final String? currentCompany;
+//   final String? status;
+//   final DateTime createdAt;
+//   final DateTime updatedAt;
+
+//   UserExperienceEntity({
+//     required this.id,
+//     required this.userDetailId,
+//     this.totalExperience,
+//     this.currentJobRole,
+//     this.currentCompany,
+//     this.status,
+//     required this.createdAt,
+//     required this.updatedAt,
+//   });
+// }
+
 class UserExperienceEntity {
   final int id;
   final int userDetailId;
+  final int? companyRecruiterProfileId;
+  final String? startDate;
+  final String? endDate;
   final String? totalExperience;
   final String? currentJobRole;
   final String? currentCompany;
@@ -87,6 +112,9 @@ class UserExperienceEntity {
   UserExperienceEntity({
     required this.id,
     required this.userDetailId,
+    this.companyRecruiterProfileId,
+    this.startDate,
+    this.endDate,
     this.totalExperience,
     this.currentJobRole,
     this.currentCompany,

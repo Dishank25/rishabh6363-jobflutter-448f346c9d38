@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:job_portal/utils/theme/custom_themes/color_theme.dart';
 import 'package:job_portal/widgets/widgets.dart';
 
 import '../../ui_helper/ui_helper.dart';
@@ -66,7 +67,7 @@ class PaymentTypeScreen extends StatelessWidget {
                       Text(
                         "Card Number",
                         style: mTextStyle14(
-                            mColor: AppColors.mainIndigoColor,
+                            mColor: TColors.primary,
                             mFontWeight: FontWeight.w600),
                       ),
                       SizedBox(

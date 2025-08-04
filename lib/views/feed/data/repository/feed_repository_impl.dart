@@ -15,9 +15,9 @@ class FeedRepositoryImpl extends FeedRepository {
   FeedRepositoryImpl(this._apiService);
 
   @override
-  Future<DataState<FeedEntity>> getFeedPosts() async {
+  Future<DataState<FeedEntity>> getFeedPosts(String page, String limit) async {
     try {
-      final response = await _apiService.getFeedPosts();
+      final response = await _apiService.getFeedPosts(page, limit);
 
       if (response.response.statusCode == HttpStatus.ok) {
         return DataSuccess(response.data);
@@ -87,9 +87,12 @@ class FeedRepositoryImpl extends FeedRepository {
 
   @override
   Future<DataState<CreateFeedPostEntity>> createFeedPost(
-      Map<String, dynamic> params) async {
+    Map<String, dynamic> params,
+  ) async {
     try {
-      final response = await _apiService.createFeedPost(params);
+      final response = await _apiService.createFeedPost(
+        params,
+      );
 
       if (response.response.statusCode == HttpStatus.ok ||
           response.response.statusCode == HttpStatus.created) {

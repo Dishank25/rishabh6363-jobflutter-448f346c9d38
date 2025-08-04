@@ -7,6 +7,7 @@ import 'package:job_portal/ui_helper/ui_helper.dart';
 import 'package:job_portal/utils/constants/enums.dart';
 import 'package:job_portal/utils/constants/image_string.dart';
 import 'package:job_portal/utils/storage/shared_preference.dart';
+import 'package:job_portal/utils/theme/custom_themes/color_theme.dart';
 import 'package:job_portal/views/bottom_nav_bar/student_bottom_nav_bar.dart';
 import 'package:job_portal/views/login/presentation/bloc/remote_login_bloc.dart';
 import 'package:job_portal/views/login/presentation/bloc/remote_login_event.dart';
@@ -44,7 +45,7 @@ class _LoginWithEmailOtpScreen extends State<LoginWithEmailOtpScreen> {
             allowDrawingOutsideViewBox: true, // optional
           ),
         ),
-        backgroundColor: AppColors.mainIndigoColor,
+        backgroundColor: TColors.primary,
       ),
       body: Column(
         children: [

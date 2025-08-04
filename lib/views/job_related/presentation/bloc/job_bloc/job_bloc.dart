@@ -1,3 +1,5 @@
+import 'dart:developer' as developer show log;
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:job_portal/views/job_related/domain/usecases/jobs_usecase.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_bloc/job_event.dart';
@@ -15,6 +17,7 @@ class JobBloc extends Bloc<JobEvent, JobState> {
       final response = await _jobsUsecase();
       emit(JobsLoaded(response.data!));
     } catch (e) {
+      developer.log("Error loading job list : $e");
       emit(const JobsError());
     }
   }

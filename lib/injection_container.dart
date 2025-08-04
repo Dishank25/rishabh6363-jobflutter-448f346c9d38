@@ -60,6 +60,7 @@ import 'package:job_portal/views/user_profile/data/data_sources/profile_api_serv
 import 'package:job_portal/views/user_profile/data/repository/profile_repository_impl.dart';
 import 'package:job_portal/views/user_profile/domain/repository/profile_repository.dart';
 import 'package:job_portal/views/user_profile/domain/usecases/profile_usecases.dart';
+import 'package:job_portal/views/user_profile/presentation/bloc/job_applications_bloc/job_application_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/manage_account_bloc/manage_account_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/my_profile_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/profile_bloc/profile_bloc.dart';
@@ -117,7 +118,7 @@ Future<void> initializeDependencies() async {
       () => VerifyOtpRecruiterBloc(sl()));
   sl.registerFactory<UniversitySignupBloc>(() => UniversitySignupBloc(sl()));
   sl.registerFactory<FeedBloc>(() => FeedBloc(sl(), sl(), sl()));
-  sl.registerFactory<ProfileBloc>(() => ProfileBloc(sl()));
+  sl.registerFactory<ProfileBloc>(() => ProfileBloc(sl(), sl(), sl()));
   sl.registerFactory<MyProfileBloc>(() => MyProfileBloc(sl(), sl()));
   sl.registerFactory<TermsAndConditionsBloc>(
       () => TermsAndConditionsBloc(sl()));
@@ -126,6 +127,7 @@ Future<void> initializeDependencies() async {
   sl.registerFactory<UploadFileBloc>(() => UploadFileBloc(sl()));
   sl.registerFactory<CreateFeedPostBloc>(() => CreateFeedPostBloc(sl()));
   sl.registerFactory<UploadResumeBloc>(() => UploadResumeBloc());
+  sl.registerFactory<JobApplicationBloc>(() => JobApplicationBloc(sl()));
 
   // Use Cases
   sl.registerLazySingleton<SignupUsecase>(() => SignupUsecase(sl()));
@@ -170,6 +172,12 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<UploadFileUsecase>(() => UploadFileUsecase(sl()));
   sl.registerLazySingleton<CreateFeedPostUsecase>(
       () => CreateFeedPostUsecase(sl()));
+  sl.registerLazySingleton<AllJobApplicationsUsecase>(
+      () => AllJobApplicationsUsecase(sl()));
+  sl.registerLazySingleton<GetFollowersUsecase>(
+      () => GetFollowersUsecase(sl()));
+  sl.registerLazySingleton<GetFollowingUsecase>(
+      () => GetFollowingUsecase(sl()));
 
   // Repository
   sl.registerLazySingleton<SignupRepository>(() => SignupRepositoryImpl(sl()));

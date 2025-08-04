@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:job_portal/utils/theme/custom_themes/color_theme.dart';
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../../widgets/widgets.dart';
 import '../../../signup_student/presentation/views/create_account.dart';
@@ -27,7 +28,7 @@ class _UserEmailVerificationAfterRegistration
               style: mTextStyle12(mColor: Colors.white),
             ),
           ),
-          backgroundColor: AppColors.mainIndigoColor),
+          backgroundColor: TColors.primary),
       body: Column(
         children: [
           signInHeader(

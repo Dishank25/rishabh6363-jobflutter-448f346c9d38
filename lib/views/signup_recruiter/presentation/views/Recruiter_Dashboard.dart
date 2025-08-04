@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:job_portal/utils/constants/image_string.dart';
+import 'package:job_portal/utils/theme/custom_themes/color_theme.dart';
 import 'package:job_portal/views/signup_recruiter/presentation/views/Recruiter_Analytics_Reports.dart';
 import 'package:job_portal/views/signup_recruiter/presentation/views/Recruiter_Setting_Panel.dart';
 import 'package:job_portal/views/signup_recruiter/presentation/views/Recruiter_Upcoming_Interviews.dart';
@@ -39,7 +40,7 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
         //         fontSize: 20,
         //         fontFamily: "Inter",
         //         fontWeight: FontWeight.w700,
-        //         color: AppColors.mainIndigoColor),
+        //         color: TColors.primary),
         //   ),
         // ),
         title: SvgPicture.asset(
@@ -267,7 +268,7 @@ Widget DashBoardConatiner(
             width: 150,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color: AppColors.mainRedColor),
+                color: TColors.secondary),
             child: InkWell(
               onTap: onTap,
               child: Row(

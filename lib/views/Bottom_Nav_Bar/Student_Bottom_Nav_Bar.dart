@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:job_portal/utils/theme/custom_themes/color_theme.dart';
 import 'package:job_portal/views/AI_Prediction_Screens/AI_Prediction_Screens.dart';
 import 'package:job_portal/views/feed/presentation/views/feed_view.dart';
 import 'package:job_portal/views/job_related/presentation/views/job_search_view.dart';
@@ -85,7 +86,7 @@ class _Student_Bottom_Nav_barState extends State<Student_Bottom_Nav_bar> {
       //         width: 44,
       //         decoration: BoxDecoration(
       //             borderRadius: BorderRadius.circular(26),
-      //             color: AppColors.mainRedColor,
+      //             color: TColors.secondary,
       //             border: Border.all(width: 2.6, color: Colors.white)),
       //         child: FloatingActionButton(
       //           onPressed: () {
@@ -95,7 +96,7 @@ class _Student_Bottom_Nav_barState extends State<Student_Bottom_Nav_bar> {
       //                 return Container(
       //                   height: 450,
       //                   width: double.infinity,
-      //                   color: AppColors.mainIndigoColor,
+      //                   color: TColors.primary,
       //                   child: Padding(
       //                     padding: const EdgeInsets.symmetric(
       //                         horizontal: 24, vertical: 32),
@@ -253,41 +254,33 @@ class _Student_Bottom_Nav_barState extends State<Student_Bottom_Nav_bar> {
           BottomNavigationBarItem(
               icon: SvgPicture.asset(
                 "assets/Icons/Feed_Icons.svg",
-                color: (selected_index == 0)
-                    ? AppColors.mainRedColor
-                    : Colors.white,
+                color: (selected_index == 0) ? TColors.secondary : Colors.white,
               ),
               label: "Feed"),
           BottomNavigationBarItem(
               icon: SvgPicture.asset(
                 "assets/Icons/Jobs.svg",
-                color: (selected_index == 1)
-                    ? AppColors.mainRedColor
-                    : Colors.white,
+                color: (selected_index == 1) ? TColors.secondary : Colors.white,
               ),
               label: "Jobs"),
           BottomNavigationBarItem(
               icon: SvgPicture.asset(
                 "assets/Icons/AI_Icon.svg",
-                color: (selected_index == 2)
-                    ? AppColors.mainRedColor
-                    : Colors.white,
+                color: (selected_index == 2) ? TColors.secondary : Colors.white,
               ),
               label: "AI Predictions"),
           BottomNavigationBarItem(
               icon: SvgPicture.asset(
                 "assets/Icons/nav_profile.svg",
-                color: (selected_index == 3)
-                    ? AppColors.mainRedColor
-                    : Colors.white,
+                color: (selected_index == 3) ? TColors.secondary : Colors.white,
               ),
               label: "Profile")
         ],
         iconSize: 24,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: AppColors.mainIndigoColor,
+        backgroundColor: TColors.primary,
         // selectedIconTheme: Colors.white,
-        selectedItemColor: AppColors.mainRedColor,
+        selectedItemColor: TColors.secondary,
         unselectedItemColor: Colors.white,
         currentIndex: selected_index,
         onTap: (value) {

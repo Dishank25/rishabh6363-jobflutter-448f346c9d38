@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:job_portal/utils/constants/enums.dart';
 import 'package:job_portal/utils/constants/image_string.dart';
+import 'package:job_portal/utils/theme/custom_themes/color_theme.dart';
 import 'package:job_portal/views/signup_university/presentation/views/signup_university_view.dart';
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../login/presentation/views/login_page_first_view.dart';
@@ -240,10 +241,8 @@ Widget OptionContainer(
     required int index,
     required bool isSelected,
     required VoidCallback onTap}) {
-  final borderColor =
-      isSelected ? AppColors.mainRedColor : AppColors.mainIndigoColor;
-  final textColor =
-      isSelected ? AppColors.mainRedColor : AppColors.mainIndigoColor;
+  final borderColor = isSelected ? TColors.secondary : TColors.primary;
+  final textColor = isSelected ? TColors.secondary : TColors.primary;
   final fillColor = isSelected ? Color(0xffFFE4DB) : Color(0xffDFEAFB);
   return InkWell(
     onTap: onTap,
@@ -290,7 +289,7 @@ Widget OptionContainer(
                 width: 18,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(9),
-                  color: AppColors.mainRedColor,
+                  color: TColors.secondary,
                 ),
                 child: Icon(Icons.check, color: Colors.white, size: 12),
               ),

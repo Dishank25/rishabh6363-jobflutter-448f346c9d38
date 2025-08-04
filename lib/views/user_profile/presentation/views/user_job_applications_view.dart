@@ -1,11 +1,29 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:job_portal/views/job_related/presentation/views/job_details_view.dart';
 import 'package:job_portal/ui_helper/ui_helper.dart';
+import 'package:job_portal/views/user_profile/presentation/bloc/job_applications_bloc/job_application_bloc.dart';
+import 'package:job_portal/views/user_profile/presentation/bloc/job_applications_bloc/job_applications_event.dart';
+import 'package:job_portal/views/user_profile/presentation/bloc/job_applications_bloc/job_applications_state.dart';
 
-class StudentJobApplications extends StatelessWidget {
+class StudentJobApplications extends StatefulWidget {
   const StudentJobApplications({super.key});
+
+  @override
+  State<StudentJobApplications> createState() => _StudentJobApplicationsState();
+}
+
+class _StudentJobApplicationsState extends State<StudentJobApplications> {
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+
+    final bloc = context.read<JobApplicationBloc>();
+    bloc.add(const LoadAllApplications());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,28 +56,61 @@ class StudentJobApplications extends StatelessWidget {
               style: mTextStyle32(mColor: Colors.black),
             ),
           ),
-          AppStatusCard(
-            comName: "Company Name",
-            nApplicants: "160",
-            mDate: "30 April",
-            statusText: "Hired",
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          AppStatusCard(
-              comName: "Company Name",
-              nApplicants: "230",
-              mDate: "27 April",
-              statusText: "Skills Missing"),
-          SizedBox(
-            height: 20,
-          ),
-          AppStatusCard(
-              comName: "Company Name",
-              nApplicants: "230",
-              mDate: "25 April",
-              statusText: "Application Sent"),
+          BlocBuilder<JobApplicationBloc, JobApplicationsState>(
+              builder: (context, state) {
+            if (state is JobApplicationsLoaded) {
+              final data = state.applications;
+              return Expanded(
+                child: ListView.builder(
+                  itemCount: data.applications.length,
+                  itemBuilder: (context, index) {
+                    final item = data.applications[index];
+                    return AppStatusCard(
+                      comName: item.companyName,
+                      nApplicants: item.applicantCount.toString(),
+                      mDate: item.applyTime.toString(),
+                      statusText: item.status,
+                    );
+                  },
+                ),
+              );
+            } else if (state is JobApplicationsLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state is JobApplicationsError) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          })
+
+          // AppStatusCard(
+          //   comName: "Company Name",
+          //   nApplicants: "160",
+          //   mDate: "30 April",
+          //   statusText: "Hired",
+          // ),
+          // const SizedBox(
+          //   height: 20,
+          // ),
+          // AppStatusCard(
+          //     comName: "Company Name",
+          //     nApplicants: "230",
+          //     mDate: "27 April",
+          //     statusText: "Skills Missing"),
+          // SizedBox(
+          //   height: 20,
+          // ),
+          // AppStatusCard(
+          //     comName: "Company Name",
+          //     nApplicants: "230",
+          //     mDate: "25 April",
+          //     statusText: "Application Sent"),
         ],
       ),
     );

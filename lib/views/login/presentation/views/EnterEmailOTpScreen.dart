@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:job_portal/utils/theme/custom_themes/color_theme.dart';
 
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../../widgets/widgets.dart';
@@ -33,7 +34,7 @@ class _EnterEmailOTpScreen extends State<EnterEmailOTpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: AppColors.mainIndigoColor),
+      appBar: AppBar(backgroundColor: TColors.primary),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

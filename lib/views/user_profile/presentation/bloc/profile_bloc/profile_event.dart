@@ -15,3 +15,13 @@ class LoadPublicProfile extends ProfileEvent {
   // TODO: implement props
   List<Object?> get props => [];
 }
+
+class LoadPublicProfileWithFollowersAndFollowing extends ProfileEvent {
+  final String id;
+
+  const LoadPublicProfileWithFollowersAndFollowing(this.id);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}

@@ -13,7 +13,10 @@ abstract class FeedApiService {
   factory FeedApiService(Dio dio, {String? baseUrl}) = _FeedApiService;
 
   @GET(Urls.getFeedPosts)
-  Future<HttpResponse<FeedResponseModel>> getFeedPosts();
+  Future<HttpResponse<FeedResponseModel>> getFeedPosts(
+    @Query('page') String page,
+    @Query('limit') String limit,
+  );
 
   @POST("${Urls.feedPostLike1}{feedPostId}${Urls.feedPostLike2}")
   Future<HttpResponse<FeedPostLikeModel>> feedPostLike(
@@ -25,5 +28,6 @@ abstract class FeedApiService {
 
   @POST(Urls.createFeedPost)
   Future<HttpResponse<CreateFeedPostModel>> createFeedPost(
-      @Body() Map<String, dynamic> params);
+    @Body() Map<String, dynamic> params,
+  );
 }

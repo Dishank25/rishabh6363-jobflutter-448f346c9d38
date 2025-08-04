@@ -201,7 +201,7 @@ class _PostInternshipsScreenState extends State<PostInternshipsScreen> {
               //   style: TextStyle(
               //       fontSize: 16,
               //       fontWeight: FontWeight.w700,
-              //       color: AppColors.mainIndigoColor),
+              //       color: TColors.primary),
               // ),
               SvgPicture.asset(
                 ImageString.jobPortalLogo,

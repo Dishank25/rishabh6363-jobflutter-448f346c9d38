@@ -20,9 +20,12 @@ class _FeedApiService implements FeedApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<HttpResponse<FeedResponseModel>> getFeedPosts() async {
+  Future<HttpResponse<FeedResponseModel>> getFeedPosts(
+    String page,
+    String limit,
+  ) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'page': page, r'limit': limit};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<FeedResponseModel>>(

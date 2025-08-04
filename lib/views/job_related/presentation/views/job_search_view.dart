@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:job_portal/utils/constants/image_string.dart';
+import 'package:job_portal/utils/theme/custom_themes/color_theme.dart';
 import 'package:job_portal/views/user_profile/presentation/views/User_Notifications_Screen.dart';
 import 'package:job_portal/views/job_related/domain/entities/all_jobs_entity.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_bloc/job_bloc.dart';
@@ -362,8 +363,7 @@ class JobCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    greyContainer(
-                        text: status, bgColor: AppColors.mainRedColor),
+                    greyContainer(text: status, bgColor: TColors.secondary),
                     const SizedBox(height: 6),
                     greyContainer(
                         text: posted, bgColor: const Color(0xffEFF0F6)),

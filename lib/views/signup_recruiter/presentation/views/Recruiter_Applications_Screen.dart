@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:job_portal/utils/theme/custom_themes/color_theme.dart';
 import 'package:job_portal/views/job_related/presentation/views/job_details_view.dart';
 
 import '../../../../ui_helper/ui_helper.dart';
@@ -34,7 +35,7 @@ class _RecruiterApplicationsScreenState
                 fontSize: 20,
                 fontFamily: "Inter",
                 fontWeight: FontWeight.w700,
-                color: AppColors.mainIndigoColor),
+                color: TColors.primary),
           ),
         ),
 
@@ -186,7 +187,7 @@ class AppReceivedCard extends StatelessWidget {
               SizedBox(
                 width: 160,
                 child: ViewAppContainer(
-                    bgColor: AppColors.mainRedColor,
+                    bgColor: TColors.secondary,
                     textColor: Colors.white,
                     title: "View Full Application",
                     onTap: onTap),

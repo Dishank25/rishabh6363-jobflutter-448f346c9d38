@@ -1,11 +1,44 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:job_portal/utils/constants/image_string.dart';
-import 'package:job_portal/views/user_profile/domain/entities/public_profile_entity.dart';
+import 'dart:developer' as developer show log;
 
-class UserPublicProfileScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:job_portal/injection_container.dart';
+import 'package:job_portal/utils/constants/image_string.dart';
+import 'package:job_portal/utils/storage/shared_preference.dart';
+import 'package:job_portal/views/user_profile/domain/entities/public_profile_entity.dart';
+import 'package:job_portal/views/user_profile/presentation/bloc/profile_bloc/profile_bloc.dart';
+import 'package:job_portal/views/user_profile/presentation/bloc/profile_bloc/profile_event.dart';
+import 'package:job_portal/views/user_profile/presentation/bloc/profile_bloc/profile_state.dart';
+import 'package:job_portal/views/user_profile/presentation/views/User_Notifications_Screen.dart';
+import 'package:job_portal/views/user_profile/presentation/views/User_messages_screen.dart';
+import 'package:job_portal/views/user_profile/presentation/views/follower_following_screens/followers_view.dart';
+import 'package:job_portal/views/user_profile/presentation/views/follower_following_screens/following_view.dart';
+
+class UserPublicProfileScreen extends StatefulWidget {
+  final bool selfProfile;
   final UserProfileEntity userProfile;
-  const UserPublicProfileScreen({super.key, required this.userProfile});
+  const UserPublicProfileScreen(
+      {super.key, required this.userProfile, required this.selfProfile});
+
+  @override
+  State<UserPublicProfileScreen> createState() =>
+      _UserPublicProfileScreenState();
+}
+
+class _UserPublicProfileScreenState extends State<UserPublicProfileScreen> {
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+
+    final _prefs = sl<PreferencesManager>();
+
+    final userId = _prefs.getUserId();
+
+    final bloc = context.read<ProfileBloc>();
+    bloc.add(LoadPublicProfileWithFollowersAndFollowing(userId ?? '77'));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,244 +46,299 @@ class UserPublicProfileScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        // leading: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: false,
-        // title: const Text('Logo',
-        //     style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
         title: SvgPicture.asset(
           ImageString.jobPortalLogo,
           height: 30,
         ),
-        actions: const [
-          Icon(Icons.notifications_none, color: Colors.black),
-          SizedBox(width: 16),
-          Icon(Icons.message_outlined, color: Colors.black),
-          SizedBox(width: 16),
+        actions: [
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const MessagesScreen()));
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 20.0),
+              child: SvgPicture.asset("assets/Icons/message_icon.svg"),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const NotificationsScreen()));
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 20.0),
+              child: SvgPicture.asset("assets/Icons/notifications_icon.svg"),
+            ),
+          ),
         ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              clipBehavior: Clip.none, // <--- allow overflow
-              alignment: Alignment.bottomLeft,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.network(
-                    ImageString.dummyImageUrl,
-                    height: 125,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Positioned(
-                  bottom: -20, // this overlaps below the image
-                  left: 16,
-                  // child: CircleAvatar(
-                  //   radius: 36,
-                  //   backgroundImage: NetworkImage(ImageString.dummyImageUrl),
-                  // ),
-                  child: SvgPicture.asset(
-                    ImageString.profileIcon,
-                    height: 80,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20), // Add space after to avoid layout jump
+        child: BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, state) {
+            if (state is PublicProfileWithFollowersAndFollowingLoaded) {
+              final profileData = state.publicProfile;
+              final followerData = state.followersEntity;
+              final followingData = state.followingEntity;
 
-            const SizedBox(height: 40),
-            Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Stack(
+                    clipBehavior: Clip.none, // <--- allow overflow
+                    alignment: Alignment.bottomLeft,
                     children: [
-                      Text(
-                          "${userProfile.publicProfile.firstName} ${userProfile.publicProfile.lastName}",
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20)),
-                      const SizedBox(height: 4),
-                      Text(
-                          '@${userProfile.publicProfile.firstName.toLowerCase()}',
-                          style: const TextStyle(color: Colors.grey)),
-                      const SizedBox(height: 8),
-                      const Text('Visual Designer'),
-                      const SizedBox(height: 4),
-                      Text(
-                        userProfile.publicProfile.aboutus,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.network(
+                          ImageString.dummyImageUrl,
+                          height: 125,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Positioned(
+                        bottom: -20, // this overlaps below the image
+                        left: 16,
+                        child: SvgPicture.asset(
+                          ImageString.profileIcon,
+                          height: 80,
+                        ),
                       ),
                     ],
                   ),
-                ),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        Colors.transparent, // transparent background
-                    shape: const StadiumBorder(),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    elevation: 0,
-                    minimumSize: Size.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    side: const BorderSide(
-                      // blue border
-                      color: Color.fromARGB(255, 29, 97, 231),
-                      width: 1,
-                    ),
-                  ),
-                  child: const Text(
-                    'Follow',
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 29, 97, 231),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 29, 97, 231),
-                    shape: const StadiumBorder(),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 6), // Slimmer padding
-                    elevation: 0, // optional: flat modern look
-                    minimumSize: Size.zero, // removes min size constraint
-                    tapTargetSize:
-                        MaterialTapTargetSize.shrinkWrap, // tighter tap area
-                  ),
-                  child: const Text(
-                    '2,900 followers',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 13, // smaller font for a sleeker look
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                // ElevatedButton(
-                //   onPressed: () {},
-                //   style: ElevatedButton.styleFrom(
-                //       backgroundColor: Color.fromARGB(255, 29, 97, 231),
-                //       shape: StadiumBorder()),
-                //   child: const Text('1,021 following',
-                //       style: TextStyle(color: Colors.white)),
-                // ),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 29, 97, 231),
-                    shape: const StadiumBorder(),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 6), // Slimmer padding
-                    elevation: 0, // optional: flat modern look
-                    minimumSize: Size.zero, // removes min size constraint
-                    tapTargetSize:
-                        MaterialTapTargetSize.shrinkWrap, // tighter tap area
-                  ),
-                  child: const Text(
-                    '1,021 following',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 13, // smaller font for a sleeker look
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(height: 24),
-            const SectionTitle('Your Activity'),
-            ActivityCard(
-              avatarUrl: ImageString.dummyImageUrl,
-              name: 'Rohan',
-              subtitle: 'Digital Marketer @Uber',
-              content:
-                  'Hey! Just started a new project. Check the link in my profile and comment your suggestions. see more...',
-            ),
-            // TextButton(
-            //     onPressed: () {},
-            //     child: const Text(
-            //       "See more",
-            //       style: TextStyle(
-            //         color: Color.fromARGB(255, 29, 97, 231),
-            //       ),
-            //     ),
-            // ),
-            SeeMoreDivider(),
-            const SectionTitle('Work Experience'),
-            InfoCard(
-              leading: const CircleAvatar(
-                backgroundColor: Colors.black,
-                child: Icon(Icons.work, color: Colors.white),
-              ),
-              title: "Graphic Designer",
-              subtitles: [
-                "Uber",
-                "June 23 - Present | 1 year 11 months",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed dapibus eros eu vehicula interdum.",
-              ],
-            ),
-            // TextButton(
-            //     onPressed: () {},
-            //     child: const Text(
-            //       "See more",
-            //       style: TextStyle(
-            //         color: Color.fromARGB(255, 29, 97, 231),
-            //       ),
-            //     )),
-            SeeMoreDivider(),
+                  const SizedBox(
+                      height: 20), // Add space after to avoid layout jump
 
-            const SectionTitle('Education'),
-            InfoCard(
-              leading: const Icon(Icons.school, color: Colors.red),
-              title: "Delhi Technological University",
-              subtitles: ["Bachelor's degree, Design", "2018 - 2022"],
-            ),
-            // TextButton(
-            //     onPressed: () {},
-            //     child: const Text(
-            //       "See more",
-            //       style: TextStyle(
-            //         color: Color.fromARGB(255, 29, 97, 231),
-            //       ),
-            //     )),
+                  const SizedBox(height: 40),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                                "${widget.userProfile.publicProfile.firstName} ${widget.userProfile.publicProfile.lastName}",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20)),
+                            const SizedBox(height: 4),
+                            Text(
+                                '@${widget.userProfile.publicProfile.firstName.toLowerCase()}',
+                                style: const TextStyle(color: Colors.grey)),
+                            const SizedBox(height: 8),
+                            const Text('Visual Designer'),
+                            const SizedBox(height: 4),
+                            Text(
+                              widget.userProfile.publicProfile.aboutus,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                      !widget.selfProfile
+                          ? ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors
+                                    .transparent, // transparent background
+                                shape: const StadiumBorder(),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 6),
+                                elevation: 0,
+                                minimumSize: Size.zero,
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                side: const BorderSide(
+                                  // blue border
+                                  color: Color.fromARGB(255, 29, 97, 231),
+                                  width: 1,
+                                ),
+                              ),
+                              child: const Text(
+                                'Follow',
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 29, 97, 231),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            )
+                          : const SizedBox()
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => FollowersView(
+                                followersData: followerData,
+                              ),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              const Color.fromARGB(255, 29, 97, 231),
+                          shape: const StadiumBorder(),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 6), // Slimmer padding
+                          elevation: 0, // optional: flat modern look
+                          minimumSize: Size.zero, // removes min size constraint
+                          tapTargetSize: MaterialTapTargetSize
+                              .shrinkWrap, // tighter tap area
+                        ),
+                        child: Text(
+                          '${followerData.count} followers',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 13, // smaller font for a sleeker look
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => FollowingView(
+                                followingData: followingData,
+                              ),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              const Color.fromARGB(255, 29, 97, 231),
+                          shape: const StadiumBorder(),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 6), // Slimmer padding
+                          elevation: 0, // optional: flat modern look
+                          minimumSize: Size.zero, // removes min size constraint
+                          tapTargetSize: MaterialTapTargetSize
+                              .shrinkWrap, // tighter tap area
+                        ),
+                        child: Text(
+                          '${followingData.count} following',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 13, // smaller font for a sleeker look
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  const SectionTitle('Your Activity'),
+                  ActivityCard(
+                    avatarUrl: ImageString.dummyImageUrl,
+                    name: 'Rohan',
+                    subtitle: 'Digital Marketer @Uber',
+                    content:
+                        'Hey! Just started a new project. Check the link in my profile and comment your suggestions. see more...',
+                  ),
+                  // TextButton(
+                  //     onPressed: () {},
+                  //     child: const Text(
+                  //       "See more",
+                  //       style: TextStyle(
+                  //         color: Color.fromARGB(255, 29, 97, 231),
+                  //       ),
+                  //     ),
+                  // ),
+                  SeeMoreDivider(),
+                  const SectionTitle('Work Experience'),
+                  InfoCard(
+                    leading: const CircleAvatar(
+                      backgroundColor: Colors.black,
+                      child: Icon(Icons.work, color: Colors.white),
+                    ),
+                    title: "Graphic Designer",
+                    subtitles: [
+                      "Uber",
+                      "June 23 - Present | 1 year 11 months",
+                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed dapibus eros eu vehicula interdum.",
+                    ],
+                  ),
+                  // TextButton(
+                  //     onPressed: () {},
+                  //     child: const Text(
+                  //       "See more",
+                  //       style: TextStyle(
+                  //         color: Color.fromARGB(255, 29, 97, 231),
+                  //       ),
+                  //     )),
+                  SeeMoreDivider(),
 
-            SeeMoreDivider(),
+                  const SectionTitle('Education'),
+                  InfoCard(
+                    leading: const Icon(Icons.school, color: Colors.red),
+                    title: "Delhi Technological University",
+                    subtitles: ["Bachelor's degree, Design", "2018 - 2022"],
+                  ),
+                  // TextButton(
+                  //     onPressed: () {},
+                  //     child: const Text(
+                  //       "See more",
+                  //       style: TextStyle(
+                  //         color: Color.fromARGB(255, 29, 97, 231),
+                  //       ),
+                  //     )),
 
-            const SectionTitle('Skills'),
-            InfoCard(
-              leading: const Icon(Icons.design_services_outlined,
-                  color: Colors.purple),
-              title: "Visual Identity",
-              subtitles: ["Delhi Technological University"],
-            ),
+                  SeeMoreDivider(),
 
-            // TextButton(
-            //     onPressed: () {},
-            //     child: const Text(
-            //       "See more",
-            //       style: TextStyle(
-            //         color: Color.fromARGB(255, 29, 97, 231),
-            //       ),
-            //     )),
-            SeeMoreDivider(),
-          ],
+                  const SectionTitle('Skills'),
+                  InfoCard(
+                    leading: const Icon(Icons.design_services_outlined,
+                        color: Colors.purple),
+                    title: "Visual Identity",
+                    subtitles: ["Delhi Technological University"],
+                  ),
+
+                  // TextButton(
+                  //     onPressed: () {},
+                  //     child: const Text(
+                  //       "See more",
+                  //       style: TextStyle(
+                  //         color: Color.fromARGB(255, 29, 97, 231),
+                  //       ),
+                  //     )),
+                  SeeMoreDivider(),
+                ],
+              );
+            } else if (state is PublicProfileWithFollowersAndFollowingLoading) {
+              developer.log(
+                  'Public profile is loading with folllowers and following.');
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state is PublicProfileWithFollowersAndFollowingError) {
+              developer.log(
+                  'Public profile with folllowers and following ended up in error.');
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              developer.log('Unhandeled state of Profile Bloc : $state');
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
         ),
       ),
     );

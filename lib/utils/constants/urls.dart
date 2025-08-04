@@ -35,4 +35,7 @@ class Urls {
   static const applyForJob = "jobpost/apply/{jobId}";
   static const uploadFileGetUrl = "upload-image";
   static const createFeedPost = "feed/feed";
+  static const getJobApplications = "user/applications";
+  static const getFollowers = "feed/{id}/followers";
+  static const getFollowing = "feed/{id}/following";
 }

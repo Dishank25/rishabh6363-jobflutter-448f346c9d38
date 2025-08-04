@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:job_portal/utils/constants/urls.dart';
+import 'package:job_portal/views/user_profile/data/models/all_job_application_model.dart';
+import 'package:job_portal/views/user_profile/data/models/followers_model.dart';
 import 'package:job_portal/views/user_profile/data/models/public_profile_model.dart';
 import 'package:job_portal/views/user_profile/data/models/terms_and_conditions_response.dart';
 import 'package:job_portal/views/user_profile/data/models/update_user_email_model.dart';
@@ -31,4 +33,13 @@ abstract class ProfileApiService {
   @POST(Urls.changeUserEmail)
   Future<HttpResponse<UpdateUserEmailModel>> changeUserEmail(
       @Body() Map<String, dynamic> params);
+
+  @GET(Urls.getJobApplications)
+  Future<HttpResponse<AllJobApplicationsModel>> getJobApplications();
+
+  @GET(Urls.getFollowers)
+  Future<HttpResponse<FollowersModel>> getFollowers(@Path() String id);
+
+  @GET(Urls.getFollowing)
+  Future<HttpResponse<FollowingModel>> getFollowing(@Path() String id);
 }

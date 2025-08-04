@@ -115,7 +115,7 @@ class _CreateFeedPostViewState extends State<CreateFeedPostView> {
                   if (state is CreateFeedPostLoaded) {
                     final data = state.createFeedPostEntity;
                     showSnackbar(data.message, context);
-                    context.read<FeedBloc>().add(const LoadFeedPosts());
+                    // context.read<FeedBloc>().add(const LoadFeedPosts());
                     Navigator.pop(context);
                   } else if (state is CreateFeedPostLoading) {
                     developer.log('Create feed post is loading.');

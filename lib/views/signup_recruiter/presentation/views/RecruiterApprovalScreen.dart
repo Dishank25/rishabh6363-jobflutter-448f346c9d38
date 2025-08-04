@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:job_portal/utils/theme/custom_themes/color_theme.dart';
 
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../../widgets/widgets.dart';
@@ -202,7 +203,7 @@ class ApprovalCard extends StatelessWidget {
                   title: viewContainerText,
                   bgColor: viewContainerText == "View Profile"
                       ? Color(0xffFFF7FB)
-                      : AppColors.mainRedColor,
+                      : TColors.secondary,
                   textColor: viewContainerText == "View Profile"
                       ? Color(0xff6C7278)
                       : Colors.white,

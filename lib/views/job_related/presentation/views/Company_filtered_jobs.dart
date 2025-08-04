@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:job_portal/utils/theme/custom_themes/color_theme.dart';
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../../widgets/widgets.dart';
 import '../../../user_profile/presentation/views/User_messages_screen.dart';
@@ -54,7 +55,7 @@ class _CompanyFilteredJobsState extends State<CompanyFilteredJobsScreen> {
                   fontSize: 20,
                   fontFamily: "Inter",
                   fontWeight: FontWeight.w700,
-                  color: AppColors.mainIndigoColor),
+                  color: TColors.primary),
             ),
           ),
           actions: [
@@ -230,8 +231,7 @@ class JobCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    greyContainer(
-                        text: status, bgColor: AppColors.mainRedColor),
+                    greyContainer(text: status, bgColor: TColors.secondary),
                     SizedBox(height: 6),
                     greyContainer(text: posted, bgColor: Color(0xffEFF0F6)),
                     SizedBox(height: 6),

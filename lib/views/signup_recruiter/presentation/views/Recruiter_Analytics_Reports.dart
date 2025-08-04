@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:job_portal/utils/theme/custom_themes/color_theme.dart';
 import 'package:job_portal/widgets/widgets.dart';
 
 import '../../../../ui_helper/ui_helper.dart';
@@ -20,7 +21,7 @@ class RecruiterAnalyticsReports extends StatelessWidget {
                 fontSize: 20,
                 fontFamily: "Inter",
                 fontWeight: FontWeight.w700,
-                color: AppColors.mainIndigoColor),
+                color: TColors.primary),
           ),
         ),
 

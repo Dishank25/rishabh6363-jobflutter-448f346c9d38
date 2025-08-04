@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:job_portal/utils/theme/custom_themes/color_theme.dart';
 import 'package:job_portal/views/job_related/presentation/views/job_details_view.dart';
 import 'package:job_portal/views/signup_recruiter/presentation/views/Recruiter_Applications_Screen.dart';
 
@@ -123,7 +124,7 @@ Widget reviewResumeContainer(
           ViewAppContainer(
             title: viewContainer_text,
             onTap: onTap,
-            bgColor: AppColors.mainRedColor,
+            bgColor: TColors.secondary,
             textColor: Colors.white,
           ),
         ],

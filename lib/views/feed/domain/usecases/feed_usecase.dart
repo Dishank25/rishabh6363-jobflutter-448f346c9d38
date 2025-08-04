@@ -13,7 +13,7 @@ class FeedUsecase
 
   @override
   Future<DataState<FeedEntity>> call({Map<String, dynamic>? params}) async {
-    return _repository.getFeedPosts();
+    return _repository.getFeedPosts(params!['page'], params['limit']);
   }
 }
 

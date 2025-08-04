@@ -103,6 +103,11 @@ class _EditAboutDialogState extends State<EditAboutDialog> {
                         isCollapsed: true,
                         border: InputBorder.none,
                         hintText: "Enter about info...",
+                        hintStyle: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: Color.fromARGB(255, 144, 149, 160),
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                   ),

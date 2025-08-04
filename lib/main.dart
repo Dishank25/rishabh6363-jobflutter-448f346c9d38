@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:job_portal/auth_wrapper.dart';
 import 'package:job_portal/injection_container.dart';
+import 'package:job_portal/utils/theme/theme.dart';
 import 'package:job_portal/utils/upload_file_get_url/presentation/bloc/upload_file_bloc.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_bloc.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/skill_bloc/skill_bloc.dart';
@@ -16,6 +18,7 @@ import 'package:job_portal/views/signup_recruiter/presentation/bloc/verify_otp_r
 import 'package:job_portal/views/signup_student/presentation/bloc/remote_signup_bloc/remote_signup_bloc.dart';
 import 'package:job_portal/views/signup_student/presentation/bloc/verify_otp_bloc/verify_otp_bloc.dart';
 import 'package:job_portal/views/signup_university/presentation/blocs/university_signup_bloc.dart';
+import 'package:job_portal/views/user_profile/presentation/bloc/job_applications_bloc/job_application_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/manage_account_bloc/manage_account_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/my_profile_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/profile_bloc/profile_bloc.dart';
@@ -55,11 +58,16 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => sl<UploadFileBloc>()),
         BlocProvider(create: (_) => sl<CreateFeedPostBloc>()),
         BlocProvider(create: (_) => sl<UploadResumeBloc>()),
+        BlocProvider(create: (_) => sl<JobApplicationBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        home: LogInPage1(),
+        themeMode: ThemeMode.light,
+        theme: TAppTheme.lightTheme,
+        darkTheme: TAppTheme.darkTheme,
+        // home: LogInPage1(),
+        home: const AuthWrapper(),
       ),
     );
   }

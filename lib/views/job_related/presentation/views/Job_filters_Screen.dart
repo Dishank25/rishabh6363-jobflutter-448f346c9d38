@@ -40,7 +40,7 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
         //         fontSize: 20,
         //         fontFamily: "Inter",
         //         fontWeight: FontWeight.w700,
-        //         color: AppColors.mainIndigoColor),
+        //         color: TColors.primary),
         //   ),
         // ),
         title: SvgPicture.asset(

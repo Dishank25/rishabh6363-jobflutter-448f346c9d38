@@ -29,11 +29,15 @@ class FeedScreen extends StatefulWidget {
 }
 
 class _FeedScreenState extends State<FeedScreen> {
+  ScrollController _scrollController = ScrollController();
+
   TextEditingController feedSearchController = TextEditingController();
   String? activePostId;
   final TextEditingController _commentController = TextEditingController();
   final TextEditingController newPostController = TextEditingController();
   final FocusNode _commentFocusNode = FocusNode();
+  int page = 1;
+  int limit = 5;
 
   List<Map<String, dynamic>> uList = [
     {
@@ -66,15 +70,16 @@ class _FeedScreenState extends State<FeedScreen> {
     }
   }
 
-  FeedEntity? feedPostsData;
+  // FeedEntity? feedPostsData;
+  List<PostEntity>? postList;
+
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
 
     final bloc = context.read<FeedBloc>();
-
-    bloc.add(const LoadFeedPosts());
+    bloc.add(const LoadFeedPosts('1', '10'));
   }
 
   @override
@@ -84,6 +89,20 @@ class _FeedScreenState extends State<FeedScreen> {
     _commentFocusNode.addListener(() {
       if (!_commentFocusNode.hasFocus) {
         setState(() => activePostId = null);
+      }
+    });
+
+    page = 1;
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.maxScrollExtent ==
+          _scrollController.position.pixels) {
+        developer.log('At bottom');
+        context
+            .read<FeedBloc>()
+            .add(LoadFeedPosts(page.toString(), limit.toString()));
+      } else {
+        developer.log('At top');
       }
     });
   }
@@ -309,6 +328,7 @@ class _FeedScreenState extends State<FeedScreen> {
         ],
       ),
       body: SingleChildScrollView(
+        controller: _scrollController,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
@@ -316,11 +336,14 @@ class _FeedScreenState extends State<FeedScreen> {
               BlocListener<FeedBloc, FeedState>(
                 listener: (context, state) {
                   if (state is FeedPostsLoaded) {
-                    final data = state.feedEntity;
+                    final data = state.postEntity;
+                    page += 1;
                     setState(() {
-                      feedPostsData = data;
+                      // feedPostsData = data;
+                      postList = data;
                     });
-                    developer.log('Feed posts data : ${data.posts.first.id}');
+                    // developer.log('Feed posts data : ${data.posts.first.id}');
+                    developer.log('Feed posts data : ${data.first.id}');
                   } else if (state is FeedPostCommentLoaded) {
                     final data = state.feedPostCommentEntity;
                     developer.log('Comment successfully posted.');
@@ -329,7 +352,7 @@ class _FeedScreenState extends State<FeedScreen> {
                     FocusScope.of(context).unfocus();
                     setState(() => activePostId = null);
 
-                    context.read<FeedBloc>().add(const LoadFeedPosts());
+                    // context.read<FeedBloc>().add(const LoadFeedPosts());
                   } else if (state is FeedPostCommentLoading) {
                     developer.log('Commentting .');
                   } else if (state is FeedPostCommentError) {
@@ -425,11 +448,12 @@ class _FeedScreenState extends State<FeedScreen> {
               const SizedBox(
                 height: 30,
               ),
-              feedPostsData != null
+              // feedPostsData != null
+              postList != null
                   ? ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: feedPostsData?.posts.length,
+                      itemCount: postList?.length,
                       padding: const EdgeInsets.only(bottom: 16),
                       itemBuilder: (context, index) {
                         // final item = uList[index];
@@ -445,7 +469,7 @@ class _FeedScreenState extends State<FeedScreen> {
                         //   ),
                         // );
 
-                        final item = feedPostsData?.posts[index];
+                        final item = postList?[index];
                         final feedPostId = item?.id ?? '2';
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 20),

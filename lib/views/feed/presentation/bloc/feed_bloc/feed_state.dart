@@ -23,8 +23,9 @@ class FeedPostsLoading extends FeedState {
 }
 
 class FeedPostsLoaded extends FeedState {
-  final FeedEntity feedEntity;
-  const FeedPostsLoaded(this.feedEntity);
+  // final FeedEntity feedEntity;
+  final List<PostEntity> postEntity;
+  const FeedPostsLoaded(this.postEntity);
 }
 
 class FeedPostsError extends FeedState {

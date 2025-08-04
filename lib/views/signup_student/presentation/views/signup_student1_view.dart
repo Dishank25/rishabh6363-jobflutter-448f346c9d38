@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_intl_phone_field/flutter_intl_phone_field.dart';
-import 'package:get_it/get_it.dart';
 import 'package:job_portal/injection_container.dart';
 import 'package:job_portal/utils/storage/shared_preference.dart';
 import 'package:job_portal/views/login/presentation/views/login_page_first_view.dart';
@@ -227,6 +225,7 @@ class _SignUpStudent1State extends State<SignUpStudent1> {
                         final _prefs = sl<PreferencesManager>();
                         _prefs.setUserId(data.user?.id.toString() ?? '00');
                         _prefs.setToken(data.token ?? '');
+                        _prefs.setUserType(data.user!.userRole);
                         context
                             .read<RemoteSignupBloc>()
                             .add(RemoteSingupSendOtpEmail(emailMap));

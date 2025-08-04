@@ -3,7 +3,7 @@ class AllJobsEntity {
   final int companyRecruiterProfileId;
   final String jobProfile;
   final String companyName;
-  final String logoUrl;
+  final String? logoUrl;
   final String hiringStatus;
   final String postedDaysAgo;
   final int matchPercentage;

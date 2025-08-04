@@ -7,10 +7,12 @@ abstract class FeedEvent extends Equatable {
 }
 
 class LoadFeedPosts extends FeedEvent {
-  const LoadFeedPosts();
+  final String page;
+  final String limit;
+  const LoadFeedPosts(this.page, this.limit);
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [page, limit];
 }
 
 class LoadFeedPostLike extends FeedEvent {

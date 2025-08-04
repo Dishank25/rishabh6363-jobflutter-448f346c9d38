@@ -1,6 +1,7 @@
 import 'dart:developer' as developer show log;
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:job_portal/views/feed/domain/entities/feed_entity.dart';
 import 'package:job_portal/views/feed/domain/usecases/feed_usecase.dart';
 import 'package:job_portal/views/feed/presentation/bloc/feed_bloc/feed_event.dart';
 import 'package:job_portal/views/feed/presentation/bloc/feed_bloc/feed_state.dart';
@@ -9,6 +10,8 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
   final FeedUsecase _feedUsecase;
   final FeedPostLikeUsecase _feedPostLikeUsecase;
   final FeedPostCommentUsecase _feedPostCommentUsecase;
+
+  List<PostEntity> postList = [];
 
   FeedBloc(this._feedUsecase, this._feedPostLikeUsecase,
       this._feedPostCommentUsecase)
@@ -22,8 +25,11 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
       LoadFeedPosts event, Emitter<FeedState> emit) async {
     try {
       emit(const FeedPostsLoading());
-      final response = await _feedUsecase(params: null);
-      emit(FeedPostsLoaded(response.data!));
+      final map = {'page': event.page, 'limit': event.limit};
+      final response = await _feedUsecase(params: map);
+      // postList.add(response.data!.posts);
+      postList.addAll(response.data!.posts);
+      emit(FeedPostsLoaded(postList));
       // final
     } catch (e) {
       developer.log('Error in loading feed posts : ${e}');

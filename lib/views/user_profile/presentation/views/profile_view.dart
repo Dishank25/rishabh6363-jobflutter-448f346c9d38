@@ -6,6 +6,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:job_portal/injection_container.dart';
 import 'package:job_portal/utils/constants/image_string.dart';
 import 'package:job_portal/utils/storage/shared_preference.dart';
+import 'package:job_portal/utils/theme/custom_themes/color_theme.dart';
+import 'package:job_portal/views/login/presentation/views/login_page_first_view.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/profile_bloc/profile_event.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/profile_bloc/profile_state.dart';
@@ -13,6 +15,7 @@ import 'package:job_portal/views/user_profile/presentation/views/User_Notificati
 import 'package:job_portal/views/user_profile/presentation/views/change_email_password_views/change_email_view.dart';
 import 'package:job_portal/views/user_profile/presentation/views/change_email_password_views/User_change_password_screen.dart';
 import 'package:job_portal/views/user_profile/presentation/views/User_messages_screen.dart';
+import 'package:job_portal/views/user_profile/presentation/views/log_out_dialog.dart';
 import 'package:job_portal/views/user_profile/presentation/views/my_profile_view.dart';
 import 'package:job_portal/views/user_profile/presentation/views/public_profile_view.dart';
 import 'package:job_portal/views/user_profile/presentation/views/user_terms_and_conditions_view.dart';
@@ -64,14 +67,24 @@ class _UserProfileScreen1State extends State<UserProfileScreen1> {
     });
   }
 
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.2), // for dimmed effect
+
+      // builder: (context) => BlocProvider.value(
+      //   value: context.read<MyProfileBloc>(),
+      //   child: EditCareerObjectiveView(careerObjective: careerObjective),
+      // ),
+
+      builder: (context) {
+        return const LogOutDialogView();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    // if (widget.showUserProfile2) {
-    //   return UserProfileScreen2(
-    //     onBack: widget.onCallBackFromProfileScreen2,
-    //   );
-    // }
-
     if (showProfile2) {
       return UserProfileScreen2(onBack: goBackFromProfile2);
     }
@@ -138,7 +151,7 @@ class _UserProfileScreen1State extends State<UserProfileScreen1> {
                         width: double.infinity,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
-                          color: AppColors.mainIndigoColor,
+                          color: TColors.primary,
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black.withOpacity(0.5),
@@ -216,9 +229,19 @@ class _UserProfileScreen1State extends State<UserProfileScreen1> {
                                           builder: (context) =>
                                               UserPublicProfileScreen(
                                             userProfile: state.publicProfile,
+                                            selfProfile: true,
                                           ),
                                         ),
-                                      );
+                                      ).then((value) {
+                                        final _prefs = sl<PreferencesManager>();
+
+                                        final userId = _prefs.getUserId();
+
+                                        final bloc =
+                                            context.read<ProfileBloc>();
+                                        bloc.add(
+                                            LoadPublicProfile(userId ?? '77'));
+                                      });
                                     },
                                     child: Row(
                                       children: [
@@ -412,10 +435,15 @@ class _UserProfileScreen1State extends State<UserProfileScreen1> {
                         )
                       ],
                       UserProfileEnteries(
-                          mIcon: "assets/Icons/Log_out_icon.svg",
-                          title: "Log Out",
-                          desc: "Further secure your account for safety",
-                          mArrow: Icons.keyboard_arrow_right_outlined)
+                        mIcon: "assets/Icons/Log_out_icon.svg",
+                        title: "Log Out",
+                        desc: "Further secure your account for safety",
+                        mArrow: Icons.keyboard_arrow_right_outlined,
+                        onTap: () {
+                          final _prefs = sl<PreferencesManager>();
+                          _showLogoutDialog(context);
+                        },
+                      )
                     ],
                   ),
                 ),

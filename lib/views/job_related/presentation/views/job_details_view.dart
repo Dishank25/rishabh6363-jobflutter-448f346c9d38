@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:job_portal/utils/constants/constants.dart';
 import 'package:job_portal/utils/constants/image_string.dart';
+import 'package:job_portal/utils/theme/custom_themes/color_theme.dart';
 import 'package:job_portal/views/bottom_nav_bar/student_bottom_nav_bar.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_apply_bloc/job_apply_bloc.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_apply_bloc/job_apply_event.dart';
@@ -153,7 +154,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                   children: [
                                     greyContainer(
                                         text: 'Actively Hiring',
-                                        bgColor: AppColors.mainRedColor),
+                                        bgColor: TColors.secondary),
                                     SizedBox(
                                       width: 18,
                                     ),
@@ -265,7 +266,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CircularProgressIndicator(
-                        color: appPrimaryColor,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                       SizedBox(
                         height: 20,
@@ -282,7 +283,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CircularProgressIndicator(
-                        color: appPrimaryColor,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                       const SizedBox(
                         height: 20,

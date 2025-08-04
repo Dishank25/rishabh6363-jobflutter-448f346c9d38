@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_intl_phone_field/flutter_intl_phone_field.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:job_portal/utils/constants/image_string.dart';
+import 'package:job_portal/utils/theme/custom_themes/color_theme.dart';
 import '../UI_Helper/UI_Helper.dart';
 
 /// CUSTOMIZED APPBAR
@@ -22,7 +23,7 @@ PreferredSizeWidget buildCustomAppBar({required String titleText}) {
           fontSize: 20,
           fontFamily: "Inter",
           fontWeight: FontWeight.w700,
-          color: AppColors.mainIndigoColor,
+          color: TColors.primary,
         ),
       ),
     ),
@@ -46,7 +47,7 @@ Widget signInHeader({required VoidCallback onTap}) {
   return Container(
     height: 180,
     width: double.infinity,
-    decoration: BoxDecoration(color: AppColors.mainIndigoColor),
+    decoration: BoxDecoration(color: TColors.primary),
     child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
       child: Column(
@@ -73,7 +74,7 @@ Widget signInHeader({required VoidCallback onTap}) {
                 child: const Text(
                   "Sign Up",
                   style: TextStyle(
-                    color: AppColors.mainRedColor,
+                    color: TColors.secondary,
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     decoration: TextDecoration.underline,
@@ -90,33 +91,105 @@ Widget signInHeader({required VoidCallback onTap}) {
 }
 
 /// FORGET PASSWORD ROW
-Widget forgetPassRow({required VoidCallback ontap}) {
-  return Row(
-    children: [
-      Container(
-        height: 11.08,
-        width: 11.08,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(2),
-            border: Border.all(color: Color(0xff6C7278), width: 1)),
-      ),
-      SizedBox(
-        width: 6.0,
-      ),
-      Text(
-        "Remember me",
-        style: mTextStyle14(),
-      ),
-      Spacer(),
-      InkWell(
-          onTap: ontap,
+// Widget forgetPassRow(
+//     {required VoidCallback ontap, required VoidCallback onTapRemMe}) {
+//   return Row(
+//     children: [
+//       Container(
+//         height: 11.08,
+//         width: 11.08,
+//         decoration: BoxDecoration(
+//             borderRadius: BorderRadius.circular(2),
+//             border: Border.all(color: Color(0xff6C7278), width: 1)),
+//       ),
+//       SizedBox(
+//         width: 6.0,
+//       ),
+//       Text(
+//         "Remember me",
+//         style: mTextStyle14(),
+//       ),
+//       Spacer(),
+//       InkWell(
+//           onTap: ontap,
+//           child: Text(
+//             "Forgot Password?",
+//             style: mTextStyle14(
+//                 mColor: AppColors.blueTextColor, mFontWeight: FontWeight.w600),
+//           )),
+//     ],
+//   );
+// }
+
+class RememberMeRow extends StatefulWidget {
+  final VoidCallback onForgotPasswordTap;
+  final ValueChanged<bool> onRememberMeChanged;
+
+  const RememberMeRow({
+    super.key,
+    required this.onForgotPasswordTap,
+    required this.onRememberMeChanged,
+  });
+
+  @override
+  State<RememberMeRow> createState() => _RememberMeRowState();
+}
+
+class _RememberMeRowState extends State<RememberMeRow> {
+  bool isChecked = true;
+
+  void _toggleCheckbox() {
+    setState(() {
+      isChecked = !isChecked;
+    });
+    widget.onRememberMeChanged(isChecked);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final checkedColor = TColors.primary;
+    // final checkedColor = Theme.of(context).colorScheme.primary;
+    return Row(
+      children: [
+        GestureDetector(
+          onTap: _toggleCheckbox,
+          child: Container(
+            height: 16,
+            width: 16,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(2),
+              border: Border.all(
+                  color: isChecked ? checkedColor : const Color(0xff6C7278),
+                  width: 1),
+              color: isChecked ? checkedColor : Colors.transparent,
+            ),
+            child: isChecked
+                ? const Icon(Icons.check, size: 12, color: Colors.white)
+                : null,
+          ),
+        ),
+        const SizedBox(width: 6.0),
+        GestureDetector(
+          onTap: _toggleCheckbox,
+          child: Text(
+            "Remember me",
+            style: mTextStyle14(),
+          ),
+        ),
+        const Spacer(),
+        InkWell(
+          onTap: widget.onForgotPasswordTap,
           child: Text(
             "Forgot Password?",
             style: mTextStyle14(
-                mColor: AppColors.blueTextColor, mFontWeight: FontWeight.w600),
-          )),
-    ],
-  );
+              mColor: AppColors.blueTextColor,
+              mFontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 /// COMMON CONTAINER WIDGET
@@ -127,7 +200,7 @@ Widget commonRedContainer({required String text, VoidCallback? onTap}) {
       height: 48,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: AppColors.mainRedColor,
+        color: TColors.secondary,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Center(
@@ -204,13 +277,105 @@ Widget belowBars({required String text, String? imgUrl, VoidCallback? onTap}) {
 }
 
 /// CUSTOM TEXTFIELDS
-class CustomTextField extends StatelessWidget {
+// class CustomTextField extends StatelessWidget {
+//   final TextEditingController controller;
+//   final String hintText;
+//   final String? labelText;
+//   final IconData? prefixIcon;
+//   final IconData? suffixIcon;
+//   final bool obscureText;
+//   final TextInputType? keyboardType;
+//   final VoidCallback? onSuffixTap;
+//   final String? Function(String?)? validator;
+//   final Color? fillColor;
+
+//   const CustomTextField({
+//     super.key,
+//     required this.controller,
+//     required this.hintText,
+//     this.labelText,
+//     this.prefixIcon,
+//     this.suffixIcon,
+//     this.keyboardType,
+//     this.onSuffixTap,
+//     this.obscureText = false,
+//     this.validator,
+//     this.fillColor,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       children: [
+//         TextFormField(
+//           controller: controller,
+//           obscureText: obscureText,
+//           keyboardType: keyboardType,
+//           validator: validator,
+//           style: mTextStyle14(),
+//           decoration: InputDecoration(
+//             filled: true,
+//             fillColor: fillColor ?? Colors.white,
+//             hintText: hintText,
+//             labelText: labelText,
+//             hintStyle: mTextStyle14(
+//               mFontWeight: FontWeight.w500,
+//               mColor: const Color(0xffBCC1CA),
+//             ),
+//             prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
+//             suffixIcon: suffixIcon != null
+//                 ? GestureDetector(
+//                     onTap: onSuffixTap,
+//                     child: Icon(
+//                       suffixIcon,
+//                       size: 20,
+//                       color: const Color(0xffBCC1CA),
+//                     ),
+//                   )
+//                 : null,
+//             contentPadding: const EdgeInsets.symmetric(
+//                 horizontal: 16, vertical: 14), // maintain height
+//             border: OutlineInputBorder(
+//               borderRadius: BorderRadius.circular(10),
+//               borderSide: const BorderSide(width: 1, color: Color(0xffBCC1CA)),
+//             ),
+//             enabledBorder: OutlineInputBorder(
+//               borderRadius: BorderRadius.circular(10),
+//               borderSide: const BorderSide(width: 1, color: Color(0xffBCC1CA)),
+//             ),
+//             focusedBorder: OutlineInputBorder(
+//               borderRadius: BorderRadius.circular(10),
+//               borderSide:
+//                   BorderSide(width: 1.5, color: Theme.of(context).primaryColor),
+//             ),
+//             errorBorder: OutlineInputBorder(
+//               borderRadius: BorderRadius.circular(10),
+//               borderSide: const BorderSide(width: 1, color: Colors.red),
+//             ),
+//             focusedErrorBorder: OutlineInputBorder(
+//               borderRadius: BorderRadius.circular(10),
+//               borderSide: const BorderSide(width: 1.5, color: Colors.red),
+//             ),
+//             errorStyle: const TextStyle(
+//               fontSize: 12,
+//               height: 1.0, // Control line height
+//             ),
+//           ),
+//         ),
+//         // const SizedBox(height: 12), // spacing between fields
+//       ],
+//     );
+//   }
+// }
+
+class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
   final String? labelText;
   final IconData? prefixIcon;
   final IconData? suffixIcon;
   final bool obscureText;
+  final bool isPasswordField;
   final TextInputType? keyboardType;
   final VoidCallback? onSuffixTap;
   final String? Function(String?)? validator;
@@ -224,44 +389,70 @@ class CustomTextField extends StatelessWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.keyboardType,
-    this.onSuffixTap,
     this.obscureText = false,
+    this.isPasswordField = false,
+    this.onSuffixTap,
     this.validator,
     this.fillColor,
   });
+
+  @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  late bool _obscure;
+
+  @override
+  void initState() {
+    super.initState();
+    _obscure = widget.obscureText;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         TextFormField(
-          controller: controller,
-          obscureText: obscureText,
-          keyboardType: keyboardType,
-          validator: validator,
+          controller: widget.controller,
+          obscureText: _obscure,
+          keyboardType: widget.keyboardType,
+          validator: widget.validator,
           style: mTextStyle14(),
           decoration: InputDecoration(
             filled: true,
-            fillColor: fillColor ?? Colors.white,
-            hintText: hintText,
-            labelText: labelText,
+            fillColor: widget.fillColor ?? Colors.white,
+            hintText: widget.hintText,
+            labelText: widget.labelText,
             hintStyle: mTextStyle14(
               mFontWeight: FontWeight.w500,
               mColor: const Color(0xffBCC1CA),
             ),
-            prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
-            suffixIcon: suffixIcon != null
+            prefixIcon:
+                widget.prefixIcon != null ? Icon(widget.prefixIcon) : null,
+            suffixIcon: widget.suffixIcon != null
                 ? GestureDetector(
-                    onTap: onSuffixTap,
+                    onTap: () {
+                      if (widget.isPasswordField) {
+                        setState(() {
+                          _obscure = !_obscure;
+                        });
+                      }
+                      widget.onSuffixTap?.call();
+                    },
                     child: Icon(
-                      suffixIcon,
+                      widget.isPasswordField
+                          ? (_obscure
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility)
+                          : widget.suffixIcon,
                       size: 20,
                       color: const Color(0xffBCC1CA),
                     ),
                   )
                 : null,
-            contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16, vertical: 14), // maintain height
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: const BorderSide(width: 1, color: Color(0xffBCC1CA)),
@@ -285,11 +476,10 @@ class CustomTextField extends StatelessWidget {
             ),
             errorStyle: const TextStyle(
               fontSize: 12,
-              height: 1.0, // Control line height
+              height: 1.0,
             ),
           ),
         ),
-        // const SizedBox(height: 12), // spacing between fields
       ],
     );
   }
@@ -395,8 +585,7 @@ Widget nextButton({required String title, required VoidCallback onTap}) {
       height: 40,
       width: 110,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: AppColors.mainRedColor),
+          borderRadius: BorderRadius.circular(20), color: TColors.secondary),
       child: Center(
           child: Text(
         title,
@@ -586,7 +775,7 @@ Widget courseName({
       decoration: BoxDecoration(
         color: background,
         borderRadius: BorderRadius.circular(26),
-        border: Border.all(color: borderColor ?? Color(0xffEFF0F6)),
+        border: Border.all(color: borderColor ?? const Color(0xffEFF0F6)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -907,7 +1096,6 @@ class _SearchTextFieldState extends State<SearchTextField> {
               ImageString.searchicon,
               height: 20,
             ),
-            // child: const Icon(Icons.search, color: Colors.grey),
           ),
         ],
       ),

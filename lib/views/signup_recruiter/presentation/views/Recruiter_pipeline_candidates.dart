@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:job_portal/utils/theme/custom_themes/color_theme.dart';
 import 'package:job_portal/views/signup_recruiter/presentation/views/Recruiter_Applications_Screen.dart';
 
 import '../../../../ui_helper/ui_helper.dart';
@@ -235,7 +236,7 @@ class AppReceivedCard extends StatelessWidget {
               SizedBox(
                 width: 160,
                 child: ViewAppContainer(
-                  bgColor: AppColors.mainRedColor,
+                  bgColor: TColors.secondary,
                   textColor: Colors.white,
                   title: "View Full Application",
                   onTap: () {

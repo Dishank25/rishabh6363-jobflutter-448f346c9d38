@@ -283,38 +283,10 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                             ),
                             Row(
                               children: [
-                                // InkWell(
-                                //     onTap: () {},
-                                //     child: Text(
-                                //       "View/",
-                                //       style: mTextStyle12(
-                                //           mColor: AppColors.blueTextColor),
-                                //     )),
                                 InkWell(
                                     onTap: () {
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //     builder: (_) => EditAboutView(
-                                      //         about: data.aboutUs ??
-                                      //             "Hi, I am Aman working as a designer from 3 years..."),
-                                      //   ),
-                                      // ).then((value) {
-                                      //   final bloc =
-                                      //       context.read<MyProfileBloc>();
-
-                                      //   // ignore: unused_local_variable
-                                      //   final _prefs = sl<PreferencesManager>();
-
-                                      //   final userId = _prefs.getUserId();
-
-                                      //   bloc.add(LoadMyProfileDetails(
-                                      //       userId ?? '6'));
-                                      // });
                                       _showEditAboutDialog(
-                                          context,
-                                          data.aboutUs ??
-                                              "Add about yourself...");
+                                          context, data.aboutUs ?? "");
                                     },
                                     child: Text("View / Edit About",
                                         style: mTextStyle12(
@@ -353,9 +325,7 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                                 InkWell(
                                     onTap: () {
                                       _showEditCareerObjectiveDialog(
-                                          context,
-                                          data.careerObjective ??
-                                              "Add your career objective.");
+                                          context, data.careerObjective ?? "");
                                     },
                                     child: Text("View / Edit",
                                         style: mTextStyle12(
@@ -522,7 +492,9 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        const UserExperienceApprovalScreen(),
+                                        UserExperienceApprovalScreen(
+                                      userExperience: data.experiences,
+                                    ),
                                   ),
                                 ).then((value) {
                                   final bloc = context.read<MyProfileBloc>();
@@ -550,26 +522,21 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            UserEducationApprovalScreen()));
+                                            const UserEducationApprovalScreen()));
                               },
                               editText: "Add Education",
                             ),
                             profileSection(
                               title: "Languages you know",
-                              // items: ["English", "Hindi", "Spanish"],
-                              // items: [data.language ?? 'English'],
                               items: data.language?.split(',').toList() ??
-                                  ['English'],
-                              // statusList: [
-                              //   true,
-                              // ],
+                                  ['Language'],
                               statusList: List<bool>.generate(
                                   data.language?.split(',').length ?? 0,
                                   (int index) => true,
                                   growable: true),
                               onEditTap: () {
                                 _showEditLanguageDialog(
-                                    context, data.language ?? "English");
+                                    context, data.language ?? "");
                               },
                               editText: "Add Language",
                             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:job_portal/utils/theme/custom_themes/color_theme.dart';
 import 'package:job_portal/views/user_profile/presentation/views/User_Notifications_Screen.dart';
 
 import '../../../../ui_helper/ui_helper.dart';
@@ -38,7 +39,7 @@ class _NotificationsScreenState extends State<MessagesScreen> {
           actions: [
             InkWell(
               onTap: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                         builder: (context) => NotificationsScreen()));
@@ -89,7 +90,7 @@ class _NotificationsScreenState extends State<MessagesScreen> {
                           height: 19,
                           width: 19,
                           decoration: BoxDecoration(
-                            color: AppColors.mainRedColor,
+                            color: TColors.secondary,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Center(

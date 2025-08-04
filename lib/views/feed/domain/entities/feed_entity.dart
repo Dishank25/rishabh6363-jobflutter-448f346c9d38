@@ -15,7 +15,7 @@ class FeedEntity {
 class PostEntity {
   final int id;
   final int userId;
-  final String image;
+  final String? image;
   final String caption;
   final String userRole;
   final String? profilePic;

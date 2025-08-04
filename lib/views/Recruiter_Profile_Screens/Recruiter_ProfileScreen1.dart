@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:job_portal/injection_container.dart';
+import 'package:job_portal/utils/storage/shared_preference.dart';
+import 'package:job_portal/utils/theme/custom_themes/color_theme.dart';
+import 'package:job_portal/views/login/presentation/views/login_page_first_view.dart';
 
 import '../../ui_helper/ui_helper.dart';
 import '../user_profile/presentation/views/User_Notifications_Screen.dart';
@@ -63,7 +67,7 @@ class _RecruiterProfilescreen1State extends State<RecruiterProfilescreen1> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                    color: AppColors.mainIndigoColor),
+                    color: TColors.primary),
                 child: Row(children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -208,10 +212,22 @@ class _RecruiterProfilescreen1State extends State<RecruiterProfilescreen1> {
                         )
                       ],
                       UserProfileEnteries(
-                          mIcon: "assets/Icons/Log_out_icon.svg",
-                          title: "Log Out",
-                          desc: "Further secure your account for safety",
-                          mArrow: Icons.keyboard_arrow_right_outlined)
+                        mIcon: "assets/Icons/Log_out_icon.svg",
+                        title: "Log Out",
+                        desc: "Further secure your account for safety",
+                        mArrow: Icons.keyboard_arrow_right_outlined,
+                        onTap: () {
+                          final _prefs = sl<PreferencesManager>();
+
+                          _prefs.clear(PreferencesManager.USER_TYPE);
+                          _prefs.clear(PreferencesManager.TOKEN);
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LogInPage1()),
+                              (_) => false);
+                        },
+                      )
                     ],
                   ),
                 ),

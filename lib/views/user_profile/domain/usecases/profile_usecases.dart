@@ -2,6 +2,8 @@ import 'package:job_portal/utils/resourses/data_state.dart';
 import 'package:job_portal/utils/usecase/usecases.dart';
 import 'package:job_portal/views/user_profile/data/models/public_profile_model.dart';
 import 'package:job_portal/views/user_profile/data/models/user_details_response.dart';
+import 'package:job_portal/views/user_profile/domain/entities/all_job_applications_entity.dart';
+import 'package:job_portal/views/user_profile/domain/entities/followers_entity.dart';
 import 'package:job_portal/views/user_profile/domain/entities/public_profile_entity.dart';
 import 'package:job_portal/views/user_profile/domain/entities/terms_and_conditions_entity.dart';
 import 'package:job_portal/views/user_profile/domain/entities/update_user_email_entity.dart';
@@ -68,5 +70,42 @@ class UpdateUserEmailUsecase
   Future<DataState<UpdateUserEmailEntity>> call(
       {Map<String, dynamic>? params}) async {
     return _repository.changeUserEmail(params!['params']);
+  }
+}
+
+class AllJobApplicationsUsecase
+    implements
+        UseCase<DataState<AllJobApplicationsEntity>, Map<String, dynamic>> {
+  final ProfileRepository _repository;
+  AllJobApplicationsUsecase(this._repository);
+
+  @override
+  Future<DataState<AllJobApplicationsEntity>> call(
+      {Map<String, dynamic>? params}) async {
+    return _repository.getJobApplications();
+  }
+}
+
+class GetFollowersUsecase
+    implements UseCase<DataState<FollowersEntity>, Map<String, dynamic>> {
+  final ProfileRepository _repository;
+  GetFollowersUsecase(this._repository);
+
+  @override
+  Future<DataState<FollowersEntity>> call(
+      {Map<String, dynamic>? params}) async {
+    return _repository.getFollowers(params!['id']);
+  }
+}
+
+class GetFollowingUsecase
+    implements UseCase<DataState<FollowingEntity>, Map<String, dynamic>> {
+  final ProfileRepository _repository;
+  GetFollowingUsecase(this._repository);
+
+  @override
+  Future<DataState<FollowingEntity>> call(
+      {Map<String, dynamic>? params}) async {
+    return _repository.getFollowings(params!['id']);
   }
 }
