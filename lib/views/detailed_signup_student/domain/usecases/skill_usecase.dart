@@ -21,7 +21,7 @@ class SkillUsecase {
   }
 
   Future<DataState<SkillSubmitionResponse>> submitSkillsAndCertificates(
-      FormData data) async {
+      Map<String, dynamic> data) async {
     final response = await repository.submitSkillsAndCertificates(data);
     return response;
   }

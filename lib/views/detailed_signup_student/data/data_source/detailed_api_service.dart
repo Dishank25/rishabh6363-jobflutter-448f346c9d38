@@ -47,7 +47,7 @@ abstract class DetailedApiService {
   @POST(Urls.submitSkillsAndCertificates)
   @MultiPart()
   Future<HttpResponse<SkillSubmitionResponse>> submitSkillsAndCertificates(
-      @Body() FormData data);
+      @Body() Map<String, dynamic> data);
 
   @GET(Urls.getLocations)
   Future<HttpResponse<LocationsListResponse>> getLocations();

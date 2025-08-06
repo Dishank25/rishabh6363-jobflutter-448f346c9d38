@@ -138,19 +138,6 @@ class _FeedScreenState extends State<FeedScreen> {
                   ),
                   child: Column(
                     children: [
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.center,
-                      //   children: [
-                      //     Icon(Icons.remove, color: Colors.grey[600]),
-                      //     Icon(Icons.remove, color: Colors.grey[600]),
-                      //     Icon(Icons.remove, color: Colors.grey[600]),
-                      //     Icon(Icons.remove, color: Colors.grey[600]),
-                      //     Icon(Icons.remove, color: Colors.grey[600]),
-                      //     Icon(Icons.remove, color: Colors.grey[600]),
-                      //     Icon(Icons.remove, color: Colors.grey[600]),
-                      //   ],
-                      // ),
-
                       const Text(
                         '___________',
                         style: TextStyle(
@@ -174,10 +161,14 @@ class _FeedScreenState extends State<FeedScreen> {
                                     ),
                                     subtitle: Text(curr.comment),
                                     // leading: const Icon(Icons.person_sharp),
-                                    leading: const CircleAvatar(
-                                      backgroundColor: Colors.transparent,
-                                      backgroundImage: NetworkImage(
-                                          ImageString.dummyImageUrl),
+                                    // leading: const CircleAvatar(
+                                    //   backgroundColor: Colors.transparent,
+                                    //   backgroundImage: NetworkImage(
+                                    //       ImageString.dummyImageUrl),
+                                    // ),
+                                    leading: SvgPicture.asset(
+                                      ImageString.profileIcon,
+                                      height: 40,
                                     ),
                                   );
                                 },
@@ -352,7 +343,11 @@ class _FeedScreenState extends State<FeedScreen> {
                     FocusScope.of(context).unfocus();
                     setState(() => activePostId = null);
 
-                    // context.read<FeedBloc>().add(const LoadFeedPosts());
+                    // Reset page to 1 and reload
+                    page = 1;
+                    context
+                        .read<FeedBloc>()
+                        .add(LoadFeedPosts('1', limit.toString()));
                   } else if (state is FeedPostCommentLoading) {
                     developer.log('Commentting .');
                   } else if (state is FeedPostCommentError) {
@@ -474,6 +469,7 @@ class _FeedScreenState extends State<FeedScreen> {
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 20),
                           child: FeedCard(
+                            likeCount: item!.likeCount,
                             feedPostId: feedPostId.toString(),
                             // imageUrl: item["image"],
                             imageUrl: ImageString.dummyImageUrl,
@@ -527,6 +523,7 @@ class FeedCard extends StatefulWidget {
   final String bodyText;
   final bool initialLiked;
   final VoidCallback onCommentTap;
+  final int likeCount;
 
   const FeedCard({
     super.key,
@@ -539,6 +536,7 @@ class FeedCard extends StatefulWidget {
     required this.bodyText,
     required this.initialLiked,
     required this.onCommentTap,
+    required this.likeCount,
   });
 
   @override
@@ -548,12 +546,14 @@ class FeedCard extends StatefulWidget {
 class _FeedCardState extends State<FeedCard> {
   bool isExpanded = false;
   late bool liked;
+  late int likeCount;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     liked = widget.initialLiked;
+    likeCount = widget.likeCount;
   }
 
   @override
@@ -575,9 +575,13 @@ class _FeedCardState extends State<FeedCard> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CircleAvatar(
-                backgroundColor: Colors.transparent,
-                backgroundImage: NetworkImage(widget.imageUrl),
+              // CircleAvatar(
+              //   backgroundColor: Colors.transparent,
+              //   backgroundImage: NetworkImage(widget.imageUrl),
+              // ),
+              SvgPicture.asset(
+                ImageString.profileIcon,
+                height: 40,
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -705,28 +709,17 @@ class _FeedCardState extends State<FeedCard> {
                   }
                   setState(() {
                     liked = !liked;
+                    setState(() {
+                      if (liked) {
+                        likeCount += 1;
+                      } else {
+                        likeCount -= 1;
+                      }
+                    });
                   });
                 },
                 child: Column(
                   children: [
-                    // Icon(Icons.thumb_up_alt_outlined),
-                    // BlocListener<FeedBloc, FeedState>(
-                    //   listener: (context, state) {
-                    //     if (state is FeedPostLikeLoading) {
-                    //       developer.log('Like loading');
-                    //     } else if (state is FeedPostLikeLoaded) {
-                    //       developer.log('Like loaded');
-                    //       final data = state.feedPostLikeEntity;
-                    //       setState(() {
-                    //         liked = !liked;
-                    //       });
-                    //       developer.log('Like loaded : ${data.message}');
-                    //     } else if (state is FeedPostLikeError) {
-                    //       developer.log('Like error');
-                    //     }
-                    //   },
-                    //   child: const SizedBox(),
-                    // ),
                     SvgPicture.asset(
                       ImageString.likeIcon,
                       color: !liked
@@ -736,9 +729,9 @@ class _FeedCardState extends State<FeedCard> {
                     const SizedBox(
                       height: 5,
                     ),
-                    const Text(
-                      'Like',
-                      style: TextStyle(
+                    Text(
+                      '${likeCount} Like',
+                      style: const TextStyle(
                         color: Color.fromARGB(255, 88, 92, 96),
                         fontWeight: FontWeight.w500,
                       ),

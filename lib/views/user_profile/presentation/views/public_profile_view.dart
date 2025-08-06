@@ -251,15 +251,6 @@ class _UserPublicProfileScreenState extends State<UserPublicProfileScreen> {
                     content:
                         'Hey! Just started a new project. Check the link in my profile and comment your suggestions. see more...',
                   ),
-                  // TextButton(
-                  //     onPressed: () {},
-                  //     child: const Text(
-                  //       "See more",
-                  //       style: TextStyle(
-                  //         color: Color.fromARGB(255, 29, 97, 231),
-                  //       ),
-                  //     ),
-                  // ),
                   SeeMoreDivider(),
                   const SectionTitle('Work Experience'),
                   InfoCard(
@@ -274,33 +265,50 @@ class _UserPublicProfileScreenState extends State<UserPublicProfileScreen> {
                       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed dapibus eros eu vehicula interdum.",
                     ],
                   ),
-                  // TextButton(
-                  //     onPressed: () {},
-                  //     child: const Text(
-                  //       "See more",
-                  //       style: TextStyle(
-                  //         color: Color.fromARGB(255, 29, 97, 231),
-                  //       ),
-                  //     )),
-                  SeeMoreDivider(),
+                  // ExpandableSection(
+                  //   title: 'Work Experience',
+                  //   items: profileData.experiences.map((exp) {
+                  //     final company = exp.companyName ?? exp.currentCompany;
+                  //     final start = exp.startDate?.split('T').first ?? '';
+                  //     final end = exp.endDate?.split('T').first ?? 'Present';
 
+                  //     return InfoCard(
+                  //       leading: const CircleAvatar(
+                  //         backgroundColor: Colors.black,
+                  //         child: Icon(Icons.work, color: Colors.white),
+                  //       ),
+                  //       title: exp.currentJobRole ?? '',
+                  //       subtitles: [
+                  //         company,
+                  //         '$start - $end',
+                  //         exp.status ?? '',
+                  //       ],
+                  //     );
+                  //   }).toList(),
+                  // ),
+
+                  SeeMoreDivider(),
                   const SectionTitle('Education'),
                   InfoCard(
                     leading: const Icon(Icons.school, color: Colors.red),
                     title: "Delhi Technological University",
                     subtitles: ["Bachelor's degree, Design", "2018 - 2022"],
                   ),
-                  // TextButton(
-                  //     onPressed: () {},
-                  //     child: const Text(
-                  //       "See more",
-                  //       style: TextStyle(
-                  //         color: Color.fromARGB(255, 29, 97, 231),
-                  //       ),
-                  //     )),
-
+//                   ExpandableSection(
+//   title: 'Education',
+//   items: profileData.education.map((edu) {
+//     return InfoCard(
+//       leading: const Icon(Icons.school, color: Colors.red),
+//       title: edu.level,
+//       subtitles: [
+//         edu.boardOrUniversity ?? '',
+//         '${edu.startYear} - ${edu.endYear}',
+//         '${edu.percentageOrCgpa}%',
+//       ],
+//     );
+//   }).toList(),
+// ),
                   SeeMoreDivider(),
-
                   const SectionTitle('Skills'),
                   InfoCard(
                     leading: const Icon(Icons.design_services_outlined,
@@ -308,15 +316,21 @@ class _UserPublicProfileScreenState extends State<UserPublicProfileScreen> {
                     title: "Visual Identity",
                     subtitles: ["Delhi Technological University"],
                   ),
+                  // ExpandableSection(
+                  //   title: 'Skills',
+                  //   items: profileData.skills.map((skill) {
+                  //     return InfoCard(
+                  //       leading: const Icon(Icons.design_services_outlined,
+                  //           color: Colors.purple),
+                  //       title: skill.domain,
+                  //       subtitles: [
+                  //         'Skills: ${skill.subSkills.join(', ')}',
+                  //         'Authority: ${skill.authority.join(', ')}',
+                  //       ],
+                  //     );
+                  //   }).toList(),
+                  // ),
 
-                  // TextButton(
-                  //     onPressed: () {},
-                  //     child: const Text(
-                  //       "See more",
-                  //       style: TextStyle(
-                  //         color: Color.fromARGB(255, 29, 97, 231),
-                  //       ),
-                  //     )),
                   SeeMoreDivider(),
                 ],
               );
@@ -341,6 +355,55 @@ class _UserPublicProfileScreenState extends State<UserPublicProfileScreen> {
           },
         ),
       ),
+    );
+  }
+}
+
+class ExpandableSection extends StatefulWidget {
+  final String title;
+  final List<Widget> items;
+
+  const ExpandableSection({
+    super.key,
+    required this.title,
+    required this.items,
+  });
+
+  @override
+  State<ExpandableSection> createState() => _ExpandableSectionState();
+}
+
+class _ExpandableSectionState extends State<ExpandableSection> {
+  bool expanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final visibleItems =
+        expanded ? widget.items : widget.items.take(1).toList();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SectionTitle(widget.title),
+        ...visibleItems,
+        if (widget.items.length > 1)
+          GestureDetector(
+            onTap: () {
+              setState(() => expanded = !expanded);
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Text(
+                expanded ? "See less" : "See more",
+                style: const TextStyle(
+                  color: Colors.blue,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        const SizedBox(height: 12),
+      ],
     );
   }
 }

@@ -89,6 +89,7 @@ class SignupUniversityView extends StatelessWidget {
               CustomTextField(
                 controller: passwordController,
                 hintText: "*******",
+                isPasswordField: true,
                 suffixIcon: Icons.visibility_off_outlined,
                 // fillColor: Color(0xffFFF7FB),
                 validator: (value) {

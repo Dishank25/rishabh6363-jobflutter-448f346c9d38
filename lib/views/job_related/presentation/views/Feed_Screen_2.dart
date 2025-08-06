@@ -137,6 +137,7 @@ class _FeedScreen2State extends State<FeedScreen2> {
                     height: 32,
                   ),
                   FeedCard(
+                    likeCount: 1,
                     feedPostId: '2',
                     bodyText:
                         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ',

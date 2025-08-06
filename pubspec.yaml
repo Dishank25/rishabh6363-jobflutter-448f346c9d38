@@ -107,7 +107,7 @@ flutter:
   fonts:
     - family: Inter
       fonts:
-        - asset: fonts/Inter-VariableFont_opszwght.ttf
+        - asset: assets/fonts/Inter-VariableFont_opszwght.ttf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

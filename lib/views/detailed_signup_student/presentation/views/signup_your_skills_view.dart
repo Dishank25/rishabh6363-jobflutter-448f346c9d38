@@ -72,45 +72,6 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
           child: Material(
             elevation: 4,
             borderRadius: BorderRadius.circular(8),
-            // child: BlocBuilder<DomainBloc, DomainState>(
-            //   builder: (context, state) {
-            //     if (state is DomainLoading) {
-            //       return const Padding(
-            //         padding: EdgeInsets.all(12),
-            //         child: Center(child: CircularProgressIndicator()),
-            //       );
-            //     } else if (state is DomainLoaded) {
-            //       return ListView(
-            //         shrinkWrap: true,
-            //         padding: EdgeInsets.zero,
-            //         children: state.domains.map((domain) {
-            //           return ListTile(
-            //             dense: true,
-            //             visualDensity: VisualDensity(vertical: -3),
-            //             title: Text(domain.domainName),
-            //             onTap: () {
-            //               controller.text = domain.domainName;
-
-            //               // Trigger related skills fetch
-            //               context
-            //                   .read<RelatedSkillsBloc>()
-            //                   .add(FetchRelatedSkills(domain.domainName));
-
-            //               _domainOverlayEntry?.remove();
-            //               _domainOverlayEntry = null;
-            //             },
-            //           );
-            //         }).toList(),
-            //       );
-            //     } else if (state is DomainError) {
-            //       return Padding(
-            //         padding: const EdgeInsets.all(12),
-            //         child: Text(state.message),
-            //       );
-            //     }
-            //     return const SizedBox.shrink();
-            //   },
-            // ),
           ),
         ),
       ),
@@ -229,14 +190,6 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                /// HEADER
-                // Text(
-                //   "Logo",
-                //   style: mTextStyle15(
-                //     mColor: Color(0xff032466),
-                //     mFontWeight: FontWeight.w700,
-                //   ),
-                // ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: SvgPicture.asset(
@@ -323,45 +276,7 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
                         ),
                       ),
                     ),
-                    // BlocBuilder<SkillBloc, SkillState>(
-                    //   builder: (context, state) {
-                    //     if (state is SkillStateDomainLoaded) {
-                    //       final data = state.domainAllResponse;
-                    //       return CustomAutocomplete(
-                    //         options: data.domains,
-                    //         label: 'Select Area of interest',
-                    //         onSelected: (value) {
-                    //           context.read<SkillBloc>().add(LoadSubSkills(value));
-                    //           setState(() {
-                    //             selectedDomains.add(value);
-                    //           });
-                    //         },
-                    //       );
-                    //     } else {
-                    //       return Center(
-                    //         child: Text('Unhandeled State : $state'),
-                    //       );
-                    //     }
-                    //   },
-                    // ),
                     mSpacer(mHeight: 16.0),
-                    // CompositedTransformTarget(
-                    //   link: _domainLink,
-                    //   child: CustomTextField(
-                    //     key: _domainFieldKey,
-                    //     controller: skillsSearchController,
-                    //     hintText: "Select Area of Interest",
-                    //     suffixIcon: Icons.search,
-                    //     onSuffixTap: () {
-                    //       if (_domainOverlayEntry == null) {
-                    //         _showDomainDropdown(context, skillsSearchController);
-                    //       } else {
-                    //         _domainOverlayEntry?.remove();
-                    //         _domainOverlayEntry = null;
-                    //       }
-                    //     },
-                    //   ),
-                    // ),
                     ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -407,14 +322,7 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
                                 return null;
                               },
                               onUploadCertificateTap: () {
-                                // context.read<SkillBloc>().add(PickImages());
-                                // developer.log('Upload certificate tap.');
                                 if (domain.isNotEmpty) {
-                                  // developer.log('Upload certificate tap.1');
-                                  // Only allow if one skill is selected
-                                  // final skill = selectedSkills.length == 1
-                                  //     ? selectedSkills.first
-                                  //     : null;
                                   final skill = domain;
                                   developer.log('Skill : $skill');
                                   if (skill != null) {
@@ -447,47 +355,6 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
                         );
                       },
                     ),
-
-                    // mSpacer(mHeight: 16.0),
-                    // preferenceContainer(
-                    //   cName: "Digital Marketing",
-                    //   onTap: () {},
-                    // ),
-                    // mSpacer(),
-                    // preferenceContainer(
-                    //   cName: "Graphic Design",
-                    //   onTap: () {},
-                    // ),
-                    // mSpacer17(),
-                    // Text("Related skills you might know", style: mTextStyle12()),
-                    // SizedBox(height: 10),
-                    // BlocBuilder<RelatedSkillsBloc, RelatedSkillsState>(
-                    //   builder: (context, state) {
-                    //     if (state is RelatedSkillsLoading) {
-                    //       return Center(child: CircularProgressIndicator());
-                    //     } else if (state is RelatedSkillsLoaded) {
-                    //       return Wrap(
-                    //         spacing: 8,
-                    //         runSpacing: 8,
-                    //         children: state.skills.map((skill) {
-                    //           return courseName(
-                    //             name: skill.skillName,
-                    //             mIcon: Icons.add,
-                    //           );
-                    //         }).toList(),
-                    //       );
-                    //     } else if (state is RelatedSkillsError) {
-                    //       return Text(state.message,
-                    //           style: TextStyle(color: Colors.red));
-                    //     }
-                    //     return SizedBox.shrink();
-                    //   },
-                    // ),
-                    // SizedBox(height: 6),
-                    // courseName(
-                    //     name: "See More",
-                    //     mIcon: Icons.add,
-                    //     bgColor: Color(0xff1961F3)),
                     mSpacer(mHeight: 24.0),
                     Row(
                       children: [
@@ -520,9 +387,9 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
                           onTap: () async {
                             if (_formKey.currentState!.validate()) {
                               final skillData = await createParamsForSkill();
-                              context
-                                  .read<SkillBloc>()
-                                  .add(SubmitSkills(skillData));
+                              // context
+                              //     .read<SkillBloc>()
+                              //     .add(SubmitSkills(skillData));
                               _prefs.clear(PreferencesManager.SKILL_PARAMS);
                               Navigator.push(
                                 context,
@@ -530,26 +397,6 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
                                   builder: (context) =>
                                       SignupPageYourPreferences(
                                     params: widget.params,
-                                    /* firstName:
-                                    surName:
-                                    gender:
-                                    DOB:
-                                    phoneNumber:
-                                    email:
-                                jobPreferenceLocation:
-                                currentLocation:
-                                 userCategory:
-                                 totalWorkExp:
-                                 currentJobRole:
-                                currentCompany:
-                                 jobStartYear:
-                                 jobEndYear:
-                               studentClass:
-                               course:
-                               CollegeName:
-                                Specialization:
-                                    courseStartYear:
-                                     courseEndYear:*/
                                   ),
                                 ),
                               );

@@ -14,8 +14,10 @@ import 'package:job_portal/views/user_profile/presentation/views/User_messages_s
 import 'package:job_portal/views/job_related/presentation/bloc/job_details_bloc/job_details_bloc.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_details_bloc/job_details_event.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_details_bloc/job_details_state.dart';
+import 'package:job_portal/views/user_profile/presentation/views/user_authentication_and_approval_screens/user_auth_view.dart';
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../../widgets/widgets.dart';
+import 'package:flutter/material.dart';
 
 class JobDetailsScreen extends StatefulWidget {
   final VoidCallback? onCallBack;
@@ -38,6 +40,96 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
 
     final map = {'jobId': widget.jobId.toString()};
     context.read<JobDetailsBloc>().add(LoadJobDetail(map));
+  }
+
+  void showCustomSnackBar(BuildContext context) {
+    final overlay = Overlay.of(context);
+    final overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom: 100,
+        left: 16,
+        right: 16,
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.red.withOpacity(0.4),
+                  offset: Offset(0, 5),
+                  blurRadius: 10,
+                ),
+              ],
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Red Circle Icon with white "X"
+                Container(
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                      border: Border.all(width: 2, color: Colors.red)),
+                  padding: const EdgeInsets.all(2),
+                  child: const Icon(
+                    Icons.close,
+                    color: Colors.red,
+                    size: 24,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                // Text Content
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Aadhaar not verified. Please verify to proceed with your job application.",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 10,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          // TODO: Handle Aadhaar verification tap
+                          // overlayEntry.remove();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => UserAuthScreen()));
+                        },
+                        child: Text(
+                          "Tap to verify now.",
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.secondary,
+                            decoration: TextDecoration.underline,
+                            decorationColor:
+                                Theme.of(context).colorScheme.secondary,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+
+    overlay.insert(overlayEntry);
+
+    // Auto-remove after 5 seconds
+    Future.delayed(Duration(seconds: 15), () {
+      overlayEntry.remove();
+    });
   }
 
   @override
@@ -309,12 +401,14 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
               developer.log('Job apply loading');
             } else if (state is JobApplyLoaded) {
               developer.log('Job apply loaded');
-              showSnackbar(state.jobApplyEntity.message, context);
+              // showSnackbar(state.jobApplyEntity.message, context);
+              showCustomSnackBar(context);
               Navigator.pop(context);
             } else if (state is JobApplyError) {
-              showSnackbar(
-                  "Aadhaar is not verified. Please verify Aadhaar before applying.",
-                  context);
+              // showSnackbar(
+              //     "Aadhaar is not verified. Please verify Aadhaar before applying.",
+              //     context);
+              showCustomSnackBar(context);
               developer.log('Job apply error');
             }
           },

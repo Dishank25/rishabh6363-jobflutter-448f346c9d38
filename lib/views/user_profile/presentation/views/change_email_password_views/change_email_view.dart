@@ -85,6 +85,7 @@ class ChangeEmailView extends StatelessWidget {
             const Text("Password"),
             CustomTextField(
               controller: ChangedEmail_PasswordController,
+              isPasswordField: true,
               hintText: "*******",
               suffixIcon: Icons.visibility_off_outlined,
             ),

@@ -27,27 +27,17 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
       emit(const FeedPostsLoading());
       final map = {'page': event.page, 'limit': event.limit};
       final response = await _feedUsecase(params: map);
-      // postList.add(response.data!.posts);
+
+      // Clear old list only if it's a refresh (e.g., page = 1)
+      if (event.page == '1') {
+        postList.clear();
+      }
+
       postList.addAll(response.data!.posts);
-      emit(FeedPostsLoaded(postList));
-      // final
+      emit(FeedPostsLoaded(List<PostEntity>.from(postList))); // Emit fresh copy
     } catch (e) {
-      developer.log('Error in loading feed posts : ${e}');
+      developer.log('Error in loading feed posts : $e');
       emit(const FeedPostsError());
-    }
-  }
-
-  Future<void> _onLoadFeedPostLike(
-      LoadFeedPostLike event, Emitter<FeedState> emit) async {
-    try {
-      emit(const FeedPostLikeLoading());
-      final map = {'feedPostId': event.feedPostId, 'params': event.map};
-
-      final response = await _feedPostLikeUsecase(params: map);
-      emit(FeedPostLikeLoaded(response.data!));
-      // final
-    } catch (e) {
-      emit(const FeedPostLikeError());
     }
   }
 
@@ -65,6 +55,20 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
     } catch (e) {
       emit(const FeedPostCommentError());
       developer.log('Error in feed comment. : $e');
+    }
+  }
+
+  Future<void> _onLoadFeedPostLike(
+      LoadFeedPostLike event, Emitter<FeedState> emit) async {
+    try {
+      emit(const FeedPostLikeLoading());
+      final map = {'feedPostId': event.feedPostId, 'params': event.map};
+
+      final response = await _feedPostLikeUsecase(params: map);
+      emit(FeedPostLikeLoaded(response.data!));
+      // final
+    } catch (e) {
+      emit(const FeedPostLikeError());
     }
   }
 }

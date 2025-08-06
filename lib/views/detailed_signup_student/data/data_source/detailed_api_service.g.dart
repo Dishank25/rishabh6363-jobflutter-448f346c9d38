@@ -254,12 +254,13 @@ class _DetailedApiService implements DetailedApiService {
 
   @override
   Future<HttpResponse<SkillSubmitionResponse>> submitSkillsAndCertificates(
-    FormData data,
+    Map<String, dynamic> data,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = data;
+    final _data = <String, dynamic>{};
+    _data.addAll(data);
     final _options = _setStreamType<HttpResponse<SkillSubmitionResponse>>(
       Options(
         method: 'POST',

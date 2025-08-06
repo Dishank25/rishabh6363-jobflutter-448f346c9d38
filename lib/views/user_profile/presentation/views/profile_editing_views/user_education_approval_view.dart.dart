@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:job_portal/injection_container.dart';
 import 'package:job_portal/utils/storage/shared_preference.dart';
+import 'package:job_portal/views/detailed_signup_student/presentation/views/signup_as_anyone_view.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/my_profile_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/my_profile_event.dart';
 import '../../../../../ui_helper/ui_helper.dart';
@@ -118,75 +119,90 @@ class _UserEducationApprovalScreenState
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: educationControllers.length,
                   itemBuilder: (context, index) {
+                    // return Card(
+                    //   margin: const EdgeInsets.only(bottom: 16),
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.all(12),
+                    //     child: Column(
+                    //       crossAxisAlignment: CrossAxisAlignment.start,
+                    //       children: [
+                    //         Row(
+                    //           children: [
+                    //             Text(
+                    //               edu.level,
+                    //               style: const TextStyle(
+                    //                   fontWeight: FontWeight.bold),
+                    //             ),
+                    //             const Spacer(),
+                    //             IconButton(
+                    //               onPressed: () {
+                    //                 setState(() {
+                    //                   addedEducationLevels.remove(edu.level);
+                    //                   educationControllers.removeAt(index);
+                    //                 });
+                    //               },
+                    //               icon: const Icon(Icons.close,
+                    //                   color: Colors.red),
+                    //             ),
+                    //           ],
+                    //         ),
+                    //         const SizedBox(height: 8),
+                    //         CustomTextField(
+                    //           controller: edu.schoolOrCollegeController,
+                    //           hintText: "School/College",
+                    //           fillColor: Colors.white,
+                    //         ),
+                    //         const SizedBox(height: 8),
+                    //         CustomTextField(
+                    //           controller: edu.boardOrUniversityController,
+                    //           hintText: "Board/University",
+                    //           fillColor: Colors.white,
+                    //         ),
+                    //         const SizedBox(height: 8),
+                    //         Row(
+                    //           children: [
+                    //             Expanded(
+                    //               child: CustomTextField(
+                    //                 controller: edu.startYearController,
+                    //                 hintText: "Start Year",
+                    //                 fillColor: Colors.white,
+                    //               ),
+                    //             ),
+                    //             const SizedBox(width: 12),
+                    //             Expanded(
+                    //               child: CustomTextField(
+                    //                 controller: edu.endYearController,
+                    //                 hintText: "End Year",
+                    //                 fillColor: Colors.white,
+                    //               ),
+                    //             ),
+                    //           ],
+                    //         ),
+                    //         const SizedBox(height: 8),
+                    //         CustomTextField(
+                    //           controller: edu.percentageOrCgpaController,
+                    //           hintText: "Percentage/CGPA",
+                    //           fillColor: Colors.white,
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // );
+
                     final edu = educationControllers[index];
-                    return Card(
-                      margin: const EdgeInsets.only(bottom: 16),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  edu.level,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const Spacer(),
-                                IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      addedEducationLevels.remove(edu.level);
-                                      educationControllers.removeAt(index);
-                                    });
-                                  },
-                                  icon: const Icon(Icons.close,
-                                      color: Colors.red),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            CustomTextField(
-                              controller: edu.schoolOrCollegeController,
-                              hintText: "School/College",
-                              fillColor: Colors.white,
-                            ),
-                            const SizedBox(height: 8),
-                            CustomTextField(
-                              controller: edu.boardOrUniversityController,
-                              hintText: "Board/University",
-                              fillColor: Colors.white,
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: CustomTextField(
-                                    controller: edu.startYearController,
-                                    hintText: "Start Year",
-                                    fillColor: Colors.white,
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: CustomTextField(
-                                    controller: edu.endYearController,
-                                    hintText: "End Year",
-                                    fillColor: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            CustomTextField(
-                              controller: edu.percentageOrCgpaController,
-                              hintText: "Percentage/CGPA",
-                              fillColor: Colors.white,
-                            ),
-                          ],
-                        ),
-                      ),
+
+                    return EducationFillingCard(
+                      courseNameText: edu.level,
+                      collegeNameController: edu.schoolOrCollegeController,
+                      specializationController: edu.boardOrUniversityController,
+                      startYearController: edu.startYearController,
+                      endYearController: edu.endYearController,
+                      onTapCross: () {
+                        setState(() {
+                          addedEducationLevels.remove(edu.level);
+                          educationControllers.removeAt(index);
+                        });
+                      },
                     );
                   },
                 ),
@@ -219,6 +235,127 @@ class _UserEducationApprovalScreenState
           ),
         ),
       ),
+    );
+  }
+}
+
+class EducationFillingCard extends StatefulWidget {
+  final String courseNameText;
+  final TextEditingController collegeNameController;
+  final TextEditingController specializationController;
+  final TextEditingController startYearController;
+  final TextEditingController endYearController;
+  final VoidCallback onTapCross;
+  final String? Function(String?)? validator;
+
+  const EducationFillingCard({
+    super.key,
+    required this.courseNameText,
+    required this.collegeNameController,
+    required this.specializationController,
+    required this.startYearController,
+    required this.endYearController,
+    required this.onTapCross,
+    this.validator,
+  });
+
+  @override
+  State<EducationFillingCard> createState() => _EducationFillingCardState();
+}
+
+class _EducationFillingCardState extends State<EducationFillingCard> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: const Color.fromRGBO(29, 179, 47, 0.1),
+            border: Border.all(color: const Color.fromRGBO(29, 179, 47, 0.2)),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Top Row: Course + Upload/Edit
+                Row(
+                  children: [
+                    courseName(
+                      name: widget.courseNameText,
+                      bgColor: const Color(0xff1961F3),
+                      mIcon: Icons.cancel,
+                      onTap: widget.onTapCross,
+                    ),
+                    const Spacer(),
+                    courseName(
+                      name: "View/Edit Certificate",
+                      onTap: () {},
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+
+                // College Name
+                Text("College Name", style: mTextStyle12()),
+                CustomTextField(
+                  controller: widget.collegeNameController,
+                  hintText: "Eg. Delhi Technological University",
+                  fillColor: Colors.white,
+                  validator: widget.validator,
+                ),
+
+                const SizedBox(height: 10),
+
+                // Specialization
+                Text("Specialization", style: mTextStyle12()),
+                CustomTextField(
+                  controller: widget.specializationController,
+                  hintText: "Eg. Computer Science",
+                  fillColor: Colors.white,
+                  validator: widget.validator,
+                ),
+
+                const SizedBox(height: 10),
+
+                // Start Year & End Year Row
+                Row(
+                  children: [
+                    Text("Start Year", style: mTextStyle12()),
+                    const Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 110.0),
+                      child: Text("End Year", style: mTextStyle12()),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Expanded(
+                      child: DatePickerField(
+                        controller: widget.startYearController,
+                        fillColor: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(width: 18),
+                    Expanded(
+                      child: DatePickerField(
+                        controller: widget.endYearController,
+                        fillColor: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 20),
+      ],
     );
   }
 }

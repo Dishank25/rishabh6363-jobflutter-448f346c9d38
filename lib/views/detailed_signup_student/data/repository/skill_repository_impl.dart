@@ -51,7 +51,7 @@ class SkillRepositoryImpl extends SkillRepository {
 
   @override
   Future<DataState<SkillSubmitionResponse>> submitSkillsAndCertificates(
-      FormData data) async {
+      Map<String, dynamic> data) async {
     try {
       final response = await apiService.submitSkillsAndCertificates(data);
       if (response.response.statusCode == HttpStatus.ok) {

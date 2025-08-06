@@ -41,7 +41,7 @@ class RemoveCertificate extends SkillEvent {
 }
 
 class SubmitSkills extends SkillEvent {
-  final FormData data;
+  final Map<String, dynamic> data;
 
   const SubmitSkills(this.data);
 

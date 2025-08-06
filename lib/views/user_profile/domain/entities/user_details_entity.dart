@@ -74,28 +74,6 @@ class UserDetailEntity {
   });
 }
 
-// class UserExperienceEntity {
-//   final int id;
-//   final int userDetailId;
-//   final String? totalExperience;
-//   final String? currentJobRole;
-//   final String? currentCompany;
-//   final String? status;
-//   final DateTime createdAt;
-//   final DateTime updatedAt;
-
-//   UserExperienceEntity({
-//     required this.id,
-//     required this.userDetailId,
-//     this.totalExperience,
-//     this.currentJobRole,
-//     this.currentCompany,
-//     this.status,
-//     required this.createdAt,
-//     required this.updatedAt,
-//   });
-// }
-
 class UserExperienceEntity {
   final int id;
   final int userDetailId;

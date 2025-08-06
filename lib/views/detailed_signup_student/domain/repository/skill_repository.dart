@@ -10,5 +10,5 @@ abstract class SkillRepository {
   Future<DataState<SubSkillResponse>> getSubSkills(String domain);
 
   Future<DataState<SkillSubmitionResponse>> submitSkillsAndCertificates(
-      FormData data);
+      Map<String, dynamic> data);
 }

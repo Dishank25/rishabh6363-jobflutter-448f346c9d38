@@ -95,6 +95,7 @@ class RecruiterSignupPage extends StatelessWidget {
                 CustomTextField(
                   controller: pController,
                   hintText: "*******",
+                  isPasswordField: true,
                   suffixIcon: Icons.visibility_off_outlined,
                   fillColor: Colors.white,
                   validator: (value) {

@@ -1,5 +1,8 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:job_portal/views/signup_student/presentation/bloc/remote_signup_bloc/remote_signup_bloc.dart';
+import 'package:job_portal/views/signup_student/presentation/bloc/remote_signup_bloc/remote_signup_event.dart';
 import 'package:job_portal/views/signup_student/presentation/bloc/verify_otp_bloc/verify_otp_bloc.dart';
 import 'package:job_portal/views/signup_student/presentation/bloc/verify_otp_bloc/verify_otp_event.dart';
 import 'package:job_portal/views/signup_student/presentation/bloc/verify_otp_bloc/verify_otp_state.dart';
@@ -8,10 +11,59 @@ import '../../../../widgets/widgets.dart';
 import '../../../login/presentation/views/login_page_first_view.dart';
 import '../../../detailed_signup_student/presentation/views/signup_as_anyone_view.dart';
 
-class SignUpStudent_2 extends StatelessWidget {
+class SignUpStudent_2 extends StatefulWidget {
   final String Email;
-  SignUpStudent_2({required this.Email});
+  const SignUpStudent_2({super.key, required this.Email});
+
+  @override
+  State<SignUpStudent_2> createState() => _SignUpStudent_2State();
+}
+
+class _SignUpStudent_2State extends State<SignUpStudent_2> {
   TextEditingController enterOTP = TextEditingController();
+  Timer? _timer;
+  int _start = 15;
+  bool _canResend = false;
+
+  @override
+  void initState() {
+    super.initState();
+    startTimer();
+  }
+
+  void startTimer() {
+    setState(() {
+      _canResend = false;
+      _start = 15;
+    });
+
+    _timer?.cancel();
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_start == 0) {
+        setState(() {
+          _canResend = true;
+        });
+        timer.cancel();
+      } else {
+        setState(() {
+          _start--;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void resendOtp() {
+    Map<String, dynamic> emailMap = {'email': widget.Email};
+    context.read<RemoteSignupBloc>().add(RemoteSingupSendOtpEmail(emailMap));
+    showSnackbar('OTP resent to your email.', context);
+    startTimer();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,18 +74,16 @@ class SignUpStudent_2 extends StatelessWidget {
           title: const Text(""),
           actions: [
             IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SignupAsAnyOne(
-                        // basicUserInfoResponse: data,
-                        email: Email,
-                      ),
-                    ),
-                  );
-                },
-                icon: Icon(Icons.double_arrow))
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SignupAsAnyOne(email: widget.Email),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.double_arrow),
+            )
           ],
         ),
         body: SafeArea(
@@ -46,23 +96,17 @@ class SignUpStudent_2 extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     mSpacer(mHeight: 20.0),
-                    Text(
-                      "Verify your email",
-                      style: mTextStyle32(mColor: Color(0xff1A1C1E)),
-                    ),
+                    Text("Verify your email",
+                        style: mTextStyle32(mColor: const Color(0xff1A1C1E))),
                     mSpacer(),
                     Text(
-                      "One Time Password (OTP) has been sent on ${Email}",
+                      "One Time Password (OTP) has been sent on ${widget.Email}",
                       style: mTextStyle12(),
                     ),
                     mSpacer(mHeight: 26.0),
-                    Text(
-                      "Enter OTP to verify your email",
-                      style: mTextStyle12(),
-                    ),
-                    SizedBox(
-                      height: 2,
-                    ),
+                    Text("Enter OTP to verify your email",
+                        style: mTextStyle12()),
+                    const SizedBox(height: 2),
                     SizedBox(
                       width: double.infinity,
                       child: CustomTextField(
@@ -72,67 +116,6 @@ class SignUpStudent_2 extends StatelessWidget {
                       ),
                     ),
                     mSpacer(),
-                    // SizedBox(
-                    //   width: double.infinity,
-                    //   child: commonRedContainer(
-                    //     text: "Verify Email",
-                    //     onTap: () {
-                    //       Navigator.push(
-                    //           context,
-                    //           MaterialPageRoute(
-                    //               builder: (context) => SignupAsAnyOne()));
-                    //     },
-                    //   ),
-                    // ),
-
-                    // BlocListener<DetailedSignupBloc, DetailedSignupState>(
-                    //   listener: (context, state) {
-                    //     if (state is DetailedSignupGetBasicUserInfoLoaded) {
-                    //       final data = state.basicUserInfoResponse;
-                    //       Navigator.push(
-                    //         context,
-                    //         MaterialPageRoute(
-                    //           builder: (context) => SignupAsAnyOne(
-                    //             basicUserInfoResponse: data,
-                    //           ),
-                    //         ),
-                    //       );
-                    //     }
-                    //   },
-                    //   child: commonRedContainer(
-                    //     text: "Verify Email",
-                    //     onTap: () {
-                    //       final emailMap = {'email': 'johndoe@example.com'};
-                    //       context
-                    //           .read<DetailedSignupBloc>()
-                    //           .add(DetailedSignupGetBasicUserInfo(emailMap));
-                    //       // Navigator.push(
-                    //       //   context,
-                    //       //   MaterialPageRoute(
-                    //       //     builder: (context) => SignupAsAnyOne(
-                    //       //       basicUserInfoResponse: BasicUserInfoResponse(
-                    //       //         message: 'Static screen push',
-                    //       //         user: BasicUser(
-                    //       //             id: 1,
-                    //       //             firstName: 'firstName',
-                    //       //             lastName: 'lastName',
-                    //       //             email: 'email',
-                    //       //             phone: 'phone'),
-                    //       //       ),
-                    //       //     ),
-                    //       //   ),
-                    //       // );
-
-                    //       // temp navigation cuz backend is closed.
-                    //       // Navigator.push(
-                    //       //   context,
-                    //       //   MaterialPageRoute(
-                    //       //     builder: (context) => const Student_Bottom_Nav_bar(),
-                    //       //   ),
-                    //       // );
-                    //     },
-                    //   ),
-                    // ),
                     BlocListener<VerifyOtpBloc, VerifyOtpState>(
                       listener: (context, state) {
                         if (state is VerifyOtpLoaded) {
@@ -143,39 +126,25 @@ class SignUpStudent_2 extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => SignupAsAnyOne(
-                                  // basicUserInfoResponse: data,
-                                  email: Email,
-                                ),
+                                builder: (context) =>
+                                    SignupAsAnyOne(email: widget.Email),
                               ),
                             );
                           } else {
-                            showSnackbar("otp could not be verified.", context);
+                            showSnackbar("OTP could not be verified.", context);
                           }
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => SignupAsAnyOne(
-                          //       basicUserInfoResponse: data,
-                          //     ),
-                          //   ),
-                          // );
                         }
                       },
                       child: commonRedContainer(
                         text: "Verify Email",
                         onTap: () {
-                          // final emailMap = {'email': 'johndoe@example.com'};
                           Map<String, dynamic> emailOtpMap = {
-                            "email": Email,
+                            "email": widget.Email,
                             "otp": enterOTP.text.trim()
                           };
                           context
                               .read<VerifyOtpBloc>()
                               .add(LoadVerifyOtp(emailOtpMap));
-                          // context
-                          //     .read<DetailedSignupBloc>()
-                          //     .add(DetailedSignupGetBasicUserInfo(emailMap));
                         },
                       ),
                     ),
@@ -185,16 +154,18 @@ class SignUpStudent_2 extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           InkWell(
-                              onTap: () {},
-                              child: Text(
-                                "Resend code",
-                                style: mTextStyle12(
-                                    mColor: AppColors.blueTextColor),
-                              )),
-                          Text(
-                            " in 15 seconds",
-                            style: mTextStyle12(),
-                          )
+                            onTap: _canResend ? resendOtp : null,
+                            child: Text(
+                              _canResend
+                                  ? "Resend code"
+                                  : "Resend in $_start seconds",
+                              style: mTextStyle12(
+                                mColor: _canResend
+                                    ? AppColors.blueTextColor
+                                    : Colors.grey,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -214,23 +185,24 @@ class SignUpStudent_2 extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          "Already have an account?",
-                          style: mTextStyle12(),
-                        ),
+                        Text("Already have an account?", style: mTextStyle12()),
                         InkWell(
-                            onTap: () {
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => LogInPage1()));
-                            },
-                            child: Text(
-                              " Login",
-                              style: mTextStyle12(
-                                  mColor: AppColors.blueTextColor,
-                                  mFontWeight: FontWeight.w600),
-                            ))
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LogInPage1(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            " Login",
+                            style: mTextStyle12(
+                              mColor: AppColors.blueTextColor,
+                              mFontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ]),
