@@ -8,6 +8,9 @@ import 'package:flutter_intl_phone_field/flutter_intl_phone_field.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:job_portal/utils/constants/image_string.dart';
 import 'package:job_portal/utils/theme/custom_themes/color_theme.dart';
+// import 'package:job_portal/views/user_profile/domain/entities/public_profile_entity.dart';
+import 'package:job_portal/views/detailed_signup_student/domain/entities/metadata_entities.dart';
+
 import '../UI_Helper/UI_Helper.dart';
 
 /// CUSTOMIZED APPBAR
@@ -276,98 +279,6 @@ Widget belowBars({required String text, String? imgUrl, VoidCallback? onTap}) {
   );
 }
 
-/// CUSTOM TEXTFIELDS
-// class CustomTextField extends StatelessWidget {
-//   final TextEditingController controller;
-//   final String hintText;
-//   final String? labelText;
-//   final IconData? prefixIcon;
-//   final IconData? suffixIcon;
-//   final bool obscureText;
-//   final TextInputType? keyboardType;
-//   final VoidCallback? onSuffixTap;
-//   final String? Function(String?)? validator;
-//   final Color? fillColor;
-
-//   const CustomTextField({
-//     super.key,
-//     required this.controller,
-//     required this.hintText,
-//     this.labelText,
-//     this.prefixIcon,
-//     this.suffixIcon,
-//     this.keyboardType,
-//     this.onSuffixTap,
-//     this.obscureText = false,
-//     this.validator,
-//     this.fillColor,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         TextFormField(
-//           controller: controller,
-//           obscureText: obscureText,
-//           keyboardType: keyboardType,
-//           validator: validator,
-//           style: mTextStyle14(),
-//           decoration: InputDecoration(
-//             filled: true,
-//             fillColor: fillColor ?? Colors.white,
-//             hintText: hintText,
-//             labelText: labelText,
-//             hintStyle: mTextStyle14(
-//               mFontWeight: FontWeight.w500,
-//               mColor: const Color(0xffBCC1CA),
-//             ),
-//             prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
-//             suffixIcon: suffixIcon != null
-//                 ? GestureDetector(
-//                     onTap: onSuffixTap,
-//                     child: Icon(
-//                       suffixIcon,
-//                       size: 20,
-//                       color: const Color(0xffBCC1CA),
-//                     ),
-//                   )
-//                 : null,
-//             contentPadding: const EdgeInsets.symmetric(
-//                 horizontal: 16, vertical: 14), // maintain height
-//             border: OutlineInputBorder(
-//               borderRadius: BorderRadius.circular(10),
-//               borderSide: const BorderSide(width: 1, color: Color(0xffBCC1CA)),
-//             ),
-//             enabledBorder: OutlineInputBorder(
-//               borderRadius: BorderRadius.circular(10),
-//               borderSide: const BorderSide(width: 1, color: Color(0xffBCC1CA)),
-//             ),
-//             focusedBorder: OutlineInputBorder(
-//               borderRadius: BorderRadius.circular(10),
-//               borderSide:
-//                   BorderSide(width: 1.5, color: Theme.of(context).primaryColor),
-//             ),
-//             errorBorder: OutlineInputBorder(
-//               borderRadius: BorderRadius.circular(10),
-//               borderSide: const BorderSide(width: 1, color: Colors.red),
-//             ),
-//             focusedErrorBorder: OutlineInputBorder(
-//               borderRadius: BorderRadius.circular(10),
-//               borderSide: const BorderSide(width: 1.5, color: Colors.red),
-//             ),
-//             errorStyle: const TextStyle(
-//               fontSize: 12,
-//               height: 1.0, // Control line height
-//             ),
-//           ),
-//         ),
-//         // const SizedBox(height: 12), // spacing between fields
-//       ],
-//     );
-//   }
-// }
-
 class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
@@ -610,10 +521,10 @@ Widget preferenceContainer({
   required VoidCallback onTap,
   required TextEditingController courseCollegeController,
   Color? bgColor,
-  List<String>? subSkills,
-  List<String>? selectedSubSkills,
+  List<SkillEntity>? subSkills,
+  List<SkillEntity>? selectedSubSkills,
   final String? Function(String?)? validator,
-  void Function(String skill)? onSkillTap,
+  void Function(SkillEntity skill)? onSkillTap,
   void Function()? onUploadCertificateTap,
   void Function()? onCrossTap,
 }) {
@@ -688,14 +599,6 @@ Widget preferenceContainer({
                           )),
                     )
                   : const SizedBox(),
-              // const SizedBox(width: 5),
-              // Padding(
-              //   padding: const EdgeInsets.only(right: 5.0),
-              //   child: InkWell(
-              //     onTap: () {},
-              //     child: SvgPicture.asset("assets/Icons/doubt_icon.svg"),
-              //   ),
-              // )
             ],
           ),
           const SizedBox(height: 7),
@@ -733,7 +636,7 @@ Widget preferenceContainer({
                       ),
                     ),
                     child: Text(
-                      skill,
+                      skill.name,
                       style: TextStyle(
                         color: isSelected ? Colors.white : Colors.black,
                       ),
@@ -967,6 +870,149 @@ class _CustomAutocompleteState extends State<CustomAutocomplete> {
   }
 }
 
+class CustomAutocompleteGeneric<T extends Object> extends StatefulWidget {
+  final List<T> options;
+  final String label;
+  final void Function(T) onSelected;
+  final String Function(T) displayStringForOption;
+  final String? initialText; // 👈 new param
+
+  const CustomAutocompleteGeneric(
+      {super.key,
+      required this.options,
+      required this.label,
+      required this.onSelected,
+      required this.displayStringForOption,
+      this.initialText});
+
+  @override
+  State<CustomAutocompleteGeneric<T>> createState() =>
+      _CustomAutocompleteGenericState<T>();
+}
+
+class _CustomAutocompleteGenericState<T extends Object>
+    extends State<CustomAutocompleteGeneric<T>> {
+  late TextEditingController _controller;
+  late FocusNode _focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = TextEditingController(text: widget.initialText ?? ""); // 👈
+
+    _focusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return RawAutocomplete<T>(
+          textEditingController: _controller,
+          focusNode: _focusNode,
+          displayStringForOption: widget.displayStringForOption,
+          optionsBuilder: (TextEditingValue textEditingValue) {
+            final input = textEditingValue.text.toLowerCase().trim();
+            if (input.isEmpty && _focusNode.hasFocus) {
+              return widget.options;
+            }
+            return widget.options.where(
+              (option) => widget
+                  .displayStringForOption(option)
+                  .toLowerCase()
+                  .contains(input),
+            );
+          },
+          optionsViewBuilder: (context, onSelected, options) {
+            return Align(
+              alignment: Alignment.topLeft,
+              child: Material(
+                elevation: 8.0,
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: constraints.maxWidth,
+                    maxHeight: 250,
+                  ),
+                  child: ListView.builder(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    shrinkWrap: true,
+                    itemCount: options.length,
+                    itemBuilder: (context, index) {
+                      final option = options.elementAt(index);
+                      return InkWell(
+                        onTap: () => onSelected(option),
+                        borderRadius: BorderRadius.circular(8),
+                        child: ListTile(
+                          title: Text(widget.displayStringForOption(option)),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            );
+          },
+          onSelected: widget.onSelected,
+          fieldViewBuilder: (
+            context,
+            controller,
+            focusNode,
+            onFieldSubmitted,
+          ) {
+            return TextField(
+              controller: controller,
+              focusNode: focusNode,
+              decoration: InputDecoration(
+                fillColor: Colors.white,
+                isDense: true,
+                hintText: widget.label,
+                hintStyle: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xffBCC1CA),
+                ),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide:
+                      const BorderSide(width: 1, color: Color(0xffBCC1CA)),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide:
+                      const BorderSide(width: 1, color: Color(0xffBCC1CA)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    width: 1.5,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+                suffixIcon: const Icon(
+                  Icons.keyboard_arrow_down,
+                  color: Color(0xffBCC1CA),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
 class CustomPhoneField extends StatelessWidget {
   final TextEditingController controller;
 
@@ -982,6 +1028,7 @@ class CustomPhoneField extends StatelessWidget {
       child: IntlPhoneField(
         flagsButtonPadding: const EdgeInsets.all(9),
         dropdownIconPosition: IconPosition.trailing,
+        controller: controller,
         showDropdownIcon: true,
         dropdownIcon: const Icon(Icons.keyboard_arrow_down),
         initialCountryCode: 'IN',
@@ -989,6 +1036,7 @@ class CustomPhoneField extends StatelessWidget {
           controller.text = phone.number;
         },
         decoration: InputDecoration(
+          fillColor: Theme.of(context).colorScheme.surface,
           hintText: '7895674320',
           hintStyle: const TextStyle(color: Color(0xffBCC1CA)),
           border: OutlineInputBorder(

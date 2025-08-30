@@ -5,6 +5,7 @@ import 'package:job_portal/views/detailed_signup_student/data/model/courses_resp
 import 'package:job_portal/views/detailed_signup_student/data/model/job_roles_response.dart';
 import 'package:job_portal/views/detailed_signup_student/data/model/specialization_response.dart';
 import 'package:job_portal/views/detailed_signup_student/data/model/submit_detailed_user_profile.dart';
+import 'package:job_portal/views/detailed_signup_student/domain/entities/metadata_entities.dart';
 import 'package:job_portal/views/detailed_signup_student/domain/repository/detailed_signup_repository.dart';
 
 class DetailedSignupUsecase {
@@ -17,23 +18,24 @@ class DetailedSignupUsecase {
     return response;
   }
 
-  Future<DataState<CollegesListResponse>> getColleges(
+  Future<DataState<CollegeListEntity>> getColleges(
       Map<String, dynamic> emailMap) async {
     final response = await _repository.getColleges(emailMap);
     return response;
   }
 
-  Future<DataState<SpecializationListResponse>> getSpecialization() async {
-    final response = await _repository.getSpecialization();
+  Future<DataState<List<SpecializationEntity>>> getSpecialization(
+      String courseId) async {
+    final response = await _repository.getSpecialization(courseId);
     return response;
   }
 
-  Future<DataState<CoursesListResponse>> getCourses() async {
+  Future<DataState<CourseListEntity>> getCourses() async {
     final response = await _repository.getCourses();
     return response;
   }
 
-  Future<DataState<LocationsListResponse>> getLocations() async {
+  Future<DataState<LocationListEntity>> getLocations() async {
     final response = await _repository.getLocations();
     return response;
   }

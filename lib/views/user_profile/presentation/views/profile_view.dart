@@ -8,6 +8,8 @@ import 'package:job_portal/utils/constants/image_string.dart';
 import 'package:job_portal/utils/storage/shared_preference.dart';
 import 'package:job_portal/utils/theme/custom_themes/color_theme.dart';
 import 'package:job_portal/views/login/presentation/views/login_page_first_view.dart';
+import 'package:job_portal/views/user_profile/data/models/public_profile_model.dart';
+import 'package:job_portal/views/user_profile/domain/entities/public_profile_entity.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/profile_bloc/profile_event.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/profile_bloc/profile_state.dart';
@@ -15,9 +17,11 @@ import 'package:job_portal/views/user_profile/presentation/views/User_Notificati
 import 'package:job_portal/views/user_profile/presentation/views/change_email_password_views/change_email_view.dart';
 import 'package:job_portal/views/user_profile/presentation/views/change_email_password_views/User_change_password_screen.dart';
 import 'package:job_portal/views/user_profile/presentation/views/User_messages_screen.dart';
+import 'package:job_portal/views/user_profile/presentation/views/chat_with_us_view.dart';
 import 'package:job_portal/views/user_profile/presentation/views/log_out_dialog.dart';
 import 'package:job_portal/views/user_profile/presentation/views/my_profile_view.dart';
 import 'package:job_portal/views/user_profile/presentation/views/public_profile_view.dart';
+import 'package:job_portal/views/user_profile/presentation/views/raise_ticket_view.dart';
 import 'package:job_portal/views/user_profile/presentation/views/user_terms_and_conditions_view.dart';
 import '../../../../ui_helper/ui_helper.dart';
 import 'user_job_applications_view.dart';
@@ -39,6 +43,8 @@ class UserProfileScreen1 extends StatefulWidget {
 class _UserProfileScreen1State extends State<UserProfileScreen1> {
   bool _isHelpSupportOpened = false;
   bool _isManageAccountOpened = false;
+
+  late PublicProfileEntity userProfile;
 
   @override
   void didChangeDependencies() {
@@ -142,6 +148,7 @@ class _UserProfileScreen1State extends State<UserProfileScreen1> {
                 builder: (context, state) {
                   if (state is PublicProfileLoaded) {
                     final profileData = state.publicProfile.publicProfile;
+                    userProfile = profileData;
                     // developer
                     //     .log("Public profile loaded ${profileData.firstName}");
                     return Padding(
@@ -185,19 +192,21 @@ class _UserProfileScreen1State extends State<UserProfileScreen1> {
                                   ),
                                   Text(
                                     "${profileData.firstName} ${profileData.lastName}",
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleLarge
+                                        ?.copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .surface,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                   ),
                                   // const Spacer(),
                                   const SizedBox(
                                     height: 10,
                                   ),
                                   Text(
-                                    // "aman@gmail.com",
-                                    // profileData.email,
                                     "@${profileData.firstName.toLowerCase()}",
                                     style: const TextStyle(
                                       fontSize: 12,
@@ -375,13 +384,32 @@ class _UserProfileScreen1State extends State<UserProfileScreen1> {
                           child: Column(
                             children: [
                               UserProfileEnteries(
-                                  mIcon:
-                                      "assets/Icons/Manage_account_icons.svg",
-                                  title: "Raise your ticket"),
+                                mIcon: "assets/Icons/Manage_account_icons.svg",
+                                title: "Raise your ticket",
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => RaiseTicketView(
+                                        userProfile: userProfile,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                               UserProfileEnteries(
                                   mIcon:
                                       "assets/Icons/Manage_account_icons.svg",
-                                  title: "Chat with us!"),
+                                  title: "Chat with us!",
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ChatWithUsView(),
+                                      ),
+                                    );
+                                  }),
                             ],
                           ),
                         )

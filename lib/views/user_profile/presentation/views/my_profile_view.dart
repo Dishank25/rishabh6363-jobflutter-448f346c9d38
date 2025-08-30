@@ -11,6 +11,7 @@ import 'package:job_portal/utils/storage/shared_preference.dart';
 import 'package:job_portal/utils/upload_file_get_url/presentation/bloc/upload_file_bloc.dart';
 import 'package:job_portal/utils/upload_file_get_url/presentation/bloc/upload_file_event.dart';
 import 'package:job_portal/utils/upload_file_get_url/presentation/bloc/upload_file_state.dart';
+import 'package:job_portal/views/user_authentication_and_approval_screens/presentation/view/user_auth_view.dart';
 import 'package:job_portal/views/user_profile/domain/entities/user_details_entity.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/my_profile_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/my_profile_event.dart';
@@ -23,7 +24,6 @@ import 'package:job_portal/views/user_profile/presentation/views/profile_editing
 import 'package:job_portal/views/user_profile/presentation/views/profile_editing_views/edit_career_objective_view.dart';
 import 'package:job_portal/views/user_profile/presentation/views/profile_editing_views/edit_language_view.dart';
 import '../../../../ui_helper/ui_helper.dart';
-import 'user_authentication_and_approval_screens/user_auth_view.dart';
 import 'profile_editing_views/user_education_approval_view.dart.dart';
 import 'profile_editing_views/user_work_experience_view.dart';
 import 'profile_editing_views/user_skills_approval_view.dart';
@@ -241,6 +241,8 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                   developer.log('MyProfileDetailsLoaded');
                   final data = state.userDetailEntity;
 
+                  // developer.log('user skills : ${data.skills.first.domain}');
+
                   return Column(
                     children: [
                       Text(
@@ -441,12 +443,13 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                             ),
                             profileSection(
                               title: "Skills",
-                              items: [
-                                "Digital Marketing",
-                                "Sales",
-                                "UI design",
-                                "SEO"
-                              ],
+                              // items: [
+                              //   "Digital Marketing",
+                              //   "Sales",
+                              //   "UI design",
+                              //   "SEO"
+                              // ],
+                              items: data.skills.map((s) => s.domain).toList(),
                               statusList: [
                                 false,
                                 false,
@@ -458,18 +461,10 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        UserSkillsApprovalScreen(),
+                                        UserSkillsApprovalScreen(
+                                            skillList: data.skills),
                                   ),
-                                ).then((value) {
-                                  final bloc = context.read<MyProfileBloc>();
-
-                                  // ignore: unused_local_variable
-                                  final _prefs = sl<PreferencesManager>();
-
-                                  final userId = _prefs.getUserId();
-
-                                  bloc.add(LoadMyProfileDetails(userId ?? '6'));
-                                });
+                                ).then((value) {});
                               },
                               editText: "Add Skills",
                             ),
@@ -480,11 +475,6 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                                   .where((e) => e.currentCompany!.isNotEmpty)
                                   .map((e) => e.currentCompany!)
                                   .toList(),
-                              // statusList: [
-                              //   false,
-                              //   false,
-                              //   true,
-                              // ],
                               statusList:
                                   workExperienceStatus(data.experiences),
                               onEditTap: () {
@@ -497,21 +487,22 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                                     ),
                                   ),
                                 ).then((value) {
-                                  final bloc = context.read<MyProfileBloc>();
-
-                                  // ignore: unused_local_variable
-                                  final _prefs = sl<PreferencesManager>();
-
-                                  final userId = _prefs.getUserId();
-
-                                  bloc.add(LoadMyProfileDetails(userId ?? '6'));
+                                  // final bloc = context.read<MyProfileBloc>();
+                                  // // ignore: unused_local_variable
+                                  // final _prefs = sl<PreferencesManager>();
+                                  // final userId = _prefs.getUserId();
+                                  // bloc.add(LoadMyProfileDetails(userId ?? '6'));
                                 });
                               },
                               editText: "Add Work Experience",
                             ),
                             profileSection(
                               title: "Education",
-                              items: ["B.Tech", "Diploma", "M.Tech"],
+                              // items: ["B.Tech", "Diploma", "M.Tech"],
+                              items: data.educations
+                                  .where((e) => e.level.isNotEmpty)
+                                  .map((e) => e.level)
+                                  .toList(),
                               statusList: [
                                 false,
                                 false,
@@ -519,10 +510,14 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                               ],
                               onEditTap: () {
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const UserEducationApprovalScreen()));
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        UserEducationApprovalScreen(
+                                      eduList: data.educations,
+                                    ),
+                                  ),
+                                );
                               },
                               editText: "Add Education",
                             ),
@@ -552,8 +547,8 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            UserAuthScreen()));
+                                        builder: (context) => UserAuthScreen(
+                                            phoneNumber: data.phone)));
                               },
                               editText: "Get Verified",
                               isGetVerified:

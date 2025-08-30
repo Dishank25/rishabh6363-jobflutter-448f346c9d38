@@ -34,8 +34,9 @@ class SkillBloc extends Bloc<SkillEvent, SkillState> {
       LoadSubSkills event, Emitter<SkillState> emit) async {
     try {
       emit(const SubSkillLoading());
-      final response = await skillUsecase.getSubSkills(event.domain);
-      emit(SubSkillLoaded(response.data!, event.domain)); // pass result
+      final response = await skillUsecase.getSubSkills(event.domainId);
+      emit(SubSkillLoaded(
+          response.data!, event.domain, event.domainId)); // pass result
     } catch (e) {
       emit(const SubSkillError());
     }

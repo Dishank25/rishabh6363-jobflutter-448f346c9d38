@@ -74,14 +74,36 @@ class UserProfileModel extends UserProfileEntity {
 }
 
 class SkillModel extends SkillEntity {
-  const SkillModel({required super.skill});
+  const SkillModel({
+    required super.domain,
+    required super.subSkills,
+    required super.authority,
+    required super.certificateImages,
+  });
 
   factory SkillModel.fromJson(Map<String, dynamic> json) {
-    return SkillModel(skill: json['skill'] ?? '');
+    return SkillModel(
+      domain: json['domain'] ?? '',
+      subSkills: (json['subSkills'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          const [],
+      authority: (json['authority'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          const [],
+      certificateImages: (json['certificate_image'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          const [],
+    );
   }
 
   Map<String, dynamic> toJson() => {
-        'skill': skill,
+        'domain': domain,
+        'subSkills': subSkills,
+        'authority': authority,
+        'certificate_image': certificateImages,
       };
 }
 

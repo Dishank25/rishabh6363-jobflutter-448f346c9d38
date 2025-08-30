@@ -10,6 +10,7 @@ import 'package:job_portal/views/detailed_signup_student/data/model/job_roles_re
 import 'package:job_portal/views/detailed_signup_student/data/model/skill_submission_response.dart';
 import 'package:job_portal/views/detailed_signup_student/data/model/specialization_response.dart';
 import 'package:job_portal/views/detailed_signup_student/data/model/submit_detailed_user_profile.dart';
+import 'package:job_portal/views/detailed_signup_student/domain/entities/metadata_entities.dart';
 import 'package:job_portal/views/detailed_signup_student/domain/repository/detailed_signup_repository.dart';
 
 class DetailedSignupRepositoryImpl extends DetailedSignupRepository {
@@ -41,7 +42,7 @@ class DetailedSignupRepositoryImpl extends DetailedSignupRepository {
   }
 
   @override
-  Future<DataState<CollegesListResponse>> getColleges(
+  Future<DataState<CollegeListEntity>> getColleges(
       Map<String, dynamic> emailMap) async {
     try {
       final res = await _apiService.getColleges(emailMap);
@@ -64,12 +65,13 @@ class DetailedSignupRepositoryImpl extends DetailedSignupRepository {
   }
 
   @override
-  Future<DataState<SpecializationListResponse>> getSpecialization() async {
+  Future<DataState<List<SpecializationEntity>>> getSpecialization(
+      String courseId) async {
     try {
-      final res = await _apiService.getSpecialization();
+      final res = await _apiService.getSpecialization(courseId);
       if (res.response.statusCode == HttpStatus.ok) {
         developer.log('.checkk response in repository : ${res.data}');
-        return DataSuccess(res.data);
+        return DataSuccess(res.data.data);
       } else {
         developer.log('..checkk response in repository : ${res.data}');
         return DataFailed(DioException(
@@ -86,7 +88,7 @@ class DetailedSignupRepositoryImpl extends DetailedSignupRepository {
   }
 
   @override
-  Future<DataState<CoursesListResponse>> getCourses() async {
+  Future<DataState<CourseListEntity>> getCourses() async {
     try {
       final res = await _apiService.getCourses();
       if (res.response.statusCode == HttpStatus.ok) {
@@ -108,7 +110,7 @@ class DetailedSignupRepositoryImpl extends DetailedSignupRepository {
   }
 
   @override
-  Future<DataState<LocationsListResponse>> getLocations() async {
+  Future<DataState<LocationListEntity>> getLocations() async {
     try {
       final res = await _apiService.getLocations();
       if (res.response.statusCode == HttpStatus.ok) {

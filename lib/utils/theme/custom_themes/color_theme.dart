@@ -8,5 +8,5 @@ class TColors {
   static const Color backgroundLight = Color(0xFFFFFFFF);
   static const Color backgroundDark = Color(0xFF121212);
   static const Color textPrimary = Color(0xFF333333);
-  static const Color textSecondary = Color(0xFF888888);
+  static const Color textSecondary = Color.fromRGBO(108, 114, 120, 1);
 }

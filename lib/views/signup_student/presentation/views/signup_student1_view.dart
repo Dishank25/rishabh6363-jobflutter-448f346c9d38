@@ -87,20 +87,6 @@ class _SignUpStudent1State extends State<SignUpStudent1> {
                 ),
                 mSpacer(mHeight: 15.0),
                 Text("Phone Number", style: mTextStyle12()),
-                // CustomTextField(
-                //   controller: phoneController,
-                //   hintText: "7895674320",
-                //   keyboardType: TextInputType.number,
-                //   suffixIcon: Icons.call,
-                //   // fillColor: Color(0xffFFF7FB),
-                //   validator: (value) {
-                //     if (value == null || value.isEmpty)
-                //       return 'Phone Number required';
-                //     if (value.length < 10 || value.length > 10)
-                //       return 'Phone Number must be 10 digits';
-                //     return null;
-                //   },
-                // ),
                 CustomPhoneField(
                   controller: phoneController,
                 ),

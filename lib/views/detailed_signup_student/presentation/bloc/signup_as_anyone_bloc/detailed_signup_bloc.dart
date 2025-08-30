@@ -14,6 +14,7 @@ class DetailedSignupBloc
     on<DetailedSignupGetBasicUserInfo>(_onGetBasicUserInfo);
     on<DetailedSignupGetCollegeDetails>(_onGetCollegeDetails);
     on<DetailedSingupSubmitUserDetails>(_onSubmitUserDetails);
+    on<DetailedSignupGetSpecializations>(_onGetSpecializations);
   }
 
   Future<void> _onGetBasicUserInfo(DetailedSignupGetBasicUserInfo event,
@@ -37,14 +38,36 @@ class DetailedSignupBloc
       Emitter<DetailedSignupState> emit) async {
     try {
       emit(const DetailedSignupGetCollegeDetailsLoading());
+      developer.log('Course and clg updated .1bloc');
+
       final colleges = await _detailedSignupUsecase.getColleges(event.emailMap);
-      final specializations = await _detailedSignupUsecase.getSpecialization();
       final courses = await _detailedSignupUsecase.getCourses();
-      final jobRoles = await _detailedSignupUsecase.getJobRoles();
-      emit(DetailedSignupGetCollegeDetailsLoaded(colleges.data!,
-          specializations.data!, courses.data!, jobRoles.data!));
+      // final jobRoles = await _detailedSignupUsecase.getJobRoles();
+      developer.log('Course and clg updated .2bloc');
+
+      emit(DetailedSignupGetCollegeDetailsLoaded(
+        colleges.data!,
+        courses.data!,
+        // jobRoles.data!,
+      ));
+      developer.log('Course and clg updated .3bloc');
     } catch (e) {
       emit(const DetailedSignupGetCollegeDetailsError());
+      developer.log('Course and clg updated .4bloc');
+    }
+  }
+
+  Future<void> _onGetSpecializations(DetailedSignupGetSpecializations event,
+      Emitter<DetailedSignupState> emit) async {
+    try {
+      emit(const DetailedSignupSpecializationLoading());
+      final specializations =
+          await _detailedSignupUsecase.getSpecialization(event.courseId);
+      emit(DetailedSignupSpecializationLoaded(
+        specializations.data!,
+      ));
+    } catch (e) {
+      emit(const DetailedSignupSpecializationError());
     }
   }
 
@@ -60,50 +83,3 @@ class DetailedSignupBloc
     }
   }
 }
-
-// Future<void> _onGetColleges(DetailedSignupGetColleges event,
-  //     Emitter<DetailedSignupState> emit) async {
-  //   try {
-  //     emit(const DetailedSignupGetCollegesLoading());
-  //     final response = await _detailedSignupUsecase.getColleges(event.emailMap);
-  //     developer.log('Response of get colleges : ${response.data!}');
-  //     emit(DetailedSignupGetCollegesLoaded(response.data!));
-  //   } catch (e) {
-  //     developer.log('Ending up in error of get colleges : $e');
-  //     emit(const DetailedSignupGetCollegesError());
-  //   }
-  // }
-  // Future<void> _onGetSpecialization(DetailedSignupGetSpecialization event,
-  //     Emitter<DetailedSignupState> emit) async {
-  //   try {
-  //     emit(const DetailedSignupGetSpecializationLoading());
-  //     final response = await _detailedSignupUsecase.getSpecialization();
-  //     developer.log('Response of get specializations : ${response.data!}');
-  //     emit(DetailedSignupGetSpecializationLoaded(response.data!));
-  //   } catch (e) {
-  //     developer.log('Ending up in error of get specializations : $e');
-  //     emit(const DetailedSignupGetSpecializationError());
-  //   }
-  // }
-  // Future<void> _onGetCourses(
-  //     DetailedSignupGetCourses event, Emitter<DetailedSignupState> emit) async {
-  //   try {
-  //     emit(const DetailedSignupGetCoursesLoading());
-  //     final response = await _detailedSignupUsecase.getCourses();
-  //     developer.log('Response of get courses : ${response.data!}');
-  //     emit(DetailedSignupGetCoursesLoaded(response.data!));
-  //   } catch (e) {
-  //     developer.log('Ending up in error of get courses : $e');
-  //     emit(const DetailedSignupGetCollegesError());
-  //   }
-  // }
-  // Future<void> _onGetJobRoles(DetailedSignupGetJobRoles event,
-  //     Emitter<DetailedSignupState> emit) async {
-  //   try {
-  //     emit(const DetailedSignupJobRolesLoading());
-  //     final response = await _detailedSignupUsecase.getJobRoles();
-  //     emit(DetailedSignupJobRolesLoaded(response.data!));
-  //   } catch (e) {
-  //     emit(const DetailedSignupJobRolesError());
-  //   }
-  // }

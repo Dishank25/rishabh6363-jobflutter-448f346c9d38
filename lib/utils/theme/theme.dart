@@ -18,6 +18,7 @@ class TAppTheme {
     colorScheme: const ColorScheme.light(
       primary: TColors.primary,
       secondary: TColors.secondary,
+      secondaryFixedDim: TColors.textSecondary,
       surface: TColors.backgroundLight,
     ),
   );
@@ -35,6 +36,7 @@ class TAppTheme {
     colorScheme: const ColorScheme.dark(
       primary: TColors.primary,
       secondary: TColors.secondary,
+      secondaryFixedDim: TColors.textSecondary,
       surface: TColors.backgroundDark,
     ),
   );

@@ -5,6 +5,7 @@ import 'package:job_portal/views/user_profile/data/models/user_details_response.
 import 'package:job_portal/views/user_profile/domain/entities/all_job_applications_entity.dart';
 import 'package:job_portal/views/user_profile/domain/entities/followers_entity.dart';
 import 'package:job_portal/views/user_profile/domain/entities/public_profile_entity.dart';
+import 'package:job_portal/views/user_profile/domain/entities/raise_ticket_entity.dart';
 import 'package:job_portal/views/user_profile/domain/entities/terms_and_conditions_entity.dart';
 import 'package:job_portal/views/user_profile/domain/entities/update_user_email_entity.dart';
 import 'package:job_portal/views/user_profile/domain/entities/update_user_profile_entity.dart';
@@ -107,5 +108,18 @@ class GetFollowingUsecase
   Future<DataState<FollowingEntity>> call(
       {Map<String, dynamic>? params}) async {
     return _repository.getFollowings(params!['id']);
+  }
+}
+
+class RaiseTicketUsecase
+    implements
+        UseCase<DataState<RaiseTicketResponseEntity>, Map<String, dynamic>> {
+  final ProfileRepository _repository;
+  RaiseTicketUsecase(this._repository);
+
+  @override
+  Future<DataState<RaiseTicketResponseEntity>> call(
+      {Map<String, dynamic>? params}) async {
+    return _repository.raiseTicket(params!);
   }
 }

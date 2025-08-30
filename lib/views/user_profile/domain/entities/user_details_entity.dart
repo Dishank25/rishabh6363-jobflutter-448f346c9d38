@@ -12,12 +12,6 @@ class UserDetailEntity {
   final String? currentLocation;
   final String gender;
   final String userType;
-  final String? standard;
-  final String? course;
-  final String? specialization;
-  final String? college;
-  final String? startYear;
-  final String? endYear;
   final String? jobLocation;
   final String? salaryDetails;
   final String? currentlyLookingFor;
@@ -33,7 +27,9 @@ class UserDetailEntity {
   final bool termsAndCondition;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final List<UserEducationEntity> educations;
   final List<UserExperienceEntity> experiences;
+  final List<ProfileSkillEntity> skills;
 
   UserDetailEntity({
     required this.id,
@@ -49,12 +45,6 @@ class UserDetailEntity {
     required this.currentLocation,
     required this.gender,
     required this.userType,
-    this.standard,
-    this.course,
-    this.specialization,
-    this.college,
-    this.startYear,
-    this.endYear,
     required this.jobLocation,
     required this.salaryDetails,
     required this.currentlyLookingFor,
@@ -70,7 +60,87 @@ class UserDetailEntity {
     required this.termsAndCondition,
     required this.createdAt,
     required this.updatedAt,
+    required this.educations,
     required this.experiences,
+    required this.skills,
+  });
+}
+
+class UserEducationEntity {
+  final int id;
+  final String level;
+  final int schoolCollegeId;
+  final String boardOrUniversity;
+  final int courseId;
+  final int specializationId;
+  final String startYear;
+  final String endYear;
+  final String percentageOrCgpa;
+  final String educationCertificate;
+  final SchoolCollegeEntity? schoolCollege;
+  final UDCourseEntity? course;
+  final UDSpecializationEntity? specialization;
+
+  UserEducationEntity({
+    required this.id,
+    required this.level,
+    required this.schoolCollegeId,
+    required this.boardOrUniversity,
+    required this.courseId,
+    required this.specializationId,
+    required this.startYear,
+    required this.endYear,
+    required this.percentageOrCgpa,
+    required this.educationCertificate,
+    this.schoolCollege,
+    this.course,
+    this.specialization,
+  });
+}
+
+class SchoolCollegeEntity {
+  final String name;
+  final String? logoPic;
+
+  SchoolCollegeEntity({
+    required this.name,
+    this.logoPic,
+  });
+}
+
+class UDCourseEntity {
+  final String name;
+
+  UDCourseEntity({required this.name});
+}
+
+class UDSpecializationEntity {
+  final String name;
+
+  UDSpecializationEntity({required this.name});
+}
+
+class ProfileSkillEntity {
+  final String domain;
+  final List<String> subSkills;
+  final List<String> authority;
+  final List<String> certificateImages;
+
+  ProfileSkillEntity({
+    required this.domain,
+    required this.subSkills,
+    required this.authority,
+    required this.certificateImages,
+  });
+}
+
+class CompanyRecruiterProfileEntity {
+  final String companyName;
+  final String? logoUrl;
+
+  CompanyRecruiterProfileEntity({
+    required this.companyName,
+    this.logoUrl,
   });
 }
 
@@ -80,12 +150,13 @@ class UserExperienceEntity {
   final int? companyRecruiterProfileId;
   final String? startDate;
   final String? endDate;
-  final String? totalExperience;
   final String? currentJobRole;
   final String? currentCompany;
   final String? status;
+  final String? experienceCertificate;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final CompanyRecruiterProfileEntity? companyRecruiterProfile;
 
   UserExperienceEntity({
     required this.id,
@@ -93,11 +164,12 @@ class UserExperienceEntity {
     this.companyRecruiterProfileId,
     this.startDate,
     this.endDate,
-    this.totalExperience,
     this.currentJobRole,
     this.currentCompany,
     this.status,
+    this.experienceCertificate,
     required this.createdAt,
     required this.updatedAt,
+    this.companyRecruiterProfile,
   });
 }

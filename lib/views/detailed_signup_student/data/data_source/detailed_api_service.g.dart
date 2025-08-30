@@ -51,7 +51,7 @@ class _DetailedApiService implements DetailedApiService {
   }
 
   @override
-  Future<HttpResponse<CollegesListResponse>> getColleges(
+  Future<HttpResponse<CollegeListModel>> getColleges(
     Map<String, dynamic> emailMap,
   ) async {
     final _extra = <String, dynamic>{};
@@ -59,20 +59,20 @@ class _DetailedApiService implements DetailedApiService {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(emailMap);
-    final _options = _setStreamType<HttpResponse<CollegesListResponse>>(
+    final _options = _setStreamType<HttpResponse<CollegeListModel>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'colleges',
+            'master/school-college',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late CollegesListResponse _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late CollegeListModel _value;
     try {
-      _value = CollegesListResponse.fromJson(_result.data!);
+      _value = CollegeListModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -82,25 +82,27 @@ class _DetailedApiService implements DetailedApiService {
   }
 
   @override
-  Future<HttpResponse<SpecializationListResponse>> getSpecialization() async {
+  Future<HttpResponse<SpecializationResponse>> getSpecialization(
+    String courseId,
+  ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HttpResponse<SpecializationListResponse>>(
+    final _options = _setStreamType<HttpResponse<SpecializationResponse>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'specializations',
+            'master/specializations/${courseId}',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late SpecializationListResponse _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late SpecializationResponse _value;
     try {
-      _value = SpecializationListResponse.fromJson(_result.data!);
+      _value = SpecializationResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -110,25 +112,25 @@ class _DetailedApiService implements DetailedApiService {
   }
 
   @override
-  Future<HttpResponse<CoursesListResponse>> getCourses() async {
+  Future<HttpResponse<CourseListModel>> getCourses() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HttpResponse<CoursesListResponse>>(
+    final _options = _setStreamType<HttpResponse<CourseListModel>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'courses',
+            'master/courses',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late CoursesListResponse _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late CourseListModel _value;
     try {
-      _value = CoursesListResponse.fromJson(_result.data!);
+      _value = CourseListModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -138,12 +140,12 @@ class _DetailedApiService implements DetailedApiService {
   }
 
   @override
-  Future<HttpResponse<SubSkillResponse>> getSubSkills(String domain) async {
+  Future<HttpResponse<SkillListModel>> getSubSkills(String domain) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HttpResponse<SubSkillResponse>>(
+    final _options = _setStreamType<HttpResponse<SkillListModel>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -154,9 +156,9 @@ class _DetailedApiService implements DetailedApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late SubSkillResponse _value;
+    late SkillListModel _value;
     try {
-      _value = SubSkillResponse.fromJson(_result.data!);
+      _value = SkillListModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -166,12 +168,12 @@ class _DetailedApiService implements DetailedApiService {
   }
 
   @override
-  Future<HttpResponse<DomainAllResponse>> getDomains() async {
+  Future<HttpResponse<DomainListModel>> getDomains() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HttpResponse<DomainAllResponse>>(
+    final _options = _setStreamType<HttpResponse<DomainListModel>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -182,9 +184,9 @@ class _DetailedApiService implements DetailedApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late DomainAllResponse _value;
+    late DomainListModel _value;
     try {
-      _value = DomainAllResponse.fromJson(_result.data!);
+      _value = DomainListModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -289,25 +291,25 @@ class _DetailedApiService implements DetailedApiService {
   }
 
   @override
-  Future<HttpResponse<LocationsListResponse>> getLocations() async {
+  Future<HttpResponse<LocationListModel>> getLocations() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HttpResponse<LocationsListResponse>>(
+    final _options = _setStreamType<HttpResponse<LocationListModel>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'locations',
+            'master/location',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late LocationsListResponse _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late LocationListModel _value;
     try {
-      _value = LocationsListResponse.fromJson(_result.data!);
+      _value = LocationListModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

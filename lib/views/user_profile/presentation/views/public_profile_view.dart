@@ -126,18 +126,20 @@ class _UserPublicProfileScreenState extends State<UserPublicProfileScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                                "${widget.userProfile.publicProfile.firstName} ${widget.userProfile.publicProfile.lastName}",
+                                "${profileData.publicProfile.firstName} ${profileData.publicProfile.lastName}",
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 20)),
                             const SizedBox(height: 4),
                             Text(
-                                '@${widget.userProfile.publicProfile.firstName.toLowerCase()}',
+                                '@${profileData.publicProfile.firstName.toLowerCase()}',
                                 style: const TextStyle(color: Colors.grey)),
                             const SizedBox(height: 8),
-                            const Text('Visual Designer'),
+                            Text(profileData.publicProfile.userType.isNotEmpty
+                                ? profileData.publicProfile.userType
+                                : '—'),
                             const SizedBox(height: 4),
                             Text(
-                              widget.userProfile.publicProfile.aboutus,
+                              profileData.publicProfile.aboutus,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -243,95 +245,78 @@ class _UserPublicProfileScreenState extends State<UserPublicProfileScreen> {
                     ],
                   ),
                   const SizedBox(height: 24),
-                  const SectionTitle('Your Activity'),
-                  ActivityCard(
-                    avatarUrl: ImageString.dummyImageUrl,
-                    name: 'Rohan',
-                    subtitle: 'Digital Marketer @Uber',
-                    content:
-                        'Hey! Just started a new project. Check the link in my profile and comment your suggestions. see more...',
-                  ),
-                  SeeMoreDivider(),
-                  const SectionTitle('Work Experience'),
-                  InfoCard(
-                    leading: const CircleAvatar(
-                      backgroundColor: Colors.black,
-                      child: Icon(Icons.work, color: Colors.white),
-                    ),
-                    title: "Graphic Designer",
-                    subtitles: [
-                      "Uber",
-                      "June 23 - Present | 1 year 11 months",
-                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed dapibus eros eu vehicula interdum.",
-                    ],
-                  ),
-                  // ExpandableSection(
-                  //   title: 'Work Experience',
-                  //   items: profileData.experiences.map((exp) {
-                  //     final company = exp.companyName ?? exp.currentCompany;
-                  //     final start = exp.startDate?.split('T').first ?? '';
-                  //     final end = exp.endDate?.split('T').first ?? 'Present';
+                  // const SectionTitle('Your Activity'),
+                  if (profileData.activity.isNotEmpty)
+                    ExpandableSection(
+                      title: 'Your Activity',
+                      items: profileData.activity.map((act) {
+                        final subtitle =
+                            '${act.likeCount} likes • ${act.commentCount} comments • ${act.createdAt.toLocal().toString().split('.').first}';
+                        return ActivityCard(
+                          avatarUrl: ImageString.dummyImageUrl,
+                          name:
+                              '${profileData.publicProfile.firstName} ${profileData.publicProfile.lastName}',
+                          subtitle: subtitle,
+                          content: act.caption,
+                        );
+                      }).toList(),
+                    )
+                  else
+                    const Text('No recent activity'),
+                  const SeeMoreDivider(),
+                  // const SectionTitle('Work Experience'),
+                  if (profileData.experiences.isNotEmpty)
+                    ExpandableSection(
+                      title: 'Work Experience',
+                      items: profileData.experiences.map((exp) {
+                        return InfoCard(
+                          leading: const CircleAvatar(
+                            backgroundColor: Colors.black,
+                            child: Icon(Icons.work, color: Colors.white),
+                          ),
+                          title: exp.currentJobRole,
+                          subtitles: [
+                            exp.currentCompany,
+                            if (exp.status.isNotEmpty) exp.status,
+                            if (exp.totalExperience.isNotEmpty)
+                              'Experience: ${exp.totalExperience}',
+                          ],
+                        );
+                      }).toList(),
+                    )
+                  else
+                    const Text('No work experience added'),
+                  const SeeMoreDivider(),
+                  // const SectionTitle('Skills'),
+                  if (profileData.skills.isNotEmpty)
+                    ExpandableSection(
+                      title: 'Skills',
+                      items: profileData.skills.map((skill) {
+                        final subtitles = <String>[];
+                        if (skill.subSkills.isNotEmpty) {
+                          subtitles
+                              .add('Skills: ${skill.subSkills.join(', ')}');
+                        }
+                        if (skill.authority.isNotEmpty) {
+                          subtitles
+                              .add('Authority: ${skill.authority.join(', ')}');
+                        }
+                        return InfoCard(
+                          leading: const Icon(Icons.design_services_outlined,
+                              color: Colors.purple),
+                          title:
+                              skill.domain.isNotEmpty ? skill.domain : 'Skill',
+                          subtitles: subtitles,
+                        );
+                      }).toList(),
+                    )
+                  else
+                    const Text('No skills added'),
 
-                  //     return InfoCard(
-                  //       leading: const CircleAvatar(
-                  //         backgroundColor: Colors.black,
-                  //         child: Icon(Icons.work, color: Colors.white),
-                  //       ),
-                  //       title: exp.currentJobRole ?? '',
-                  //       subtitles: [
-                  //         company,
-                  //         '$start - $end',
-                  //         exp.status ?? '',
-                  //       ],
-                  //     );
-                  //   }).toList(),
-                  // ),
-
-                  SeeMoreDivider(),
-                  const SectionTitle('Education'),
-                  InfoCard(
-                    leading: const Icon(Icons.school, color: Colors.red),
-                    title: "Delhi Technological University",
-                    subtitles: ["Bachelor's degree, Design", "2018 - 2022"],
+                  // SeeMoreDivider(),
+                  const SizedBox(
+                    height: 100,
                   ),
-//                   ExpandableSection(
-//   title: 'Education',
-//   items: profileData.education.map((edu) {
-//     return InfoCard(
-//       leading: const Icon(Icons.school, color: Colors.red),
-//       title: edu.level,
-//       subtitles: [
-//         edu.boardOrUniversity ?? '',
-//         '${edu.startYear} - ${edu.endYear}',
-//         '${edu.percentageOrCgpa}%',
-//       ],
-//     );
-//   }).toList(),
-// ),
-                  SeeMoreDivider(),
-                  const SectionTitle('Skills'),
-                  InfoCard(
-                    leading: const Icon(Icons.design_services_outlined,
-                        color: Colors.purple),
-                    title: "Visual Identity",
-                    subtitles: ["Delhi Technological University"],
-                  ),
-                  // ExpandableSection(
-                  //   title: 'Skills',
-                  //   items: profileData.skills.map((skill) {
-                  //     return InfoCard(
-                  //       leading: const Icon(Icons.design_services_outlined,
-                  //           color: Colors.purple),
-                  //       title: skill.domain,
-                  //       subtitles: [
-                  //         'Skills: ${skill.subSkills.join(', ')}',
-                  //         'Authority: ${skill.authority.join(', ')}',
-                  //       ],
-                  //     );
-                  //   }).toList(),
-                  // ),
-
-                  SeeMoreDivider(),
                 ],
               );
             } else if (state is PublicProfileWithFollowersAndFollowingLoading) {
@@ -396,8 +381,7 @@ class _ExpandableSectionState extends State<ExpandableSection> {
               child: Text(
                 expanded ? "See less" : "See more",
                 style: const TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 29, 97, 231),
                 ),
               ),
             ),
@@ -581,32 +565,39 @@ class InfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xffFFFFFC),
-        border: Border.all(color: Colors.grey[300]!),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.15),
-            spreadRadius: 0,
-            blurRadius: 2,
-            offset: const Offset(0, 1),
+    return Column(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: const Color(0xffFFFFFC),
+            border: Border.all(color: Colors.grey[300]!),
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.15),
+                spreadRadius: 0,
+                blurRadius: 2,
+                offset: const Offset(0, 1),
+              ),
+            ],
           ),
-        ],
-      ),
-      child: ListTile(
-        leading: leading,
-        title: Text(title),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            for (var subtitle in subtitles) Text(subtitle),
-            if (subtitles.length > 1) const SizedBox(height: 4),
-          ],
+          child: ListTile(
+            leading: leading,
+            title: Text(title),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                for (var subtitle in subtitles) Text(subtitle),
+                if (subtitles.length > 1) const SizedBox(height: 4),
+              ],
+            ),
+            trailing: const Icon(Icons.more_vert),
+          ),
         ),
-        trailing: const Icon(Icons.more_vert),
-      ),
+        const SizedBox(
+          height: 20,
+        ),
+      ],
     );
   }
 }
@@ -618,14 +609,14 @@ class SeeMoreDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TextButton(
-            onPressed: () {},
-            child: const Text(
-              "See more",
-              style: TextStyle(
-                color: Color.fromARGB(255, 29, 97, 231),
-              ),
-            )),
+        // TextButton(
+        //     onPressed: () {},
+        //     child: const Text(
+        //       "See more",
+        //       style: TextStyle(
+        //         color: Color.fromARGB(255, 29, 97, 231),
+        //       ),
+        //     )),
         Divider()
       ],
     );

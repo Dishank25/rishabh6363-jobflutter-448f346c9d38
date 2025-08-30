@@ -2,6 +2,7 @@ import 'package:job_portal/utils/resourses/data_state.dart';
 import 'package:job_portal/views/user_profile/data/models/public_profile_model.dart';
 import 'package:job_portal/views/user_profile/domain/entities/all_job_applications_entity.dart';
 import 'package:job_portal/views/user_profile/domain/entities/followers_entity.dart';
+import 'package:job_portal/views/user_profile/domain/entities/raise_ticket_entity.dart';
 import 'package:job_portal/views/user_profile/domain/entities/terms_and_conditions_entity.dart';
 import 'package:job_portal/views/user_profile/domain/entities/update_user_email_entity.dart';
 import 'package:job_portal/views/user_profile/domain/entities/update_user_profile_entity.dart';
@@ -25,4 +26,7 @@ abstract class ProfileRepository {
   Future<DataState<FollowersEntity>> getFollowers(String id);
 
   Future<DataState<FollowingEntity>> getFollowings(String id);
+
+  Future<DataState<RaiseTicketResponseEntity>> raiseTicket(
+      Map<String, dynamic> params);
 }

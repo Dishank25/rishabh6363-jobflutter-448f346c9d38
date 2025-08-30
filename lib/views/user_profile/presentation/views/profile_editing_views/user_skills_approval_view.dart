@@ -12,18 +12,22 @@ import 'package:job_portal/utils/storage/shared_preference.dart';
 import 'package:job_portal/utils/upload_file_get_url/presentation/bloc/upload_file_bloc.dart';
 import 'package:job_portal/utils/upload_file_get_url/presentation/bloc/upload_file_event.dart';
 import 'package:job_portal/utils/upload_file_get_url/presentation/bloc/upload_file_state.dart';
+import 'package:job_portal/views/detailed_signup_student/domain/entities/metadata_entities.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/skill_bloc/skill_bloc.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/skill_bloc/skill_event.dart'
     as se;
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/skill_bloc/skill_state.dart';
+import 'package:job_portal/views/user_profile/domain/entities/user_details_entity.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/my_profile_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/my_profile_event.dart';
+import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/my_profile_state.dart';
 import 'package:job_portal/widgets/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http_parser/http_parser.dart'; // for MediaType
 
 class UserSkillsApprovalScreen extends StatefulWidget {
-  const UserSkillsApprovalScreen({super.key});
+  final List<ProfileSkillEntity> skillList;
+  const UserSkillsApprovalScreen({super.key, required this.skillList});
 
   @override
   State<UserSkillsApprovalScreen> createState() =>
@@ -31,19 +35,7 @@ class UserSkillsApprovalScreen extends StatefulWidget {
 }
 
 class _UserSkillsApprovalScreenState extends State<UserSkillsApprovalScreen> {
-  // TextEditingController skillSearchController = TextEditingController();
-  // Key _autoCompKey = UniqueKey();
-  // List<String> domains = [];
-  // List<String> selectedSkills = [];
-  // @override
-  // void didChangeDependencies() {
-  //   // TODO: implement didChangeDependencies
-  //   super.didChangeDependencies();
-  //   context.read<SkillBloc>().add(LoadDomains());
-  // }
-
   TextEditingController skillsSearchController = TextEditingController();
-  String? token;
   String? selectedDomain;
 
   final _prefs = sl<PreferencesManager>();
@@ -51,86 +43,64 @@ class _UserSkillsApprovalScreenState extends State<UserSkillsApprovalScreen> {
   final _formKey = GlobalKey<FormState>();
   UniqueKey _autoCompleteKey = UniqueKey();
 
-  /// Domain Skills Drop Down
-  final LayerLink _domainLink = LayerLink();
-  final GlobalKey _domainFieldKey = GlobalKey();
-  OverlayEntry? _domainOverlayEntry;
-
-  List<String> allDomains = [];
+  List<DomainEntity> allDomains = [];
   List<String> tempSelectedDomains = [];
   List<String> selectedDomains = [];
 
   var skillParams = {};
-  Map<String, List<String>> subSkillsMap = {};
-  Map<String, List<String>> selectedSubSkillsPerDomain = {};
+  Map<String, List<SkillEntity>> subSkillsMap = {};
+  Map<String, List<SkillEntity>> selectedSubSkillsPerDomain = {};
   final Map<String, TextEditingController> courseCollegeControllers = {};
   Map<String, dynamic> certificateImages = {};
-
   Map<String, dynamic> finalSkillData = {};
-
-  void _showDomainDropdown(
-      BuildContext context, TextEditingController controller) {
-    final renderBox =
-        _domainFieldKey.currentContext!.findRenderObject() as RenderBox;
-    final size = renderBox.size;
-    final offset = renderBox.localToGlobal(Offset.zero);
-
-    // context.read<DomainBloc>().add(FetchDomains());
-
-    _domainOverlayEntry = OverlayEntry(
-      builder: (context) => Positioned(
-        width: size.width,
-        left: offset.dx,
-        top: offset.dy + size.height,
-        child: CompositedTransformFollower(
-          link: _domainLink,
-          offset: Offset(0, size.height),
-          child: Material(
-            elevation: 4,
-            borderRadius: BorderRadius.circular(8),
-          ),
-        ),
-      ),
-    );
-
-    Overlay.of(context).insert(_domainOverlayEntry!);
-  }
-
-  @override
-  void dispose() {
-    // Ensure any active overlay is removed to prevent _dependents assertion error
-    _domainOverlayEntry?.remove();
-    _domainOverlayEntry = null;
-    super.dispose();
-  }
 
   @override
   void initState() {
     super.initState();
-    // _loadToken();
+    int j = 0;
 
-    final skills = _prefs.getSkillParams();
-    if (skills != null) {
-      skillParams = jsonDecode(skills);
-      developer.log('These are skill params : $skillParams');
-      setState(() {
-        selectedDomains =
-            List<String>.from(skillParams['selectedDomains'] ?? []);
-        // for (int i = 0; i < selectedDomains.length; i++) {
-        //   context.read<SkillBloc>().add(LoadSubSkills(selectedDomains[i]));
-        // }
-        // to call subskills
-        tempSelectedDomains = selectedDomains;
+    /// Pre-fill data from profileSkills
+    for (int i = 0; i < widget.skillList.length; i++) {
+      j = 0;
+      final skill = widget.skillList[i];
 
-        selectedSubSkillsPerDomain =
-            (skillParams['selectedSubSkillsPerDomain'] as Map<String, dynamic>)
-                .map(
-          (key, value) => MapEntry(
-            key,
-            List<String>.from(value),
-          ),
-        );
-      });
+      // 1. Add domain
+      selectedDomains.add(skill.domain);
+
+      // 2. Convert subSkills (String) → List<SkillEntity>
+      final subSkillEntities = skill.subSkills
+          .map((s) => SkillEntity(
+              name: s, id: j++)) // adapt according to your SkillEntity
+          .toList();
+
+      subSkillsMap[skill.domain] = subSkillEntities;
+      selectedSubSkillsPerDomain[skill.domain] = subSkillEntities;
+
+      // 3. Authorities / College input
+      courseCollegeControllers[skill.domain] = TextEditingController(
+        text: skill.authority.isNotEmpty ? skill.authority.first : '',
+      );
+
+      // 4. Certificates
+      if (skill.certificateImages.isNotEmpty) {
+        certificateImages[skill.domain] = skill.certificateImages[0];
+        // "files": skill.certificateImages
+        //     .map((img) => {"name": img}) // mimic file structure
+        //     .toList()
+      }
+    }
+
+    setState(() {}); // rebuild UI with filled data
+  }
+
+  String? getCertificateImageName(
+      dynamic domain, Map<String, dynamic> certificateImages) {
+    try {
+      // Try to access as a file
+      return certificateImages[domain]?.files.first.name ?? null;
+    } catch (e) {
+      // If not a file, assume it's a string
+      return certificateImages[domain]?.toString() ?? null;
     }
   }
 
@@ -155,13 +125,6 @@ class _UserSkillsApprovalScreenState extends State<UserSkillsApprovalScreen> {
     // context.read<SkillBloc>().add(LoadSubSkills(tempSelectedDomains.first));
 
     super.didChangeDependencies();
-  }
-
-  void _loadToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      token = prefs.getString("token");
-    });
   }
 
   @override
@@ -226,10 +189,12 @@ class _UserSkillsApprovalScreenState extends State<UserSkillsApprovalScreen> {
                         } else if (state is SubSkillLoaded) {
                           final data = state.subSkillResponse;
                           final domain = state.domain;
-
+                          developer.log('Subskills loaded.');
                           if (!subSkillsMap.containsKey(domain)) {
+                            developer.log('Subskills loaded unique.');
                             setState(() {
                               subSkillsMap[domain] = data.skills;
+                              developer.log('Subskills map : $subSkillsMap');
                             });
                           }
                         } else if (state is SkillCertificatesLoaded) {
@@ -246,16 +211,16 @@ class _UserSkillsApprovalScreenState extends State<UserSkillsApprovalScreen> {
                       },
                       child: Container(
                         key: _autoCompleteKey,
-                        child: CustomAutocomplete(
+                        child: CustomAutocompleteGeneric(
                           options: allDomains,
                           label: 'Select Area of interest',
+                          displayStringForOption: (p0) => p0.name,
                           onSelected: (value) {
-                            if (!selectedDomains.contains(value)) {
-                              context
-                                  .read<SkillBloc>()
-                                  .add(se.LoadSubSkills(value));
+                            if (!selectedDomains.contains(value.name)) {
+                              context.read<SkillBloc>().add(se.LoadSubSkills(
+                                  value.name, value.id.toString()));
                               setState(() {
-                                selectedDomains.add(value);
+                                selectedDomains.add(value.name);
                                 _autoCompleteKey = UniqueKey();
                               });
                             } else {
@@ -283,12 +248,19 @@ class _UserSkillsApprovalScreenState extends State<UserSkillsApprovalScreen> {
                         courseCollegeControllers.putIfAbsent(
                             domain, () => TextEditingController());
 
+                        final fname =
+                            getCertificateImageName(domain, certificateImages);
+
                         return Column(
                           children: [
                             preferenceContainer(
                               cName: domain,
-                              fileName:
-                                  certificateImages[domain]?.files.first.name,
+                              // fileName:
+                              //     certificateImages[domain]?.files.first.name,
+                              fileName: (fname != null && fname.length > 10)
+                                  ? fname.substring(fname.length - 10)
+                                  : (fname),
+
                               onTap: () {},
                               subSkills: subSkills,
                               selectedSubSkills: selectedSkills,
@@ -322,11 +294,9 @@ class _UserSkillsApprovalScreenState extends State<UserSkillsApprovalScreen> {
                                         se.PickCertificate(skillName: skill));
                                   } else {
                                     // show snackbar or dialog to tell user to select only one
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content: Text(
-                                              'Please select only one skill to upload certificate.')),
-                                    );
+                                    showSnackbar(
+                                        'Please select only one skill to upload certificate.',
+                                        context);
                                   }
                                 }
                               },
@@ -347,24 +317,27 @@ class _UserSkillsApprovalScreenState extends State<UserSkillsApprovalScreen> {
                       },
                     ),
                     mSpacer(mHeight: 24.0),
+                    BlocListener<MyProfileBloc, MyProfileState>(
+                      listener: (context, state) {
+                        if (state is UpdateProfileLoaded) {
+                          developer
+                              .log('update profile loaded in skills screen');
+                          showSnackbar(
+                              state.updateUserProfileEntity.message, context);
+                          Navigator.pop(context);
+                        } else if (state is UpdateProfileLoading) {
+                          developer
+                              .log('update profile loading in skills screen');
+                        } else if (state is UpdateProfileError) {
+                          developer
+                              .log('update profile error in skills screen');
+                        }
+                      },
+                      child: const SizedBox(),
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // nextButton(
-                        //   title: "Next",
-                        //   onTap: () async {
-                        //     if (_formKey.currentState!.validate()) {
-                        //       final skillData = await createParamsForSkill();
-                        //       context
-                        //           .read<SkillBloc>()
-                        //           .add(SubmitSkills(skillData));
-                        //       _prefs.clear(PreferencesManager.SKILL_PARAMS);
-                        //     } else {
-                        //       showSnackbar(
-                        //           'Please enter all the details', context);
-                        //     }
-                        //   },
-                        // ),
                         BlocListener<UploadFileBloc, UploadFileState>(
                           listener: (context, state) {
                             if (state is UploadFileLoaded) {
@@ -385,21 +358,23 @@ class _UserSkillsApprovalScreenState extends State<UserSkillsApprovalScreen> {
                                   .log('Error while uploading certificates.');
                             }
                           },
-                          child: SizedBox(),
+                          child: const SizedBox(),
                         ),
-                        nextButton(
-                          title: "Save Changes",
-                          onTap: () async {
-                            if (_formKey.currentState!.validate()) {
-                              // final skillList = await createSkillList();
-                              await uploadCertificates();
-
-                              _prefs.clear(PreferencesManager.SKILL_PARAMS);
-                            } else {
-                              showSnackbar(
-                                  'Please enter all the details', context);
-                            }
-                          },
+                        SizedBox(
+                          width: 150,
+                          child: nextButton(
+                            title: "Save Changes",
+                            onTap: () async {
+                              if (_formKey.currentState!.validate()) {
+                                // final skillList = await createSkillList();
+                                await uploadCertificates();
+                                _prefs.clear(PreferencesManager.SKILL_PARAMS);
+                              } else {
+                                showSnackbar(
+                                    'Please enter all the details', context);
+                              }
+                            },
+                          ),
                         ),
                       ],
                     ),
@@ -435,26 +410,39 @@ class _UserSkillsApprovalScreenState extends State<UserSkillsApprovalScreen> {
         index++;
       }
     }
-
+    // ✅ Skip API call if no files
+    if (formData.files.isEmpty) {
+      developer.log('No certificate files to upload, skipping API call.');
+      finalSkillData = createSkillList(null);
+      final _prefs = sl<PreferencesManager>();
+      final userId = _prefs.getUserId();
+      context
+          .read<MyProfileBloc>()
+          .add(LoadUpdateProfile(userId ?? '6', finalSkillData));
+      return;
+    }
     context.read<UploadFileBloc>().add(LoadUploadFile(formData));
 
     developer.log(
         'For Data of skill\nfields : ${formData.fields}\nfiles : ${formData.files}');
   }
 
-  Map<String, dynamic> createSkillList(List<dynamic> urls) {
+  Map<String, dynamic> createSkillList(List<dynamic>? urls) {
     // Step 1: Construct skill list
     List<Map<String, dynamic>> skillList = [];
 
     for (int i = 0; i < selectedDomains.length; i++) {
-      final skill = selectedDomains[i];
-      final authority = courseCollegeControllers[skill]?.text ?? '';
+      final domain = selectedDomains[i];
+      final authority = courseCollegeControllers[domain]?.text ?? '';
+      final subSkills = selectedSubSkillsPerDomain[domain] ?? [];
 
-      skillList.add({
-        'skill_id': i + 1, // check this
-        "skill": skill,
-        "authority": authority,
-      });
+      for (int j = 0; j < subSkills.length; j++) {
+        skillList.add({
+          'skill_id': subSkills[j].id, // check this
+          "skill": subSkills[j].name,
+          "authority": authority,
+        });
+      }
     }
 
     final map = {'skills': skillList, 'certificate_images': urls};
@@ -463,147 +451,4 @@ class _UserSkillsApprovalScreenState extends State<UserSkillsApprovalScreen> {
 
     return map;
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     backgroundColor: Colors.white,
-  //     appBar: AppBar(
-  //       backgroundColor: Colors.white,
-  //       actions: [
-  //         InkWell(
-  //           onTap: () {},
-  //           child: Padding(
-  //             padding: const EdgeInsets.only(right: 20.0),
-  //             child: SvgPicture.asset("assets/Icons/message_icon.svg"),
-  //           ),
-  //         ),
-  //         InkWell(
-  //           onTap: () {},
-  //           child: Padding(
-  //             padding: const EdgeInsets.only(right: 20.0),
-  //             child: SvgPicture.asset("assets/Icons/notifications_icon.svg"),
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //     body: SingleChildScrollView(
-  //       child: Padding(
-  //         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 6),
-  //         child: Column(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: [
-  //             BlocListener<SkillBloc, SkillState>(
-  //               listener: (context, state) {
-  //                 if (state is SkillStateDomainLoaded) {
-  //                   final data = state.domainAllResponse;
-  //                   setState(() {
-  //                     domains = data.domains;
-  //                   });
-  //                   developer.log("Loaded domains");
-  //                 } else if (state is SkillStateDomainError) {
-  //                   developer.log("Error in loading domains");
-  //                 } else if (state is SkillStateDomainLoading) {
-  //                   developer.log("Loading domains");
-  //                 }
-  //               },
-  //               child: SizedBox(),
-  //             ),
-  //             Text(
-  //               "Your Skills",
-  //               style: mTextStyle32(mColor: Colors.black),
-  //             ),
-  //             SizedBox(
-  //               height: 10,
-  //             ),
-  //             Container(
-  //               key: _autoCompKey,
-  //               child: CustomAutocomplete(
-  //                 options: domains,
-  //                 label: "List Your Skills here...",
-  //                 onSelected: (value) {
-  //                   if (!selectedSkills.contains(value)) {
-  //                     setState(() {
-  //                       selectedSkills.add(value);
-  //                       _autoCompKey = UniqueKey();
-  //                     });
-  //                   }
-  //                 },
-  //               ),
-  //             ),
-  //             SizedBox(
-  //               height: 16,
-  //             ),
-  //             ListView.builder(
-  //                 physics: const NeverScrollableScrollPhysics(),
-  //                 shrinkWrap: true,
-  //                 itemCount: selectedSkills.length,
-  //                 itemBuilder: (context, index) {
-  //                   final domain = selectedSkills[index];
-  //                   final controller = TextEditingController();
-  //                   return Column(
-  //                     children: [
-  //                       preferenceContainer(
-  //                         cName: domain,
-  //                         cIcon: Icons.cancel,
-  //                         onTap: () {},
-  //                         onCrossTap: () {
-  //                           setState(() {
-  //                             selectedSkills.removeAt(index);
-  //                           });
-  //                         },
-  //                         courseCollegeController: controller,
-  //                       ),
-  //                       SizedBox(
-  //                         height: 16,
-  //                       ),
-  //                     ],
-  //                   );
-  //                 }),
-  //             const SizedBox(
-  //               height: 24,
-  //             ),
-  //             BlocListener<MyProfileBloc, MyProfileState>(
-  //               listener: (context, state) {
-  //                 // TODO: implement listener
-  //                 if (state is UpdateProfileLoaded) {
-  //                   developer.log('Skills updated');
-  //                   Navigator.pop(context);
-  //                 } else if (state is UpdateProfileLoading) {
-  //                   developer.log('Skills updating please wait');
-  //                 } else if (state is UpdateProfileLoaded) {
-  //                   developer.log(
-  //                       'Encountered some issue while updating skills. Please try again');
-  //                   showSnackbar(
-  //                       'Encountered some issue while updating skills. Please try again',
-  //                       context);
-  //                 }
-  //               },
-  //               child: Center(
-  //                 child: SizedBox(
-  //                   width: 150,
-  //                   child: nextButton(
-  //                     title: "Save Changes",
-  //                     onTap: () {
-  //                       if (selectedSkills.isNotEmpty) {
-  //                         final map = {'skills': selectedSkills};
-  //                         final _prefs = sl<PreferencesManager>();
-  //                         final userId = _prefs.getUserId();
-  //                         context
-  //                             .read<MyProfileBloc>()
-  //                             .add(LoadUpdateProfile(userId ?? '2', map));
-  //                       } else {
-  //                         showSnackbar("No skills selected", context);
-  //                       }
-  //                     },
-  //                   ),
-  //                 ),
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 }

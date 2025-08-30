@@ -21,7 +21,7 @@ import 'job_details_view.dart';
 
 class JobSearchScreen extends StatefulWidget {
   final VoidCallback? onCallBackFromJobDetailsPage;
-  JobSearchScreen({this.onCallBackFromJobDetailsPage});
+  const JobSearchScreen({super.key, this.onCallBackFromJobDetailsPage});
 
   @override
   State<JobSearchScreen> createState() => _JobSearchScreenState();
@@ -29,34 +29,6 @@ class JobSearchScreen extends StatefulWidget {
 
 class _JobSearchScreenState extends State<JobSearchScreen> {
   TextEditingController jSearchController = TextEditingController();
-
-  List<Map<String, dynamic>> mList = [
-    {
-      "job_title": "Digital Marketing Executive",
-      "company_name": "Uber",
-      "image":
-          // "https://static-00.iconduck.com/assets.00/uber-icon-1024x1024-4icncyyo.png",
-          "https://picsum.photos/200",
-      "location": "Mumbai",
-      "experience": "1-2 years",
-      "salary": "INR 3,00,000",
-      "status": "Actively Hiring",
-      "posted": "2 weeks ago",
-      "match": "92% match"
-    },
-    {
-      "job_title": "Web Developer",
-      "company_name": "GitHub",
-      "image":
-          "https://seekvectors.com/files/download/e58196130297806acd58a2bf536ac0bc.jpg",
-      "location": "Remote",
-      "experience": "2-4 years",
-      "salary": "INR 6,00,000",
-      "status": "Actively Hiring",
-      "posted": "1 week ago",
-      "match": "88% match"
-    },
-  ];
 
   List<AllJobsEntity> allJobsList = [];
 
@@ -250,25 +222,21 @@ class _JobSearchScreenState extends State<JobSearchScreen> {
                                 ),
                               );
                             },
-                            // imageUrl: job['image'],
-                            // jobTitle: job['job_title'],
-                            // company: job['company_name'],
-                            // location: job['location'],
-                            // experience: job['experience'],
-                            // salary: job['salary'],
-                            // status: job['status'],
-                            // posted: job['posted'],
-                            // match: job['match'],
-                            // imageUrl: job.logoUrl,
+
                             imageUrl: ImageString.dummyImageUrl,
-                            jobTitle: job.jobProfile,
+                            // jobTitle: job.jobProfile,
+                            jobTitle: 'Job Profile',
                             company: job.companyName,
-                            location: job.cityChoice ?? 'City Choice',
+                            // location: job.cityChoice ?? 'City Choice',
+                            location: 'City Choice',
                             experience: job.experience,
                             salary: formatSalaryRangeToINR(job.salary),
-                            status: job.hiringStatus,
-                            posted: formatDaysAgoFromString(job.postedDaysAgo),
-                            match: '${job.matchPercentage}% match',
+                            // status: job.hiringStatus,
+                            status: 'Hiring',
+                            // posted: formatDaysAgoFromString(job.postedDaysAgo),
+                            posted: '1 week ago',
+                            match:
+                                '${job.matchPercentage.toStringAsFixed(0)}% match',
                           );
                         },
                       ),

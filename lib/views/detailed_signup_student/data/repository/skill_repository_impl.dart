@@ -5,6 +5,7 @@ import 'package:job_portal/views/detailed_signup_student/data/data_source/detail
 import 'package:job_portal/views/detailed_signup_student/data/model/domian_all_response.dart';
 import 'package:job_portal/views/detailed_signup_student/data/model/skill_submission_response.dart';
 import 'package:job_portal/views/detailed_signup_student/data/model/subskill_response.dart';
+import 'package:job_portal/views/detailed_signup_student/domain/entities/metadata_entities.dart';
 import 'package:job_portal/views/detailed_signup_student/domain/repository/skill_repository.dart';
 
 class SkillRepositoryImpl extends SkillRepository {
@@ -12,7 +13,7 @@ class SkillRepositoryImpl extends SkillRepository {
   SkillRepositoryImpl(this.apiService);
 
   @override
-  Future<DataState<DomainAllResponse>> getDomains() async {
+  Future<DataState<DomainListEntity>> getDomains() async {
     try {
       final response = await apiService.getDomains();
       if (response.response.statusCode == HttpStatus.ok) {
@@ -32,7 +33,7 @@ class SkillRepositoryImpl extends SkillRepository {
   }
 
   @override
-  Future<DataState<SubSkillResponse>> getSubSkills(String domain) async {
+  Future<DataState<SkillListEntity>> getSubSkills(String domain) async {
     try {
       final response = await apiService.getSubSkills(domain);
       if (response.response.statusCode == HttpStatus.ok) {

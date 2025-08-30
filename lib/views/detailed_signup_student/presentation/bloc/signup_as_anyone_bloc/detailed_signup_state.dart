@@ -1,11 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:job_portal/views/detailed_signup_student/data/model/basic_user_data_response.dart';
-import 'package:job_portal/views/detailed_signup_student/data/model/colleges_response.dart';
-import 'package:job_portal/views/detailed_signup_student/data/model/courses_response.dart';
-import 'package:job_portal/views/detailed_signup_student/data/model/job_roles_response.dart';
-import 'package:job_portal/views/detailed_signup_student/data/model/specialization_response.dart';
 import 'package:job_portal/views/detailed_signup_student/data/model/submit_detailed_user_profile.dart';
+import 'package:job_portal/views/detailed_signup_student/domain/entities/metadata_entities.dart';
 
 @immutable
 abstract class DetailedSignupState extends Equatable {
@@ -26,7 +23,7 @@ class DetailedSignupGetBasicUserInfoLoading extends DetailedSignupState {
 
 class DetailedSignupGetBasicUserInfoLoaded extends DetailedSignupState {
   final BasicUserInfoResponse basicUserInfoResponse;
-  final LocationsListResponse locations;
+  final LocationListEntity locations;
 
   const DetailedSignupGetBasicUserInfoLoaded(
       this.basicUserInfoResponse, this.locations);
@@ -41,16 +38,15 @@ class DetailedSignupGetCollegeDetailsLoading extends DetailedSignupState {
 }
 
 class DetailedSignupGetCollegeDetailsLoaded extends DetailedSignupState {
-  final CollegesListResponse collegesListResponse;
-  final SpecializationListResponse specializationListResponse;
-  final CoursesListResponse coursesListResponse;
-  final JobRolesListResponse jobRolesListResponse;
+  final CollegeListEntity collegesListResponse;
+  final CourseListEntity coursesListResponse;
+  // final JobRolesListResponse jobRolesListResponse;
 
   const DetailedSignupGetCollegeDetailsLoaded(
-      this.collegesListResponse,
-      this.specializationListResponse,
-      this.coursesListResponse,
-      this.jobRolesListResponse);
+    this.collegesListResponse,
+    this.coursesListResponse,
+    // this.jobRolesListResponse,
+  );
 }
 
 class DetailedSignupGetCollegeDetailsError extends DetailedSignupState {
@@ -71,43 +67,15 @@ class DetailedSingupSubmitUserDetailsError extends DetailedSignupState {
   const DetailedSingupSubmitUserDetailsError();
 }
 
-// class DetailedSignupGetCollegesLoading extends DetailedSignupState {
-//   const DetailedSignupGetCollegesLoading();
-// }
-// class DetailedSignupGetCollegesLoaded extends DetailedSignupState {
-//   final CollegesListResponse collegesListResponse;
-//   const DetailedSignupGetCollegesLoaded(this.collegesListResponse);
-// }
-// class DetailedSignupGetCollegesError extends DetailedSignupState {
-//   const DetailedSignupGetCollegesError();
-// }
-// class DetailedSignupGetSpecializationLoading extends DetailedSignupState {
-//   const DetailedSignupGetSpecializationLoading();
-// }
-// class DetailedSignupGetSpecializationLoaded extends DetailedSignupState {
-//   final SpecializationListResponse specializationListResponse;
-//   const DetailedSignupGetSpecializationLoaded(this.specializationListResponse);
-// }
-// class DetailedSignupGetSpecializationError extends DetailedSignupState {
-//   const DetailedSignupGetSpecializationError();
-// }
-// class DetailedSignupGetCoursesLoading extends DetailedSignupState {
-//   const DetailedSignupGetCoursesLoading();
-// }
-// class DetailedSignupGetCoursesLoaded extends DetailedSignupState {
-//   final CoursesListResponse coursesListResponse;
-//   const DetailedSignupGetCoursesLoaded(this.coursesListResponse);
-// }
-// class DetailedSignupGetCoursesError extends DetailedSignupState {
-//   const DetailedSignupGetCoursesError();
-// }
-// class DetailedSignupJobRolesLoading extends DetailedSignupState {
-//   const DetailedSignupJobRolesLoading();
-// }
-// class DetailedSignupJobRolesLoaded extends DetailedSignupState {
-//   final JobRolesListResponse jobRolesListResponse;
-//   const DetailedSignupJobRolesLoaded(this.jobRolesListResponse);
-// }
-// class DetailedSignupJobRolesError extends DetailedSignupState {
-//   const DetailedSignupJobRolesError();
-// }
+class DetailedSignupSpecializationLoading extends DetailedSignupState {
+  const DetailedSignupSpecializationLoading();
+}
+
+class DetailedSignupSpecializationLoaded extends DetailedSignupState {
+  final List<SpecializationEntity> specializationListResponse;
+  const DetailedSignupSpecializationLoaded(this.specializationListResponse);
+}
+
+class DetailedSignupSpecializationError extends DetailedSignupState {
+  const DetailedSignupSpecializationError();
+}

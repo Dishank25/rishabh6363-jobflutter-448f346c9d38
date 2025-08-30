@@ -18,12 +18,15 @@ import 'package:job_portal/views/signup_recruiter/presentation/bloc/verify_otp_r
 import 'package:job_portal/views/signup_student/presentation/bloc/remote_signup_bloc/remote_signup_bloc.dart';
 import 'package:job_portal/views/signup_student/presentation/bloc/verify_otp_bloc/verify_otp_bloc.dart';
 import 'package:job_portal/views/signup_university/presentation/blocs/university_signup_bloc.dart';
+import 'package:job_portal/views/user_authentication_and_approval_screens/presentation/bloc/user_auth_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/job_applications_bloc/job_application_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/manage_account_bloc/manage_account_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/my_profile_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/profile_bloc/profile_bloc.dart';
+import 'package:job_portal/views/user_profile/presentation/bloc/raise_ticket_bloc/raise_ticket_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/terms_and_conditions_bloc/terms_and_conditions_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/upload_resume_bloc/upload_resume_bloc.dart';
+import 'package:job_portal/views/user_profile/presentation/bloc/your_experience_bloc/your_experience_bloc.dart';
 import 'views/login/presentation/views/login_page_first_view.dart';
 
 void main() async {
@@ -59,6 +62,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => sl<CreateFeedPostBloc>()),
         BlocProvider(create: (_) => sl<UploadResumeBloc>()),
         BlocProvider(create: (_) => sl<JobApplicationBloc>()),
+        BlocProvider(create: (_) => sl<YourExperienceBloc>()),
+        BlocProvider(create: (_) => sl<RaiseTicketBloc>()),
+        BlocProvider(create: (_) => sl<UserAuthBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

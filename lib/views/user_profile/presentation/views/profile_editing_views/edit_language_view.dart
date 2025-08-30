@@ -104,7 +104,8 @@ class _EditLanguageViewState extends State<EditLanguageView> {
                       decoration: const InputDecoration(
                         isCollapsed: true,
                         border: InputBorder.none,
-                        hintText: "Enter Language...",
+                        hintText:
+                            "Enter Language...(comma seprated, i.e : English , Hindi)",
                         hintStyle: TextStyle(
                           fontWeight: FontWeight.w400,
                           color: Color.fromARGB(255, 144, 149, 160),

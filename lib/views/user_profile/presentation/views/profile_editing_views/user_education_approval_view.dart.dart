@@ -1,16 +1,25 @@
+import 'dart:developer' as developer show log;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:job_portal/injection_container.dart';
 import 'package:job_portal/utils/storage/shared_preference.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/views/signup_as_anyone_view.dart';
+import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_bloc.dart';
+import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_event.dart';
+import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_state.dart';
+import 'package:job_portal/views/detailed_signup_student/domain/entities/metadata_entities.dart';
+import 'package:job_portal/views/user_profile/domain/entities/user_details_entity.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/my_profile_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/my_profile_event.dart';
+import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/my_profile_state.dart';
 import '../../../../../ui_helper/ui_helper.dart';
 import '../../../../../widgets/widgets.dart';
 
 class UserEducationApprovalScreen extends StatefulWidget {
-  const UserEducationApprovalScreen({super.key});
+  final List<UserEducationEntity> eduList;
+  const UserEducationApprovalScreen({super.key, required this.eduList});
 
   @override
   State<UserEducationApprovalScreen> createState() =>
@@ -24,25 +33,78 @@ class _UserEducationApprovalScreenState
   TextEditingController searchCourseController = TextEditingController();
   List<String> addedEducationLevels = [];
   List<EducationCardData> educationControllers = [];
+  List<SpecializationEntity> specializations = [];
+
+  void prefillEducationData(List<UserEducationEntity> eduList) {
+    setState(() {
+      addedEducationLevels.clear();
+      educationControllers.clear();
+
+      for (final edu in eduList) {
+        developer.log('College name : ${edu.schoolCollege?.name ?? "College"}');
+
+        addedEducationLevels.add(edu.level);
+
+        educationControllers.add(
+          EducationCardData(
+            level: edu.level,
+            selectedSchoolCollegeId: edu.schoolCollegeId,
+            selectedCourseId: edu.courseId,
+            selectedSpecializationId: edu.specializationId,
+            educationCertificate: edu.educationCertificate,
+
+            // Controllers pre-filled
+            schoolOrCollegeController: TextEditingController(
+              text: edu.schoolCollege?.name ?? "College",
+            ),
+            boardOrUniversityController: TextEditingController(
+              text: edu.boardOrUniversity,
+            ),
+            startYearController: TextEditingController(
+              text: edu.startYear,
+            ),
+            endYearController: TextEditingController(
+              text: edu.endYear,
+            ),
+            percentageOrCgpaController: TextEditingController(
+              text: edu.percentageOrCgpa,
+            ),
+          ),
+        );
+      }
+    });
+  }
 
   List<Map<String, dynamic>> createEducationMap() {
     return educationControllers.map((edu) {
       return {
         "level": edu.level,
-        "schoolOrCollege": edu.schoolOrCollegeController.text.trim(),
+        "schoolCollegeId": edu.selectedSchoolCollegeId,
         "boardOrUniversity": edu.boardOrUniversityController.text.trim(),
+        "courseId": edu.selectedCourseId,
+        "specializationId": edu.selectedSpecializationId ?? 1,
         "startYear": edu.startYearController.text.trim(),
         "endYear": edu.endYearController.text.trim(),
         "percentageOrCgpa": edu.percentageOrCgpaController.text.trim(),
+        "educationCertificate": edu.educationCertificate ?? "dummy.pdf",
+        'schoolOrCollege': edu.schoolOrCollegeController.text.trim(),
       };
     }).toList();
   }
 
-  void addEducationEntry(String level) {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    prefillEducationData(widget.eduList);
+  }
+
+  void addEducationEntry(String level, {int? courseId}) {
     setState(() {
       addedEducationLevels.add(level);
       educationControllers.add(EducationCardData(
         level: level,
+        selectedCourseId: courseId,
         schoolOrCollegeController: TextEditingController(),
         boardOrUniversityController: TextEditingController(),
         startYearController: TextEditingController(),
@@ -50,6 +112,16 @@ class _UserEducationApprovalScreenState
         percentageOrCgpaController: TextEditingController(),
       ));
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    // Fetch master colleges on screen open following existing API call structure
+    final Map<String, dynamic> emailMap = {};
+    context
+        .read<DetailedSignupBloc>()
+        .add(DetailedSignupGetCollegeDetails(emailMap));
+    super.didChangeDependencies();
   }
 
   @override
@@ -88,107 +160,65 @@ class _UserEducationApprovalScreenState
                   style: mTextStyle32(mColor: Colors.black),
                 ),
                 const SizedBox(height: 10),
-                CustomTextField(
-                  controller: searchCourseController,
-                  hintText:
-                      "Select your education level (e.g. 10th, 12th, B.Tech)",
-                  suffixIcon: Icons.search,
-                  fillColor: Colors.white,
+                BlocBuilder<DetailedSignupBloc, DetailedSignupState>(
+                  builder: (context, state) {
+                    if (state is DetailedSignupGetCollegeDetailsLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (state is DetailedSignupGetCollegeDetailsLoaded) {
+                      final courses = state.coursesListResponse.courses;
+                      return CustomAutocompleteGeneric<CourseEntity>(
+                        options: courses,
+                        label:
+                            'Select your education level (e.g. 10th, 12th, B.Tech)',
+                        onSelected: (course) {
+                          // Set field text
+                          searchCourseController.text = course.name;
+                          // Add a new education card for the selected course level
+                          if (!addedEducationLevels.contains(course.name)) {
+                            addEducationEntry(course.name, courseId: course.id);
+                            // context.read<DetailedSignupBloc>().add(
+                            //     DetailedSignupGetSpecializations(
+                            //         course.id.toString()));
+                          }
+                        },
+                        displayStringForOption: (course) => course.name,
+                      );
+                    }
+                    // Fallback input if state not loaded yet
+                    return CustomTextField(
+                      controller: searchCourseController,
+                      hintText:
+                          'Select your education level (e.g. 10th, 12th, B.Tech)',
+                      suffixIcon: Icons.search,
+                      fillColor: Colors.white,
+                    );
+                  },
                 ),
                 const SizedBox(height: 16),
-                InkWell(
-                  onTap: () {
-                    final level = searchCourseController.text.trim();
-                    if (level.isNotEmpty &&
-                        !addedEducationLevels.contains(level)) {
-                      addEducationEntry(level);
-                    }
-                  },
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Icon(Icons.add, color: Colors.blue),
-                      Text("Add education",
-                          style: TextStyle(color: Colors.blue)),
-                    ],
-                  ),
-                ),
+                // InkWell(
+                //   onTap: () {
+                //     final level = searchCourseController.text.trim();
+                //     if (level.isNotEmpty &&
+                //         !addedEducationLevels.contains(level)) {
+                //       addEducationEntry(level);
+                //     }
+                //   },
+                //   child: const Row(
+                //     mainAxisAlignment: MainAxisAlignment.end,
+                //     children: [
+                //       Icon(Icons.add, color: Colors.blue),
+                //       Text("Add education",
+                //           style: TextStyle(color: Colors.blue)),
+                //     ],
+                //   ),
+                // ),
                 const SizedBox(height: 24),
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: educationControllers.length,
                   itemBuilder: (context, index) {
-                    // return Card(
-                    //   margin: const EdgeInsets.only(bottom: 16),
-                    //   child: Padding(
-                    //     padding: const EdgeInsets.all(12),
-                    //     child: Column(
-                    //       crossAxisAlignment: CrossAxisAlignment.start,
-                    //       children: [
-                    //         Row(
-                    //           children: [
-                    //             Text(
-                    //               edu.level,
-                    //               style: const TextStyle(
-                    //                   fontWeight: FontWeight.bold),
-                    //             ),
-                    //             const Spacer(),
-                    //             IconButton(
-                    //               onPressed: () {
-                    //                 setState(() {
-                    //                   addedEducationLevels.remove(edu.level);
-                    //                   educationControllers.removeAt(index);
-                    //                 });
-                    //               },
-                    //               icon: const Icon(Icons.close,
-                    //                   color: Colors.red),
-                    //             ),
-                    //           ],
-                    //         ),
-                    //         const SizedBox(height: 8),
-                    //         CustomTextField(
-                    //           controller: edu.schoolOrCollegeController,
-                    //           hintText: "School/College",
-                    //           fillColor: Colors.white,
-                    //         ),
-                    //         const SizedBox(height: 8),
-                    //         CustomTextField(
-                    //           controller: edu.boardOrUniversityController,
-                    //           hintText: "Board/University",
-                    //           fillColor: Colors.white,
-                    //         ),
-                    //         const SizedBox(height: 8),
-                    //         Row(
-                    //           children: [
-                    //             Expanded(
-                    //               child: CustomTextField(
-                    //                 controller: edu.startYearController,
-                    //                 hintText: "Start Year",
-                    //                 fillColor: Colors.white,
-                    //               ),
-                    //             ),
-                    //             const SizedBox(width: 12),
-                    //             Expanded(
-                    //               child: CustomTextField(
-                    //                 controller: edu.endYearController,
-                    //                 hintText: "End Year",
-                    //                 fillColor: Colors.white,
-                    //               ),
-                    //             ),
-                    //           ],
-                    //         ),
-                    //         const SizedBox(height: 8),
-                    //         CustomTextField(
-                    //           controller: edu.percentageOrCgpaController,
-                    //           hintText: "Percentage/CGPA",
-                    //           fillColor: Colors.white,
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // );
-
                     final edu = educationControllers[index];
 
                     return EducationFillingCard(
@@ -197,6 +227,10 @@ class _UserEducationApprovalScreenState
                       specializationController: edu.boardOrUniversityController,
                       startYearController: edu.startYearController,
                       endYearController: edu.endYearController,
+                      specializations: specializations,
+                      onSelectCollegeId: (id) {
+                        edu.selectedSchoolCollegeId = id;
+                      },
                       onTapCross: () {
                         setState(() {
                           addedEducationLevels.remove(edu.level);
@@ -205,6 +239,15 @@ class _UserEducationApprovalScreenState
                       },
                     );
                   },
+                ),
+                BlocListener<MyProfileBloc, MyProfileState>(
+                  listener: (context, state) {
+                    if (state is UpdateProfileLoaded) {
+                      showSnackbar(
+                          state.updateUserProfileEntity.message, context);
+                    }
+                  },
+                  child: const SizedBox(),
                 ),
                 Center(
                   child: SizedBox(
@@ -215,6 +258,7 @@ class _UserEducationApprovalScreenState
                         if (_formKey.currentState!.validate()) {
                           final list = createEducationMap();
                           final map = {'educations': list};
+                          developer.log('Education map : $map');
                           final userId = sl<PreferencesManager>().getUserId();
                           context
                               .read<MyProfileBloc>()
@@ -245,8 +289,12 @@ class EducationFillingCard extends StatefulWidget {
   final TextEditingController specializationController;
   final TextEditingController startYearController;
   final TextEditingController endYearController;
+  final List<SpecializationEntity> specializations;
+
   final VoidCallback onTapCross;
   final String? Function(String?)? validator;
+  final void Function(int)? onSelectCollegeId;
+  final void Function(int)? onSelectSpecializationId;
 
   const EducationFillingCard({
     super.key,
@@ -255,8 +303,11 @@ class EducationFillingCard extends StatefulWidget {
     required this.specializationController,
     required this.startYearController,
     required this.endYearController,
+    required this.specializations,
     required this.onTapCross,
     this.validator,
+    this.onSelectCollegeId,
+    this.onSelectSpecializationId,
   });
 
   @override
@@ -299,24 +350,59 @@ class _EducationFillingCardState extends State<EducationFillingCard> {
                 ),
                 const SizedBox(height: 10),
 
-                // College Name
+                // College Name with autocomplete
                 Text("College Name", style: mTextStyle12()),
-                CustomTextField(
-                  controller: widget.collegeNameController,
-                  hintText: "Eg. Delhi Technological University",
-                  fillColor: Colors.white,
-                  validator: widget.validator,
+                BlocBuilder<DetailedSignupBloc, DetailedSignupState>(
+                  builder: (context, state) {
+                    if (state is DetailedSignupGetCollegeDetailsLoaded) {
+                      final colleges = state.collegesListResponse.colleges;
+                      return CustomAutocompleteGeneric<CollegeEntity>(
+                        options: colleges,
+                        label: "Eg. Delhi Technological University",
+                        onSelected: (college) {
+                          widget.collegeNameController.text = college.name;
+                          if (widget.onSelectCollegeId != null) {
+                            widget.onSelectCollegeId!(college.id);
+                          }
+                        },
+                        initialText: widget.collegeNameController.text,
+                        displayStringForOption: (college) => college.name,
+                      );
+                    }
+                    if (state is DetailedSignupGetCollegeDetailsLoading) {
+                      return const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        child: SizedBox(
+                            height: 36,
+                            width: 36,
+                            child: CircularProgressIndicator()),
+                      );
+                    }
+                    return CustomTextField(
+                      controller: widget.collegeNameController,
+                      hintText: "Eg. Delhi Technological University",
+                      fillColor: Colors.white,
+                      validator: widget.validator,
+                    );
+                  },
                 ),
 
                 const SizedBox(height: 10),
 
                 // Specialization
                 Text("Specialization", style: mTextStyle12()),
-                CustomTextField(
-                  controller: widget.specializationController,
-                  hintText: "Eg. Computer Science",
-                  fillColor: Colors.white,
-                  validator: widget.validator,
+                CustomAutocompleteGeneric(
+                  options: widget.specializations,
+                  label: 'Specialization',
+                  onSelected: (value) {
+                    if (widget.onSelectSpecializationId != null) {
+                      widget.onSelectSpecializationId!(value.id);
+                    }
+                  },
+                  displayStringForOption: (value) {
+                    return value.name;
+                  },
+                  initialText: widget.specializationController.text,
                 ),
 
                 const SizedBox(height: 10),
@@ -367,6 +453,10 @@ class EducationCardData {
   TextEditingController startYearController;
   TextEditingController endYearController;
   TextEditingController percentageOrCgpaController;
+  int? selectedSchoolCollegeId;
+  int? selectedCourseId;
+  int? selectedSpecializationId;
+  String? educationCertificate;
 
   EducationCardData({
     required this.level,
@@ -375,5 +465,9 @@ class EducationCardData {
     required this.startYearController,
     required this.endYearController,
     required this.percentageOrCgpaController,
+    this.selectedSchoolCollegeId,
+    this.selectedCourseId,
+    this.selectedSpecializationId,
+    this.educationCertificate,
   });
 }

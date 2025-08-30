@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:job_portal/utils/constants/enums.dart';
 import 'package:job_portal/utils/constants/image_string.dart';
+import 'package:job_portal/views/detailed_signup_student/domain/entities/metadata_entities.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_bloc.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_event.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_state.dart';
@@ -41,7 +42,7 @@ class _DetailedUniversitySignupViewState
   OverlayEntry? _collegeOverLayEntry;
 
   String selectedCollege = '';
-  List<String> coursesList = [];
+  List<CourseEntity> coursesList = [];
   List<String> selectedCourses = [];
 
   @override
@@ -298,7 +299,7 @@ class _DetailedUniversitySignupViewState
                   children: coursesList.map((course) {
                     final isSelected = selectedCourses.contains(course);
                     return courseName(
-                      name: course,
+                      name: course.name,
                       bgColor:
                           isSelected ? const Color(0xff1961F3) : Colors.white,
                       textColor: isSelected ? Colors.white : Colors.black,
@@ -307,9 +308,9 @@ class _DetailedUniversitySignupViewState
                       onTap: () {
                         setState(() {
                           if (isSelected) {
-                            selectedCourses.remove(course);
+                            selectedCourses.remove(course.name);
                           } else {
-                            selectedCourses.add(course);
+                            selectedCourses.add(course.name);
                           }
                         });
                       }, // optional or remove if unused

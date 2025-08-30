@@ -20,25 +20,25 @@ class _UniversitySignupApiService implements UniversitySignupApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<HttpResponse<CoursesListResponse>> getCourses() async {
+  Future<HttpResponse<CourseListModel>> getCourses() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HttpResponse<CoursesListResponse>>(
+    final _options = _setStreamType<HttpResponse<CourseListModel>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'courses',
+            'master/courses',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late CoursesListResponse _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late CourseListModel _value;
     try {
-      _value = CoursesListResponse.fromJson(_result.data!);
+      _value = CourseListModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

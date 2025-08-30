@@ -9,6 +9,7 @@ import 'package:job_portal/views/bottom_nav_bar/student_bottom_nav_bar.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_apply_bloc/job_apply_bloc.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_apply_bloc/job_apply_event.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_apply_bloc/job_apply_state.dart';
+import 'package:job_portal/views/user_authentication_and_approval_screens/presentation/view/user_auth_view.dart';
 import 'package:job_portal/views/user_profile/presentation/views/User_Notifications_Screen.dart';
 import 'package:job_portal/views/user_profile/presentation/views/User_messages_screen.dart';
 import 'package:job_portal/views/job_related/presentation/bloc/job_details_bloc/job_details_bloc.dart';

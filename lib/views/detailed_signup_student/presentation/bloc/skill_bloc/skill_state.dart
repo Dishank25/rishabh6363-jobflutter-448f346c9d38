@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:job_portal/views/detailed_signup_student/data/model/domian_all_response.dart';
 import 'package:job_portal/views/detailed_signup_student/data/model/skill_submission_response.dart';
 import 'package:job_portal/views/detailed_signup_student/data/model/subskill_response.dart';
+import 'package:job_portal/views/detailed_signup_student/domain/entities/metadata_entities.dart';
 
 @immutable
 abstract class SkillState extends Equatable {
@@ -22,10 +23,11 @@ class SubSkillLoading extends SkillState {
 }
 
 class SubSkillLoaded extends SkillState {
-  final SubSkillResponse subSkillResponse;
+  final SkillListEntity subSkillResponse;
   final String domain;
+  final String domainId;
 
-  const SubSkillLoaded(this.subSkillResponse, this.domain);
+  const SubSkillLoaded(this.subSkillResponse, this.domain, this.domainId);
 }
 
 class SubSkillError extends SkillState {
@@ -37,7 +39,7 @@ class SkillStateDomainLoading extends SkillState {
 }
 
 class SkillStateDomainLoaded extends SkillState {
-  final DomainAllResponse domainAllResponse;
+  final DomainListEntity domainAllResponse;
 
   const SkillStateDomainLoaded(this.domainAllResponse);
 }

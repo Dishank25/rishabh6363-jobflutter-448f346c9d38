@@ -16,7 +16,8 @@ class LoadDomains extends SkillEvent {
 
 class LoadSubSkills extends SkillEvent {
   final String domain;
-  const LoadSubSkills(this.domain);
+  final String domainId;
+  const LoadSubSkills(this.domain, this.domainId);
 
   @override
   List<Object?> get props => [];

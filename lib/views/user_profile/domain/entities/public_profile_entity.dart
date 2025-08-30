@@ -52,9 +52,17 @@ class UserProfileEntity {
 
 // skill_entity.dart
 class SkillEntity {
-  final String skill;
+  final String domain;
+  final List<String> subSkills;
+  final List<String> authority;
+  final List<String> certificateImages;
 
-  const SkillEntity({required this.skill});
+  const SkillEntity({
+    required this.domain,
+    required this.subSkills,
+    required this.authority,
+    required this.certificateImages,
+  });
 }
 
 class ExperienceEntity {

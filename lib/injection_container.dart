@@ -56,6 +56,11 @@ import 'package:job_portal/views/signup_university/data/repository/university_si
 import 'package:job_portal/views/signup_university/domain/repository/university_signup_repository.dart';
 import 'package:job_portal/views/signup_university/domain/usecase/university_signup_usecase.dart';
 import 'package:job_portal/views/signup_university/presentation/blocs/university_signup_bloc.dart';
+import 'package:job_portal/views/user_authentication_and_approval_screens/data/data_source/user_auth_otp_api_service.dart';
+import 'package:job_portal/views/user_authentication_and_approval_screens/data/repository/user_auth_otp%20repository_impl.dart';
+import 'package:job_portal/views/user_authentication_and_approval_screens/domain/repository/user_auth_otp_repository.dart';
+import 'package:job_portal/views/user_authentication_and_approval_screens/domain/usecases/user_auth_otp_usecase.dart';
+import 'package:job_portal/views/user_authentication_and_approval_screens/presentation/bloc/user_auth_bloc.dart';
 import 'package:job_portal/views/user_profile/data/data_sources/profile_api_service.dart';
 import 'package:job_portal/views/user_profile/data/repository/profile_repository_impl.dart';
 import 'package:job_portal/views/user_profile/domain/repository/profile_repository.dart';
@@ -64,8 +69,10 @@ import 'package:job_portal/views/user_profile/presentation/bloc/job_applications
 import 'package:job_portal/views/user_profile/presentation/bloc/manage_account_bloc/manage_account_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/my_profile_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/profile_bloc/profile_bloc.dart';
+import 'package:job_portal/views/user_profile/presentation/bloc/raise_ticket_bloc/raise_ticket_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/terms_and_conditions_bloc/terms_and_conditions_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/upload_resume_bloc/upload_resume_bloc.dart';
+import 'package:job_portal/views/user_profile/presentation/bloc/your_experience_bloc/your_experience_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final sl = GetIt.instance;
@@ -102,6 +109,8 @@ Future<void> initializeDependencies() async {
       ProfileApiService(sl<DioClient>().instance));
   sl.registerSingleton<UploadFileApiService>(
       UploadFileApiService(sl<DioClient>().instance));
+  sl.registerSingleton<UserAuthOtpApiService>(
+      UserAuthOtpApiService(sl<DioClient>().instance));
 
   // Blocs
   sl.registerFactory<RemoteSignupBloc>(() => RemoteSignupBloc(sl(), sl()));
@@ -128,6 +137,12 @@ Future<void> initializeDependencies() async {
   sl.registerFactory<CreateFeedPostBloc>(() => CreateFeedPostBloc(sl()));
   sl.registerFactory<UploadResumeBloc>(() => UploadResumeBloc());
   sl.registerFactory<JobApplicationBloc>(() => JobApplicationBloc(sl()));
+  sl.registerFactory<YourExperienceBloc>(() => YourExperienceBloc());
+  sl.registerFactory<RaiseTicketBloc>(() => RaiseTicketBloc(sl()));
+  sl.registerFactory<UserAuthBloc>(() => UserAuthBloc(
+        sendOtpToMobileUseCase: sl(),
+        verifyPhoneNumberUseCase: sl(),
+      ));
 
   // Use Cases
   sl.registerLazySingleton<SignupUsecase>(() => SignupUsecase(sl()));
@@ -178,6 +193,11 @@ Future<void> initializeDependencies() async {
       () => GetFollowersUsecase(sl()));
   sl.registerLazySingleton<GetFollowingUsecase>(
       () => GetFollowingUsecase(sl()));
+  sl.registerLazySingleton<RaiseTicketUsecase>(() => RaiseTicketUsecase(sl()));
+  sl.registerLazySingleton<SendOtpToMobileUseCase>(
+      () => SendOtpToMobileUseCase(sl()));
+  sl.registerLazySingleton<VerifyPhoneNumberUseCase>(
+      () => VerifyPhoneNumberUseCase(sl()));
 
   // Repository
   sl.registerLazySingleton<SignupRepository>(() => SignupRepositoryImpl(sl()));
@@ -197,4 +217,6 @@ Future<void> initializeDependencies() async {
       () => ProfileRepositoryImpl(sl()));
   sl.registerLazySingleton<UploadFileRepository>(
       () => UploadFileRepositoryImpl(sl()));
+  sl.registerLazySingleton<UserAuthOtpRepository>(
+      () => UserAuthOtpRepositoryImpl(apiService: sl()));
 }

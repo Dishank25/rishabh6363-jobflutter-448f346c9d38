@@ -13,11 +13,7 @@ class VerifyOtpResponse extends VerifyOtpEntity {
       message: json['message'] ?? '',
       token: json['token'],
       emailVerified: json['emailVerified'] ?? false,
-      user: User(
-        id: json['user']?['id'] ?? 0,
-        email: json['user']?['email'] ?? '',
-        role: json['user']?['role'] ?? '',
-      ),
+      user: UserModel.fromJson(json['user'] ?? {}),
     );
   }
 
@@ -26,11 +22,40 @@ class VerifyOtpResponse extends VerifyOtpEntity {
       'message': message,
       'token': token,
       'emailVerified': emailVerified,
-      'user': {
-        'id': user.id,
-        'email': user.email,
-        'role': user.role,
-      },
+      'user': (user as UserModel).toJson(),
+    };
+  }
+}
+
+class UserModel extends UserEntity {
+  const UserModel({
+    required super.id,
+    required super.firstName,
+    required super.lastName,
+    required super.email,
+    required super.phone,
+    required super.userRole,
+  });
+
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      id: json['id'] ?? 0,
+      firstName: json['firstName'] ?? '',
+      lastName: json['lastName'] ?? '',
+      email: json['email'] ?? '',
+      phone: json['phone'] ?? '',
+      userRole: json['userRole'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'firstName': firstName,
+      'lastName': lastName,
+      'email': email,
+      'phone': phone,
+      'userRole': userRole,
     };
   }
 }

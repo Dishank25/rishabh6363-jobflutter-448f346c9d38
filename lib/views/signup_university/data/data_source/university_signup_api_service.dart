@@ -11,7 +11,7 @@ abstract class UniversitySignupApiService {
       _UniversitySignupApiService;
 
   @GET(Urls.getCourses)
-  Future<HttpResponse<CoursesListResponse>> getCourses();
+  Future<HttpResponse<CourseListModel>> getCourses();
 }
 
 // List<dynamic>

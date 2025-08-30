@@ -5,19 +5,21 @@ import 'package:job_portal/views/detailed_signup_student/data/model/courses_resp
 import 'package:job_portal/views/detailed_signup_student/data/model/job_roles_response.dart';
 import 'package:job_portal/views/detailed_signup_student/data/model/specialization_response.dart';
 import 'package:job_portal/views/detailed_signup_student/data/model/submit_detailed_user_profile.dart';
+import 'package:job_portal/views/detailed_signup_student/domain/entities/metadata_entities.dart';
 
 abstract class DetailedSignupRepository {
   Future<DataState<BasicUserInfoResponse>> getBasicUserInfo(
       Map<String, dynamic> emailMap);
 
-  Future<DataState<CollegesListResponse>> getColleges(
+  Future<DataState<CollegeListEntity>> getColleges(
       Map<String, dynamic> emailMap);
 
-  Future<DataState<SpecializationListResponse>> getSpecialization();
+  Future<DataState<List<SpecializationEntity>>> getSpecialization(
+      String courseId);
 
-  Future<DataState<CoursesListResponse>> getCourses();
+  Future<DataState<CourseListEntity>> getCourses();
 
-  Future<DataState<LocationsListResponse>> getLocations();
+  Future<DataState<LocationListEntity>> getLocations();
 
   Future<DataState<JobRolesListResponse>> getJobRoles();
 

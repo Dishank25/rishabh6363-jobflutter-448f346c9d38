@@ -1,16 +1,23 @@
 import 'dart:developer' as developer show log;
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:job_portal/injection_container.dart';
 import 'package:job_portal/utils/storage/shared_preference.dart';
+import 'package:job_portal/utils/upload_file_get_url/presentation/bloc/upload_file_bloc.dart';
+import 'package:job_portal/utils/upload_file_get_url/presentation/bloc/upload_file_event.dart';
+import 'package:job_portal/utils/upload_file_get_url/presentation/bloc/upload_file_state.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/views/signup_as_anyone_view.dart';
 import 'package:job_portal/views/user_profile/domain/entities/user_details_entity.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/my_profile_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/my_profile_event.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/my_profile_state.dart';
+import 'package:job_portal/views/user_profile/presentation/bloc/your_experience_bloc/your_experience_bloc.dart';
+import 'package:job_portal/views/user_profile/presentation/bloc/your_experience_bloc/your_experience_event.dart';
+import 'package:job_portal/views/user_profile/presentation/bloc/your_experience_bloc/your_experience_state.dart';
 import '../../../../../ui_helper/ui_helper.dart';
 import '../../../../../widgets/widgets.dart';
 
@@ -29,10 +36,11 @@ class _UserExperienceApprovalScreenState
 
   List<String> workedCompanyList = [];
   List<JobExperienceFillingCardData> jobExperienceControllers = [];
+  Map<String, dynamic> experienceProofs = {};
 
   final _formKey = GlobalKey<FormState>();
 
-  List<Map<String, dynamic>> createExperienceMap() {
+  List<Map<String, dynamic>> createExperienceMap(List<dynamic> urls) {
     List<Map<String, dynamic>> experiences = [];
 
     for (int i = 0; i < jobExperienceControllers.length; i++) {
@@ -46,7 +54,8 @@ class _UserExperienceApprovalScreenState
         "currentJobRole": curr.jobRoleController.text.trim(),
         "startDate": curr.startYear.text.trim(),
         "endDate": curr.endYear.text.trim(),
-        "status": "approved"
+        "status": "approved",
+        "experienceCertificate": urls[i],
       };
       experiences.add(map);
     }
@@ -66,12 +75,13 @@ class _UserExperienceApprovalScreenState
       if (exp.currentCompany != null) {
         workedCompanyList.add(exp.currentCompany!);
         final object = JobExperienceFillingCardData(
-          companyName: exp.currentCompany!,
-          jobRoleController: TextEditingController(text: exp.currentJobRole),
-          startYear: TextEditingController(text: exp.startDate),
-          endYear: TextEditingController(text: exp.endDate),
-          currentCTC: TextEditingController(text: 'Please add'),
-        );
+            companyName: exp.currentCompany!,
+            jobRoleController: TextEditingController(text: exp.currentJobRole),
+            startYear: TextEditingController(text: exp.startDate),
+            endYear: TextEditingController(text: exp.endDate),
+            currentCTC:
+                TextEditingController(text: '123123'), // get ctc added in api
+            expProof: exp.experienceCertificate);
         jobExperienceControllers.add(object);
       }
     }
@@ -104,7 +114,7 @@ class _UserExperienceApprovalScreenState
         child: Form(
           key: _formKey,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 6),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -130,6 +140,7 @@ class _UserExperienceApprovalScreenState
                         workedCompanyList.add(company);
                         final object = JobExperienceFillingCardData(
                             companyName: company,
+                            expProof: null,
                             jobRoleController: TextEditingController(),
                             startYear: TextEditingController(),
                             endYear: TextEditingController(),
@@ -154,6 +165,44 @@ class _UserExperienceApprovalScreenState
                   ),
                 ),
                 const SizedBox(height: 24),
+                BlocListener<UploadFileBloc, UploadFileState>(
+                  listener: (context, state) {
+                    if (state is UploadFileLoaded) {
+                      developer.log('upload file success for proof uploads');
+                      final urls = state.uploadFileEntity;
+                      final list = createExperienceMap(urls.url);
+                      final map = {'experiences': list};
+                      final _prefs = sl<PreferencesManager>();
+                      final userId = _prefs.getUserId();
+                      context
+                          .read<MyProfileBloc>()
+                          .add(LoadUpdateProfile(userId ?? '2', map));
+                    } else if (state is UploadFileLoading) {
+                      developer.log('upload file loading');
+                    } else if (state is UploadFileError) {
+                      developer.log('upload file error');
+                    }
+                  },
+                  child: SizedBox(),
+                ),
+                BlocListener<YourExperienceBloc, YourExperienceState>(
+                  listener: (context, state) {
+                    if (state is PickExperienceProofLoaded) {
+                      setState(() {
+                        experienceProofs = state.experienceProof;
+                        developer.log("Experience proofs : $experienceProofs");
+                      });
+                      developer.log('Exp proof loaded.');
+                    } else if (state is PickExperienceProofLoading) {
+                      developer.log('Exp proof loading.');
+                    } else if (state is PickExperienceProofError) {
+                      developer.log('Exp proof error.');
+                    } else if (state is NoExperienceProofPicked) {
+                      developer.log('No exp proof picked.');
+                    }
+                  },
+                  child: const SizedBox(),
+                ),
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -164,6 +213,11 @@ class _UserExperienceApprovalScreenState
                     return JobExperienceFillingCard(
                       companyName: curr.companyName,
                       jobRoleController: curr.jobRoleController,
+                      experienceProofName: experienceProofs[curr.companyName]
+                              ?.files
+                              .first
+                              .name ??
+                          curr.expProof?.substring(curr.expProof!.length - 10),
                       startYear: curr.startYear,
                       endYear: curr.endYear,
                       currentCTC: curr.currentCTC,
@@ -179,6 +233,13 @@ class _UserExperienceApprovalScreenState
                           jobExperienceControllers.removeAt(index);
                         });
                       },
+                      onTapPickCerti: () {
+                        setState(() {
+                          context
+                              .read<YourExperienceBloc>()
+                              .add(LoadPickExperienceProof(curr.companyName));
+                        });
+                      },
                     );
                   },
                 ),
@@ -187,7 +248,9 @@ class _UserExperienceApprovalScreenState
                     if (state is UpdateProfileLoaded) {
                       developer.log(
                           'Profile update status: ${state.updateUserProfileEntity.message}');
-                      Navigator.pop(context);
+                      showSnackbar(
+                          state.updateUserProfileEntity.message, context);
+                      // Navigator.pop(context);
                     } else if (state is UpdateProfileError) {
                       developer.log('Profile update error');
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -205,13 +268,9 @@ class _UserExperienceApprovalScreenState
                       onTap: () {
                         if (_formKey.currentState!.validate()) {
                           developer.log('valid work exp');
-                          final list = createExperienceMap();
-                          final map = {'experiences': list};
-                          final _prefs = sl<PreferencesManager>();
-                          final userId = _prefs.getUserId();
-                          context
-                              .read<MyProfileBloc>()
-                              .add(LoadUpdateProfile(userId ?? '2', map));
+
+                          // final list = createExperienceMap();
+                          uploadProofs();
                         } else {
                           developer.log('invalid work exp');
                         }
@@ -227,16 +286,47 @@ class _UserExperienceApprovalScreenState
       ),
     );
   }
+
+  Future<void> uploadProofs() async {
+    // Step 2: Create FormData
+    final formData = FormData();
+
+    // Step 3: Attach certificate images with indexed keys
+    // ignore: unused_local_variable
+    int index = 0;
+    for (var exp in experienceProofs.keys) {
+      final file = experienceProofs[exp].files.first;
+      if (file != null) {
+        final fileName = file.path.split('/').last;
+        formData.files.add(
+          MapEntry(
+            // 'certificate_image_$index',
+            'certificateImage',
+            await MultipartFile.fromFile(file.path, filename: fileName),
+          ),
+        );
+        index++;
+      }
+    }
+
+    // ignore: use_build_context_synchronously
+    context.read<UploadFileBloc>().add(LoadUploadFile(formData));
+
+    developer.log(
+        'For Data of skill\nfields : ${formData.fields}\nfiles : ${formData.files}');
+  }
 }
 
 class JobExperienceFillingCard extends StatefulWidget {
   final String companyName;
+  final String? experienceProofName;
   final TextEditingController jobRoleController;
   final TextEditingController startYear;
   final TextEditingController endYear;
   final TextEditingController currentCTC;
   final String? Function(String?)? validator;
   final VoidCallback onTapCross;
+  final VoidCallback onTapPickCerti;
 
   const JobExperienceFillingCard({
     super.key,
@@ -247,6 +337,8 @@ class JobExperienceFillingCard extends StatefulWidget {
     required this.currentCTC,
     this.validator,
     required this.onTapCross,
+    required this.onTapPickCerti,
+    required this.experienceProofName,
   });
 
   @override
@@ -283,8 +375,9 @@ class _JobExperienceFillingCardState extends State<JobExperienceFillingCard> {
                     ),
                     Spacer(),
                     courseName(
-                      name: "View/Edit Certificate",
-                      onTap: () {},
+                      name:
+                          widget.experienceProofName ?? "View/Edit Certificate",
+                      onTap: widget.onTapPickCerti,
                     ),
                   ],
                 ),
@@ -407,6 +500,7 @@ class UserExperience {
 
 class JobExperienceFillingCardData {
   final String companyName;
+  final String? expProof;
   final TextEditingController jobRoleController;
   final TextEditingController startYear;
   final TextEditingController endYear;
@@ -414,6 +508,7 @@ class JobExperienceFillingCardData {
 
   JobExperienceFillingCardData({
     required this.companyName,
+    required this.expProof,
     required this.jobRoleController,
     required this.startYear,
     required this.endYear,

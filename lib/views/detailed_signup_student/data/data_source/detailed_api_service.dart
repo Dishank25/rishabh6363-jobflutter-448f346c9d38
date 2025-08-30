@@ -22,20 +22,21 @@ abstract class DetailedApiService {
       @Body() Map<String, dynamic> emailMap);
 
   @GET(Urls.getColleges)
-  Future<HttpResponse<CollegesListResponse>> getColleges(
+  Future<HttpResponse<CollegeListModel>> getColleges(
       @Body() Map<String, dynamic> emailMap);
 
   @GET(Urls.getSpecialization)
-  Future<HttpResponse<SpecializationListResponse>> getSpecialization();
+  Future<HttpResponse<SpecializationResponse>> getSpecialization(
+      @Path() String courseId);
 
   @GET(Urls.getCourses)
-  Future<HttpResponse<CoursesListResponse>> getCourses();
+  Future<HttpResponse<CourseListModel>> getCourses();
 
   @GET('${Urls.getSubSkills}/{domain}')
-  Future<HttpResponse<SubSkillResponse>> getSubSkills(@Path() String domain);
+  Future<HttpResponse<SkillListModel>> getSubSkills(@Path() String domain);
 
   @GET(Urls.getDomainAll)
-  Future<HttpResponse<DomainAllResponse>> getDomains();
+  Future<HttpResponse<DomainListModel>> getDomains();
 
   @GET(Urls.getJobRoles)
   Future<HttpResponse<JobRolesListResponse>> getJobRoles();
@@ -50,7 +51,7 @@ abstract class DetailedApiService {
       @Body() Map<String, dynamic> data);
 
   @GET(Urls.getLocations)
-  Future<HttpResponse<LocationsListResponse>> getLocations();
+  Future<HttpResponse<LocationListModel>> getLocations();
 }
 
 // List<dynamic>

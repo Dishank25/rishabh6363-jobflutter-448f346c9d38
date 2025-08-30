@@ -31,6 +31,15 @@ class DetailedSignupGetCollegeDetails extends DetailedSignupEvent {
   List<Object?> get props => [emailMap];
 }
 
+class DetailedSignupGetSpecializations extends DetailedSignupEvent {
+  final String courseId;
+
+  const DetailedSignupGetSpecializations(this.courseId);
+
+  @override
+  List<Object?> get props => [courseId];
+}
+
 class DetailedSingupSubmitUserDetails extends DetailedSignupEvent {
   final Map<String, dynamic> params;
   const DetailedSingupSubmitUserDetails(this.params);
@@ -38,25 +47,3 @@ class DetailedSingupSubmitUserDetails extends DetailedSignupEvent {
   @override
   List<Object?> get props => [params];
 }
-
-// class DetailedSignupGetColleges extends DetailedSignupEvent {
-//   final Map<String, dynamic> emailMap;
-//   const DetailedSignupGetColleges(this.emailMap);
-//   @override
-//   List<Object?> get props => [emailMap];
-// }
-// class DetailedSignupGetSpecialization extends DetailedSignupEvent {
-//   const DetailedSignupGetSpecialization();
-//   @override
-//   List<Object?> get props => [];
-// }
-// class DetailedSignupGetCourses extends DetailedSignupEvent {
-//   const DetailedSignupGetCourses();
-//   @override
-//   List<Object?> get props => [];
-// }
-// class DetailedSignupGetJobRoles extends DetailedSignupEvent {
-//   const DetailedSignupGetJobRoles();
-//   @override
-//   List<Object?> get props => [];
-// }

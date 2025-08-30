@@ -24,10 +24,11 @@ TextStyle mTextStyle14(
     {Color mColor = AppColors.textSize14Color,
     FontWeight mFontWeight = FontWeight.w500}) {
   return TextStyle(
-      fontSize: 14,
-      color: mColor,
-      fontWeight: mFontWeight,
-      fontFamily: "Inter");
+    fontSize: 14,
+    color: mColor,
+    fontWeight: mFontWeight,
+    fontFamily: "Inter",
+  );
 }
 
 TextStyle mTextStyle15(
