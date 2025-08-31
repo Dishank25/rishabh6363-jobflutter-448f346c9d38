@@ -63,7 +63,7 @@ class _FollowingViewState extends State<FollowingView> {
                 itemBuilder: (context, index) {
                   final curr = widget.followingData.following[index];
                   return FollowingCard(
-                    followingName: "${curr.firstName} ${curr.lastName}",
+                    followingName: "${curr.first_name} ${curr.last_name}",
                     followingProfilePhoto: 'photoUrl',
                     followingSkill: 'skill',
                   );

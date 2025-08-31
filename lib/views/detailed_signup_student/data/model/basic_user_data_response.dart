@@ -24,15 +24,15 @@ class BasicUserInfoResponse {
 
 class BasicUser {
   final int id;
-  final String firstName;
-  final String lastName;
+  final String first_name;
+  final String last_name;
   final String email;
   final String phone;
 
   BasicUser({
     required this.id,
-    required this.firstName,
-    required this.lastName,
+    required this.first_name,
+    required this.last_name,
     required this.email,
     required this.phone,
   });
@@ -40,8 +40,8 @@ class BasicUser {
   factory BasicUser.fromJson(Map<String, dynamic> json) {
     return BasicUser(
       id: json['id'],
-      firstName: json['firstName'],
-      lastName: json['lastName'],
+      first_name: json['first_name'],
+      last_name: json['last_name'],
       email: json['email'],
       phone: json['phone'],
     );
@@ -50,8 +50,8 @@ class BasicUser {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'firstName': firstName,
-      'lastName': lastName,
+      'first_name': first_name,
+      'last_name': last_name,
       'email': email,
       'phone': phone,
     };

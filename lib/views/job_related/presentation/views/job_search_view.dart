@@ -217,7 +217,7 @@ class _JobSearchScreenState extends State<JobSearchScreen> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => JobDetailsScreen(
-                                    jobId: job.jobId,
+                                    job_id: job.job_id,
                                   ),
                                 ),
                               );
@@ -226,7 +226,7 @@ class _JobSearchScreenState extends State<JobSearchScreen> {
                             imageUrl: ImageString.dummyImageUrl,
                             // jobTitle: job.jobProfile,
                             jobTitle: 'Job Profile',
-                            company: job.companyName,
+                            company: job.company_name,
                             // location: job.cityChoice ?? 'City Choice',
                             location: 'City Choice',
                             experience: job.experience,

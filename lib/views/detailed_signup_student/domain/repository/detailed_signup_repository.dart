@@ -15,7 +15,7 @@ abstract class DetailedSignupRepository {
       Map<String, dynamic> emailMap);
 
   Future<DataState<List<SpecializationEntity>>> getSpecialization(
-      String courseId);
+      String course_id);
 
   Future<DataState<CourseListEntity>> getCourses();
 

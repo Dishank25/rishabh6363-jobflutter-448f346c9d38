@@ -16,32 +16,32 @@ class CreateFeedPostModel extends CreateFeedPostEntity {
 
 class FeedPostModel extends FeedPostEntity {
   FeedPostModel({
-    required super.likeCount,
-    required super.commentCount,
+    required super.like_count,
+    required super.comment_count,
     required super.comments,
     required super.id,
-    required super.userId,
+    required super.user_id,
     required super.image,
     required super.caption,
-    required super.userRole,
-    required super.profilePic,
-    required super.updatedAt,
-    required super.createdAt,
+    required super.user_role,
+    required super.profile_pic,
+    required super.updated_at,
+    required super.created_at,
   });
 
   factory FeedPostModel.fromJson(Map<String, dynamic> json) {
     return FeedPostModel(
-      likeCount: json['likeCount'],
-      commentCount: json['commentCount'],
+      like_count: json['like_count'],
+      comment_count: json['comment_count'],
       comments: json['comments'],
       id: json['id'],
-      userId: json['userId'],
+      user_id: json['user_id'],
       image: json['image'],
       caption: json['caption'],
-      userRole: json['userRole'],
-      profilePic: json['profilePic'],
-      updatedAt: DateTime.parse(json['updatedAt']),
-      createdAt: DateTime.parse(json['createdAt']),
+      user_role: json['user_role'],
+      profile_pic: json['profile_pic'],
+      updated_at: DateTime.parse(json['updated_at']),
+      created_at: DateTime.parse(json['created_at']),
     );
   }
 }

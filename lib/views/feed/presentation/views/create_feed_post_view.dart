@@ -44,10 +44,10 @@ class _CreateFeedPostViewState extends State<CreateFeedPostView> {
 
   Future<void> onUploadPost(String imageUrl) async {
     final _prefs = sl<PreferencesManager>();
-    final userId = _prefs.getUserId();
+    final user_id = _prefs.getUserId();
 
     final map = {
-      "userId": userId ?? 16,
+      "user_id": user_id ?? 16,
       "image": imageUrl,
       "caption": _captionController.text.trim()
     };

@@ -30,32 +30,32 @@ class VerifyOtpResponse extends VerifyOtpEntity {
 class UserModel extends UserEntity {
   const UserModel({
     required super.id,
-    required super.firstName,
-    required super.lastName,
+    required super.first_name,
+    required super.last_name,
     required super.email,
     required super.phone,
-    required super.userRole,
+    required super.user_role,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       id: json['id'] ?? 0,
-      firstName: json['firstName'] ?? '',
-      lastName: json['lastName'] ?? '',
+      first_name: json['first_name'] ?? '',
+      last_name: json['last_name'] ?? '',
       email: json['email'] ?? '',
       phone: json['phone'] ?? '',
-      userRole: json['userRole'] ?? '',
+      user_role: json['user_role'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'firstName': firstName,
-      'lastName': lastName,
+      'first_name': first_name,
+      'last_name': last_name,
       'email': email,
       'phone': phone,
-      'userRole': userRole,
+      'user_role': user_role,
     };
   }
 }

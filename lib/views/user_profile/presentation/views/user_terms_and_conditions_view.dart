@@ -50,7 +50,7 @@ class _UserTermsAndConditionsScreenState
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 24.0),
-                    child: Text(data.termsAndCondition),
+                    child: Text(data.terms_and_condition),
                   ),
                 ],
               ),

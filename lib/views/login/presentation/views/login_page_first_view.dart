@@ -140,16 +140,17 @@ class _SignInPage_1State extends State<LogInPage1> {
                             prefs.setUserId(data.user.id.toString());
 
                             if (rememberMeValue) {
-                              prefs.setUserType(data.user.userRole);
+                              prefs.setUserType(data.user.user_role);
                             }
 
                             if (data.message == 'Login successful') {
                               showSnackbar('Login successful', context);
                               developer.log('Login data : ${data.toString()}');
                               developer.log(
-                                  'User Type on login : ${data.user.userRole.toString()}');
+                                  'User Type on login : ${data.user.user_role.toString()}');
 
-                              if (data.user.userRole == USERTYPE.STUDENT.name) {
+                              if (data.user.user_role ==
+                                  USERTYPE.STUDENT.name) {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -157,7 +158,7 @@ class _SignInPage_1State extends State<LogInPage1> {
                                         const Student_Bottom_Nav_bar(),
                                   ),
                                 );
-                              } else if (data.user.userRole ==
+                              } else if (data.user.user_role ==
                                   USERTYPE.COMPANY.name) {
                                 Navigator.push(
                                   context,

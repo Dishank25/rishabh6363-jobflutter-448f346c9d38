@@ -68,7 +68,7 @@ class _FollowersViewState extends State<FollowersView> {
                 itemBuilder: (context, index) {
                   final curr = widget.followersData.followers[index];
                   return FollowerCard(
-                    followerName: "${curr.firstName} ${curr.lastName}",
+                    followerName: "${curr.first_name} ${curr.last_name}",
                     followerProfilePhoto: 'photoUrl',
                     followerSkill: 'skill',
                   );

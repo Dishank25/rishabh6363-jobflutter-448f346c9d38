@@ -28,29 +28,29 @@
 
 // class LoginUser {
 //   final int id;
-//   final String firstName;
-//   final String lastName;
+//   final String first_name;
+//   final String last_name;
 //   final String email;
 //   final String phone;
-//   final String userRole;
+//   final String user_role;
 
 //   LoginUser({
 //     required this.id,
-//     required this.firstName,
-//     required this.lastName,
+//     required this.first_name,
+//     required this.last_name,
 //     required this.email,
 //     required this.phone,
-//     required this.userRole,
+//     required this.user_role,
 //   });
 
 //   factory LoginUser.fromJson(Map<String, dynamic> json) {
 //     return LoginUser(
 //       id: json['id'],
-//       firstName: json['firstName'],
-//       lastName: json['lastName'],
+//       first_name: json['first_name'],
+//       last_name: json['last_name'],
 //       email: json['email'],
 //       phone: json['phone'],
-//       userRole: json['role'],
+//       user_role: json['role'],
 //     );
 //   }
 
@@ -93,40 +93,40 @@ class LoginUserResponse {
 
 class User {
   final int id;
-  final String firstName;
-  final String lastName;
+  final String first_name;
+  final String last_name;
   final String email;
   final String phone;
-  final String userRole;
+  final String user_role;
 
   User({
     required this.id,
-    required this.firstName,
-    required this.lastName,
+    required this.first_name,
+    required this.last_name,
     required this.email,
     required this.phone,
-    required this.userRole,
+    required this.user_role,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       id: json['id'],
-      firstName: json['firstName'],
-      lastName: json['lastName'],
+      first_name: json['first_name'],
+      last_name: json['last_name'],
       email: json['email'],
       phone: json['phone'],
-      userRole: json['userRole'],
+      user_role: json['user_role'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'firstName': firstName,
-      'lastName': lastName,
+      'first_name': first_name,
+      'last_name': last_name,
       'email': email,
       'phone': phone,
-      'userRole': userRole,
+      'user_role': user_role,
     };
   }
 }

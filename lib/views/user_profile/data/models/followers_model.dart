@@ -26,28 +26,28 @@ class FollowersModel extends FollowersEntity {
 
 class FollowerModel extends Follower {
   FollowerModel({
-    required String firstName,
-    required String lastName,
-    required String userRole,
+    required String first_name,
+    required String last_name,
+    required String user_role,
   }) : super(
-          firstName: firstName,
-          lastName: lastName,
-          userRole: userRole,
+          first_name: first_name,
+          last_name: last_name,
+          user_role: user_role,
         );
 
   factory FollowerModel.fromJson(Map<String, dynamic> json) {
     return FollowerModel(
-      firstName: json['firstName'] ?? '',
-      lastName: json['lastName'] ?? '',
-      userRole: json['userRole'] ?? '',
+      first_name: json['first_name'] ?? '',
+      last_name: json['last_name'] ?? '',
+      user_role: json['user_role'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'firstName': firstName,
-      'lastName': lastName,
-      'userRole': userRole,
+      'first_name': first_name,
+      'last_name': last_name,
+      'user_role': user_role,
     };
   }
 }
@@ -79,28 +79,28 @@ class FollowingModel extends FollowingEntity {
 
 class FollowingItemModel extends Following {
   FollowingItemModel({
-    required String firstName,
-    required String lastName,
-    required String userRole,
+    required String first_name,
+    required String last_name,
+    required String user_role,
   }) : super(
-          firstName: firstName,
-          lastName: lastName,
-          userRole: userRole,
+          first_name: first_name,
+          last_name: last_name,
+          user_role: user_role,
         );
 
   factory FollowingItemModel.fromJson(Map<String, dynamic> json) {
     return FollowingItemModel(
-      firstName: json['firstName'] ?? '',
-      lastName: json['lastName'] ?? '',
-      userRole: json['userRole'] ?? '',
+      first_name: json['first_name'] ?? '',
+      last_name: json['last_name'] ?? '',
+      user_role: json['user_role'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'firstName': firstName,
-      'lastName': lastName,
-      'userRole': userRole,
+      'first_name': first_name,
+      'last_name': last_name,
+      'user_role': user_role,
     };
   }
 }

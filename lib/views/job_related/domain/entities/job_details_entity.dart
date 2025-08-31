@@ -1,180 +1,180 @@
 // class JobDetailsEntity {
-//   final int jobId;
-//   final int companyRecruiterProfileId;
-//   final String opportunityType;
+//   final int job_id;
+//   final int company_recruiter_profile_id;
+//   final String opportunity_type;
 //   final String jobProfile;
 //   final String skillsRequired;
-//   final String skillRequiredNote;
-//   final String jobType;
-//   final String? jobTime;
-//   final int? daysInOffice;
+//   final String skill_required_note;
+//   final String job_type;
+//   final String? job_time;
+//   final int? days_in_office;
 //   final String? cityChoice;
-//   final int numberOfOpenings;
-//   final String jobDescription;
-//   final String candidatePreferences;
-//   final bool womenPreferred;
-//   final String stipendType;
-//   final int? stipendMin;
-//   final int? stipendMax;
-//   final String incentivePerYear;
+//   final int number_of_openings;
+//   final String job_description;
+//   final String candidate_preferences;
+//   final bool women_preferred;
+//   final String stipend_type;
+//   final int? stipend_min;
+//   final int? stipend_max;
+//   final String incentive_per_year;
 //   final String perks;
-//   final String screeningQuestions;
-//   final String phoneContact;
+//   final String screening_questions;
+//   final String phone_contact;
 //   final String internshipDuration;
-//   final String internshipStartDate;
-//   final String? internshipFromDate;
-//   final String? internshipToDate;
-//   final bool isCustomInternshipDate;
-//   final String collegeName;
+//   final String internship_start_date;
+//   final String? internship_from_date;
+//   final String? internship_to_date;
+//   final bool is_custom_internship_date;
+//   final String college_name;
 //   final String course;
-//   final String? alternatePhoneNumber;
+//   final String? alternate_phone_number;
 //   final int? views;
-//   final DateTime createdAt;
-//   final DateTime updatedAt;
-//   final int? userId;
+//   final DateTime created_at;
+//   final DateTime updated_at;
+//   final int? user_id;
 //   final CompanyRecruiterProfileEntity companyRecruiterProfile;
 
 //   const JobDetailsEntity({
-//     required this.jobId,
-//     required this.companyRecruiterProfileId,
-//     required this.opportunityType,
+//     required this.job_id,
+//     required this.company_recruiter_profile_id,
+//     required this.opportunity_type,
 //     required this.jobProfile,
 //     required this.skillsRequired,
-//     required this.skillRequiredNote,
-//     required this.jobType,
-//     required this.jobTime,
-//     required this.daysInOffice,
+//     required this.skill_required_note,
+//     required this.job_type,
+//     required this.job_time,
+//     required this.days_in_office,
 //     required this.cityChoice,
-//     required this.numberOfOpenings,
-//     required this.jobDescription,
-//     required this.candidatePreferences,
-//     required this.womenPreferred,
-//     required this.stipendType,
-//     required this.stipendMin,
-//     required this.stipendMax,
-//     required this.incentivePerYear,
+//     required this.number_of_openings,
+//     required this.job_description,
+//     required this.candidate_preferences,
+//     required this.women_preferred,
+//     required this.stipend_type,
+//     required this.stipend_min,
+//     required this.stipend_max,
+//     required this.incentive_per_year,
 //     required this.perks,
-//     required this.screeningQuestions,
-//     required this.phoneContact,
+//     required this.screening_questions,
+//     required this.phone_contact,
 //     required this.internshipDuration,
-//     required this.internshipStartDate,
-//     required this.internshipFromDate,
-//     required this.internshipToDate,
-//     required this.isCustomInternshipDate,
-//     required this.collegeName,
+//     required this.internship_start_date,
+//     required this.internship_from_date,
+//     required this.internship_to_date,
+//     required this.is_custom_internship_date,
+//     required this.college_name,
 //     required this.course,
-//     required this.alternatePhoneNumber,
+//     required this.alternate_phone_number,
 //     required this.views,
-//     required this.createdAt,
-//     required this.updatedAt,
-//     required this.userId,
+//     required this.created_at,
+//     required this.updated_at,
+//     required this.user_id,
 //     required this.companyRecruiterProfile,
 //   });
 // }
 
 // class CompanyRecruiterProfileEntity {
-//   final String companyName;
-//   final String logoUrl;
+//   final String company_name;
+//   final String logo_url;
 //   final String about;
 
 //   const CompanyRecruiterProfileEntity({
-//     required this.companyName,
-//     required this.logoUrl,
+//     required this.company_name,
+//     required this.logo_url,
 //     required this.about,
 //   });
 // }
 
 class JobDetailsEntity {
-  final int jobId;
-  final String opportunityType;
-  final String? jobType;
+  final int job_id;
+  final String opportunity_type;
+  final String? job_type;
   final String jobProfile;
-  final String? jobDescription;
-  final String? jobTime;
-  final int? daysInOffice;
+  final String? job_description;
+  final String? job_time;
+  final int? days_in_office;
   final String? cityChoice;
   final List<String> skillsRequired;
-  final String? skillRequiredNote;
-  final String? candidatePreferences;
-  final bool? womenPreferred;
-  final String companyName;
-  final String logoUrl;
+  final String? skill_required_note;
+  final String? candidate_preferences;
+  final bool? women_preferred;
+  final String company_name;
+  final String logo_url;
   final String aboutCompany;
   final String companyIndustry;
   final String companyLocation;
-  final String recruiterName;
-  final String recruiterEmail;
-  final String recruiterPhone;
+  final String recruiter_name;
+  final String recruiter_email;
+  final String recruiter_phone;
   final String recruiterDesignation;
   final String recruiterProfilePic;
-  final bool isEmailVerified;
-  final bool isPhoneVerified;
-  final bool isGstVerified;
-  final int? numberOfOpenings;
+  final bool is_email_verified;
+  final bool is_phone_verified;
+  final bool is_gst_verified;
+  final int? number_of_openings;
   final String hiringStatus;
-  final String hiringPreferences;
-  final String languagesKnown;
+  final String hiring_preferences;
+  final String languages_known;
   final String salary;
-  final String stipendType;
-  final String incentivePerYear;
+  final String stipend_type;
+  final String incentive_per_year;
   final List<String> perks;
   final String internshipDuration;
-  final String internshipStartDate;
-  final String internshipFromDate;
-  final String internshipToDate;
-  final bool isCustomInternshipDate;
-  final String? collegeName;
+  final String internship_start_date;
+  final String internship_from_date;
+  final String internship_to_date;
+  final bool is_custom_internship_date;
+  final String? college_name;
   final String? course;
-  final String? phoneContact;
-  final String? alternatePhoneNumber;
-  final List<String> screeningQuestions;
+  final String? phone_contact;
+  final String? alternate_phone_number;
+  final List<String> screening_questions;
   final int numberOfApplicants;
   final String postedDaysAgo;
 
   JobDetailsEntity({
-    required this.jobId,
-    required this.opportunityType,
-    required this.jobType,
+    required this.job_id,
+    required this.opportunity_type,
+    required this.job_type,
     required this.jobProfile,
-    required this.jobDescription,
-    required this.jobTime,
-    required this.daysInOffice,
+    required this.job_description,
+    required this.job_time,
+    required this.days_in_office,
     required this.cityChoice,
     required this.skillsRequired,
-    required this.skillRequiredNote,
-    required this.candidatePreferences,
-    required this.womenPreferred,
-    required this.companyName,
-    required this.logoUrl,
+    required this.skill_required_note,
+    required this.candidate_preferences,
+    required this.women_preferred,
+    required this.company_name,
+    required this.logo_url,
     required this.aboutCompany,
     required this.companyIndustry,
     required this.companyLocation,
-    required this.recruiterName,
-    required this.recruiterEmail,
-    required this.recruiterPhone,
+    required this.recruiter_name,
+    required this.recruiter_email,
+    required this.recruiter_phone,
     required this.recruiterDesignation,
     required this.recruiterProfilePic,
-    required this.isEmailVerified,
-    required this.isPhoneVerified,
-    required this.isGstVerified,
-    required this.numberOfOpenings,
+    required this.is_email_verified,
+    required this.is_phone_verified,
+    required this.is_gst_verified,
+    required this.number_of_openings,
     required this.hiringStatus,
-    required this.hiringPreferences,
-    required this.languagesKnown,
+    required this.hiring_preferences,
+    required this.languages_known,
     required this.salary,
-    required this.stipendType,
-    required this.incentivePerYear,
+    required this.stipend_type,
+    required this.incentive_per_year,
     required this.perks,
     required this.internshipDuration,
-    required this.internshipStartDate,
-    required this.internshipFromDate,
-    required this.internshipToDate,
-    required this.isCustomInternshipDate,
-    required this.collegeName,
+    required this.internship_start_date,
+    required this.internship_from_date,
+    required this.internship_to_date,
+    required this.is_custom_internship_date,
+    required this.college_name,
     required this.course,
-    required this.phoneContact,
-    required this.alternatePhoneNumber,
-    required this.screeningQuestions,
+    required this.phone_contact,
+    required this.alternate_phone_number,
+    required this.screening_questions,
     required this.numberOfApplicants,
     required this.postedDaysAgo,
   });

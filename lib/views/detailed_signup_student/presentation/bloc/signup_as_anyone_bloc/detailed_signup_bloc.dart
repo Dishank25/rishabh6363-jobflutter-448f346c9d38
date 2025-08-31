@@ -62,7 +62,7 @@ class DetailedSignupBloc
     try {
       emit(const DetailedSignupSpecializationLoading());
       final specializations =
-          await _detailedSignupUsecase.getSpecialization(event.courseId);
+          await _detailedSignupUsecase.getSpecialization(event.course_id);
       emit(DetailedSignupSpecializationLoaded(
         specializations.data!,
       ));

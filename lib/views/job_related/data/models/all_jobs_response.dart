@@ -16,9 +16,9 @@ class AllJobsResponse {
 
 class JobModel extends AllJobsEntity {
   JobModel({
-    required super.jobId,
-    required super.companyName,
-    super.logoUrl,
+    required super.job_id,
+    required super.company_name,
+    super.logo_url,
     required super.jobRole,
     required super.skills,
     required super.matchPercentage,
@@ -28,9 +28,9 @@ class JobModel extends AllJobsEntity {
 
   factory JobModel.fromJson(Map<String, dynamic> json) {
     return JobModel(
-      jobId: json['jobId'] ?? 0,
-      companyName: json['companyName'] ?? '',
-      logoUrl: json['logoUrl'],
+      job_id: json['job_id'] ?? 0,
+      company_name: json['company_name'] ?? '',
+      logo_url: json['logo_url'],
       jobRole: json['jobRole'] ?? '',
       skills: (json['skills'] as List<dynamic>? ?? [])
           .map((skill) => SkillModel.fromJson(skill as Map<String, dynamic>))

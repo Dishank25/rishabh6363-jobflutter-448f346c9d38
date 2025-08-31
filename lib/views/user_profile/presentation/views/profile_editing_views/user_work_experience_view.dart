@@ -46,14 +46,14 @@ class _UserExperienceApprovalScreenState
     for (int i = 0; i < jobExperienceControllers.length; i++) {
       final curr = jobExperienceControllers[i];
       // developer.log(
-      //     'Start date : ${curr.startYear.text.trim()} \nEnd Date : ${curr.endYear.text.trim()}');
+      //     'Start date : ${curr.start_year.text.trim()} \nEnd Date : ${curr.end_year.text.trim()}');
       // developer.log(
-      //     'Total experience : ${calculateExperience(curr.startYear.text.trim(), curr.endYear.text.trim())}');
+      //     'Total experience : ${calculateExperience(curr.start_year.text.trim(), curr.end_year.text.trim())}');
       final map = {
-        "currentCompany": curr.companyName,
-        "currentJobRole": curr.jobRoleController.text.trim(),
-        "startDate": curr.startYear.text.trim(),
-        "endDate": curr.endYear.text.trim(),
+        "current_company": curr.company_name,
+        "current_job_role": curr.jobRoleController.text.trim(),
+        "start_date": curr.start_year.text.trim(),
+        "end_date": curr.end_year.text.trim(),
         "status": "approved",
         "experienceCertificate": urls[i],
       };
@@ -72,13 +72,14 @@ class _UserExperienceApprovalScreenState
     for (int i = 0; i < widget.userExperience.length; i++) {
       final exp = widget.userExperience[i];
 
-      if (exp.currentCompany != null) {
-        workedCompanyList.add(exp.currentCompany!);
+      if (exp.current_company != null) {
+        workedCompanyList.add(exp.current_company!);
         final object = JobExperienceFillingCardData(
-            companyName: exp.currentCompany!,
-            jobRoleController: TextEditingController(text: exp.currentJobRole),
-            startYear: TextEditingController(text: exp.startDate),
-            endYear: TextEditingController(text: exp.endDate),
+            company_name: exp.current_company!,
+            jobRoleController:
+                TextEditingController(text: exp.current_job_role),
+            start_year: TextEditingController(text: exp.start_date),
+            end_year: TextEditingController(text: exp.end_date),
             currentCTC:
                 TextEditingController(text: '123123'), // get ctc added in api
             expProof: exp.experienceCertificate);
@@ -139,11 +140,11 @@ class _UserExperienceApprovalScreenState
                       setState(() {
                         workedCompanyList.add(company);
                         final object = JobExperienceFillingCardData(
-                            companyName: company,
+                            company_name: company,
                             expProof: null,
                             jobRoleController: TextEditingController(),
-                            startYear: TextEditingController(),
-                            endYear: TextEditingController(),
+                            start_year: TextEditingController(),
+                            end_year: TextEditingController(),
                             currentCTC: TextEditingController());
                         jobExperienceControllers.add(object);
                       });
@@ -173,10 +174,10 @@ class _UserExperienceApprovalScreenState
                       final list = createExperienceMap(urls.url);
                       final map = {'experiences': list};
                       final _prefs = sl<PreferencesManager>();
-                      final userId = _prefs.getUserId();
+                      final user_id = _prefs.getUserId();
                       context
                           .read<MyProfileBloc>()
-                          .add(LoadUpdateProfile(userId ?? '2', map));
+                          .add(LoadUpdateProfile(user_id ?? '2', map));
                     } else if (state is UploadFileLoading) {
                       developer.log('upload file loading');
                     } else if (state is UploadFileError) {
@@ -211,15 +212,15 @@ class _UserExperienceApprovalScreenState
                     final curr = jobExperienceControllers[index];
 
                     return JobExperienceFillingCard(
-                      companyName: curr.companyName,
+                      company_name: curr.company_name,
                       jobRoleController: curr.jobRoleController,
-                      experienceProofName: experienceProofs[curr.companyName]
+                      experienceProofName: experienceProofs[curr.company_name]
                               ?.files
                               .first
                               .name ??
                           curr.expProof?.substring(curr.expProof!.length - 10),
-                      startYear: curr.startYear,
-                      endYear: curr.endYear,
+                      start_year: curr.start_year,
+                      end_year: curr.end_year,
                       currentCTC: curr.currentCTC,
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
@@ -229,7 +230,7 @@ class _UserExperienceApprovalScreenState
                       },
                       onTapCross: () {
                         setState(() {
-                          workedCompanyList.remove(curr.companyName);
+                          workedCompanyList.remove(curr.company_name);
                           jobExperienceControllers.removeAt(index);
                         });
                       },
@@ -237,7 +238,7 @@ class _UserExperienceApprovalScreenState
                         setState(() {
                           context
                               .read<YourExperienceBloc>()
-                              .add(LoadPickExperienceProof(curr.companyName));
+                              .add(LoadPickExperienceProof(curr.company_name));
                         });
                       },
                     );
@@ -318,11 +319,11 @@ class _UserExperienceApprovalScreenState
 }
 
 class JobExperienceFillingCard extends StatefulWidget {
-  final String companyName;
+  final String company_name;
   final String? experienceProofName;
   final TextEditingController jobRoleController;
-  final TextEditingController startYear;
-  final TextEditingController endYear;
+  final TextEditingController start_year;
+  final TextEditingController end_year;
   final TextEditingController currentCTC;
   final String? Function(String?)? validator;
   final VoidCallback onTapCross;
@@ -330,10 +331,10 @@ class JobExperienceFillingCard extends StatefulWidget {
 
   const JobExperienceFillingCard({
     super.key,
-    required this.companyName,
+    required this.company_name,
     required this.jobRoleController,
-    required this.startYear,
-    required this.endYear,
+    required this.start_year,
+    required this.end_year,
     required this.currentCTC,
     this.validator,
     required this.onTapCross,
@@ -367,7 +368,7 @@ class _JobExperienceFillingCardState extends State<JobExperienceFillingCard> {
                 Row(
                   children: [
                     courseName(
-                      name: widget.companyName,
+                      name: widget.company_name,
                       bgColor: Color(0xff1961F3),
                       mIcon: Icons.cancel,
                       onTap: widget.onTapCross,
@@ -414,7 +415,7 @@ class _JobExperienceFillingCardState extends State<JobExperienceFillingCard> {
                 //     SizedBox(
                 //         width: 165,
                 //         child: CustomTextField(
-                //           controller: widget.startYear,
+                //           controller: widget.start_year,
                 //           hintText: "Choose Year",
                 //           suffixIcon: Icons.arrow_drop_down,
                 //           fillColor: Colors.white,
@@ -425,7 +426,7 @@ class _JobExperienceFillingCardState extends State<JobExperienceFillingCard> {
                 //     SizedBox(
                 //       width: 165,
                 //       child: CustomTextField(
-                //         controller: widget.endYear,
+                //         controller: widget.end_year,
                 //         hintText: "Choose Year",
                 //         suffixIcon: Icons.arrow_drop_down,
                 //         fillColor: Colors.white,
@@ -439,14 +440,14 @@ class _JobExperienceFillingCardState extends State<JobExperienceFillingCard> {
                   children: [
                     Expanded(
                       child: DatePickerField(
-                        controller: widget.startYear,
+                        controller: widget.start_year,
                         fillColor: Colors.white,
                       ),
                     ),
                     const SizedBox(width: 18),
                     Expanded(
                       child: DatePickerField(
-                        controller: widget.endYear,
+                        controller: widget.end_year,
                         fillColor: Colors.white,
                       ),
                     ),
@@ -476,22 +477,22 @@ class _JobExperienceFillingCardState extends State<JobExperienceFillingCard> {
 }
 
 class UserExperience {
-  final String currentCompany;
-  final String currentJobRole;
+  final String current_company;
+  final String current_job_role;
   final String totalExperience;
   final String status;
 
   UserExperience({
-    required this.currentCompany,
-    required this.currentJobRole,
+    required this.current_company,
+    required this.current_job_role,
     required this.totalExperience,
     required this.status,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'currentCompany': currentCompany,
-      'currentJobRole': currentJobRole,
+      'current_company': current_company,
+      'current_job_role': current_job_role,
       'totalExperience': totalExperience,
       'status': status,
     };
@@ -499,19 +500,19 @@ class UserExperience {
 }
 
 class JobExperienceFillingCardData {
-  final String companyName;
+  final String company_name;
   final String? expProof;
   final TextEditingController jobRoleController;
-  final TextEditingController startYear;
-  final TextEditingController endYear;
+  final TextEditingController start_year;
+  final TextEditingController end_year;
   final TextEditingController currentCTC;
 
   JobExperienceFillingCardData({
-    required this.companyName,
+    required this.company_name,
     required this.expProof,
     required this.jobRoleController,
-    required this.startYear,
-    required this.endYear,
+    required this.start_year,
+    required this.end_year,
     required this.currentCTC,
   });
 }

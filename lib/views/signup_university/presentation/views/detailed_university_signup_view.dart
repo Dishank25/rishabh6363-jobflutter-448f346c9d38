@@ -117,7 +117,7 @@ class _DetailedUniversitySignupViewState
                     if (state is DetailedSignupGetBasicUserInfoLoaded) {
                       final data = state.basicUserInfoResponse;
                       setState(() {
-                        clgNameController.text = data.user.firstName;
+                        clgNameController.text = data.user.first_name;
                         emailController.text = data.user.email;
                         phoneController.text = data.user.phone;
                       });
@@ -402,25 +402,25 @@ class _DetailedUniversitySignupViewState
 
   // void fillDataIntoParams() {
   //   widget.params.addAll({
-  //     DETAILEDPROFILEPARAMS.userId.name: '59',
-  //     DETAILEDPROFILEPARAMS.firstName.name: clgNameController.text,
+  //     DETAILEDPROFILEPARAMS.user_id.name: '59',
+  //     DETAILEDPROFILEPARAMS.first_name.name: clgNameController.text,
   //     DETAILEDPROFILEPARAMS.email.name: emailController.text,
   //     DETAILEDPROFILEPARAMS.phone.name: phoneController.text,
   //     DETAILEDPROFILEPARAMS.dob.name: DOBController.text,
   //     DETAILEDPROFILEPARAMS.city.name: cityController.text,
   //     DETAILEDPROFILEPARAMS.jobLocation.name: JobLocationController.text,
   //     DETAILEDPROFILEPARAMS.gender.name: genderController.text,
-  //     DETAILEDPROFILEPARAMS.userType.name: selectedOption,
+  //     DETAILEDPROFILEPARAMS.user_type.name: selectedOption,
   //     // total experience
   //   });
   //   // Remove all mutually exclusive keys first
   //   widget.params
   //     ..remove(DETAILEDPROFILEPARAMS.educationStandard.name)
   //     ..remove(DETAILEDPROFILEPARAMS.course.name)
-  //     ..remove(DETAILEDPROFILEPARAMS.collegeName.name)
+  //     ..remove(DETAILEDPROFILEPARAMS.college_name.name)
   //     ..remove(DETAILEDPROFILEPARAMS.specialization.name)
-  //     ..remove(DETAILEDPROFILEPARAMS.startYear.name)
-  //     ..remove(DETAILEDPROFILEPARAMS.endYear.name)
+  //     ..remove(DETAILEDPROFILEPARAMS.start_year.name)
+  //     ..remove(DETAILEDPROFILEPARAMS.end_year.name)
   //     ..remove(DETAILEDPROFILEPARAMS.experiences.name);
   //   if (selectedOption == JOBSEEKERTYPE.SchoolStudent.name) {
   //     widget.params.addAll({});
@@ -428,18 +428,18 @@ class _DetailedUniversitySignupViewState
   //       selectedOption == JOBSEEKERTYPE.Fresher.name) {
   //     widget.params.addAll({
   //       DETAILEDPROFILEPARAMS.course.name: selectedCourse,
-  //       DETAILEDPROFILEPARAMS.collegeName.name: selectedCollege,
-  //       DETAILEDPROFILEPARAMS.startYear.name: startCourseYearController.text,
-  //       DETAILEDPROFILEPARAMS.endYear.name: endCourseYearController.text,
+  //       DETAILEDPROFILEPARAMS.college_name.name: selectedCollege,
+  //       DETAILEDPROFILEPARAMS.start_year.name: startCourseYearController.text,
+  //       DETAILEDPROFILEPARAMS.end_year.name: endCourseYearController.text,
   //     });
   //   } else if (selectedOption == JOBSEEKERTYPE.WorkingProffesional.name) {
   //     widget.params.addAll({
   //       DETAILEDPROFILEPARAMS.experiences.name: [
   //         {
-  //           DETAILEDPROFILEPARAMS.userId.name: '59',
-  //           DETAILEDPROFILEPARAMS.company.name: currentCompany.text,
-  //           DETAILEDPROFILEPARAMS.startDate.name: startJobYearController.text,
-  //           DETAILEDPROFILEPARAMS.endDate.name: endJobYearController.text,
+  //           DETAILEDPROFILEPARAMS.user_id.name: '59',
+  //           DETAILEDPROFILEPARAMS.company.name: current_company.text,
+  //           DETAILEDPROFILEPARAMS.start_date.name: startJobYearController.text,
+  //           DETAILEDPROFILEPARAMS.end_date.name: endJobYearController.text,
   //         }
   //       ],
   //     });

@@ -1,21 +1,21 @@
 // public_profile_entity.dart
 class PublicProfileEntity {
-  final String firstName;
-  final String lastName;
-  final String userType;
+  final String first_name;
+  final String last_name;
+  final String user_type;
   final String email;
   final String language;
-  final String aboutus;
-  final String careerObjective;
+  final String about_us;
+  final String career_objective;
 
   const PublicProfileEntity({
-    required this.firstName,
-    required this.lastName,
-    required this.userType,
+    required this.first_name,
+    required this.last_name,
+    required this.user_type,
     required this.email,
     required this.language,
-    required this.aboutus,
-    required this.careerObjective,
+    required this.about_us,
+    required this.career_objective,
   });
 }
 
@@ -23,16 +23,16 @@ class PublicProfileEntity {
 class ActivityEntity {
   final String caption;
   final String image;
-  final int likeCount;
-  final int commentCount;
-  final DateTime createdAt;
+  final int like_count;
+  final int comment_count;
+  final DateTime created_at;
 
   const ActivityEntity({
     required this.caption,
     required this.image,
-    required this.likeCount,
-    required this.commentCount,
-    required this.createdAt,
+    required this.like_count,
+    required this.comment_count,
+    required this.created_at,
   });
 }
 
@@ -66,17 +66,17 @@ class SkillEntity {
 }
 
 class ExperienceEntity {
-  final String? companyRecruiterProfileId;
+  final String? company_recruiter_profile_id;
   final String totalExperience;
-  final String currentJobRole;
-  final String currentCompany;
+  final String current_job_role;
+  final String current_company;
   final String status;
 
   const ExperienceEntity({
-    this.companyRecruiterProfileId,
+    this.company_recruiter_profile_id,
     required this.totalExperience,
-    required this.currentJobRole,
-    required this.currentCompany,
+    required this.current_job_role,
+    required this.current_company,
     required this.status,
   });
 }

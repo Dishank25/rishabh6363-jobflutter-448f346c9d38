@@ -13,27 +13,27 @@ class RaiseTicketResponseEntity {
 class RaiseTicketEntity {
   final String status;
   final int id;
-  final int userId;
+  final int user_id;
   final String? name;
   final String? email;
   final String? role;
-  final String? issueTitle;
-  final String? issueDetail;
+  final String? issue_title;
+  final String? issue_detail;
   final String? priority;
-  final DateTime updatedAt;
-  final DateTime createdAt;
+  final DateTime updated_at;
+  final DateTime created_at;
 
   const RaiseTicketEntity({
     required this.status,
     required this.id,
-    required this.userId,
+    required this.user_id,
     required this.name,
     required this.email,
     required this.role,
-    required this.issueTitle,
-    required this.issueDetail,
+    required this.issue_title,
+    required this.issue_detail,
     required this.priority,
-    required this.updatedAt,
-    required this.createdAt,
+    required this.updated_at,
+    required this.created_at,
   });
 }

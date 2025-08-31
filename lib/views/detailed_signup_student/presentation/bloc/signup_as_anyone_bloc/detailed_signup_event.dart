@@ -32,12 +32,12 @@ class DetailedSignupGetCollegeDetails extends DetailedSignupEvent {
 }
 
 class DetailedSignupGetSpecializations extends DetailedSignupEvent {
-  final String courseId;
+  final String course_id;
 
-  const DetailedSignupGetSpecializations(this.courseId);
+  const DetailedSignupGetSpecializations(this.course_id);
 
   @override
-  List<Object?> get props => [courseId];
+  List<Object?> get props => [course_id];
 }
 
 class DetailedSingupSubmitUserDetails extends DetailedSignupEvent {

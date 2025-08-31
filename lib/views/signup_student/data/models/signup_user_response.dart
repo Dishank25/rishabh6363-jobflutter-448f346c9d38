@@ -28,38 +28,38 @@ class SignUpUserResponse {
 
 // "user": {
 //         "id": 112,
-//         "firstName": "John",
-//         "lastName": "Doe",
+//         "first_name": "John",
+//         "last_name": "Doe",
 //         "phone": "58798598",
 //         "email": "axqwwqc@gmail.com",
-//         "userRole": "STUDENT"
+//         "user_role": "STUDENT"
 //     }
 
 class User {
   final int id;
-  final String firstName;
-  final String lastName;
+  final String first_name;
+  final String last_name;
   final String phone;
   final String email;
-  final String userRole;
+  final String user_role;
 
   User({
     required this.id,
-    required this.firstName,
-    required this.lastName,
+    required this.first_name,
+    required this.last_name,
     required this.phone,
     required this.email,
-    required this.userRole,
+    required this.user_role,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       id: json['id'],
-      firstName: json['firstName'],
-      lastName: json['lastName'],
+      first_name: json['first_name'],
+      last_name: json['last_name'],
       phone: json['phone'],
       email: json['email'],
-      userRole: json['userRole'],
+      user_role: json['user_role'],
     );
   }
 

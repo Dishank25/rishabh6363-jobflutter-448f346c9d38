@@ -34,10 +34,10 @@ class _UserPublicProfileScreenState extends State<UserPublicProfileScreen> {
 
     final _prefs = sl<PreferencesManager>();
 
-    final userId = _prefs.getUserId();
+    final user_id = _prefs.getUserId();
 
     final bloc = context.read<ProfileBloc>();
-    bloc.add(LoadPublicProfileWithFollowersAndFollowing(userId ?? '77'));
+    bloc.add(LoadPublicProfileWithFollowersAndFollowing(user_id ?? '77'));
   }
 
   @override
@@ -126,20 +126,20 @@ class _UserPublicProfileScreenState extends State<UserPublicProfileScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                                "${profileData.publicProfile.firstName} ${profileData.publicProfile.lastName}",
+                                "${profileData.publicProfile.first_name} ${profileData.publicProfile.last_name}",
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 20)),
                             const SizedBox(height: 4),
                             Text(
-                                '@${profileData.publicProfile.firstName.toLowerCase()}',
+                                '@${profileData.publicProfile.first_name.toLowerCase()}',
                                 style: const TextStyle(color: Colors.grey)),
                             const SizedBox(height: 8),
-                            Text(profileData.publicProfile.userType.isNotEmpty
-                                ? profileData.publicProfile.userType
+                            Text(profileData.publicProfile.user_type.isNotEmpty
+                                ? profileData.publicProfile.user_type
                                 : '—'),
                             const SizedBox(height: 4),
                             Text(
-                              profileData.publicProfile.aboutus,
+                              profileData.publicProfile.about_us,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -251,11 +251,11 @@ class _UserPublicProfileScreenState extends State<UserPublicProfileScreen> {
                       title: 'Your Activity',
                       items: profileData.activity.map((act) {
                         final subtitle =
-                            '${act.likeCount} likes • ${act.commentCount} comments • ${act.createdAt.toLocal().toString().split('.').first}';
+                            '${act.like_count} likes • ${act.comment_count} comments • ${act.created_at.toLocal().toString().split('.').first}';
                         return ActivityCard(
                           avatarUrl: ImageString.dummyImageUrl,
                           name:
-                              '${profileData.publicProfile.firstName} ${profileData.publicProfile.lastName}',
+                              '${profileData.publicProfile.first_name} ${profileData.publicProfile.last_name}',
                           subtitle: subtitle,
                           content: act.caption,
                         );
@@ -274,9 +274,9 @@ class _UserPublicProfileScreenState extends State<UserPublicProfileScreen> {
                             backgroundColor: Colors.black,
                             child: Icon(Icons.work, color: Colors.white),
                           ),
-                          title: exp.currentJobRole,
+                          title: exp.current_job_role,
                           subtitles: [
-                            exp.currentCompany,
+                            exp.current_company,
                             if (exp.status.isNotEmpty) exp.status,
                             if (exp.totalExperience.isNotEmpty)
                               'Experience: ${exp.totalExperience}',

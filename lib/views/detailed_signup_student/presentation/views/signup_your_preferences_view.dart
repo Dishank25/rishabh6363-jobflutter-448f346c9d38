@@ -17,7 +17,7 @@ import '../../../../widgets/widgets.dart';
 
 class SignupPageYourPreferences extends StatefulWidget {
   Map<String, dynamic> params;
-  /* String firstName;
+  /* String first_name;
   String surName;
   String gender;
   String DOB;
@@ -27,8 +27,8 @@ class SignupPageYourPreferences extends StatefulWidget {
   String currentLocation;
   String ? userCategory;
   String totalWorkExp;
-  String currentJobRole;
-  String currentCompany;
+  String current_job_role;
+  String current_company;
   String jobStartYear;
   String jobEndYear;
   String ? studentClass;
@@ -78,36 +78,37 @@ class _SignupPageYourPreferencesState extends State<SignupPageYourPreferences> {
   Future<void> onPressedFindOpportunities() async {
     // add preferences to params
     widget.params.addAll({
-      DETAILEDPROFILEPARAMS.currentlyLookingFor.name:
+      DETAILEDPROFILEPARAMS.currently_looking_for.name:
           cleanString(selectedPreferences.first),
-      DETAILEDPROFILEPARAMS.workMode.name: cleanString(selectedWorkModes.first),
+      DETAILEDPROFILEPARAMS.work_mode.name:
+          cleanString(selectedWorkModes.first),
     });
 
     final dummyMap = {
-      "userId": _prefs.getUserId() ?? 63,
-      "firstName": "Megha",
-      "lastName": "Gupta",
+      "user_id": _prefs.getUserId() ?? 63,
+      "first_name": "Megha",
+      "last_name": "Gupta",
       "email": "axxa@gmail.com",
       "phone": "58798598",
       "dob": "1990-01-01",
       "city": "Delhi",
       "gender": "Female",
-      "userType": "Working Professional",
+      "user_type": "Working Professional",
       "jobLocation": "San Francisco",
       "experiences": [
         {
-          "userId": _prefs.getUserId() ?? 63,
-          "companyRecruiterProfileId": "4",
+          "user_id": _prefs.getUserId() ?? 63,
+          "company_recruiter_profile_id": "4",
           "jobRole": "Software Engineer",
           "company": "OriginCore",
-          "startDate": "2022-01-01",
-          "endDate": "2023-01-01",
+          "start_date": "2022-01-01",
+          "end_date": "2023-01-01",
           "description": "Worked on backend development"
         }
       ],
-      "salaryDetails": "100000",
-      "currentlyLookingFor": "job",
-      "workMode": "Remote"
+      "salary_details": "100000",
+      "currently_looking_for": "job",
+      "work_mode": "Remote"
     };
 
     // context
@@ -120,30 +121,30 @@ class _SignupPageYourPreferencesState extends State<SignupPageYourPreferences> {
     developer.log('Params in preferences screen : ${widget.params}');
 
     Map<String, dynamic> payload = {
-      "userId": 58,
-      "firstName": "Megha",
-      "lastName": "Gupta",
+      "user_id": 58,
+      "first_name": "Megha",
+      "last_name": "Gupta",
       "email": "a@gmail.com",
       "phone": "58798598",
       "dob": "1990-01-01",
       "city": "Delhi",
       "gender": "Female",
-      "userType": "Working Professional",
+      "user_type": "Working Professional",
       "jobLocation": "San Francisco",
       "experiences": [
         {
-          "userId": 57,
-          "companyRecruiterProfileId": "4",
+          "user_id": 57,
+          "company_recruiter_profile_id": "4",
           "jobRole": "Software Engineer",
           "company": "OriginCore",
-          "startDate": "2022-01-01",
-          "endDate": "2023-01-01",
+          "start_date": "2022-01-01",
+          "end_date": "2023-01-01",
           "description": "Worked on backend development"
         }
       ],
-      "salaryDetails": "100000",
-      "currentlyLookingFor": "job",
-      "workMode": "Remote"
+      "salary_details": "100000",
+      "currently_looking_for": "job",
+      "work_mode": "Remote"
     };
 
     // developer.log('Detailed Profile Payload : $payload');

@@ -37,9 +37,9 @@ class JobsRepositoryImpl extends JobsRepository {
   }
 
   @override
-  Future<DataState<JobDetailsEntity>> getJobDetails(String jobId) async {
+  Future<DataState<JobDetailsEntity>> getJobDetails(String job_id) async {
     try {
-      final response = await _apiService.getJobDetails(jobId);
+      final response = await _apiService.getJobDetails(job_id);
 
       if (response.response.statusCode == HttpStatus.ok) {
         return DataSuccess(response.data);
@@ -61,9 +61,9 @@ class JobsRepositoryImpl extends JobsRepository {
 
   @override
   Future<DataState<JobApplyEntity>> applyForJob(
-      String jobId, Map<String, dynamic> params) async {
+      String job_id, Map<String, dynamic> params) async {
     try {
-      final response = await _apiService.applyForJob(jobId, params);
+      final response = await _apiService.applyForJob(job_id, params);
 
       if (response.response.statusCode == HttpStatus.ok) {
         return DataSuccess(response.data);

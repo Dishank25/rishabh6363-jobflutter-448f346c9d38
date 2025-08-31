@@ -1,7 +1,7 @@
 class AllJobsEntity {
-  final int jobId;
-  final String companyName;
-  final String? logoUrl;
+  final int job_id;
+  final String company_name;
+  final String? logo_url;
   final String jobRole;
   final List<SkillEntity> skills;
   final double matchPercentage;
@@ -9,9 +9,9 @@ class AllJobsEntity {
   final String salary;
 
   const AllJobsEntity({
-    required this.jobId,
-    required this.companyName,
-    this.logoUrl,
+    required this.job_id,
+    required this.company_name,
+    this.logo_url,
     required this.jobRole,
     required this.skills,
     required this.matchPercentage,

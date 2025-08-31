@@ -7,13 +7,13 @@ abstract class JobApplyEvent extends Equatable {
 }
 
 class LoadJobApply extends JobApplyEvent {
-  final String jobId;
+  final String job_id;
   // final Map<String, dynamic> params;
 
   const LoadJobApply(
-    this.jobId,
+    this.job_id,
   );
 
   @override
-  List<Object?> get props => [jobId];
+  List<Object?> get props => [job_id];
 }

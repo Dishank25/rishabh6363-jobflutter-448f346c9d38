@@ -10,9 +10,9 @@ class UpdateUserProfileEntity {
 
 class UpdateUserDetailEntity {
   final int id;
-  final int userId;
-  final String firstName;
-  final String lastName;
+  final int user_id;
+  final String first_name;
+  final String last_name;
   final String email;
   final String phone;
   final String dob;
@@ -21,34 +21,34 @@ class UpdateUserDetailEntity {
   final bool isAadhaarVerified;
   final String? currentLocation;
   final String gender;
-  final String userType;
+  final String user_type;
   final String? standard;
   final String? course;
   final String? specialization;
   final String? college;
-  final String? startYear;
-  final String? endYear;
+  final String? start_year;
+  final String? end_year;
   final String? jobLocation;
-  final String? salaryDetails;
-  final String? currentlyLookingFor;
-  final String? workMode;
+  final String? salary_details;
+  final String? currently_looking_for;
+  final String? work_mode;
   final String? aboutUs;
-  final String? careerObjective;
+  final String? career_objective;
   final String? resume;
   final String? language;
-  final bool isEmailVerified;
-  final bool isPhoneVerified;
-  final bool isGstVerified;
+  final bool is_email_verified;
+  final bool is_phone_verified;
+  final bool is_gst_verified;
   final String? userProfilePic;
-  final bool termsAndCondition;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final bool terms_and_condition;
+  final DateTime created_at;
+  final DateTime updated_at;
 
   UpdateUserDetailEntity({
     required this.id,
-    required this.userId,
-    required this.firstName,
-    required this.lastName,
+    required this.user_id,
+    required this.first_name,
+    required this.last_name,
     required this.email,
     required this.phone,
     required this.dob,
@@ -57,27 +57,27 @@ class UpdateUserDetailEntity {
     required this.isAadhaarVerified,
     required this.currentLocation,
     required this.gender,
-    required this.userType,
+    required this.user_type,
     this.standard,
     this.course,
     this.specialization,
     this.college,
-    this.startYear,
-    this.endYear,
+    this.start_year,
+    this.end_year,
     required this.jobLocation,
-    required this.salaryDetails,
-    required this.currentlyLookingFor,
-    required this.workMode,
+    required this.salary_details,
+    required this.currently_looking_for,
+    required this.work_mode,
     required this.aboutUs,
-    this.careerObjective,
+    this.career_objective,
     required this.resume,
     required this.language,
-    required this.isEmailVerified,
-    required this.isPhoneVerified,
-    required this.isGstVerified,
+    required this.is_email_verified,
+    required this.is_phone_verified,
+    required this.is_gst_verified,
     this.userProfilePic,
-    required this.termsAndCondition,
-    required this.createdAt,
-    required this.updatedAt,
+    required this.terms_and_condition,
+    required this.created_at,
+    required this.updated_at,
   });
 }

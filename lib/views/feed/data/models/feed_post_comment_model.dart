@@ -4,7 +4,7 @@ class FeedPostCommentModel extends FeedPostCommentEntity {
   FeedPostCommentModel({
     required super.message,
     required List<CommentModel> comments,
-    required super.commentCount,
+    required super.comment_count,
   }) : super(comments: comments);
 
   factory FeedPostCommentModel.fromJson(Map<String, dynamic> json) {
@@ -14,7 +14,7 @@ class FeedPostCommentModel extends FeedPostCommentEntity {
               ?.map((e) => CommentModel.fromJson(e))
               .toList() ??
           [],
-      commentCount: json['commentCount'] ?? 0,
+      comment_count: json['comment_count'] ?? 0,
     );
   }
 
@@ -22,31 +22,31 @@ class FeedPostCommentModel extends FeedPostCommentEntity {
     return {
       'message': message,
       'comments': comments.map((e) => (e as CommentModel).toJson()).toList(),
-      'commentCount': commentCount,
+      'comment_count': comment_count,
     };
   }
 }
 
 class CommentModel extends CommentEntity {
   CommentModel({
-    required super.userId,
+    required super.user_id,
     required super.comment,
-    required super.createdAt,
+    required super.created_at,
   });
 
   factory CommentModel.fromJson(Map<String, dynamic> json) {
     return CommentModel(
-      userId: json['userId'],
+      user_id: json['user_id'],
       comment: json['comment'],
-      createdAt: DateTime.parse(json['createdAt']),
+      created_at: DateTime.parse(json['created_at']),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'userId': userId,
+      'user_id': user_id,
       'comment': comment,
-      'createdAt': createdAt.toIso8601String(),
+      'created_at': created_at.toIso8601String(),
     };
   }
 }

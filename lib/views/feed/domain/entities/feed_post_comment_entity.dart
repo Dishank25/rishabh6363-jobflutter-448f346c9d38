@@ -1,23 +1,23 @@
 class FeedPostCommentEntity {
   final String message;
   final List<CommentEntity> comments;
-  final int commentCount;
+  final int comment_count;
 
   FeedPostCommentEntity({
     required this.message,
     required this.comments,
-    required this.commentCount,
+    required this.comment_count,
   });
 }
 
 class CommentEntity {
-  final dynamic userId;
+  final dynamic user_id;
   final String comment;
-  final DateTime createdAt;
+  final DateTime created_at;
 
   CommentEntity({
-    required this.userId,
+    required this.user_id,
     required this.comment,
-    required this.createdAt,
+    required this.created_at,
   });
 }

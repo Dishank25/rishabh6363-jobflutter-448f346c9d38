@@ -18,7 +18,7 @@ class TermsAndConditionsBloc
     try {
       emit(const TnCLoading());
       final respones = await _termsAndConditionsUsecase();
-      // developer.log('checking in bloc : ${respones.data!.firstName}');
+      // developer.log('checking in bloc : ${respones.data!.first_name}');
       emit(TnCLoaded(respones.data!));
     } catch (e) {
       developer.log('checking error in bloc : ${e}');

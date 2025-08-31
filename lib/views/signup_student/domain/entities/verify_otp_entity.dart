@@ -14,18 +14,18 @@ class VerifyOtpEntity {
 
 class UserEntity {
   final int id;
-  final String firstName;
-  final String lastName;
+  final String first_name;
+  final String last_name;
   final String email;
   final String phone;
-  final String userRole;
+  final String user_role;
 
   const UserEntity({
     required this.id,
-    required this.firstName,
-    required this.lastName,
+    required this.first_name,
+    required this.last_name,
     required this.email,
     required this.phone,
-    required this.userRole,
+    required this.user_role,
   });
 }

@@ -85,7 +85,7 @@ class _ProfileApiService implements ProfileApiService {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'user-details/getTermsAndCondition',
+            'user-details/getterms_and_condition',
             queryParameters: queryParameters,
             data: _data,
           )

@@ -23,9 +23,9 @@ import 'package:flutter/material.dart';
 class JobDetailsScreen extends StatefulWidget {
   final VoidCallback? onCallBack;
   final VoidCallback? onShowCompanyJobs;
-  final int? jobId;
+  final int? job_id;
   const JobDetailsScreen(
-      {super.key, this.onCallBack, this.onShowCompanyJobs, this.jobId});
+      {super.key, this.onCallBack, this.onShowCompanyJobs, this.job_id});
 
   @override
   State<JobDetailsScreen> createState() => _JobDetailsScreenState();
@@ -39,7 +39,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
 
-    final map = {'jobId': widget.jobId.toString()};
+    final map = {'job_id': widget.job_id.toString()};
     context.read<JobDetailsBloc>().add(LoadJobDetail(map));
   }
 
@@ -182,7 +182,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
             builder: (context, state) {
               if (state is JobDetailsLoaded) {
                 final data = state.jobDetailsEntity;
-                // developer.log("Details of job data : ${data.jobProfile}");
+                developer.log("Details of job data : ${data.jobProfile}");
                 areDetailsLoaded = true;
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -237,7 +237,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                       fontWeight: FontWeight.w600),
                                 ),
                                 Text(
-                                  data.companyName,
+                                  data.company_name,
                                   style: mTextStyle14(),
                                 ),
                                 SizedBox(
@@ -269,8 +269,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                     //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     //   children: [
                     //     jobRelatedOptions(
-                    //         title: "INR ${data.stipendMin}-${data.stipendMax}"),
-                    //     jobRelatedOptions(title: data.candidatePreferences),
+                    //         title: "INR ${data.stipend_min}-${data.stipend_max}"),
+                    //     jobRelatedOptions(title: data.candidate_preferences),
                     //     jobRelatedOptions(
                     //         title: data.cityChoice ?? 'City Choice'),
                     //     jobRelatedOptions(title: "45 Applicants")
@@ -281,10 +281,10 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                       runSpacing: 8.0,
                       children: [
                         jobRelatedOptions(
-                            // title: "INR ${data.stipendMin}-${data.stipendMax}"
+                            // title: "INR ${data.stipend_min}-${data.stipend_max}"
                             title: "INR ${data.salary}"),
                         jobRelatedOptions(
-                            title: data.candidatePreferences ??
+                            title: data.candidate_preferences ??
                                 'Candidate Preference'),
                         jobRelatedOptions(
                             title: data.cityChoice ?? 'City Choice'),
@@ -299,7 +299,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                       "Your Role",
                       style: mTextStyle14(mFontWeight: FontWeight.w600),
                     ),
-                    Text("• ${data.jobDescription}"),
+                    Text("• ${data.job_description}"),
                     SizedBox(
                       height: 11,
                     ),
@@ -307,7 +307,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("About ${data.companyName}",
+                          Text("About ${data.company_name}",
                               style:
                                   mTextStyle14(mFontWeight: FontWeight.w600)),
                           const SizedBox(
@@ -321,7 +321,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                 ;
                               },
                               child: Text(
-                                  "More Job openings at ${data.companyName}",
+                                  "More Job openings at ${data.company_name}",
                                   style: mTextStyle14().copyWith(
                                     color: AppColors.blueTextColor,
                                   ))),
@@ -418,7 +418,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                 if (areDetailsLoaded) {
                   context
                       .read<JobApplyBloc>()
-                      .add(LoadJobApply(widget.jobId.toString()));
+                      .add(LoadJobApply(widget.job_id.toString()));
                 }
                 // ScaffoldMessenger.of(context).showSnackBar(
                 //     SnackBar(content: Text("Applied Successfully")));

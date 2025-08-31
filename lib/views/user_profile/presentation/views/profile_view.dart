@@ -53,10 +53,10 @@ class _UserProfileScreen1State extends State<UserProfileScreen1> {
     // ignore: unused_local_variable
     final _prefs = sl<PreferencesManager>();
 
-    final userId = _prefs.getUserId();
+    final user_id = _prefs.getUserId();
 
     final bloc = context.read<ProfileBloc>();
-    bloc.add(LoadPublicProfile(userId ?? '77'));
+    bloc.add(LoadPublicProfile(user_id ?? '77'));
   }
 
   bool showProfile2 = false;
@@ -80,7 +80,7 @@ class _UserProfileScreen1State extends State<UserProfileScreen1> {
 
       // builder: (context) => BlocProvider.value(
       //   value: context.read<MyProfileBloc>(),
-      //   child: EditCareerObjectiveView(careerObjective: careerObjective),
+      //   child: EditCareerObjectiveView(career_objective: career_objective),
       // ),
 
       builder: (context) {
@@ -150,7 +150,7 @@ class _UserProfileScreen1State extends State<UserProfileScreen1> {
                     final profileData = state.publicProfile.publicProfile;
                     userProfile = profileData;
                     // developer
-                    //     .log("Public profile loaded ${profileData.firstName}");
+                    //     .log("Public profile loaded ${profileData.first_name}");
                     return Padding(
                       padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
                       child: Container(
@@ -191,7 +191,7 @@ class _UserProfileScreen1State extends State<UserProfileScreen1> {
                                     height: 2,
                                   ),
                                   Text(
-                                    "${profileData.firstName} ${profileData.lastName}",
+                                    "${profileData.first_name} ${profileData.last_name}",
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleLarge
@@ -207,7 +207,7 @@ class _UserProfileScreen1State extends State<UserProfileScreen1> {
                                     height: 10,
                                   ),
                                   Text(
-                                    "@${profileData.firstName.toLowerCase()}",
+                                    "@${profileData.first_name.toLowerCase()}",
                                     style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,
@@ -244,12 +244,12 @@ class _UserProfileScreen1State extends State<UserProfileScreen1> {
                                       ).then((value) {
                                         final _prefs = sl<PreferencesManager>();
 
-                                        final userId = _prefs.getUserId();
+                                        final user_id = _prefs.getUserId();
 
                                         final bloc =
                                             context.read<ProfileBloc>();
                                         bloc.add(
-                                            LoadPublicProfile(userId ?? '77'));
+                                            LoadPublicProfile(user_id ?? '77'));
                                       });
                                     },
                                     child: Row(

@@ -16,13 +16,13 @@ class JobApplyBloc extends Bloc<JobApplyEvent, JobApplyState> {
     try {
       emit(const JobApplyLoading());
       final map = {
-        'jobId': event.jobId,
+        'job_id': event.job_id,
         'params': {
-          "whyShouldWeHireYou": "I am highly skilled and motivated.",
-          "confirmAvailability": "Yes",
+          "why_should_we_hire_you": "I am highly skilled and motivated.",
+          "confirm_availability": "Yes",
           "project": "Project description here",
-          "githubLink": "https://github.com/yourprofile",
-          "portfolioLink": "https://yourportfolio.com",
+          "github_link": "https://github.com/yourprofile",
+          "portfolio_link": "https://yourportfolio.com",
           "education": "B.tech"
         }
       };

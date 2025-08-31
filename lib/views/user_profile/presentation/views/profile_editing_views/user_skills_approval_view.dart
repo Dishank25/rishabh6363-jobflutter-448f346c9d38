@@ -346,10 +346,10 @@ class _UserSkillsApprovalScreenState extends State<UserSkillsApprovalScreen> {
                               finalSkillData = createSkillList(urls.url);
 
                               final _prefs = sl<PreferencesManager>();
-                              final userId = _prefs.getUserId();
+                              final user_id = _prefs.getUserId();
                               context.read<MyProfileBloc>().add(
                                   LoadUpdateProfile(
-                                      userId ?? '6', finalSkillData));
+                                      user_id ?? '6', finalSkillData));
                             } else if (state is UploadFileLoading) {
                               developer.log(
                                   'Wait we are uploading your certificates.');
@@ -415,10 +415,10 @@ class _UserSkillsApprovalScreenState extends State<UserSkillsApprovalScreen> {
       developer.log('No certificate files to upload, skipping API call.');
       finalSkillData = createSkillList(null);
       final _prefs = sl<PreferencesManager>();
-      final userId = _prefs.getUserId();
+      final user_id = _prefs.getUserId();
       context
           .read<MyProfileBloc>()
-          .add(LoadUpdateProfile(userId ?? '6', finalSkillData));
+          .add(LoadUpdateProfile(user_id ?? '6', finalSkillData));
       return;
     }
     context.read<UploadFileBloc>().add(LoadUploadFile(formData));

@@ -66,9 +66,9 @@ class DetailedSignupRepositoryImpl extends DetailedSignupRepository {
 
   @override
   Future<DataState<List<SpecializationEntity>>> getSpecialization(
-      String courseId) async {
+      String course_id) async {
     try {
-      final res = await _apiService.getSpecialization(courseId);
+      final res = await _apiService.getSpecialization(course_id);
       if (res.response.statusCode == HttpStatus.ok) {
         developer.log('.checkk response in repository : ${res.data}');
         return DataSuccess(res.data.data);

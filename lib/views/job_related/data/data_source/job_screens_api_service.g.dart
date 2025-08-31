@@ -49,7 +49,7 @@ class _JobScreensApiService implements JobScreensApiService {
 
   @override
   Future<HttpResponse<JobDetailsResponseModel>> getJobDetails(
-    String jobId,
+    String job_id,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -59,7 +59,7 @@ class _JobScreensApiService implements JobScreensApiService {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'jobdetails/${jobId}',
+            'jobdetails/${job_id}',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -79,7 +79,7 @@ class _JobScreensApiService implements JobScreensApiService {
 
   @override
   Future<HttpResponse<JobApplyModel>> applyForJob(
-    String jobId,
+    String job_id,
     Map<String, dynamic> params,
   ) async {
     final _extra = <String, dynamic>{};
@@ -91,7 +91,7 @@ class _JobScreensApiService implements JobScreensApiService {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'jobpost/apply/${jobId}',
+            'jobpost/apply/${job_id}',
             queryParameters: queryParameters,
             data: _data,
           )

@@ -1,8 +1,8 @@
 class UserDetailEntity {
   final int id;
-  final int userId;
-  final String firstName;
-  final String lastName;
+  final int user_id;
+  final String first_name;
+  final String last_name;
   final String email;
   final String phone;
   final String dob;
@@ -11,31 +11,31 @@ class UserDetailEntity {
   final bool isAadhaarVerified;
   final String? currentLocation;
   final String gender;
-  final String userType;
+  final String user_type;
   final String? jobLocation;
-  final String? salaryDetails;
-  final String? currentlyLookingFor;
-  final String? workMode;
+  final String? salary_details;
+  final String? currently_looking_for;
+  final String? work_mode;
   final String? aboutUs;
-  final String? careerObjective;
+  final String? career_objective;
   final String? resume;
   final String? language;
-  final bool isEmailVerified;
-  final bool isPhoneVerified;
-  final bool isGstVerified;
+  final bool is_email_verified;
+  final bool is_phone_verified;
+  final bool is_gst_verified;
   final String? userProfilePic;
-  final bool termsAndCondition;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final bool terms_and_condition;
+  final DateTime created_at;
+  final DateTime updated_at;
   final List<UserEducationEntity> educations;
   final List<UserExperienceEntity> experiences;
   final List<ProfileSkillEntity> skills;
 
   UserDetailEntity({
     required this.id,
-    required this.userId,
-    required this.firstName,
-    required this.lastName,
+    required this.user_id,
+    required this.first_name,
+    required this.last_name,
     required this.email,
     required this.phone,
     required this.dob,
@@ -44,22 +44,22 @@ class UserDetailEntity {
     required this.isAadhaarVerified,
     required this.currentLocation,
     required this.gender,
-    required this.userType,
+    required this.user_type,
     required this.jobLocation,
-    required this.salaryDetails,
-    required this.currentlyLookingFor,
-    required this.workMode,
+    required this.salary_details,
+    required this.currently_looking_for,
+    required this.work_mode,
     required this.aboutUs,
-    this.careerObjective,
+    this.career_objective,
     required this.resume,
     required this.language,
-    required this.isEmailVerified,
-    required this.isPhoneVerified,
-    required this.isGstVerified,
+    required this.is_email_verified,
+    required this.is_phone_verified,
+    required this.is_gst_verified,
     this.userProfilePic,
-    required this.termsAndCondition,
-    required this.createdAt,
-    required this.updatedAt,
+    required this.terms_and_condition,
+    required this.created_at,
+    required this.updated_at,
     required this.educations,
     required this.experiences,
     required this.skills,
@@ -69,14 +69,14 @@ class UserDetailEntity {
 class UserEducationEntity {
   final int id;
   final String level;
-  final int schoolCollegeId;
-  final String boardOrUniversity;
-  final int courseId;
-  final int specializationId;
-  final String startYear;
-  final String endYear;
-  final String percentageOrCgpa;
-  final String educationCertificate;
+  final int school_college_id;
+  final String board_or_university;
+  final int course_id;
+  final int specialization_id;
+  final String start_year;
+  final String end_year;
+  final String percentage_or_cgpa;
+  final String education_certificate;
   final SchoolCollegeEntity? schoolCollege;
   final UDCourseEntity? course;
   final UDSpecializationEntity? specialization;
@@ -84,14 +84,14 @@ class UserEducationEntity {
   UserEducationEntity({
     required this.id,
     required this.level,
-    required this.schoolCollegeId,
-    required this.boardOrUniversity,
-    required this.courseId,
-    required this.specializationId,
-    required this.startYear,
-    required this.endYear,
-    required this.percentageOrCgpa,
-    required this.educationCertificate,
+    required this.school_college_id,
+    required this.board_or_university,
+    required this.course_id,
+    required this.specialization_id,
+    required this.start_year,
+    required this.end_year,
+    required this.percentage_or_cgpa,
+    required this.education_certificate,
     this.schoolCollege,
     this.course,
     this.specialization,
@@ -100,11 +100,11 @@ class UserEducationEntity {
 
 class SchoolCollegeEntity {
   final String name;
-  final String? logoPic;
+  final String? logo_pic;
 
   SchoolCollegeEntity({
     required this.name,
-    this.logoPic,
+    this.logo_pic,
   });
 }
 
@@ -135,41 +135,41 @@ class ProfileSkillEntity {
 }
 
 class CompanyRecruiterProfileEntity {
-  final String companyName;
-  final String? logoUrl;
+  final String company_name;
+  final String? logo_url;
 
   CompanyRecruiterProfileEntity({
-    required this.companyName,
-    this.logoUrl,
+    required this.company_name,
+    this.logo_url,
   });
 }
 
 class UserExperienceEntity {
   final int id;
-  final int userDetailId;
-  final int? companyRecruiterProfileId;
-  final String? startDate;
-  final String? endDate;
-  final String? currentJobRole;
-  final String? currentCompany;
+  final int user_detail_id;
+  final int? company_recruiter_profile_id;
+  final String? start_date;
+  final String? end_date;
+  final String? current_job_role;
+  final String? current_company;
   final String? status;
   final String? experienceCertificate;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final DateTime created_at;
+  final DateTime updated_at;
   final CompanyRecruiterProfileEntity? companyRecruiterProfile;
 
   UserExperienceEntity({
     required this.id,
-    required this.userDetailId,
-    this.companyRecruiterProfileId,
-    this.startDate,
-    this.endDate,
-    this.currentJobRole,
-    this.currentCompany,
+    required this.user_detail_id,
+    this.company_recruiter_profile_id,
+    this.start_date,
+    this.end_date,
+    this.current_job_role,
+    this.current_company,
     this.status,
     this.experienceCertificate,
-    required this.createdAt,
-    required this.updatedAt,
+    required this.created_at,
+    required this.updated_at,
     this.companyRecruiterProfile,
   });
 }

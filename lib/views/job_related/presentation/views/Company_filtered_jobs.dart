@@ -144,7 +144,7 @@ class _CompanyFilteredJobsState extends State<CompanyFilteredJobsScreen> {
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               JobDetailsScreen(
-                                                  // jobId: 0,
+                                                  // job_id: 0,
                                                   ),
                                         ),
                                       );

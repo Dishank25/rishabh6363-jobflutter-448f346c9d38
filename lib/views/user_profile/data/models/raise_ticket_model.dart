@@ -28,15 +28,15 @@ class RaiseTicketModel extends RaiseTicketEntity {
   const RaiseTicketModel({
     required super.status,
     required super.id,
-    required super.userId,
+    required super.user_id,
     required super.name,
     required super.email,
     required super.role,
-    required super.issueTitle,
-    required super.issueDetail,
+    required super.issue_title,
+    required super.issue_detail,
     required super.priority,
-    required super.updatedAt,
-    required super.createdAt,
+    required super.updated_at,
+    required super.created_at,
   });
 
   factory RaiseTicketModel.fromJson(Map<String, dynamic> json) {
@@ -45,15 +45,15 @@ class RaiseTicketModel extends RaiseTicketEntity {
     return RaiseTicketModel(
       status: ticket['status'] ?? '',
       id: ticket['id'] ?? 0,
-      userId: int.tryParse(ticket['userId'].toString()) ?? 0,
+      user_id: int.tryParse(ticket['user_id'].toString()) ?? 0,
       name: ticket['name'] ?? '',
       email: ticket['email'] ?? '',
       role: ticket['role'] ?? '',
-      issueTitle: ticket['issueTitle'] ?? '',
-      issueDetail: ticket['issueDetail'] ?? '',
+      issue_title: ticket['issue_title'] ?? '',
+      issue_detail: ticket['issue_detail'] ?? '',
       priority: ticket['priority'] ?? '',
-      updatedAt: DateTime.parse(ticket['updatedAt']),
-      createdAt: DateTime.parse(ticket['createdAt']),
+      updated_at: DateTime.parse(ticket['updated_at']),
+      created_at: DateTime.parse(ticket['created_at']),
     );
   }
 
@@ -61,15 +61,15 @@ class RaiseTicketModel extends RaiseTicketEntity {
     return {
       'status': status,
       'id': id,
-      'userId': userId,
+      'user_id': user_id,
       'name': name,
       'email': email,
       'role': role,
-      'issueTitle': issueTitle,
-      'issueDetail': issueDetail,
+      'issue_title': issue_title,
+      'issue_detail': issue_detail,
       'priority': priority,
-      'updatedAt': updatedAt.toIso8601String(),
-      'createdAt': createdAt.toIso8601String(),
+      'updated_at': updated_at.toIso8601String(),
+      'created_at': created_at.toIso8601String(),
     };
   }
 }

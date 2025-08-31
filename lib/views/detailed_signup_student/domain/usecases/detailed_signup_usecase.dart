@@ -25,8 +25,8 @@ class DetailedSignupUsecase {
   }
 
   Future<DataState<List<SpecializationEntity>>> getSpecialization(
-      String courseId) async {
-    final response = await _repository.getSpecialization(courseId);
+      String course_id) async {
+    final response = await _repository.getSpecialization(course_id);
     return response;
   }
 

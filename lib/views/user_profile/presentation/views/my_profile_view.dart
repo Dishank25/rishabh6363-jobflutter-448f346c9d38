@@ -55,9 +55,9 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
     // ignore: unused_local_variable
     final _prefs = sl<PreferencesManager>();
 
-    final userId = _prefs.getUserId();
+    final user_id = _prefs.getUserId();
 
-    bloc.add(LoadMyProfileDetails(userId ?? '6'));
+    bloc.add(LoadMyProfileDetails(user_id ?? '6'));
   }
 
   void _showEditAboutDialog(BuildContext context, String currentAbout) {
@@ -80,38 +80,38 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
           // ignore: unused_local_variable
           final _prefs = sl<PreferencesManager>();
 
-          final userId = _prefs.getUserId();
+          final user_id = _prefs.getUserId();
 
-          bloc.add(LoadMyProfileDetails(userId ?? '6'));
+          bloc.add(LoadMyProfileDetails(user_id ?? '6'));
         }
       },
     );
   }
 
   void _showEditCareerObjectiveDialog(
-      BuildContext context, String careerObjective) {
+      BuildContext context, String career_objective) {
     showDialog(
       context: context,
       barrierColor: Colors.black.withOpacity(0.2), // for dimmed effect
 
       builder: (context) => BlocProvider.value(
         value: context.read<MyProfileBloc>(),
-        child: EditCareerObjectiveView(careerObjective: careerObjective),
+        child: EditCareerObjectiveView(career_objective: career_objective),
       ),
     ).then(
       (updatedAbout) {
         if (updatedAbout != null) {
           // Use updated about string
-          print("Updated careerObjective: $careerObjective");
+          print("Updated career_objective: $career_objective");
 
           final bloc = context.read<MyProfileBloc>();
 
           // ignore: unused_local_variable
           final _prefs = sl<PreferencesManager>();
 
-          final userId = _prefs.getUserId();
+          final user_id = _prefs.getUserId();
 
-          bloc.add(LoadMyProfileDetails(userId ?? '6'));
+          bloc.add(LoadMyProfileDetails(user_id ?? '6'));
         }
       },
     );
@@ -137,9 +137,9 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
           // ignore: unused_local_variable
           final _prefs = sl<PreferencesManager>();
 
-          final userId = _prefs.getUserId();
+          final user_id = _prefs.getUserId();
 
-          bloc.add(LoadMyProfileDetails(userId ?? '6'));
+          bloc.add(LoadMyProfileDetails(user_id ?? '6'));
         }
       },
     );
@@ -168,9 +168,9 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
 
   Future<void> updateProfileApi(Map<String, dynamic> map) async {
     final _prefs = sl<PreferencesManager>();
-    final userId = _prefs.getUserId();
+    final user_id = _prefs.getUserId();
 
-    context.read<MyProfileBloc>().add(LoadUpdateProfile(userId ?? '6', map));
+    context.read<MyProfileBloc>().add(LoadUpdateProfile(user_id ?? '6', map));
   }
 
   List<bool> workExperienceStatus(List<UserExperienceEntity> userExperince) {
@@ -247,13 +247,13 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                     children: [
                       Text(
                         // "Aman Gupta",
-                        "${data.firstName} ${data.lastName}",
+                        "${data.first_name} ${data.last_name}",
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w700),
                       ),
                       Text(
                           // "Aman@gmail.com",
-                          "@${data.firstName.toLowerCase()}_${data.lastName.toLowerCase()}",
+                          "@${data.first_name.toLowerCase()}_${data.last_name.toLowerCase()}",
                           style: const TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w400,
@@ -307,7 +307,7 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                               height: 3,
                             ),
                             Text(
-                                data.careerObjective ??
+                                data.career_objective ??
                                     "Add your career objective.",
                                 style: mTextStyle12(
                                   mColor: const Color(0xff9095A0),
@@ -327,7 +327,7 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                                 InkWell(
                                     onTap: () {
                                       _showEditCareerObjectiveDialog(
-                                          context, data.careerObjective ?? "");
+                                          context, data.career_objective ?? "");
                                     },
                                     child: Text("View / Edit",
                                         style: mTextStyle12(
@@ -472,8 +472,8 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                               title: "Work Experience",
                               // items: ["Microsoft", "Startup", "Google"],
                               items: data.experiences
-                                  .where((e) => e.currentCompany!.isNotEmpty)
-                                  .map((e) => e.currentCompany!)
+                                  .where((e) => e.current_company!.isNotEmpty)
+                                  .map((e) => e.current_company!)
                                   .toList(),
                               statusList:
                                   workExperienceStatus(data.experiences),
@@ -490,8 +490,8 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                                   // final bloc = context.read<MyProfileBloc>();
                                   // // ignore: unused_local_variable
                                   // final _prefs = sl<PreferencesManager>();
-                                  // final userId = _prefs.getUserId();
-                                  // bloc.add(LoadMyProfileDetails(userId ?? '6'));
+                                  // final user_id = _prefs.getUserId();
+                                  // bloc.add(LoadMyProfileDetails(user_id ?? '6'));
                                 });
                               },
                               editText: "Add Work Experience",
@@ -539,8 +539,8 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                               title: "Authentication",
                               items: ["Email", "Phone No.", "Aadhar"],
                               statusList: [
-                                data.isEmailVerified,
-                                data.isPhoneVerified,
+                                data.is_email_verified,
+                                data.is_phone_verified,
                                 data.isAadhaarVerified,
                               ],
                               onEditTap: () {
@@ -596,10 +596,10 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                   // ignore: unused_local_variable
                   final _prefs = sl<PreferencesManager>();
 
-                  final userId = _prefs.getUserId();
+                  final user_id = _prefs.getUserId();
                   shouldUploadResume = false;
 
-                  bloc.add(LoadMyProfileDetails(userId ?? '6'));
+                  bloc.add(LoadMyProfileDetails(user_id ?? '6'));
                   return SizedBox();
                 } else {
                   return Center(

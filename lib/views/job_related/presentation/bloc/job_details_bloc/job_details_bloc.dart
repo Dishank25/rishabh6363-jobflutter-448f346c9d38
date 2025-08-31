@@ -18,7 +18,7 @@ class JobDetailsBloc extends Bloc<JobDetailsEvent, JobDetailsState> {
       LoadJobDetail event, Emitter<JobDetailsState> emit) async {
     try {
       emit(const JobDetailsLoading());
-      Map<String, dynamic> param = event.jobId;
+      Map<String, dynamic> param = event.job_id;
       final response = await _jobsDetailsUsecase(params: param);
       developer.log("Details of job in bloc : ${response.data}");
       emit(JobDetailsLoaded(response.data!));
@@ -33,13 +33,13 @@ class JobDetailsBloc extends Bloc<JobDetailsEvent, JobDetailsState> {
   //   try {
   //     emit(const JobApplyLoading());
   //     final map = {
-  //       'jobId': event.jobId,
+  //       'job_id': event.job_id,
   //       'params': {
-  //         "whyShouldWeHireYou": "I am highly skilled and motivated.",
-  //         "confirmAvailability": "Yes",
+  //         "why_should_we_hire_you": "I am highly skilled and motivated.",
+  //         "confirm_availability": "Yes",
   //         "project": "Project description here",
-  //         "githubLink": "https://github.com/yourprofile",
-  //         "portfolioLink": "https://yourportfolio.com",
+  //         "github_link": "https://github.com/yourprofile",
+  //         "portfolio_link": "https://yourportfolio.com",
   //         "education": "B.tech"
   //       }
   //     };

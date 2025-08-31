@@ -23,7 +23,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(const PublicProfileLoading());
       final map = {'id': event.id};
       final respones = await _profileUsecase(params: map);
-      // developer.log('checking in bloc : ${respones.data!.firstName}');
+      // developer.log('checking in bloc : ${respones.data!.first_name}');
       emit(PublicProfileLoaded(respones.data!));
     } catch (e) {
       developer.log('checking error in bloc : ${e}');
@@ -41,7 +41,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       final profile = await _profileUsecase(params: map);
       final followers = await _getFollowersUsecase(params: map);
       final followings = await _getFollowingUsecase(params: map);
-      // developer.log('checking in bloc : ${respones.data!.firstName}');
+      // developer.log('checking in bloc : ${respones.data!.first_name}');
       emit(PublicProfileWithFollowersAndFollowingLoaded(
           profile.data!, followers.data!, followings.data!));
     } catch (e) {

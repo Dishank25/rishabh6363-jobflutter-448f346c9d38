@@ -1,12 +1,12 @@
 import 'package:job_portal/views/user_profile/domain/entities/user_details_entity.dart';
 
 class SchoolCollegeModel extends SchoolCollegeEntity {
-  SchoolCollegeModel({required super.name, super.logoPic});
+  SchoolCollegeModel({required super.name, super.logo_pic});
 
   factory SchoolCollegeModel.fromJson(Map<String, dynamic> json) {
     return SchoolCollegeModel(
       name: json['name'] ?? '',
-      logoPic: json['logoPic'],
+      logo_pic: json['logo_pic'],
     );
   }
 }
@@ -47,14 +47,14 @@ class SkillModel extends ProfileSkillEntity {
 
 class CompanyRecruiterProfileModel extends CompanyRecruiterProfileEntity {
   CompanyRecruiterProfileModel({
-    required super.companyName,
-    super.logoUrl,
+    required super.company_name,
+    super.logo_url,
   });
 
   factory CompanyRecruiterProfileModel.fromJson(Map<String, dynamic> json) {
     return CompanyRecruiterProfileModel(
-      companyName: json['companyName'] ?? '',
-      logoUrl: json['logoUrl'],
+      company_name: json['company_name'] ?? '',
+      logo_url: json['logo_url'],
     );
   }
 }
@@ -62,32 +62,32 @@ class CompanyRecruiterProfileModel extends CompanyRecruiterProfileEntity {
 class UserExperienceModel extends UserExperienceEntity {
   UserExperienceModel({
     required super.id,
-    required super.userDetailId,
-    super.companyRecruiterProfileId,
-    super.startDate,
-    super.endDate,
-    super.currentJobRole,
-    super.currentCompany,
+    required super.user_detail_id,
+    super.company_recruiter_profile_id,
+    super.start_date,
+    super.end_date,
+    super.current_job_role,
+    super.current_company,
     super.status,
     super.experienceCertificate,
-    required super.createdAt,
-    required super.updatedAt,
+    required super.created_at,
+    required super.updated_at,
     super.companyRecruiterProfile,
   });
 
   factory UserExperienceModel.fromJson(Map<String, dynamic> json) {
     return UserExperienceModel(
       id: json['id'],
-      userDetailId: json['userDetailId'],
-      companyRecruiterProfileId: json['companyRecruiterProfileId'],
-      startDate: json['startDate'],
-      endDate: json['endDate'],
-      currentJobRole: json['currentJobRole'],
-      currentCompany: json['currentCompany'],
+      user_detail_id: json['user_detail_id'],
+      company_recruiter_profile_id: json['company_recruiter_profile_id'],
+      start_date: json['start_date'],
+      end_date: json['end_date'],
+      current_job_role: json['current_job_role'],
+      current_company: json['current_company'],
       status: json['status'],
       experienceCertificate: json['experienceCertificate'],
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
+      created_at: DateTime.parse(json['created_at']),
+      updated_at: DateTime.parse(json['updated_at']),
       companyRecruiterProfile: json['companyRecruiterProfile'] != null
           ? CompanyRecruiterProfileModel.fromJson(
               json['companyRecruiterProfile'])
@@ -100,14 +100,14 @@ class UserEducationModel extends UserEducationEntity {
   UserEducationModel({
     required super.id,
     required super.level,
-    required super.schoolCollegeId,
-    required super.boardOrUniversity,
-    required super.courseId,
-    required super.specializationId,
-    required super.startYear,
-    required super.endYear,
-    required super.percentageOrCgpa,
-    required super.educationCertificate,
+    required super.school_college_id,
+    required super.board_or_university,
+    required super.course_id,
+    required super.specialization_id,
+    required super.start_year,
+    required super.end_year,
+    required super.percentage_or_cgpa,
+    required super.education_certificate,
     super.schoolCollege,
     super.course,
     super.specialization,
@@ -117,14 +117,14 @@ class UserEducationModel extends UserEducationEntity {
     return UserEducationModel(
       id: json['id'],
       level: json['level'] ?? '',
-      schoolCollegeId: json['schoolCollegeId'],
-      boardOrUniversity: json['boardOrUniversity'] ?? '',
-      courseId: json['courseId'],
-      specializationId: json['specializationId'],
-      startYear: json['startYear'] ?? '',
-      endYear: json['endYear'] ?? '',
-      percentageOrCgpa: json['percentageOrCgpa'] ?? '',
-      educationCertificate: json['educationCertificate'] ?? '',
+      school_college_id: json['school_college_id'],
+      board_or_university: json['board_or_university'] ?? '',
+      course_id: json['course_id'],
+      specialization_id: json['specialization_id'],
+      start_year: json['start_year'] ?? '',
+      end_year: json['end_year'] ?? '',
+      percentage_or_cgpa: json['percentage_or_cgpa'] ?? '',
+      education_certificate: json['education_certificate'] ?? '',
       schoolCollege: json['schoolCollege'] != null
           ? SchoolCollegeModel.fromJson(json['schoolCollege'])
           : null,
@@ -140,9 +140,9 @@ class UserEducationModel extends UserEducationEntity {
 class UserDetailModel extends UserDetailEntity {
   UserDetailModel({
     required super.id,
-    required super.userId,
-    required super.firstName,
-    required super.lastName,
+    required super.user_id,
+    required super.first_name,
+    required super.last_name,
     required super.email,
     required super.phone,
     required super.dob,
@@ -151,22 +151,22 @@ class UserDetailModel extends UserDetailEntity {
     required super.isAadhaarVerified,
     required super.currentLocation,
     required super.gender,
-    required super.userType,
+    required super.user_type,
     required super.jobLocation,
-    required super.salaryDetails,
-    required super.currentlyLookingFor,
-    required super.workMode,
+    required super.salary_details,
+    required super.currently_looking_for,
+    required super.work_mode,
     required super.aboutUs,
-    super.careerObjective,
+    super.career_objective,
     required super.resume,
     required super.language,
-    required super.isEmailVerified,
-    required super.isPhoneVerified,
-    required super.isGstVerified,
+    required super.is_email_verified,
+    required super.is_phone_verified,
+    required super.is_gst_verified,
     super.userProfilePic,
-    required super.termsAndCondition,
-    required super.createdAt,
-    required super.updatedAt,
+    required super.terms_and_condition,
+    required super.created_at,
+    required super.updated_at,
     required super.educations,
     required super.experiences,
     required super.skills,
@@ -176,9 +176,9 @@ class UserDetailModel extends UserDetailEntity {
     final user = json['userDetail'] ?? {};
     return UserDetailModel(
       id: user['id'],
-      userId: user['userId'],
-      firstName: user['firstName'],
-      lastName: user['lastName'],
+      user_id: user['user_id'],
+      first_name: user['first_name'],
+      last_name: user['last_name'],
       email: user['email'],
       phone: user['phone'],
       dob: user['dob'],
@@ -187,22 +187,22 @@ class UserDetailModel extends UserDetailEntity {
       isAadhaarVerified: user['isAadhaarVerified'] ?? false,
       currentLocation: user['currentLocation'],
       gender: user['gender'],
-      userType: user['userType'],
+      user_type: user['user_type'],
       jobLocation: user['jobLocation'],
-      salaryDetails: user['salaryDetails'],
-      currentlyLookingFor: user['currentlyLookingFor'],
-      workMode: user['workMode'],
-      aboutUs: user['aboutus'],
-      careerObjective: user['careerObjective'],
+      salary_details: user['salary_details'],
+      currently_looking_for: user['currently_looking_for'],
+      work_mode: user['work_mode'],
+      aboutUs: user['about_us'],
+      career_objective: user['career_objective'],
       resume: user['resume'],
       language: user['language'],
-      isEmailVerified: user['isEmailVerified'] ?? false,
-      isPhoneVerified: user['isPhoneVerified'] ?? false,
-      isGstVerified: user['isGstVerified'] ?? false,
-      userProfilePic: user['userprofilepic'],
-      termsAndCondition: user['termsAndCondition'] ?? false,
-      createdAt: DateTime.parse(user['createdAt']),
-      updatedAt: DateTime.parse(user['updatedAt']),
+      is_email_verified: user['is_email_verified'] ?? false,
+      is_phone_verified: user['is_phone_verified'] ?? false,
+      is_gst_verified: user['is_gst_verified'] ?? false,
+      userProfilePic: user['user_profile_pic'],
+      terms_and_condition: user['terms_and_condition'] ?? false,
+      created_at: DateTime.parse(user['created_at']),
+      updated_at: DateTime.parse(user['updated_at']),
       educations: (user['educations'] as List<dynamic>?)
               ?.map((e) => UserEducationModel.fromJson(e))
               .toList() ??

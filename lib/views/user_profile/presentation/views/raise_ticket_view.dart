@@ -28,17 +28,17 @@ class _RaiseTicketViewState extends State<RaiseTicketView> {
 
   Map<String, dynamic> createParams() {
     final _prefs = sl<PreferencesManager>();
-    final userId = _prefs.getUserId();
+    final user_id = _prefs.getUserId();
 
     final curr = widget.userProfile;
     final map = {
-      "userId": userId ?? '6',
-      "name": curr.firstName + curr.lastName,
+      "user_id": user_id ?? '6',
+      "name": curr.first_name + curr.last_name,
       "email": curr.email,
-      // "role": curr.userType,
+      // "role": curr.user_type,
       "role": 'STUDENT',
-      "issueTitle": ticketSubjectController.text.trim(),
-      "issueDetail": ticketBodyController.text.trim(),
+      "issue_title": ticketSubjectController.text.trim(),
+      "issue_detail": ticketBodyController.text.trim(),
       "priority": _priority.toUpperCase()
     };
 

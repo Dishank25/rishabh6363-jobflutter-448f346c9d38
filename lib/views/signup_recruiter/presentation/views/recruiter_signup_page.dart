@@ -22,12 +22,12 @@ class RecruiterSignupPage extends StatelessWidget {
 
   Map<String, dynamic> createSignupParams() {
     Map<String, dynamic> registerationMap = {
-      "firstName": recruiterNameController.text.trim(),
-      "lastName": recruiter_SurNameController.text.trim(),
+      "first_name": recruiterNameController.text.trim(),
+      "last_name": recruiter_SurNameController.text.trim(),
       "email": eController.text.trim(),
       "phone": phoneController.text.trim(),
       "password": pController.text.trim(),
-      "userRole": USERTYPE.COMPANY.name
+      "user_role": USERTYPE.COMPANY.name
     };
 
     return registerationMap;
@@ -195,12 +195,13 @@ class RecruiterSignupPage extends StatelessWidget {
                         context
                             .read<RecruiterSignupBloc>()
                             .add(RecruiterSignupSendOtpEmail(emailMap));
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => RecruiterVerifyEmailScreen(),
-                        //   ),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RecruiterVerifyEmailScreen(
+                                eController.text.trim()),
+                          ),
+                        );
                       } else if (data.message == "Email already exists") {
                         showSnackbar('Email already exists', context);
                         // navigating only for testing purpose (remove this later)
@@ -223,13 +224,13 @@ class RecruiterSignupPage extends StatelessWidget {
                     } else if (state is RecruiterSignupSendOtpLoaded) {
                       final data = state.sendOtpEmail;
 
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RecruiterVerifyEmailScreen(
-                              eController.text.trim()),
-                        ),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => RecruiterVerifyEmailScreen(
+                      //         eController.text.trim()),
+                      //   ),
+                      // );
                     }
                   },
                   child: commonRedContainer(

@@ -4,36 +4,36 @@ import 'package:job_portal/views/user_profile/domain/entities/public_profile_ent
 
 class PublicProfileModel extends PublicProfileEntity {
   const PublicProfileModel({
-    required super.firstName,
-    required super.lastName,
-    required super.userType,
+    required super.first_name,
+    required super.last_name,
+    required super.user_type,
     required super.email,
     required super.language,
-    required super.aboutus,
-    required super.careerObjective,
+    required super.about_us,
+    required super.career_objective,
   });
 
   factory PublicProfileModel.fromJson(Map<String, dynamic> json) {
     return PublicProfileModel(
-      firstName: json['firstName'] ?? '',
-      lastName: json['lastName'] ?? '',
-      userType: json['userType'] ?? '',
+      first_name: json['first_name'] ?? '',
+      last_name: json['last_name'] ?? '',
+      user_type: json['user_type'] ?? '',
       email: json['email'] ?? '',
       language: json['language'] ?? '',
-      aboutus: json['aboutus'] ?? '',
-      careerObjective: json['careerObjective'] ?? '',
+      about_us: json['about_us'] ?? '',
+      career_objective: json['career_objective'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'firstName': firstName,
-      'lastName': lastName,
-      'userType': userType,
+      'first_name': first_name,
+      'last_name': last_name,
+      'user_type': user_type,
       'email': email,
       'language': language,
-      'aboutus': aboutus,
-      'careerObjective': careerObjective,
+      'about_us': about_us,
+      'career_objective': career_objective,
     };
   }
 }
@@ -111,55 +111,55 @@ class ActivityModel extends ActivityEntity {
   const ActivityModel({
     required super.caption,
     required super.image,
-    required super.likeCount,
-    required super.commentCount,
-    required super.createdAt,
+    required super.like_count,
+    required super.comment_count,
+    required super.created_at,
   });
 
   factory ActivityModel.fromJson(Map<String, dynamic> json) {
     return ActivityModel(
       caption: json['caption'] ?? '',
       image: json['image'] ?? '',
-      likeCount: json['likeCount'] ?? 0,
-      commentCount: json['commentCount'] ?? 0,
-      createdAt: DateTime.parse(json['createdAt']),
+      like_count: json['like_count'] ?? 0,
+      comment_count: json['comment_count'] ?? 0,
+      created_at: DateTime.parse(json['created_at']),
     );
   }
 
   Map<String, dynamic> toJson() => {
         'caption': caption,
         'image': image,
-        'likeCount': likeCount,
-        'commentCount': commentCount,
-        'createdAt': createdAt.toIso8601String(),
+        'like_count': like_count,
+        'comment_count': comment_count,
+        'created_at': created_at.toIso8601String(),
       };
 }
 
 class ExperienceModel extends ExperienceEntity {
   const ExperienceModel({
-    super.companyRecruiterProfileId,
+    super.company_recruiter_profile_id,
     required super.totalExperience,
-    required super.currentJobRole,
-    required super.currentCompany,
+    required super.current_job_role,
+    required super.current_company,
     required super.status,
   });
 
   factory ExperienceModel.fromJson(Map<String, dynamic> json) {
     return ExperienceModel(
-      companyRecruiterProfileId: json['companyRecruiterProfileId'],
+      company_recruiter_profile_id: json['company_recruiter_profile_id'],
       totalExperience: json['totalExperience'] ?? '',
-      currentJobRole: json['currentJobRole'] ?? '',
-      currentCompany: json['currentCompany'] ?? '',
+      current_job_role: json['current_job_role'] ?? '',
+      current_company: json['current_company'] ?? '',
       status: json['status'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'companyRecruiterProfileId': companyRecruiterProfileId,
+      'company_recruiter_profile_id': company_recruiter_profile_id,
       'totalExperience': totalExperience,
-      'currentJobRole': currentJobRole,
-      'currentCompany': currentCompany,
+      'current_job_role': current_job_role,
+      'current_company': current_company,
       'status': status,
     };
   }

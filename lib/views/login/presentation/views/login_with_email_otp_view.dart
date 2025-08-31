@@ -132,14 +132,14 @@ class _LoginWithEmailOtpScreen extends State<LoginWithEmailOtpScreen> {
                         final prefs = sl<PreferencesManager>();
                         prefs.setToken(data.token ?? '');
                         prefs.setUserId(data.user.id.toString());
-                        prefs.setUserType(data.user.userRole.toString());
+                        prefs.setUserType(data.user.user_role.toString());
 
                         if (data.message ==
                             'OTP verified and Login successfully') {
                           showSnackbar('Login successful', context);
                           developer.log('Login data : ${data.toString()}');
 
-                          if (data.user.userRole == USERTYPE.STUDENT.name) {
+                          if (data.user.user_role == USERTYPE.STUDENT.name) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -147,7 +147,7 @@ class _LoginWithEmailOtpScreen extends State<LoginWithEmailOtpScreen> {
                                     const Student_Bottom_Nav_bar(),
                               ),
                             );
-                          } else if (data.user.userRole ==
+                          } else if (data.user.user_role ==
                               USERTYPE.COMPANY.name) {
                             Navigator.push(
                               context,

@@ -353,10 +353,10 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
                               finalSkillData = createSkillList(urls.url);
 
                               final _prefs = sl<PreferencesManager>();
-                              final userId = _prefs.getUserId();
+                              final user_id = _prefs.getUserId();
                               context.read<MyProfileBloc>().add(
                                   LoadUpdateProfile(
-                                      userId ?? '6', finalSkillData));
+                                      user_id ?? '6', finalSkillData));
                             } else if (state is UploadFileLoading) {
                               developer.log(
                                   'Wait we are uploading your certificates.');
@@ -419,10 +419,10 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
       developer.log('No certificate files to upload, skipping API call.');
       finalSkillData = createSkillList(null);
       final _prefs = sl<PreferencesManager>();
-      final userId = _prefs.getUserId();
+      final user_id = _prefs.getUserId();
       context
           .read<MyProfileBloc>()
-          .add(LoadUpdateProfile(userId ?? '6', finalSkillData));
+          .add(LoadUpdateProfile(user_id ?? '6', finalSkillData));
       return;
     }
     context.read<UploadFileBloc>().add(LoadUploadFile(formData));
@@ -458,8 +458,8 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
 
   // Future<FormData> createParamsForSkill() async {
   //   final _prefs = sl<PreferencesManager>();
-  //   // final userId = '1';
-  //   final userId = _prefs.getUserId() ?? '1';
+  //   // final user_id = '1';
+  //   final user_id = _prefs.getUserId() ?? '1';
   //   // Step 1: Construct skill list
   //   List<Map<String, dynamic>> skillList = [];
   //   for (int i = 0; i < selectedDomains.length; i++) {
@@ -474,7 +474,7 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
   //   // Step 2: Create FormData
   //   final formData = FormData();
   //   formData.fields
-  //     ..add(MapEntry('user_id', userId))
+  //     ..add(MapEntry('user_id', user_id))
   //     ..add(MapEntry('skills', jsonEncode(skillList)));
   //   // Step 3: Attach certificate images with indexed keys
   //   int index = 0;

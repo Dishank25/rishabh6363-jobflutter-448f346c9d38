@@ -106,44 +106,44 @@ class _PostInternshipsScreenState extends State<PostInternshipsScreen> {
 
   void createParamsForJobPost() {
     final map = {
-      "opportunityType": JobTypes[selectedJobIndex ?? 0],
+      "opportunity_type": JobTypes[selectedJobIndex ?? 0],
       "jobProfile": InternshipProfileController.text.trim(),
       "skillsRequired": buildCommaSeparatedString(requiredSkills),
-      "skillRequiredNote": '',
-      "jobType": internshipLocationTypes[selectedLocationIndex ?? 0],
-      "daysInOffice": selectedLocationIndex == 1 ? selectedDay : null,
-      "jobTime": selectedLocationIndex == 1 || selectedLocationIndex == 2
+      "skill_required_note": '',
+      "job_type": internshipLocationTypes[selectedLocationIndex ?? 0],
+      "days_in_office": selectedLocationIndex == 1 ? selectedDay : null,
+      "job_time": selectedLocationIndex == 1 || selectedLocationIndex == 2
           ? internshipDayTimingsTypes[selectedTimingIndex ?? 0]
           : null,
       "cityChoice": buildCommaSeparatedString(selectedCitiesList),
-      "numberOfOpenings": no_openingController.text.trim(),
-      "jobDescription": responsibilitiesController.text.trim(),
-      "candidatePreferences": preferencesController.text.trim(),
-      "womenPreferred": isWomenAllowed,
-      "stipendType": stipendTypes[selectedStipendIndex ?? 0],
-      "stipendMin":
+      "number_of_openings": no_openingController.text.trim(),
+      "job_description": responsibilitiesController.text.trim(),
+      "candidate_preferences": preferencesController.text.trim(),
+      "women_preferred": isWomenAllowed,
+      "stipend_type": stipendTypes[selectedStipendIndex ?? 0],
+      "stipend_min":
           selectedStipendIndex == 0 ? minStipendController.text.trim() : 0,
-      "stipendMax":
+      "stipend_max":
           selectedStipendIndex == 0 ? maxStipendController.text.trim() : 0,
-      "incentivePerYear": minIncentivesController.text.trim(),
+      "incentive_per_year": minIncentivesController.text.trim(),
       "perks": selectedJobIndex == 0
           ? sendOnlyTickedPerksForInternship()
           : selectedJobIndex == 1
               ? sendOnlyTickedPerksForJobs()
               : '',
-      "screeningQuestions": _screeningQuestionsController.text,
-      "phoneContact": '',
-      "alternatePhoneNumber": alterPhoneController.text.trim(),
+      "screening_questions": _screeningQuestionsController.text,
+      "phone_contact": '',
+      "alternate_phone_number": alterPhoneController.text.trim(),
       "internshipDuration": internshipDurationController.text.trim(),
-      // "internshipStartDate":
+      // "internship_start_date":
       //     internshipStartTimingsTypes[selectedStartTimingIndex ?? 0],
-      "internshipFromDate": selectedStartTimingIndex == 1
+      "internship_from_date": selectedStartTimingIndex == 1
           ? startDateController.text.trim()
           : null,
-      "internshipToDate":
+      "internship_to_date":
           selectedStartTimingIndex == 1 ? endDateController.text.trim() : null,
-      "isCustomInternshipDate": selectedStartTimingIndex == 1,
-      "collegeName": _collegeNameController.text.trim(),
+      "is_custom_internship_date": selectedStartTimingIndex == 1,
+      "college_name": _collegeNameController.text.trim(),
       "course": selectedCourses.join(', '),
     };
 

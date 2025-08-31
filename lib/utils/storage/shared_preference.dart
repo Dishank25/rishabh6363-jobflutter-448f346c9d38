@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class PreferencesManager {
   // keys for storing data
   static const TOKEN = "token";
-  static const USER_ID = "userId";
+  static const USER_ID = "user_id";
   static const SKILL_PARAMS = "skill_params";
   static const USER_TYPE = "user_type";
 
@@ -31,8 +31,8 @@ class PreferencesManager {
     return _prefs.getString(TOKEN);
   }
 
-  Future<void> setUserId(String userId) async {
-    await _prefs.setString(USER_ID, userId);
+  Future<void> setUserId(String user_id) async {
+    await _prefs.setString(USER_ID, user_id);
   }
 
   String? getUserId() {
@@ -48,8 +48,8 @@ class PreferencesManager {
     return _prefs.getString(SKILL_PARAMS);
   }
 
-  Future<void> setUserType(String userType) async {
-    await _prefs.setString(USER_TYPE, userType);
+  Future<void> setUserType(String user_type) async {
+    await _prefs.setString(USER_TYPE, user_type);
   }
 
   String? getUserType() {

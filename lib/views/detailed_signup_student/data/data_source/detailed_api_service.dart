@@ -27,7 +27,7 @@ abstract class DetailedApiService {
 
   @GET(Urls.getSpecialization)
   Future<HttpResponse<SpecializationResponse>> getSpecialization(
-      @Path() String courseId);
+      @Path() String course_id);
 
   @GET(Urls.getCourses)
   Future<HttpResponse<CourseListModel>> getCourses();

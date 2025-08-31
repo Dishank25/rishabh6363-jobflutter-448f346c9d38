@@ -16,11 +16,11 @@ abstract class JobScreensApiService {
   @GET(Urls.opportunities)
   Future<HttpResponse<AllJobsResponse>> getOpportunities();
 
-  @GET('${Urls.jobDetails}{jobId}')
+  @GET('${Urls.jobDetails}{job_id}')
   Future<HttpResponse<JobDetailsResponseModel>> getJobDetails(
-      @Path() String jobId);
+      @Path() String job_id);
 
   @POST(Urls.applyForJob)
   Future<HttpResponse<JobApplyModel>> applyForJob(
-      @Path() String jobId, @Body() Map<String, dynamic> params);
+      @Path() String job_id, @Body() Map<String, dynamic> params);
 }

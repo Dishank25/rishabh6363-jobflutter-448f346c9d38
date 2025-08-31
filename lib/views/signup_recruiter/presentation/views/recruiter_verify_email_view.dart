@@ -78,7 +78,7 @@ class RecruiterVerifyEmailScreen extends StatelessWidget {
                   if (state is VerifyOtpRecruiterLoaded) {
                     final data = state.verifyOtpEntity;
 
-                    if (data.message == "OTP verified successfully") {
+                    if (data.message == "email verification successful") {
                       Navigator.push(
                         context,
                         MaterialPageRoute(

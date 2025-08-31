@@ -176,7 +176,7 @@ class SignupUniversityView extends StatelessWidget {
                   onTap: () {
                     if (_formKey.currentState!.validate()) {
                       final body = {
-                        "collegeName": clgNameController.text.trim(),
+                        "college_name": clgNameController.text.trim(),
                         "email": emailController.text.trim(),
                         "phone": phoneController.text.trim(),
                         "password": passwordController.text,

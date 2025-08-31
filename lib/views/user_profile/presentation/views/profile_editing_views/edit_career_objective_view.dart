@@ -10,9 +10,9 @@ import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/
 import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/my_profile_state.dart';
 
 class EditCareerObjectiveView extends StatefulWidget {
-  final String careerObjective;
+  final String career_objective;
 
-  const EditCareerObjectiveView({super.key, required this.careerObjective});
+  const EditCareerObjectiveView({super.key, required this.career_objective});
 
   @override
   State<EditCareerObjectiveView> createState() =>
@@ -26,7 +26,7 @@ class _EditCareerObjectiveViewState extends State<EditCareerObjectiveView> {
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: widget.careerObjective);
+    _controller = TextEditingController(text: widget.career_objective);
   }
 
   @override
@@ -38,12 +38,12 @@ class _EditCareerObjectiveViewState extends State<EditCareerObjectiveView> {
   Future<void> updateAboutApi(String newAbout) async {
     setState(() => _isUpdating = true);
 
-    final map = {'careerObjective': _controller.text.trim()};
+    final map = {'career_objective': _controller.text.trim()};
     final _prefs = sl<PreferencesManager>();
 
-    final userId = _prefs.getUserId();
+    final user_id = _prefs.getUserId();
 
-    context.read<MyProfileBloc>().add(LoadUpdateProfile(userId ?? '6', map));
+    context.read<MyProfileBloc>().add(LoadUpdateProfile(user_id ?? '6', map));
   }
 
   @override

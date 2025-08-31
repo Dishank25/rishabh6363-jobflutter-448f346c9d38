@@ -9,14 +9,14 @@ class FollowersEntity {
 }
 
 class Follower {
-  final String firstName;
-  final String lastName;
-  final String userRole;
+  final String first_name;
+  final String last_name;
+  final String user_role;
 
   Follower({
-    required this.firstName,
-    required this.lastName,
-    required this.userRole,
+    required this.first_name,
+    required this.last_name,
+    required this.user_role,
   });
 }
 
@@ -31,13 +31,13 @@ class FollowingEntity {
 }
 
 class Following {
-  final String firstName;
-  final String lastName;
-  final String userRole;
+  final String first_name;
+  final String last_name;
+  final String user_role;
 
   Following({
-    required this.firstName,
-    required this.lastName,
-    required this.userRole,
+    required this.first_name,
+    required this.last_name,
+    required this.user_role,
   });
 }

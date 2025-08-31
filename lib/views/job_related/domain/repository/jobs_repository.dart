@@ -9,5 +9,5 @@ abstract class JobsRepository {
   Future<DataState<JobDetailsEntity>> getJobDetails(String id);
 
   Future<DataState<JobApplyEntity>> applyForJob(
-      String jobId, Map<String, dynamic> params);
+      String job_id, Map<String, dynamic> params);
 }

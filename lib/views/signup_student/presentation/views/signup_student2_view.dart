@@ -121,8 +121,7 @@ class _SignUpStudent_2State extends State<SignUpStudent_2> {
                         if (state is VerifyOtpLoaded) {
                           final data = state.verifyOtpEntity;
 
-                          if (data.message ==
-                              "OTP verified and Login successfully") {
+                          if (data.message == "email verification successful") {
                             Navigator.push(
                               context,
                               MaterialPageRoute(

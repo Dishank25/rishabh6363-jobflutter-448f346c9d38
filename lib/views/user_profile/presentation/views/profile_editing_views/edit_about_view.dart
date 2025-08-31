@@ -36,11 +36,11 @@ class _EditAboutDialogState extends State<EditAboutDialog> {
   Future<void> updateAboutApi(String newAbout) async {
     setState(() => _isUpdating = true);
 
-    final map = {'aboutus': _controller.text.trim()};
+    final map = {'about_us': _controller.text.trim()};
     final _prefs = sl<PreferencesManager>();
-    final userId = _prefs.getUserId();
+    final user_id = _prefs.getUserId();
 
-    context.read<MyProfileBloc>().add(LoadUpdateProfile(userId ?? '6', map));
+    context.read<MyProfileBloc>().add(LoadUpdateProfile(user_id ?? '6', map));
   }
 
   @override

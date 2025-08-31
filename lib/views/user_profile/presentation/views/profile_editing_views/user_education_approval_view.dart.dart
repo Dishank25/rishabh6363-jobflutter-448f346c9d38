@@ -48,26 +48,26 @@ class _UserEducationApprovalScreenState
         educationControllers.add(
           EducationCardData(
             level: edu.level,
-            selectedSchoolCollegeId: edu.schoolCollegeId,
-            selectedCourseId: edu.courseId,
-            selectedSpecializationId: edu.specializationId,
-            educationCertificate: edu.educationCertificate,
+            selectedSchoolCollegeId: edu.school_college_id,
+            selectedCourseId: edu.course_id,
+            selectedSpecializationId: edu.specialization_id,
+            education_certificate: edu.education_certificate,
 
             // Controllers pre-filled
             schoolOrCollegeController: TextEditingController(
               text: edu.schoolCollege?.name ?? "College",
             ),
             boardOrUniversityController: TextEditingController(
-              text: edu.boardOrUniversity,
+              text: edu.board_or_university,
             ),
             startYearController: TextEditingController(
-              text: edu.startYear,
+              text: edu.start_year,
             ),
             endYearController: TextEditingController(
-              text: edu.endYear,
+              text: edu.end_year,
             ),
             percentageOrCgpaController: TextEditingController(
-              text: edu.percentageOrCgpa,
+              text: edu.percentage_or_cgpa,
             ),
           ),
         );
@@ -79,14 +79,14 @@ class _UserEducationApprovalScreenState
     return educationControllers.map((edu) {
       return {
         "level": edu.level,
-        "schoolCollegeId": edu.selectedSchoolCollegeId,
-        "boardOrUniversity": edu.boardOrUniversityController.text.trim(),
-        "courseId": edu.selectedCourseId,
-        "specializationId": edu.selectedSpecializationId ?? 1,
-        "startYear": edu.startYearController.text.trim(),
-        "endYear": edu.endYearController.text.trim(),
-        "percentageOrCgpa": edu.percentageOrCgpaController.text.trim(),
-        "educationCertificate": edu.educationCertificate ?? "dummy.pdf",
+        "school_college_id": edu.selectedSchoolCollegeId,
+        "board_or_university": edu.boardOrUniversityController.text.trim(),
+        "course_id": edu.selectedCourseId,
+        "specialization_id": edu.selectedSpecializationId ?? 1,
+        "start_year": edu.startYearController.text.trim(),
+        "end_year": edu.endYearController.text.trim(),
+        "percentage_or_cgpa": edu.percentageOrCgpaController.text.trim(),
+        "education_certificate": edu.education_certificate ?? "dummy.pdf",
         'schoolOrCollege': edu.schoolOrCollegeController.text.trim(),
       };
     }).toList();
@@ -99,12 +99,12 @@ class _UserEducationApprovalScreenState
     prefillEducationData(widget.eduList);
   }
 
-  void addEducationEntry(String level, {int? courseId}) {
+  void addEducationEntry(String level, {int? course_id}) {
     setState(() {
       addedEducationLevels.add(level);
       educationControllers.add(EducationCardData(
         level: level,
-        selectedCourseId: courseId,
+        selectedCourseId: course_id,
         schoolOrCollegeController: TextEditingController(),
         boardOrUniversityController: TextEditingController(),
         startYearController: TextEditingController(),
@@ -176,7 +176,8 @@ class _UserEducationApprovalScreenState
                           searchCourseController.text = course.name;
                           // Add a new education card for the selected course level
                           if (!addedEducationLevels.contains(course.name)) {
-                            addEducationEntry(course.name, courseId: course.id);
+                            addEducationEntry(course.name,
+                                course_id: course.id);
                             // context.read<DetailedSignupBloc>().add(
                             //     DetailedSignupGetSpecializations(
                             //         course.id.toString()));
@@ -259,10 +260,10 @@ class _UserEducationApprovalScreenState
                           final list = createEducationMap();
                           final map = {'educations': list};
                           developer.log('Education map : $map');
-                          final userId = sl<PreferencesManager>().getUserId();
+                          final user_id = sl<PreferencesManager>().getUserId();
                           context
                               .read<MyProfileBloc>()
-                              .add(LoadUpdateProfile(userId ?? '2', map));
+                              .add(LoadUpdateProfile(user_id ?? '2', map));
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
@@ -456,7 +457,7 @@ class EducationCardData {
   int? selectedSchoolCollegeId;
   int? selectedCourseId;
   int? selectedSpecializationId;
-  String? educationCertificate;
+  String? education_certificate;
 
   EducationCardData({
     required this.level,
@@ -468,6 +469,6 @@ class EducationCardData {
     this.selectedSchoolCollegeId,
     this.selectedCourseId,
     this.selectedSpecializationId,
-    this.educationCertificate,
+    this.education_certificate,
   });
 }

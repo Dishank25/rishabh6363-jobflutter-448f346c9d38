@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:job_portal/injection_container.dart';
 import 'package:job_portal/utils/storage/shared_preference.dart';
+import 'package:job_portal/views/detailed_signup_student/presentation/views/signup_as_anyone_view.dart';
 import 'package:job_portal/views/login/presentation/views/login_page_first_view.dart';
 import 'package:job_portal/views/signup_student/presentation/bloc/remote_signup_bloc/remote_signup_bloc.dart';
 import 'package:job_portal/views/signup_student/presentation/bloc/remote_signup_bloc/remote_signup_event.dart';
@@ -12,9 +13,9 @@ import '../../../../widgets/widgets.dart';
 import 'dart:developer' as developer show log;
 
 class SignUpStudent1 extends StatefulWidget {
-  final String userType;
+  final String user_type;
 
-  const SignUpStudent1({super.key, required this.userType});
+  const SignUpStudent1({super.key, required this.user_type});
 
   @override
   State<SignUpStudent1> createState() => _SignUpStudent1State();
@@ -127,12 +128,12 @@ class _SignUpStudent1State extends State<SignUpStudent1> {
                 //   onTap: () {
                 //     if (_formKey.currentState!.validate()) {
                 //       final body = {
-                //         "firstName": firstNameController.text.trim(),
-                //         "lastName": surnameController.text.trim(),
+                //         "first_name": firstNameController.text.trim(),
+                //         "last_name": surnameController.text.trim(),
                 //         "email": emailController.text.trim(),
                 //         "phone": phoneController.text.trim(),
                 //         "password": passwordController.text,
-                //         "userRole": widget.userType,
+                //         "user_role": widget.user_type,
                 //       };
                 //       // context.read<RegisterUserBloc>().add(
                 //       //   RegisteredUserEvent(bodyParams: body),
@@ -212,7 +213,7 @@ class _SignUpStudent1State extends State<SignUpStudent1> {
                         final _prefs = sl<PreferencesManager>();
                         _prefs.setUserId(data.user?.id.toString() ?? '00');
                         _prefs.setToken(data.token ?? '');
-                        _prefs.setUserType(data.user!.userRole);
+                        _prefs.setUserType(data.user!.user_role);
                         context
                             .read<RemoteSignupBloc>()
                             .add(RemoteSingupSendOtpEmail(emailMap));
@@ -245,12 +246,12 @@ class _SignUpStudent1State extends State<SignUpStudent1> {
                     onTap: () {
                       if (_formKey.currentState!.validate()) {
                         final body = {
-                          "firstName": firstNameController.text.trim(),
-                          "lastName": surnameController.text.trim(),
+                          "first_name": firstNameController.text.trim(),
+                          "last_name": surnameController.text.trim(),
                           "email": emailController.text.trim(),
                           "phone": phoneController.text.trim(),
                           "password": passwordController.text,
-                          "userRole": widget.userType,
+                          "user_role": widget.user_type,
                         };
 
                         developer.log('Registeration map print : $body');
@@ -260,9 +261,9 @@ class _SignUpStudent1State extends State<SignUpStudent1> {
                       }
                       developer.log('Phone number : ${phoneController.text}');
 
-                      // Navigator.of(context).push(MaterialPageRoute(
-                      //     builder: (context) => SignUpStudent_2(
-                      //         Email: emailController.text.trim())));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => SignUpStudent_2(
+                              Email: emailController.text.trim())));
                     },
                   ),
                 ),

@@ -12,7 +12,7 @@ class Urls {
   static const verifyOtpMobile = "mobileotp/verifyotp";
   static const getUserBasicInfo = "users/getUserData";
   static const getColleges = "master/school-college";
-  static const getSpecialization = "master/specializations/{courseId}";
+  static const getSpecialization = "master/specialization/{course_id}";
   static const getCourses = "master/courses";
   static const getDomainAll = "domain/all";
   static const getSubSkills = "skills/by-domain";
@@ -27,14 +27,14 @@ class Urls {
   static const getFeedPosts = "feed/posts";
   static const getPublicProfile = "user-details/public-profile/";
   static const getUserDetails = "user-details/detail/";
-  static const getTermsAndConditions = "user-details/getTermsAndCondition";
+  static const getTermsAndConditions = "user-details/getterms_and_condition";
   static const updateUserDetailsById = "user-details/detail/";
   static const changeUserEmail = "users/changeEmail";
   static const feedPostLike1 = "feed/posts/";
   static const feedPostLike2 = "/like";
   static const feedPostComment1 = "feed/posts/";
   static const feedPostComment2 = "/comment";
-  static const applyForJob = "jobpost/apply/{jobId}";
+  static const applyForJob = "jobpost/apply/{job_id}";
   static const uploadFileGetUrl = "upload-image";
   static const createFeedPost = "feed/feed";
   static const getJobApplications = "user/applications";

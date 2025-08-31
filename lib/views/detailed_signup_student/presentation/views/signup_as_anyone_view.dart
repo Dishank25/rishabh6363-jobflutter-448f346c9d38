@@ -437,7 +437,7 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
   final endJobYearController = TextEditingController();
   final TWXController = TextEditingController();
   final jobRoleController = TextEditingController();
-  final currentCompany = TextEditingController();
+  final current_company = TextEditingController();
   final CTCController = TextEditingController();
   final JobLocationController = TextEditingController();
 
@@ -517,8 +517,8 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
                           final data = state.basicUserInfoResponse;
                           final locations = state.locations;
                           setState(() {
-                            firstnameController.text = data.user.firstName;
-                            surnameController.text = data.user.lastName;
+                            firstnameController.text = data.user.first_name;
+                            surnameController.text = data.user.last_name;
                             emailController.text = data.user.email;
                             phoneController.text = data.user.phone;
                             cities = locations.locations;
@@ -1144,7 +1144,7 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
                             ],
                           ),
                           CustomTextField(
-                            controller: currentCompany,
+                            controller: current_company,
 
                             /// Current Company Textfield
                             hintText:
@@ -1259,7 +1259,7 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
   }
 
   void fillDataIntoParams() {
-    // firstName: firstnameController.text,
+    // first_name: firstnameController.text,
     // surName: surnameController.text,
     // email: emailController.text,
     // phoneNumber: phoneController.text,
@@ -1269,12 +1269,12 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
     // gender: genderController.text,
     // userCategory: selectedOption,
     // course: selectedCourse,
-    // currentJobRole: jobRoleController.text,
+    // current_job_role: jobRoleController.text,
     // CollegeName: collegeController.text,
     // Specialization: specializationController.text,
     // courseStartYear: startCourseYearController.text,
     // courseEndYear: endCourseYearController.text,
-    // currentCompany: currentCompany.text,
+    // current_company: current_company.text,
     // jobStartYear: startJobYearController.text,
     // jobEndYear: endJobYearController.text,
     // studentClass: selectedClass,
@@ -1282,16 +1282,16 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
     final _prefs = sl<PreferencesManager>();
 
     widget.params.addAll({
-      DETAILEDPROFILEPARAMS.userId.name: _prefs.getUserId() ?? '59',
-      DETAILEDPROFILEPARAMS.firstName.name: firstnameController.text,
-      DETAILEDPROFILEPARAMS.lastName.name: surnameController.text,
+      DETAILEDPROFILEPARAMS.user_id.name: _prefs.getUserId() ?? '59',
+      DETAILEDPROFILEPARAMS.first_name.name: firstnameController.text,
+      DETAILEDPROFILEPARAMS.last_name.name: surnameController.text,
       DETAILEDPROFILEPARAMS.email.name: emailController.text,
       DETAILEDPROFILEPARAMS.phone.name: phoneController.text,
       DETAILEDPROFILEPARAMS.dob.name: formatDobToIso(DOBController.text),
       DETAILEDPROFILEPARAMS.city.name: cityController.text,
       DETAILEDPROFILEPARAMS.jobLocation.name: JobLocationController.text,
       DETAILEDPROFILEPARAMS.gender.name: genderController.text,
-      DETAILEDPROFILEPARAMS.userType.name: selectedOption,
+      DETAILEDPROFILEPARAMS.user_type.name: selectedOption,
       // total experience
     });
 
@@ -1299,10 +1299,10 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
     widget.params
       ..remove(DETAILEDPROFILEPARAMS.educationStandard.name)
       ..remove(DETAILEDPROFILEPARAMS.course.name)
-      ..remove(DETAILEDPROFILEPARAMS.collegeName.name)
+      ..remove(DETAILEDPROFILEPARAMS.college_name.name)
       ..remove(DETAILEDPROFILEPARAMS.specialization.name)
-      ..remove(DETAILEDPROFILEPARAMS.startYear.name)
-      ..remove(DETAILEDPROFILEPARAMS.endYear.name)
+      ..remove(DETAILEDPROFILEPARAMS.start_year.name)
+      ..remove(DETAILEDPROFILEPARAMS.end_year.name)
       ..remove(DETAILEDPROFILEPARAMS.experiences.name);
 
     if (selectedOption == JOBSEEKERTYPE.SchoolStudent.name) {
@@ -1313,21 +1313,21 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
         selectedOption == JOBSEEKERTYPE.Fresher.name) {
       widget.params.addAll({
         DETAILEDPROFILEPARAMS.course.name: selectedCourse,
-        DETAILEDPROFILEPARAMS.collegeName.name: selectedCollege,
+        DETAILEDPROFILEPARAMS.college_name.name: selectedCollege,
         DETAILEDPROFILEPARAMS.specialization.name: selectedSpecialization,
-        DETAILEDPROFILEPARAMS.startYear.name: startCourseYearController.text,
-        DETAILEDPROFILEPARAMS.endYear.name: endCourseYearController.text,
+        DETAILEDPROFILEPARAMS.start_year.name: startCourseYearController.text,
+        DETAILEDPROFILEPARAMS.end_year.name: endCourseYearController.text,
       });
     } else if (selectedOption == JOBSEEKERTYPE.WorkingProffesional.name) {
       widget.params.addAll({
         DETAILEDPROFILEPARAMS.experiences.name: [
           {
-            DETAILEDPROFILEPARAMS.userId.name: _prefs.getUserId() ?? '59',
-            // DETAILEDPROFILEPARAMS.companyRecruiterProfileId.name: 'x',
+            DETAILEDPROFILEPARAMS.user_id.name: _prefs.getUserId() ?? '59',
+            // DETAILEDPROFILEPARAMS.company_recruiter_profile_id.name: 'x',
             DETAILEDPROFILEPARAMS.jobRole.name: selectedjobRole,
-            DETAILEDPROFILEPARAMS.company.name: currentCompany.text,
-            DETAILEDPROFILEPARAMS.startDate.name: startJobYearController.text,
-            DETAILEDPROFILEPARAMS.endDate.name: endJobYearController.text,
+            DETAILEDPROFILEPARAMS.company.name: current_company.text,
+            DETAILEDPROFILEPARAMS.start_date.name: startJobYearController.text,
+            DETAILEDPROFILEPARAMS.end_date.name: endJobYearController.text,
           }
         ],
       });

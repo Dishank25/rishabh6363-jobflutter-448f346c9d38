@@ -26,7 +26,7 @@ class JobsDetailsUsecase
   Future<DataState<JobDetailsEntity>> call(
       {Map<String, dynamic>? params}) async {
     return _repository.getJobDetails(
-      params!['jobId'],
+      params!['job_id'],
     );
   }
 }
@@ -38,6 +38,6 @@ class JobApplyUsecase
 
   @override
   Future<DataState<JobApplyEntity>> call({Map<String, dynamic>? params}) async {
-    return _repository.applyForJob(params!['jobId'], params['params']);
+    return _repository.applyForJob(params!['job_id'], params['params']);
   }
 }

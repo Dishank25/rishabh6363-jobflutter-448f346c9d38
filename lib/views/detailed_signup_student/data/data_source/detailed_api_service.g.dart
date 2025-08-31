@@ -83,7 +83,7 @@ class _DetailedApiService implements DetailedApiService {
 
   @override
   Future<HttpResponse<SpecializationResponse>> getSpecialization(
-    String courseId,
+    String course_id,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -93,7 +93,7 @@ class _DetailedApiService implements DetailedApiService {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'master/specializations/${courseId}',
+            'master/specialization/${course_id}',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -211,7 +211,7 @@ class _DetailedApiService implements DetailedApiService {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late JobRolesListResponse _value;
     try {
       _value = JobRolesListResponse.fromJson(_result.data!);

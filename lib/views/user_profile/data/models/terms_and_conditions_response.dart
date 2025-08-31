@@ -1,17 +1,17 @@
 import 'package:job_portal/views/user_profile/domain/entities/terms_and_conditions_entity.dart';
 
 class TermsAndConditionModel extends TermsAndConditionEntity {
-  TermsAndConditionModel({required super.termsAndCondition});
+  TermsAndConditionModel({required super.terms_and_condition});
 
   factory TermsAndConditionModel.fromJson(Map<String, dynamic> json) {
     return TermsAndConditionModel(
-      termsAndCondition: json['termsAndCondition'] ?? '',
+      terms_and_condition: json['terms_and_condition'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'termsAndCondition': termsAndCondition,
+      'terms_and_condition': terms_and_condition,
     };
   }
 }

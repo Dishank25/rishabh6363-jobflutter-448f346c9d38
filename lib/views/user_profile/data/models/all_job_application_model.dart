@@ -15,21 +15,21 @@ class AllJobApplicationsModel extends AllJobApplicationsEntity {
 
 class JobApplicationModel extends JobApplicationEntity {
   JobApplicationModel({
-    required int applicationId,
-    required String companyName,
+    required int application_id,
+    required String company_name,
     required String jobProfile,
     required String skillsRequired,
-    required int? numberOfOpenings,
+    required int? number_of_openings,
     required String status,
     required int applicantCount,
     required DateTime applyTime,
     required ApplicationDetailsModel applicationDetails,
   }) : super(
-          applicationId: applicationId,
-          companyName: companyName,
+          application_id: application_id,
+          company_name: company_name,
           jobProfile: jobProfile,
           skillsRequired: skillsRequired,
-          numberOfOpenings: numberOfOpenings,
+          number_of_openings: number_of_openings,
           status: status,
           applicantCount: applicantCount,
           applyTime: applyTime,
@@ -38,11 +38,11 @@ class JobApplicationModel extends JobApplicationEntity {
 
   factory JobApplicationModel.fromJson(Map<String, dynamic> json) {
     return JobApplicationModel(
-      applicationId: json['applicationId'],
-      companyName: json['companyName'],
+      application_id: json['application_id'],
+      company_name: json['company_name'],
       jobProfile: json['jobProfile'] ?? '',
       skillsRequired: json['skillsRequired'] ?? '',
-      numberOfOpenings: json['numberOfOpenings'],
+      number_of_openings: json['number_of_openings'],
       status: json['status'],
       applicantCount: json['applicantCount'],
       applyTime: DateTime.parse(json['applyTime']),
@@ -54,11 +54,11 @@ class JobApplicationModel extends JobApplicationEntity {
 
 class ApplicationDetailsModel extends ApplicationDetailsEntity {
   ApplicationDetailsModel({
-    required String whyShouldWeHireYou,
-    required String confirmAvailability,
+    required String why_should_we_hire_you,
+    required String confirm_availability,
     required String project,
-    required String githubLink,
-    required String portfolioLink,
+    required String github_link,
+    required String portfolio_link,
     required String education,
     required String name,
     required String location,
@@ -69,11 +69,11 @@ class ApplicationDetailsModel extends ApplicationDetailsEntity {
     required String email,
     required String phoneNumber,
   }) : super(
-          whyShouldWeHireYou: whyShouldWeHireYou,
-          confirmAvailability: confirmAvailability,
+          why_should_we_hire_you: why_should_we_hire_you,
+          confirm_availability: confirm_availability,
           project: project,
-          githubLink: githubLink,
-          portfolioLink: portfolioLink,
+          github_link: github_link,
+          portfolio_link: portfolio_link,
           education: education,
           name: name,
           location: location,
@@ -87,11 +87,11 @@ class ApplicationDetailsModel extends ApplicationDetailsEntity {
 
   factory ApplicationDetailsModel.fromJson(Map<String, dynamic> json) {
     return ApplicationDetailsModel(
-      whyShouldWeHireYou: json['whyShouldWeHireYou'],
-      confirmAvailability: json['confirmAvailability'],
+      why_should_we_hire_you: json['why_should_we_hire_you'],
+      confirm_availability: json['confirm_availability'],
       project: json['project'],
-      githubLink: json['githubLink'],
-      portfolioLink: json['portfolioLink'],
+      github_link: json['github_link'],
+      portfolio_link: json['portfolio_link'],
       education: json['education'],
       name: json['name'],
       location: json['location'],

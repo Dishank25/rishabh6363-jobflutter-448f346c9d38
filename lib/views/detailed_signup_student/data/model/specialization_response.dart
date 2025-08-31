@@ -26,7 +26,7 @@ class SpecializationModel extends SpecializationEntity {
   SpecializationModel({
     required super.id,
     required super.name,
-    required super.courseId,
+    required super.course_id,
     required super.course,
   });
 
@@ -34,7 +34,7 @@ class SpecializationModel extends SpecializationEntity {
     return SpecializationModel(
       id: json['id'],
       name: json['name'],
-      courseId: json['courseId'],
+      course_id: json['course_id'],
       course: SCourseModel.fromJson(json['Course']),
     );
   }

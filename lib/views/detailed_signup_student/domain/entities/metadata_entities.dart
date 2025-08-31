@@ -25,12 +25,12 @@ class LocationListEntity {
 class CollegeEntity {
   final int id;
   final String name;
-  final String logoPic;
+  final String logo_pic;
 
   const CollegeEntity({
     required this.id,
     required this.name,
-    required this.logoPic,
+    required this.logo_pic,
   });
 }
 
@@ -110,13 +110,13 @@ class SkillListEntity {
 class SpecializationEntity {
   final int id;
   final String name;
-  final int courseId;
+  final int course_id;
   final SCourseEntity course;
 
   const SpecializationEntity({
     required this.id,
     required this.name,
-    required this.courseId,
+    required this.course_id,
     required this.course,
   });
 }

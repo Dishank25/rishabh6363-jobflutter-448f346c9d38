@@ -21,9 +21,9 @@ class ChangeEmailView extends StatelessWidget {
   Map<String, dynamic> onPressedSaveChanges() {
     final _prefs = sl<PreferencesManager>();
 
-    final userId = _prefs.getUserId();
+    final user_id = _prefs.getUserId();
     final map = {
-      'userId': userId ?? '2',
+      'user_id': user_id ?? '2',
       'newEmail': changedEmailController.text.trim()
     };
 
@@ -113,9 +113,9 @@ class ChangeEmailView extends StatelessWidget {
                       // final map = onPressedSaveChanges();
                       final _prefs = sl<PreferencesManager>();
 
-                      final userId = _prefs.getUserId();
+                      final user_id = _prefs.getUserId();
                       final map = {
-                        'userId': userId ?? '2',
+                        'user_id': user_id ?? '2',
                         'newEmail': changedEmailController.text.trim()
                       };
                       context

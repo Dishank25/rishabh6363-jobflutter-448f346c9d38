@@ -24,7 +24,7 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileState> {
       emit(const MyProfileDetailsLoading());
       final map = {'id': event.id};
       final respones = await _userDetailUsecase(params: map);
-      // developer.log('checking in bloc : ${respones.data!.firstName}');
+      // developer.log('checking in bloc : ${respones.data!.first_name}');
       emit(MyProfileDetailsLoaded(respones.data!));
     } catch (e) {
       developer.log('checking error in bloc : ${e}');
@@ -39,7 +39,7 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileState> {
       emit(const UpdateProfileLoading());
       final map = {'id': event.id, 'params': event.params};
       final respones = await _updateUserProfileUsecase(params: map);
-      // developer.log('checking in bloc : ${respones.data!.firstName}');
+      // developer.log('checking in bloc : ${respones.data!.first_name}');
       emit(UpdateProfileLoaded(respones.data!));
     } catch (e) {
       developer.log('checking error in bloc : ${e}');

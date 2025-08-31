@@ -66,7 +66,7 @@ class _StudentJobApplicationsState extends State<StudentJobApplications> {
                   itemBuilder: (context, index) {
                     final item = data.applications[index];
                     return AppStatusCard(
-                      comName: item.companyName,
+                      comName: item.company_name,
                       nApplicants: item.applicantCount.toString(),
                       mDate: item.applyTime.toString(),
                       statusText: item.status,

@@ -79,8 +79,8 @@ class RecruiterUpcomingInterviews extends StatelessWidget {
                         applicantName: "Sanya Arora",
                         postName: "UX/UI Designer",
                         Mode: "Zoom",
-                        interviewDate: "05/05/2025",
-                        interviewTime: "10:30 a.m",
+                        interview_date: "05/05/2025",
+                        interview_time: "10:30 a.m",
                         status: "Confirmed",
                         tColor: Color(0xff00BB5E),
                         bgColor: Color(0xffE0F8EB),
@@ -93,8 +93,8 @@ class RecruiterUpcomingInterviews extends StatelessWidget {
                         applicantName: "Shipra Ahuja",
                         postName: "UX/UI Designer",
                         Mode: "Zoom",
-                        interviewDate: "Pending",
-                        interviewTime: "",
+                        interview_date: "Pending",
+                        interview_time: "",
                         status: "Reschedule pending",
                         tColor: Color(0xffFFA30F),
                         bgColor: Color(0xffFFF6E4),
@@ -107,8 +107,8 @@ class InterviewCard extends StatelessWidget {
   String applicantName;
   String postName;
   String Mode;
-  String interviewDate;
-  String interviewTime;
+  String interview_date;
+  String interview_time;
   String status;
   Color bgColor;
   Color tColor;
@@ -118,11 +118,11 @@ class InterviewCard extends StatelessWidget {
       {required this.applicantName,
       required this.postName,
       required this.Mode,
-      required this.interviewDate,
+      required this.interview_date,
       required this.status,
       required this.bgColor,
       required this.tColor,
-      required this.interviewTime,
+      required this.interview_time,
       required this.viewContainerText});
 
   @override
@@ -169,7 +169,7 @@ class InterviewCard extends StatelessWidget {
           Row(
             children: [
               Text(
-                " $interviewDate  $interviewTime ",
+                " $interview_date  $interview_time ",
                 style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w400,

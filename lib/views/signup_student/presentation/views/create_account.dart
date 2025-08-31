@@ -131,7 +131,7 @@ class _CreateAccountState extends State<CreateAccount> {
                         context,
                         MaterialPageRoute(
                           builder: (_) =>
-                              SignUpStudent1(userType: USERTYPE.STUDENT.name),
+                              SignUpStudent1(user_type: USERTYPE.STUDENT.name),
                         ),
                       );
                     },

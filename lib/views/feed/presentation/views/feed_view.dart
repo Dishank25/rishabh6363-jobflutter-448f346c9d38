@@ -155,7 +155,7 @@ class _FeedScreenState extends State<FeedScreen> {
                                   final curr = commentList[index];
                                   return ListTile(
                                     title: Text(
-                                      '${curr.firstName}_${curr.userId}',
+                                      '${curr.first_name}_${curr.user_id}',
                                       style: const TextStyle(
                                           fontWeight: FontWeight.w600),
                                     ),
@@ -217,19 +217,19 @@ class _FeedScreenState extends State<FeedScreen> {
                                     final text = _commentController.text.trim();
                                     if (text.isNotEmpty) {
                                       final _prefs = sl<PreferencesManager>();
-                                      final userId = _prefs.getUserId();
+                                      final user_id = _prefs.getUserId();
 
                                       /// 🆕 Update UI immediately
                                       setSheetState(() {
                                         commentList.insert(
                                           0,
                                           CommentEntity(
-                                              userId: userId ?? '2',
+                                              user_id: user_id ?? '2',
                                               comment: text,
-                                              createdAt: DateTime.now(),
-                                              firstName: 'You',
-                                              lastName: 'Last Name',
-                                              profilePic: 'profile picture'),
+                                              created_at: DateTime.now(),
+                                              first_name: 'You',
+                                              last_name: 'Last Name',
+                                              profile_pic: 'profile picture'),
                                         );
                                       });
 
@@ -238,7 +238,7 @@ class _FeedScreenState extends State<FeedScreen> {
                                             LoadFeedPostComment(
                                               activePostId ?? '2',
                                               {
-                                                "userId": userId ?? "2",
+                                                "user_id": user_id ?? "2",
                                                 "comment": text,
                                               },
                                             ),
@@ -469,13 +469,14 @@ class _FeedScreenState extends State<FeedScreen> {
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 20),
                           child: FeedCard(
-                            likeCount: item!.likeCount,
+                            like_count: item!.like_count,
                             feedPostId: feedPostId.toString(),
                             // imageUrl: item["image"],
                             imageUrl: ImageString.dummyImageUrl,
-                            company: item!.user.firstName,
+                            company: item!.user.first_name,
                             // posted: '1 day ago',
-                            posted: getPostedDaysAgo(item.createdAt.toString()),
+                            posted:
+                                getPostedDaysAgo(item.created_at.toString()),
                             bodyText: item.caption,
                             // bodyText:
                             //     'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.\n\nThe standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.',
@@ -523,7 +524,7 @@ class FeedCard extends StatefulWidget {
   final String bodyText;
   final bool initialLiked;
   final VoidCallback onCommentTap;
-  final int likeCount;
+  final int like_count;
 
   const FeedCard({
     super.key,
@@ -536,7 +537,7 @@ class FeedCard extends StatefulWidget {
     required this.bodyText,
     required this.initialLiked,
     required this.onCommentTap,
-    required this.likeCount,
+    required this.like_count,
   });
 
   @override
@@ -546,14 +547,14 @@ class FeedCard extends StatefulWidget {
 class _FeedCardState extends State<FeedCard> {
   bool isExpanded = false;
   late bool liked;
-  late int likeCount;
+  late int like_count;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     liked = widget.initialLiked;
-    likeCount = widget.likeCount;
+    like_count = widget.like_count;
   }
 
   @override
@@ -695,14 +696,14 @@ class _FeedCardState extends State<FeedCard> {
                 onTap: () {
                   final _prefs = sl<PreferencesManager>();
 
-                  final userId = _prefs.getUserId();
+                  final user_id = _prefs.getUserId();
                   if (liked) {
-                    final map = {'userId': userId ?? '2', 'action': 'unlike'};
+                    final map = {'user_id': user_id ?? '2', 'action': 'unlike'};
                     context
                         .read<FeedBloc>()
                         .add(LoadFeedPostLike(widget.feedPostId, map));
                   } else {
-                    final map = {'userId': userId ?? '2', 'action': 'like'};
+                    final map = {'user_id': user_id ?? '2', 'action': 'like'};
                     context
                         .read<FeedBloc>()
                         .add(LoadFeedPostLike(widget.feedPostId, map));
@@ -711,9 +712,9 @@ class _FeedCardState extends State<FeedCard> {
                     liked = !liked;
                     setState(() {
                       if (liked) {
-                        likeCount += 1;
+                        like_count += 1;
                       } else {
-                        likeCount -= 1;
+                        like_count -= 1;
                       }
                     });
                   });
@@ -730,7 +731,7 @@ class _FeedCardState extends State<FeedCard> {
                       height: 5,
                     ),
                     Text(
-                      '${likeCount} Like',
+                      '${like_count} Like',
                       style: const TextStyle(
                         color: Color.fromARGB(255, 88, 92, 96),
                         fontWeight: FontWeight.w500,

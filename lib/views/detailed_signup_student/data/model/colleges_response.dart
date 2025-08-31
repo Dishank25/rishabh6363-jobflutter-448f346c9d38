@@ -21,14 +21,14 @@ class CollegeModel extends CollegeEntity {
   const CollegeModel({
     required int id,
     required String name,
-    required String logoPic,
-  }) : super(id: id, name: name, logoPic: logoPic);
+    required String logo_pic,
+  }) : super(id: id, name: name, logo_pic: logo_pic);
 
   factory CollegeModel.fromJson(Map<String, dynamic> json) {
     return CollegeModel(
       id: json['id'] ?? 0,
       name: json['name'] ?? '',
-      logoPic: json['logoPic'] ?? '',
+      logo_pic: json['logo_pic'] ?? '',
     );
   }
 
@@ -36,7 +36,7 @@ class CollegeModel extends CollegeEntity {
     return {
       'id': id,
       'name': name,
-      'logoPic': logoPic,
+      'logo_pic': logo_pic,
     };
   }
 }
@@ -66,7 +66,7 @@ class CollegeListModel extends CollegeListEntity {
           .map((college) => CollegeModel(
                 id: college.id,
                 name: college.name,
-                logoPic: college.logoPic,
+                logo_pic: college.logo_pic,
               ).toJson())
           .toList(),
       'message': message,

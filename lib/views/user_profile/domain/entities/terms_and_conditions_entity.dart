@@ -1,5 +1,5 @@
 class TermsAndConditionEntity {
-  final String termsAndCondition;
+  final String terms_and_condition;
 
-  TermsAndConditionEntity({required this.termsAndCondition});
+  TermsAndConditionEntity({required this.terms_and_condition});
 }

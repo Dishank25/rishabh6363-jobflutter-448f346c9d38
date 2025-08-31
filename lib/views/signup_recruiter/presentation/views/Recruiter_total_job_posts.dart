@@ -90,7 +90,7 @@ class TotalJobPostsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isActive = status == "Active";
+    bool is_active = status == "Active";
 
     return Container(
       height: 110,
@@ -134,7 +134,7 @@ class TotalJobPostsCard extends StatelessWidget {
                   height: 26,
                   child: greyContainer(
                     text: status,
-                    bgColor: isActive
+                    bgColor: is_active
                         ? const Color(0xff1DB32F)
                         : Colors.grey.shade500,
                   ),
