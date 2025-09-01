@@ -41,4 +41,22 @@ class Urls {
   static const getFollowers = "feed/{id}/followers";
   static const getFollowing = "feed/{id}/following";
   static const raiseTicket = "tickets/raise";
+
+  // Job Posts
+  static const String getJobPostsList = "jobpost/list";
+  static const String getTotalJobPostCount = "jobpost/totalcount";
+
+  static const String getApplicantsForJob =
+      "jobpost/{jobPostId}/allapplicant"; //
+
+  static const String totalJobPost = "company-recruiter/jobpost/list";
+
+  static const String getAllApplicantsCount = "jobpost/11/applicantCount";
+
+  static const String totalJobCount = "jobpost/totalcount";
+
+  static const String getFullApplicantDetails =
+      'jobpost/{jobId}/applicant/{applicantId}';
+
+  static const String scheduleInterview = "interview-invitations/{applicantId}";
 }
