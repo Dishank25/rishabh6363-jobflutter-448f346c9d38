@@ -226,8 +226,7 @@ class _SignUpStudent1State extends State<SignUpStudent1> {
                     } else if (state is RemoteSignupSendOtpEmailDone) {
                       final data = state.sendOtp;
 
-                      if (data.message ==
-                          "OTP sent successfully to your email") {
+                      if (data.message == "OTP sent successfully") {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => SignUpStudent_2(
                                 Email: emailController.text.trim())));
@@ -236,9 +235,9 @@ class _SignUpStudent1State extends State<SignUpStudent1> {
                       showSnackbar(
                           'Some error occured while sending otp. Please try resending otp.',
                           context);
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => SignUpStudent_2(
-                              Email: emailController.text.trim())));
+                      // Navigator.of(context).push(MaterialPageRoute(
+                      //     builder: (context) => SignUpStudent_2(
+                      //         Email: emailController.text.trim())));
                     }
                   },
                   child: commonRedContainer(
@@ -261,9 +260,9 @@ class _SignUpStudent1State extends State<SignUpStudent1> {
                       }
                       developer.log('Phone number : ${phoneController.text}');
 
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => SignUpStudent_2(
-                              Email: emailController.text.trim())));
+                      // Navigator.of(context).push(MaterialPageRoute(
+                      //     builder: (context) => SignUpStudent_2(
+                      //         Email: emailController.text.trim())));
                     },
                   ),
                 ),
