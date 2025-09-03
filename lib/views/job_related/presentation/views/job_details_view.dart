@@ -33,6 +33,7 @@ class JobDetailsScreen extends StatefulWidget {
 class _JobDetailsScreenState extends State<JobDetailsScreen> {
   String messageWhileLoadingDetails = '';
   bool areDetailsLoaded = false;
+  bool _hasApplied = false;
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
@@ -286,7 +287,12 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                             title: data.candidate_preferences ??
                                 'Candidate Preference'),
                         jobRelatedOptions(
-                            title: data.cityChoice ?? 'City Choice'),
+                          title: data.job_type == "Remote"
+                              ? "Remote"
+                              : (data.cityChoice != null && data.cityChoice!.isNotEmpty
+                              ? data.cityChoice!.join(", ")
+                              : 'City Choice'),
+                        ),
                         jobRelatedOptions(title: "45 Applicants"),
                       ],
                     ),
@@ -401,7 +407,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
               developer.log('Job apply loading');
             } else if (state is JobApplyLoaded) {
               developer.log('Job apply loaded');
-              // showSnackbar(state.jobApplyEntity.message, context);
+              showSnackbar(state.jobApplyEntity.message, context);
               showCustomSnackBar(context);
               Navigator.pop(context);
             } else if (state is JobApplyError) {
@@ -419,12 +425,12 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                       .read<JobApplyBloc>()
                       .add(LoadJobApply(widget.job_id.toString()));
                 }
-                // ScaffoldMessenger.of(context).showSnackBar(
-                //     SnackBar(content: Text("Applied Successfully")));
-                // Navigator.pushReplacement(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) => Student_Bottom_Nav_bar()));
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Applied Successfully")));
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Student_Bottom_Nav_bar()));
               },
               child: commonRedContainer(text: "Apply")),
         ),

@@ -1382,73 +1382,73 @@ class DatePickerField extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
       ),
-      onTap: () async {
-        final DateTime? picked = await showDatePicker(
-          context: context,
-          initialDate: DateTime.now(),
-          firstDate: DateTime(1970),
-          lastDate: DateTime(2100),
-        );
+      // onTap: () async {
+      //   final DateTime? picked = await showDatePicker(
+      //     context: context,
+      //     initialDate: DateTime.now(),
+      //     firstDate: DateTime(1970),
+      //     lastDate: DateTime(2100),
+      //   );
+      //
+      //   if (picked != null) {
+      //     controller.text =
+      //         '${picked.day} ${_monthName(picked.month)} ${picked.year}';
+      //   }
+      // },
+        onTap: () async {
+          final DateTime now = DateTime.now();
+          final DateTime? pickedYear = await showModalBottomSheet<DateTime>(
+            context: context,
+            builder: (context) {
+              final ScrollController scrollController = ScrollController(
+                initialScrollOffset: 50 * (now.year - 1970).toDouble(),
+              );
+              return SizedBox(
+                height: 300,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text('Cancel'),
+                        ),
+                        const Text('Select Year'),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, DateTime(now.year)),
+                          child: const Text('Now'),
+                        ),
+                      ],
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        controller: scrollController,
+                        itemCount: 2100 - 1970,
+                        itemBuilder: (context, index) {
+                          final year = 1970 + index;
+                          return ListTile(
+                            title: Center(
+                              child: Text(
+                                '$year',
+                                style: const TextStyle(fontSize: 18),
+                              ),
+                            ),
+                            onTap: () => Navigator.pop(context, DateTime(year)),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
 
-        if (picked != null) {
-          controller.text =
-              '${picked.day} ${_monthName(picked.month)} ${picked.year}';
+          if (pickedYear != null) {
+            controller.text = pickedYear.year.toString(); // Only year
+          }
         }
-      },
-        // onTap: () async {
-        //   final DateTime now = DateTime.now();
-        //   final DateTime? pickedYear = await showModalBottomSheet<DateTime>(
-        //     context: context,
-        //     builder: (context) {
-        //       final ScrollController scrollController = ScrollController(
-        //         initialScrollOffset: 50 * (now.year - 1970).toDouble(),
-        //       );
-        //       return SizedBox(
-        //         height: 300,
-        //         child: Column(
-        //           children: [
-        //             Row(
-        //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //               children: [
-        //                 TextButton(
-        //                   onPressed: () => Navigator.pop(context),
-        //                   child: const Text('Cancel'),
-        //                 ),
-        //                 const Text('Select Year'),
-        //                 TextButton(
-        //                   onPressed: () => Navigator.pop(context, DateTime(now.year)),
-        //                   child: const Text('Now'),
-        //                 ),
-        //               ],
-        //             ),
-        //             Expanded(
-        //               child: ListView.builder(
-        //                 controller: scrollController,
-        //                 itemCount: 2100 - 1970,
-        //                 itemBuilder: (context, index) {
-        //                   final year = 1970 + index;
-        //                   return ListTile(
-        //                     title: Center(
-        //                       child: Text(
-        //                         '$year',
-        //                         style: const TextStyle(fontSize: 18),
-        //                       ),
-        //                     ),
-        //                     onTap: () => Navigator.pop(context, DateTime(year)),
-        //                   );
-        //                 },
-        //               ),
-        //             ),
-        //           ],
-        //         ),
-        //       );
-        //     },
-        //   );
-        //
-        //   if (pickedYear != null) {
-        //     controller.text = pickedYear.year.toString(); // Only year
-        //   }
-        // }
     );
   }
 

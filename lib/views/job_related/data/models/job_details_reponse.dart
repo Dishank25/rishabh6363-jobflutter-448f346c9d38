@@ -107,7 +107,9 @@ class JobDetailsResponseModel extends JobDetailsEntity {
           job_time: json['job_time'],
           days_in_office: json['days_in_office'],
           // cityChoice: json['cityChoice'],//eligible_cities
-          cityChoice: json['eligible_cities'], //eligible_cities
+          cityChoice: (json['eligible_cities'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList(),
 
           skillsRequired: List<String>.from(json['skillsRequired'] ?? []),
           skill_required_note: json['skill_required_note'],
@@ -122,7 +124,7 @@ class JobDetailsResponseModel extends JobDetailsEntity {
           recruiter_email: json['recruiter_email'],
           recruiter_phone: json['recruiter_phone'],
           recruiterDesignation: json['recruiterDesignation'],
-          recruiterProfilePic: json['recruiterProfilePic'],
+          recruiterProfilePic: json['recruiterprofile_pic'],
           is_email_verified: json['is_email_verified'],
           is_phone_verified: json['is_phone_verified'],
           is_gst_verified: json['is_gst_verified'],

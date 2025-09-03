@@ -74,163 +74,169 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 58.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: double.infinity,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      body: Container(
+        color: Colors.white,
+        height: 1000,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 58.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Job Filters",
+                        style: mTextStyle32(mColor: Colors.black),
+                      ),
+                      Text(
+                        "Help us match you with the best career opportunities",
+                        style: mTextStyle12(),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                Text(
+                  "Profile",
+                  style: mTextStyle12(),
+                ),
+                SizedBox(
+                  height: 2,
+                ),
+                CustomTextField(
+                  controller: profileController,
+                  hintText: "Eg.Marketing",
+                  suffixIcon: Icons.keyboard_arrow_down_outlined,
+                  fillColor: Colors.white,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Location",
+                  style: mTextStyle12(),
+                ),
+                SizedBox(
+                  height: 2,
+                ),
+                CustomTextField(
+                  controller: locationController,
+                  hintText: "Eg.Delhi",
+                  suffixIcon: Icons.keyboard_arrow_down_outlined,
+                  fillColor: Colors.white,
+                ),
+                // SizedBox(height: 20,),
+                Row(
                   children: [
+                    Checkbox(
+                        value: value1,
+                        onChanged: (bool? newValue) {
+                          setState(() {
+                            value1 = newValue!;
+                          });
+                        }),
                     Text(
-                      "Job Filters",
-                      style: mTextStyle32(mColor: Colors.black),
+                      "Remote",
+                      style: mTextStyle12(),
                     ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Checkbox(
+                        value: value2,
+                        onChanged: (bool? newValue) {
+                          setState(() {
+                            value2 = newValue!;
+                          });
+                        }),
                     Text(
-                      "Help us match you with the best career opportunities",
+                      "Hybrid",
                       style: mTextStyle12(),
                     )
                   ],
                 ),
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              Text(
-                "Profile",
-                style: mTextStyle12(),
-              ),
-              SizedBox(
-                height: 2,
-              ),
-              CustomTextField(
-                controller: profileController,
-                hintText: "Eg.Marketing",
-                suffixIcon: Icons.keyboard_arrow_down_outlined,
-                fillColor: Colors.white,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                "Location",
-                style: mTextStyle12(),
-              ),
-              SizedBox(
-                height: 2,
-              ),
-              CustomTextField(
-                controller: locationController,
-                hintText: "Eg.Delhi",
-                suffixIcon: Icons.keyboard_arrow_down_outlined,
-                fillColor: Colors.white,
-              ),
-              // SizedBox(height: 20,),
-              Row(
-                children: [
-                  Checkbox(
-                      value: value1,
-                      onChanged: (bool? newValue) {
-                        setState(() {
-                          value1 = newValue!;
-                        });
-                      }),
-                  Text(
-                    "Remote",
-                    style: mTextStyle12(),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Checkbox(
-                      value: value2,
-                      onChanged: (bool? newValue) {
-                        setState(() {
-                          value2 = newValue!;
-                        });
-                      }),
-                  Text(
-                    "Hybrid",
-                    style: mTextStyle12(),
-                  )
-                ],
-              ),
-              Text(
-                "Year of Experience",
-                style: mTextStyle12(),
-              ),
-              SizedBox(
-                height: 2,
-              ),
-              CustomTextField(
-                controller: totalWorkExperienceController,
-                hintText: "Total Experience",
-                suffixIcon: Icons.keyboard_arrow_down_outlined,
-                fillColor: Colors.white,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                "Company",
-                style: mTextStyle12(),
-              ),
-              SizedBox(
-                height: 2,
-              ),
-              CustomTextField(
-                controller: currentComController,
-                hintText: "Company Name",
-                suffixIcon: Icons.keyboard_arrow_down_outlined,
-                fillColor: Colors.white,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                "Annual Salary(In lakhs)",
-                style: mTextStyle12(),
-              ),
-              SizedBox(
-                height: 2,
-              ),
-              CustomTextField(
-                controller: PackageController,
-                hintText: "Eg.4,50,000",
-                suffixIcon: Icons.keyboard_arrow_down_outlined,
-                fillColor: Colors.white,
-              ),
-              SizedBox(
-                height: 32,
-              ),
-              Row(
-                children: [
-                  InkWell(
-                      onTap: () {},
-                      child: Text(
-                        "Clear All",
-                        style: mTextStyle12(
-                          mFontWeight: FontWeight.w600,
-                          mColor: AppColors.blueTextColor,
-                        ),
-                      )),
-                  Spacer(),
-                  nextButton(
-                      title: "Apply",
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    Student_Bottom_Nav_bar()));
-                      })
-                ],
-              )
-            ],
+                Text(
+                  "Year of Experience",
+                  style: mTextStyle12(),
+                ),
+                SizedBox(
+                  height: 2,
+                ),
+                CustomTextField(
+                  controller: totalWorkExperienceController,
+                  hintText: "Total Experience",
+                  suffixIcon: Icons.keyboard_arrow_down_outlined,
+                  fillColor: Colors.white,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Company",
+                  style: mTextStyle12(),
+                ),
+                SizedBox(
+                  height: 2,
+                ),
+                CustomTextField(
+                  controller: currentComController,
+                  hintText: "Company Name",
+                  suffixIcon: Icons.keyboard_arrow_down_outlined,
+                  fillColor: Colors.white,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Annual Salary(In lakhs)",
+                  style: mTextStyle12(),
+                ),
+                SizedBox(
+                  height: 2,
+                ),
+                CustomTextField(
+                  controller: PackageController,
+                  hintText: "Eg.4,50,000",
+                  suffixIcon: Icons.keyboard_arrow_down_outlined,
+                  fillColor: Colors.white,
+                ),
+                SizedBox(
+                  height: 32,
+                ),
+                Row(
+                  children: [
+                    InkWell(
+                        onTap: () {},
+                        child: Text(
+                          "Clear All",
+                          style: mTextStyle12(
+                            mFontWeight: FontWeight.w600,
+                            mColor: AppColors.blueTextColor,
+                          ),
+                        )),
+                    Spacer(),
+                    nextButton(
+                        title: "Apply",
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      Student_Bottom_Nav_bar()
+                              )
+                          );
+                        })
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
