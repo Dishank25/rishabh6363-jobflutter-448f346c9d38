@@ -1,0 +1,194 @@
+import 'dart:developer' as developer show log;
+import 'dart:io';
+import 'package:dio/dio.dart';
+import 'package:job_portal/utils/resourses/data_state.dart';
+import 'package:job_portal/views/detailed_signup_student/data/data_source/detailed_api_service.dart';
+import 'package:job_portal/views/detailed_signup_student/data/model/basic_user_data_response.dart';
+import 'package:job_portal/views/detailed_signup_student/data/model/colleges_response.dart';
+import 'package:job_portal/views/detailed_signup_student/data/model/courses_response.dart';
+import 'package:job_portal/views/detailed_signup_student/data/model/job_roles_response.dart';
+import 'package:job_portal/views/detailed_signup_student/data/model/skill_submission_response.dart';
+import 'package:job_portal/views/detailed_signup_student/data/model/specialization_response.dart';
+import 'package:job_portal/views/detailed_signup_student/data/model/submit_detailed_user_profile.dart';
+import 'package:job_portal/views/detailed_signup_student/domain/entities/metadata_entities.dart';
+import 'package:job_portal/views/detailed_signup_student/domain/repository/detailed_signup_repository.dart';
+
+class DetailedSignupRepositoryImpl extends DetailedSignupRepository {
+  final DetailedApiService _apiService;
+
+  DetailedSignupRepositoryImpl(this._apiService);
+
+  @override
+  Future<DataState<BasicUserInfoResponse>> getBasicUserInfo(
+      Map<String, dynamic> emailMap) async {
+    try {
+      final res = await _apiService.getBasicUserInfo(emailMap);
+      if (res.response.statusCode == HttpStatus.ok) {
+        developer.log('.checkk response in repository : ${res.data.message}');
+        return DataSuccess(res.data);
+      } else {
+        developer.log('..checkk response in repository : ${res.data.message}');
+        return DataFailed(DioException(
+            error: res.response.statusMessage,
+            response: res.response,
+            type: DioExceptionType.badResponse,
+            requestOptions: res.response.requestOptions));
+      }
+    } on DioException catch (e) {
+      final error = e.type;
+      developer.log('....checkk  : ${error}');
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<CollegeListEntity>> getColleges(
+      Map<String, dynamic> emailMap) async {
+    try {
+      final res = await _apiService.getColleges(emailMap);
+      if (res.response.statusCode == HttpStatus.ok) {
+        developer.log('.checkk response in repository : ${res.data}');
+        return DataSuccess(res.data);
+      } else {
+        developer.log('..checkk response in repository : ${res.data}');
+        return DataFailed(DioException(
+            error: res.response.statusMessage,
+            response: res.response,
+            type: DioExceptionType.badResponse,
+            requestOptions: res.response.requestOptions));
+      }
+    } on DioException catch (e) {
+      final error = e.type;
+      developer.log('....checkk  : $error');
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<List<SpecializationEntity>>> getSpecialization(String course_id) async {
+    try {
+      final res = await _apiService.getSpecialization(course_id);
+
+      developer.log('🔍 Raw API Response: ${res.data}');
+      developer.log('📄 Specialization count: ${res.data.data.length}');
+
+      if (res.response.statusCode == HttpStatus.ok && res.data.success) {
+        final List<SpecializationEntity> specializations = res.data.data
+            .map((model) {
+          developer.log('⚡ Converting model: ${model.name}');
+          return model.toEntity();
+        })
+            .toList();
+
+        developer.log('✅ Specializations converted: ${specializations.length}');
+        return DataSuccess(specializations);
+      } else {
+        developer.log('❌ API failed: ${res.data.message}');
+        return DataFailed(DioException(
+          error: res.data.message,
+          type: DioExceptionType.badResponse,
+          requestOptions: res.response.requestOptions,
+        ));
+      }
+    } on DioException catch (e) {
+      developer.log('🚨 Exception in getSpecialization: $e');
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<CourseListEntity>> getCourses() async {
+    try {
+      final res = await _apiService.getCourses();
+      if (res.response.statusCode == HttpStatus.ok) {
+        developer.log('.checkk response in repository : ${res.data}');
+        return DataSuccess(res.data);
+      } else {
+        developer.log('..checkk response in repository : ${res.data}');
+        return DataFailed(DioException(
+            error: res.response.statusMessage,
+            response: res.response,
+            type: DioExceptionType.badResponse,
+            requestOptions: res.response.requestOptions));
+      }
+    } on DioException catch (e) {
+      final error = e.type;
+      developer.log('....checkk  : $error');
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<LocationListEntity>> getLocations() async {
+    try {
+      final res = await _apiService.getLocations();
+      if (res.response.statusCode == HttpStatus.ok) {
+        developer.log('.checkk response in repository : ${res.data}');
+        return DataSuccess(res.data);
+      } else {
+        developer.log('..checkk response in repository : ${res.data}');
+        return DataFailed(DioException(
+            error: res.response.statusMessage,
+            response: res.response,
+            type: DioExceptionType.badResponse,
+            requestOptions: res.response.requestOptions));
+      }
+    } on DioException catch (e) {
+      final error = e.type;
+      developer.log('....checkk  : $error');
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<JobRolesListResponse>> getJobRoles() async {
+    try {
+      final res = await _apiService.getJobRoles();
+      if (res.response.statusCode == HttpStatus.ok) {
+        developer.log('.checkk response in repository : ${res.data}');
+        return DataSuccess(res.data);
+      } else {
+        developer.log('..checkk response in repository : ${res.data}');
+        return DataFailed(DioException(
+            error: res.response.statusMessage,
+            response: res.response,
+            type: DioExceptionType.badResponse,
+            requestOptions: res.response.requestOptions));
+      }
+    } on DioException catch (e) {
+      final error = e.type;
+      developer.log('....checkk  : $error');
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<SubmitDetailedUserProfile>> submitDetailedUserProfile(
+      Map<String, dynamic> params) async {
+    try {
+      final res = await _apiService.submitDetailedUserProfile(params);
+      if (res.response.statusCode == HttpStatus.ok ||
+          res.response.statusCode == HttpStatus.created ||
+          res.response.statusCode == HttpStatus.conflict) {
+        developer.log('.checkk response in repository : ${res.data}');
+        return DataSuccess(res.data);
+      } else {
+        developer.log('..checkk response in repository : ${res.data}');
+        return DataFailed(DioException(
+            error: res.response.statusMessage,
+            response: res.response,
+            type: DioExceptionType.badResponse,
+            requestOptions: res.response.requestOptions));
+      }
+    } on DioException catch (e) {
+      final error = e.type;
+      developer.log('....checkk  : $error');
+      if (error == DioExceptionType.badResponse) {
+        developer.log('...checkk response in repository : ${e.response}');
+        final data = SubmitDetailedUserProfile.fromJson(e.response!.data);
+        return DataSuccess(data);
+      }
+      return DataFailed(e);
+    }
+  }
+}
