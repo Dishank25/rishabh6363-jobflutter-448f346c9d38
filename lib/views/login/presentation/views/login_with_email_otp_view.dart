@@ -12,8 +12,8 @@ import 'package:job_portal/views/bottom_nav_bar/student_bottom_nav_bar.dart';
 import 'package:job_portal/views/login/presentation/bloc/remote_login_bloc.dart';
 import 'package:job_portal/views/login/presentation/bloc/remote_login_event.dart';
 import 'package:job_portal/views/login/presentation/bloc/remote_login_state.dart';
-import 'package:job_portal/views/signup_recruiter/presentation/views/Recruiter_Dashboard.dart';
 import 'package:job_portal/widgets/widgets.dart';
+import '../../../recruiter_dashboard/presentation/views/Recruiter_Dashboard.dart';
 import '../../../signup_student/presentation/views/create_account.dart';
 
 class LoginWithEmailOtpScreen extends StatefulWidget {

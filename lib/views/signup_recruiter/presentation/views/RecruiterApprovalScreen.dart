@@ -4,8 +4,9 @@ import 'package:job_portal/utils/theme/custom_themes/color_theme.dart';
 
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../../widgets/widgets.dart';
-import 'Recruiter_pipeline_candidates.dart';
-import 'Recruiter_total_job_posts.dart';
+import '../../../recruiter_pipeline_candidates/presentation/view/Recruiter_pipeline_candidates.dart';
+import 'package:job_portal/views/recruiter_job_post/presentation/view/Recruiter_total_job_posts.dart';
+
 
 class RecruiterApprovalScreen extends StatelessWidget {
   TextEditingController searchItController = TextEditingController();
@@ -17,7 +18,7 @@ class RecruiterApprovalScreen extends StatelessWidget {
         body: SingleChildScrollView(
             child: Padding(
                 padding:
-                    const EdgeInsets.only(right: 24.0, top: 7.0, left: 24.0),
+                const EdgeInsets.only(right: 24.0, top: 7.0, left: 24.0),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -32,12 +33,12 @@ class RecruiterApprovalScreen extends StatelessWidget {
                         children: [
                           Expanded(
                               child: CustomTextField(
-                            controller: searchItController,
-                            hintText: "Search by name, role or keyword...",
-                            fillColor: Colors.white,
-                            suffixIcon: Icons.search,
-                            onSuffixTap: () {},
-                          )),
+                                controller: searchItController,
+                                hintText: "Search by name, role or keyword...",
+                                fillColor: Colors.white,
+                                suffixIcon: Icons.search,
+                                onSuffixTap: () {},
+                              )),
                           SizedBox(
                             width: 10,
                           ),
@@ -108,12 +109,12 @@ class ApprovalCard extends StatelessWidget {
 
   ApprovalCard(
       {required this.applicantName,
-      required this.status,
-      required this.viewContainerText,
-      /* required this.bgColor,
+        required this.status,
+        required this.viewContainerText,
+        /* required this.bgColor,
     required this.tColor,*/
-      required this.postName,
-      required this.ApprovalDate});
+        required this.postName,
+        required this.ApprovalDate});
 
   // Define status colors
   Color getStatusBgColor() {

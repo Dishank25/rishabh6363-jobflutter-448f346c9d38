@@ -21,14 +21,27 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileState> {
   Future<void> _onLoadProfileDetails(
       LoadMyProfileDetails event, Emitter<MyProfileState> emit) async {
     try {
+      developer.log('🔍 [MyProfileBloc] _onLoadProfileDetails triggered');
+      developer.log('📥 [MyProfileBloc] Loading profile for ID: ${event.id}');
+
       emit(const MyProfileDetailsLoading());
       final map = {'id': event.id};
-      final respones = await _userDetailUsecase(params: map);
-      // developer.log('checking in bloc : ${respones.data!.first_name}');
-      emit(MyProfileDetailsLoaded(respones.data!));
-    } catch (e) {
-      developer.log('checking error in bloc : ${e}');
+      final response = await _userDetailUsecase(params: map);
 
+      developer.log('✅ [MyProfileBloc] LoadProfile: API call succeeded');
+      developer.log('📋 [MyProfileBloc] Raw userDetail response: ${response.data}');
+
+      if (response.data == null) {
+        developer.log('❌ [MyProfileBloc] LoadProfile: response.data is null');
+        emit(const MyProfileDetailsError());
+        return;
+      }
+
+      emit(MyProfileDetailsLoaded(response.data!));
+      developer.log('🟢 [MyProfileBloc] MyProfileDetailsLoaded emitted');
+    } catch (e, stackTrace) {
+      developer.log('💥 [MyProfileBloc] Error in _onLoadProfileDetails: $e');
+      developer.log('📊 [MyProfileBloc] Stack trace: $stackTrace');
       emit(const MyProfileDetailsError());
     }
   }
@@ -36,14 +49,28 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileState> {
   Future<void> _onUpdateUserProfile(
       LoadUpdateProfile event, Emitter<MyProfileState> emit) async {
     try {
+      developer.log('🔍 [MyProfileBloc] _onUpdateUserProfile triggered');
+      developer.log('📥 [MyProfileBloc] Updating profile for ID: ${event.id}');
+      developer.log('📝 [MyProfileBloc] Payload (params): ${event.params}');
+
       emit(const UpdateProfileLoading());
       final map = {'id': event.id, 'params': event.params};
-      final respones = await _updateUserProfileUsecase(params: map);
-      // developer.log('checking in bloc : ${respones.data!.first_name}');
-      emit(UpdateProfileLoaded(respones.data!));
-    } catch (e) {
-      developer.log('checking error in bloc : ${e}');
+      final response = await _updateUserProfileUsecase(params: map);
 
+      developer.log('✅ [MyProfileBloc] UpdateProfile: API call succeeded');
+      developer.log('📋 [MyProfileBloc] Raw update response: ${response.data}');
+
+      if (response.data == null) {
+        developer.log('❌ [MyProfileBloc] UpdateProfile: response.data is null');
+        emit(const UpdateProfileError());
+        return;
+      }
+
+      emit(UpdateProfileLoaded(response.data!));
+      developer.log('🟢 [MyProfileBloc] UpdateProfileLoaded emitted');
+    } catch (e, stackTrace) {
+      developer.log('💥 [MyProfileBloc] Error in _onUpdateUserProfile: $e');
+      developer.log('📊 [MyProfileBloc] Stack trace: $stackTrace');
       emit(const UpdateProfileError());
     }
   }

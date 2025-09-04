@@ -14,6 +14,14 @@ import 'package:job_portal/views/job_related/presentation/bloc/job_bloc/job_bloc
 import 'package:job_portal/views/job_related/presentation/bloc/job_details_bloc/job_details_bloc.dart';
 import 'package:job_portal/views/login/presentation/bloc/remote_login_bloc.dart';
 import 'package:job_portal/views/post_opportunities/presentation/bloc/opportunity_bloc.dart';
+import 'package:job_portal/views/recruiter_dashboard/presentation/bloc/recruiter_dashboard_bloc/Recruiter_Dashboard_Bloc.dart';
+import 'package:job_portal/views/recruiter_full_view_application/presentation/bloc/recruiter_full_view_application_bloc.dart';
+import 'package:job_portal/views/recruiter_job_post/presentation/bloc/recruiter_job_post_bloc/recruiter_job_post_bloc.dart';
+import 'package:job_portal/views/recruiter_pending_tasks/presentation/bloc/recruiter_pending_tasks_bloc.dart';
+import 'package:job_portal/views/recruiter_pipeline_candidates/presentation/bloc/recruiter_pipeline_candidates_bloc.dart';
+import 'package:job_portal/views/recruiter_schedule_interview/presentaion/bloc/recruiter_schedule_interview_bloc.dart';
+import 'package:job_portal/views/recruiter_send_assignment/presenation/bloc/recruiter_send_assignment_bloc.dart';
+import 'package:job_portal/views/recruiter_upcoming_interviews/presentation/bloc/recruiter_upcoming_interviews_bloc.dart';
 import 'package:job_portal/views/signup_recruiter/presentation/bloc/recruiter_signup_bloc/recruiter_signup_bloc.dart';
 import 'package:job_portal/views/signup_recruiter/presentation/bloc/verify_otp_recruiter_bloc/verify_otp_recruiter_bloc.dart';
 import 'package:job_portal/views/signup_student/presentation/bloc/remote_signup_bloc/remote_signup_bloc.dart';
@@ -28,6 +36,7 @@ import 'package:job_portal/views/user_profile/presentation/bloc/raise_ticket_blo
 import 'package:job_portal/views/user_profile/presentation/bloc/terms_and_conditions_bloc/terms_and_conditions_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/upload_resume_bloc/upload_resume_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/your_experience_bloc/your_experience_bloc.dart';
+import 'package:job_portal/views/user_skill_approval/presentation/bloc/user_skill_approval_bloc.dart';
 import 'views/login/presentation/views/login_page_first_view.dart';
 
 void main() async {
@@ -47,7 +56,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => sl<DetailedSignupBloc>()),
         BlocProvider(create: (_) => sl<SkillBloc>()),
         BlocProvider(create: (_) => sl<RecruiterSignupBloc>()),
+        BlocProvider(create: (_) => sl<RecruiterDashboardBloc>()),
         BlocProvider(create: (_) => sl<OpportunityBloc>()),
+        BlocProvider(create: (_) => sl<UserAuthBloc>()),
         BlocProvider(create: (_) => sl<JobBloc>()),
         BlocProvider(create: (_) => sl<JobDetailsBloc>()),
         BlocProvider(create: (_) => sl<VerifyOtpBloc>()),
@@ -63,10 +74,18 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => sl<CreateFeedPostBloc>()),
         BlocProvider(create: (_) => sl<UploadResumeBloc>()),
         BlocProvider(create: (_) => sl<JobApplicationBloc>()),
+        BlocProvider(create: (_) => sl<RecruiterJobPostBloc>()),
+        BlocProvider(create: (_) => sl<RecruiterScheduleInterviewBloc>()),
+        BlocProvider(create: (_) => sl<RecruiterFullViewApplicationBloc>()),
         BlocProvider(create: (_) => sl<YourExperienceBloc>()),
         BlocProvider(create: (_) => sl<RaiseTicketBloc>()),
         BlocProvider(create: (_) => sl<UserAuthBloc>()),
         BlocProvider(create: (_) => sl<ForgotPasswordBloc>()),
+        BlocProvider(create: (_) => sl<UserSkillApprovalBloc>()),
+        BlocProvider(create: (_) => sl<RecruiterSendAssignmentBloc>()),
+        BlocProvider(create: (_) => sl<RecruiterPendingTasksBloc>()),
+        BlocProvider(create: (_) => sl<RecruiterUpcomingInterviewsBloc>()),
+        BlocProvider(create: (_) => sl<RecruiterPipelineCandidatesBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

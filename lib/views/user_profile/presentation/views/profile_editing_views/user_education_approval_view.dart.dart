@@ -3,6 +3,7 @@ import 'dart:developer' as developer show log;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:job_portal/injection_container.dart';
 import 'package:job_portal/utils/storage/shared_preference.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/views/signup_as_anyone_view.dart';
@@ -52,8 +53,6 @@ class _UserEducationApprovalScreenState
             selectedCourseId: edu.course_id,
             selectedSpecializationId: edu.specialization_id,
             education_certificate: edu.education_certificate,
-
-            // Controllers pre-filled
             schoolOrCollegeController: TextEditingController(
               text: edu.schoolCollege?.name ?? "College",
             ),
@@ -94,7 +93,6 @@ class _UserEducationApprovalScreenState
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     prefillEducationData(widget.eduList);
   }
@@ -116,7 +114,6 @@ class _UserEducationApprovalScreenState
 
   @override
   void didChangeDependencies() {
-    // Fetch master colleges on screen open following existing API call structure
     final Map<String, dynamic> emailMap = {};
     context
         .read<DetailedSignupBloc>()
@@ -170,11 +167,9 @@ class _UserEducationApprovalScreenState
                       return CustomAutocompleteGeneric<CourseEntity>(
                         options: courses,
                         label:
-                            'Select your education level (e.g. 10th, 12th, B.Tech)',
+                        'Select your education level (e.g. 10th, 12th, B.Tech)',
                         onSelected: (course) {
-                          // Set field text
                           searchCourseController.text = course.name;
-                          // Add a new education card for the selected course level
                           if (!addedEducationLevels.contains(course.name)) {
                             addEducationEntry(course.name,
                                 course_id: course.id);
@@ -186,11 +181,10 @@ class _UserEducationApprovalScreenState
                         displayStringForOption: (course) => course.name,
                       );
                     }
-                    // Fallback input if state not loaded yet
                     return CustomTextField(
                       controller: searchCourseController,
                       hintText:
-                          'Select your education level (e.g. 10th, 12th, B.Tech)',
+                      'Select your education level (e.g. 10th, 12th, B.Tech)',
                       suffixIcon: Icons.search,
                       fillColor: Colors.white,
                     );
@@ -238,6 +232,8 @@ class _UserEducationApprovalScreenState
                           educationControllers.removeAt(index);
                         });
                       },
+                      education_certificate: edu.education_certificate,
+                      index: index, // ✅ Pass index
                     );
                   },
                 ),
@@ -291,11 +287,12 @@ class EducationFillingCard extends StatefulWidget {
   final TextEditingController startYearController;
   final TextEditingController endYearController;
   final List<SpecializationEntity> specializations;
-
+  final String? education_certificate;
   final VoidCallback onTapCross;
   final String? Function(String?)? validator;
   final void Function(int)? onSelectCollegeId;
   final void Function(int)? onSelectSpecializationId;
+  final int index;
 
   const EducationFillingCard({
     super.key,
@@ -306,9 +303,11 @@ class EducationFillingCard extends StatefulWidget {
     required this.endYearController,
     required this.specializations,
     required this.onTapCross,
+    this.education_certificate,
     this.validator,
     this.onSelectCollegeId,
     this.onSelectSpecializationId,
+    required this.index,
   });
 
   @override
@@ -318,6 +317,13 @@ class EducationFillingCard extends StatefulWidget {
 class _EducationFillingCardState extends State<EducationFillingCard> {
   @override
   Widget build(BuildContext context) {
+    // ✅ Color logic based on index
+    final bgColor = widget.index % 3 == 0
+        ? Color(0xFFE8F5E8) // Green
+        : widget.index % 3 == 1
+        ? Color(0xFFF3E5F5) // Pink
+        : Color(0xFFE3F2FD); // Blue
+
     return Column(
       children: [
         Container(
@@ -343,10 +349,47 @@ class _EducationFillingCardState extends State<EducationFillingCard> {
                       onTap: widget.onTapCross,
                     ),
                     const Spacer(),
-                    courseName(
-                      name: "View/Edit Certificate",
-                      onTap: () {},
-                    ),
+                    if (widget.education_certificate != null)
+                      GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SvgPicture.asset("assets/Icons/certificate.svg", color: Colors.grey),
+                              SizedBox(width: 4),
+                              Text("View", style: TextStyle(fontSize: 10)),
+                            ],
+                          ),
+                        ),
+                      )
+                    else
+                      GestureDetector(
+                        onTap: () {
+                          // Handle certificate upload
+                          // You can add logic here
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SvgPicture.asset("assets/Icons/certificate.svg", color: Colors.grey),
+                              SizedBox(width: 4),
+                              Text("Upload Certificate", style: TextStyle(fontSize: 10)),
+                            ],
+                          ),
+                        ),
+                      ),
                   ],
                 ),
                 const SizedBox(height: 10),
@@ -396,10 +439,9 @@ class _EducationFillingCardState extends State<EducationFillingCard> {
                   options: widget.specializations,
                   label: 'Specialization',
                   onSelected: (value) {
-                    if (widget.onSelectSpecializationId != null && value.id != null) {
-                      widget.onSelectSpecializationId!(value.id!);
+                    if (widget.onSelectSpecializationId != null) {
+                      widget.onSelectSpecializationId!(value.id ??0);
                     }
-                    widget.specializationController.text = value.name ?? '';
                   },
                   displayStringForOption: (value) {
                     return value.name ?? '';
@@ -412,11 +454,11 @@ class _EducationFillingCardState extends State<EducationFillingCard> {
                 // Start Year & End Year Row
                 Row(
                   children: [
-                    Text("Start Year", style: mTextStyle12()),
+                    Text("Start year", style: mTextStyle12()),
                     const Spacer(),
                     Padding(
                       padding: const EdgeInsets.only(right: 110.0),
-                      child: Text("End Year", style: mTextStyle12()),
+                      child: Text("End year", style: mTextStyle12()),
                     ),
                   ],
                 ),
@@ -459,6 +501,7 @@ class EducationCardData {
   int? selectedCourseId;
   int? selectedSpecializationId;
   String? education_certificate;
+  PickedFile? certificateFile;
 
   EducationCardData({
     required this.level,
@@ -471,5 +514,6 @@ class EducationCardData {
     this.selectedCourseId,
     this.selectedSpecializationId,
     this.education_certificate,
+    this.certificateFile,
   });
 }

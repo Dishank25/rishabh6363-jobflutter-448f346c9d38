@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:job_portal/utils/theme/custom_themes/color_theme.dart';
 import 'package:job_portal/views/Recruiter_Profile_Screens/Recruiter_ProfileScreen1.dart';
-import 'package:job_portal/views/signup_recruiter/presentation/views/Recruiter_Dashboard.dart';
-import 'package:job_portal/views/signup_recruiter/presentation/views/Recruiter_feed_Screen.dart';
-import 'package:job_portal/ui_helper/ui_helper.dart';
 import '../signup_recruiter/presentation/views/RecruiterApprovalScreen.dart';
+import '../recruiter_dashboard/presentation/views/Recruiter_Dashboard.dart';
+import '../feed/presentation/views/feed_view.dart';
 
 class RecruiterBottomNavBar extends StatefulWidget {
   @override
@@ -18,7 +17,7 @@ class _RecruiterBottomNavBarState extends State<RecruiterBottomNavBar> {
   @override
   Widget build(BuildContext context) {
     List<Widget> navTo = [
-      RecruiterFeedScreen(),
+      FeedScreen(),
       RecruiterDashboard(),
       RecruiterApprovalScreen(),
       RecruiterProfilescreen1()

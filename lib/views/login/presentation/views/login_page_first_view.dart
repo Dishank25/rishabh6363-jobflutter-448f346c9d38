@@ -11,11 +11,11 @@ import 'package:job_portal/views/bottom_nav_bar/student_bottom_nav_bar.dart';
 import 'package:job_portal/views/login/presentation/bloc/remote_login_bloc.dart';
 import 'package:job_portal/views/login/presentation/bloc/remote_login_event.dart';
 import 'package:job_portal/views/login/presentation/bloc/remote_login_state.dart';
-import 'package:job_portal/views/signup_recruiter/presentation/views/Recruiter_Dashboard.dart';
 import '../../../../ui_helper/ui_helper.dart';
 import '../../../../widgets/widgets.dart';
 import '../../../Common_Screens/presentation/bloc/forgot_password_bloc.dart';
 import '../../../Common_Screens/presentation/view/Forgot_password_Screen.dart';
+import '../../../recruiter_dashboard/presentation/views/Recruiter_Dashboard.dart';
 import 'login_with_email_otp_view.dart';
 import '../../../signup_student/presentation/views/create_account.dart';
 

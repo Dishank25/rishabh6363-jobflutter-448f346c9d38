@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:job_portal/utils/theme/custom_themes/color_theme.dart';
-import 'package:job_portal/views/signup_recruiter/presentation/views/Recruiter_pipeline_candidates.dart';
-import 'package:job_portal/views/signup_recruiter/presentation/views/Recruiter_total_job_posts.dart';
 import 'package:job_portal/widgets/widgets.dart';
 
 import '../../ui_helper/ui_helper.dart';
+import '../recruiter_job_post/presentation/view/Recruiter_total_job_posts.dart';
 
 class PremiumInternships_Jobs extends StatelessWidget {
   const PremiumInternships_Jobs({super.key});

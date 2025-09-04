@@ -43,4 +43,36 @@ class Urls {
   static const raiseTicket = "tickets/raise";
   static const forgotPassword = "users/forgotPassword";
   static const changePassword = "users/changePassword";
+
+  // Job Posts
+  static const String getJobPostsList = "jobpost/list";
+  static const String getTotalJobPostCount = "jobpost/totalcount";
+
+  static const String getApplicantsForJob =
+      "jobpost/{jobPostId}/allapplicant"; //
+
+  static const String totalJobPost = "company-recruiter/jobpost/list";
+
+  static const String getAllApplicantsCount = "jobpost/11/applicantCount";
+
+  static const String totalJobCount = "jobpost/totalcount";
+
+  static const String getFullApplicantDetails =
+      'jobpost/{jobId}/applicant/{applicantId}';
+
+  static const String scheduleInterview = "interview-invitations/{applicantId}";
+
+  static const String getDashboardStats = "company-recruiter/dashboardStats";
+
+  static const String getViewPendingTask = "pendingtask/grouped";
+
+  static const String getUpcomingInterviews = "interview-invitations/upcoming/all";
+
+  static const String getPipelineCandidates = "company-recruiter/candidates";
+
+  static const String sendAssignment = "assignments/{applicantId}";
+
+
+
+
 }

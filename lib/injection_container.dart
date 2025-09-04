@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:job_portal/utils/constants/urls.dart';
 import 'package:job_portal/utils/network/dio_client.dart';
@@ -41,6 +42,48 @@ import 'package:job_portal/views/post_opportunities/data/repository/opportunitie
 import 'package:job_portal/views/post_opportunities/domain/repository/opportunity_repository.dart';
 import 'package:job_portal/views/post_opportunities/domain/usecases/metadata_usecase.dart';
 import 'package:job_portal/views/post_opportunities/presentation/bloc/opportunity_bloc.dart';
+import 'package:job_portal/views/recruiter_application/data/data_source/recruiter_application_api_service.dart';
+import 'package:job_portal/views/recruiter_application/data/repository/recruiter_application_repository_impl.dart';
+import 'package:job_portal/views/recruiter_application/domain/repository/recruiter_application_repository.dart';
+import 'package:job_portal/views/recruiter_application/domain/usecases/recruiter_application_usecase.dart';
+import 'package:job_portal/views/recruiter_application/presentation/bloc/recruiter_application_bloc.dart';
+import 'package:job_portal/views/recruiter_dashboard/data/data_source/recruiter_dashboard_api_service/recruiter_dashboard_api_service.dart';
+import 'package:job_portal/views/recruiter_dashboard/data/repository/recruiter_dashboard_repository_impl.dart';
+import 'package:job_portal/views/recruiter_dashboard/domain/usecases/recruiter_dashboard_usecases.dart';
+import 'package:job_portal/views/recruiter_dashboard/presentation/bloc/recruiter_dashboard_bloc/Recruiter_Dashboard_Bloc.dart';
+import 'package:job_portal/views/recruiter_full_view_application/data/data_sources/recruiter_full_view_application_api_service.dart';
+import 'package:job_portal/views/recruiter_full_view_application/data/repository/recruiter_full_view_application_repository_impl.dart';
+import 'package:job_portal/views/recruiter_full_view_application/domain/repository/recruiter_full_view_application_repository.dart';
+import 'package:job_portal/views/recruiter_full_view_application/domain/usecases/recruiter_full_view_application_usecase.dart';
+import 'package:job_portal/views/recruiter_full_view_application/presentation/bloc/recruiter_full_view_application_bloc.dart';
+import 'package:job_portal/views/recruiter_job_post/data/data_source/recruiter_job_post_api_service.dart';
+import 'package:job_portal/views/recruiter_job_post/data/repository/recruiter_job_post_repository_impl.dart';
+import 'package:job_portal/views/recruiter_job_post/domain/usecases/recruiter_job_post_usecase.dart';
+import 'package:job_portal/views/recruiter_job_post/presentation/bloc/recruiter_job_post_bloc/recruiter_job_post_bloc.dart';
+import 'package:job_portal/views/recruiter_pending_tasks/data/data_source/recruiter_pending_tasks_api_service.dart';
+import 'package:job_portal/views/recruiter_pending_tasks/data/repository/recruiter_pending_tasks_repository_impl.dart';
+import 'package:job_portal/views/recruiter_pending_tasks/domain/repository/recruiter_pending_tasks_repository.dart';
+import 'package:job_portal/views/recruiter_pending_tasks/domain/usecases/recruiter_pending_tasks_usecase.dart';
+import 'package:job_portal/views/recruiter_pending_tasks/presentation/bloc/recruiter_pending_tasks_bloc.dart';
+import 'package:job_portal/views/recruiter_pipeline_candidates/data/data_source/recruiter_pipeline_candidates_api_service.dart';
+import 'package:job_portal/views/recruiter_pipeline_candidates/data/repository/recruiter_pipeline_candidates_repository_impl.dart';
+import 'package:job_portal/views/recruiter_pipeline_candidates/domain/repository/recruiter_pipeline_candidates_repository.dart';
+import 'package:job_portal/views/recruiter_pipeline_candidates/domain/usecases/recruiter_pipeline_candidates_usecase.dart';
+import 'package:job_portal/views/recruiter_pipeline_candidates/presentation/bloc/recruiter_pipeline_candidates_bloc.dart';
+import 'package:job_portal/views/recruiter_schedule_interview/data/data_sources/recruiter_schedule_interview_api_service.dart';
+import 'package:job_portal/views/recruiter_schedule_interview/data/repository/recruiter_schedule_interview_repository_impl.dart';
+import 'package:job_portal/views/recruiter_schedule_interview/domain/repository/recruiter_schedule_interview_repository.dart';
+import 'package:job_portal/views/recruiter_schedule_interview/domain/usecases/recruiter_schedule_interview_usecase.dart';
+import 'package:job_portal/views/recruiter_schedule_interview/presentaion/bloc/recruiter_schedule_interview_bloc.dart';
+import 'package:job_portal/views/recruiter_send_assignment/data/repository/recruiter_application_repository_impl.dart';
+import 'package:job_portal/views/recruiter_send_assignment/domain/repository/recruiter_send_assignment_repository.dart';
+import 'package:job_portal/views/recruiter_send_assignment/domain/usecases/recruiter_send_assignment_usecase.dart';
+import 'package:job_portal/views/recruiter_send_assignment/presenation/bloc/recruiter_send_assignment_bloc.dart';
+import 'package:job_portal/views/recruiter_upcoming_interviews/data/data_source/recruiter_upcoming_interviews_api_service.dart';
+import 'package:job_portal/views/recruiter_upcoming_interviews/data/repository/recruiter_upcoming_interviews_repository_impl.dart';
+import 'package:job_portal/views/recruiter_upcoming_interviews/domain/repository/recruiter_upcoming_interviews_repository.dart';
+import 'package:job_portal/views/recruiter_upcoming_interviews/domain/usecases/recruiter_upcoming_interviews_usecase.dart';
+import 'package:job_portal/views/recruiter_upcoming_interviews/presentation/bloc/recruiter_upcoming_interviews_bloc.dart';
 import 'package:job_portal/views/signup_recruiter/data/data_source/recruiter_signup_api_service.dart';
 import 'package:job_portal/views/signup_recruiter/data/repository/recruiter_signup_repository_impl.dart';
 import 'package:job_portal/views/signup_recruiter/domain/repository/recruiter_signup_repository.dart';
@@ -78,7 +121,13 @@ import 'package:job_portal/views/user_profile/presentation/bloc/raise_ticket_blo
 import 'package:job_portal/views/user_profile/presentation/bloc/terms_and_conditions_bloc/terms_and_conditions_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/upload_resume_bloc/upload_resume_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/your_experience_bloc/your_experience_bloc.dart';
+import 'package:job_portal/views/user_skill_approval/data/data_sources/user_skill_approval_api_service.dart';
+import 'package:job_portal/views/user_skill_approval/data/repository/user_skill_approval_repository_impl.dart';
+import 'package:job_portal/views/user_skill_approval/domain/repository/user_skill_approval_repository.dart';
+import 'package:job_portal/views/user_skill_approval/domain/usecases/user_skill_approval_usecase.dart';
+import 'package:job_portal/views/user_skill_approval/presentation/bloc/user_skill_approval_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:job_portal/views/recruiter_send_assignment/data/data_source/recruiter_send_assignment_api_service.dart';
 
 final sl = GetIt.instance;
 
@@ -102,6 +151,8 @@ Future<void> initializeDependencies() async {
       DetailedApiService(sl<DioClient>().instance));
   sl.registerSingleton<RecruiterSignupApiService>(
       RecruiterSignupApiService(sl<DioClient>().instance));
+  sl.registerSingleton<RecruiterDashboardApiService>(
+      RecruiterDashboardApiService(sl<DioClient>().instance));
   sl.registerSingleton<OpportunitiesApiService>(
       OpportunitiesApiService(sl<DioClient>().instance));
   sl.registerSingleton<JobScreensApiService>(
@@ -114,11 +165,33 @@ Future<void> initializeDependencies() async {
       ProfileApiService(sl<DioClient>().instance));
   sl.registerSingleton<UploadFileApiService>(
       UploadFileApiService(sl<DioClient>().instance));
+  sl.registerSingleton<RecruiterJobPostApiService>(
+      RecruiterJobPostApiService(sl<DioClient>().instance));
+  sl.registerSingleton<RecruiterFullViewApplicationApiService>(
+      RecruiterFullViewApplicationApiService(sl<DioClient>().instance));
+  sl.registerSingleton<RecruiterScheduleInterviewApiService>(
+      RecruiterScheduleInterviewApiService(sl<DioClient>().instance));
+  sl.registerSingleton<RecruiterApplicationApiService>(
+      RecruiterApplicationApiService(sl<DioClient>().instance));
+  sl.registerLazySingleton<UserSkillApprovalApiService>(() {
+    final dio = sl<Dio>();
+    dio.options.headers['Authorization'] = 'Bearer YOUR_JWT_TOKEN'; // Replace with real token
+    return UserSkillApprovalApiService(dio);
+  });
+      // User Profile Get Verified for Authentication
   sl.registerSingleton<UserAuthOtpApiService>(
       UserAuthOtpApiService(sl<DioClient>().instance));
   sl.registerSingleton<ForgotPasswordApiService>(
     ForgotPasswordApiService(sl<DioClient>().instance),
   );
+  sl.registerSingleton<RecruiterPendingTasksApiService>(
+      RecruiterPendingTasksApiService(sl<DioClient>().instance));
+  sl.registerSingleton<RecruiterPipelineCandidatesApiService>(
+      RecruiterPipelineCandidatesApiService(sl<DioClient>().instance));
+  sl.registerSingleton<RecruiterUpcomingInterviewsApiService>(
+      RecruiterUpcomingInterviewsApiService(sl<DioClient>().instance));
+  sl.registerSingleton<RecruiterSendAssignmentApiService>(
+      RecruiterSendAssignmentApiService(sl<DioClient>().instance));
 
   // Blocs
   sl.registerFactory<RemoteSignupBloc>(() => RemoteSignupBloc(sl(), sl()));
@@ -139,12 +212,31 @@ Future<void> initializeDependencies() async {
   sl.registerFactory<MyProfileBloc>(() => MyProfileBloc(sl(), sl()));
   sl.registerFactory<TermsAndConditionsBloc>(
       () => TermsAndConditionsBloc(sl()));
+  sl.registerFactory(
+    () => RecruiterFullViewApplicationBloc(useCase: sl()),
+  );
   sl.registerFactory<ManageAccountBloc>(() => ManageAccountBloc(sl()));
   sl.registerFactory<JobApplyBloc>(() => JobApplyBloc(sl()));
   sl.registerFactory<UploadFileBloc>(() => UploadFileBloc(sl()));
   sl.registerFactory<CreateFeedPostBloc>(() => CreateFeedPostBloc(sl()));
   sl.registerFactory<UploadResumeBloc>(() => UploadResumeBloc());
+  sl.registerFactory<RecruiterDashboardBloc>(
+      () => RecruiterDashboardBloc(sl()));
+  sl.registerFactory<RecruiterJobPostBloc>(
+    () => RecruiterJobPostBloc(sl<RecruiterJobPostApiService>()),
+  );
+  sl.registerFactory<RecruiterScheduleInterviewBloc>(
+      () => RecruiterScheduleInterviewBloc(sl()));
   sl.registerFactory<JobApplicationBloc>(() => JobApplicationBloc(sl()));
+  sl.registerFactory<RecruiterApplicationBloc>(
+      () => RecruiterApplicationBloc(useCase: sl()));
+  sl.registerFactory<UserAuthBloc>(
+        () => UserAuthBloc(
+      sendOtpToMobileUseCase: sl<SendOtpToMobileUseCase>(),
+      verifyPhoneNumberUseCase: sl<VerifyPhoneNumberUseCase>(),
+    ),
+  );
+  sl.registerFactory<UserSkillApprovalBloc>(() => UserSkillApprovalBloc(useCase: sl()));
   sl.registerFactory<YourExperienceBloc>(() => YourExperienceBloc());
   sl.registerFactory<RaiseTicketBloc>(() => RaiseTicketBloc(sl()));
   sl.registerFactory<UserAuthBloc>(() => UserAuthBloc(
@@ -155,6 +247,10 @@ Future<void> initializeDependencies() async {
     sendOtpToEmailUsecase: sl(),
     verifyOtpAndResetPasswordUsecase: sl(),
   ));
+  sl.registerFactory<RecruiterPipelineCandidatesBloc>(() => RecruiterPipelineCandidatesBloc(sl()));
+  sl.registerFactory<RecruiterUpcomingInterviewsBloc>(() => RecruiterUpcomingInterviewsBloc(sl()));
+  sl.registerFactory<RecruiterPendingTasksBloc>(() => RecruiterPendingTasksBloc(sl()));
+  sl.registerFactory<RecruiterSendAssignmentBloc>(() => RecruiterSendAssignmentBloc(sl()));
 
   // Use Cases
   sl.registerLazySingleton<SignupUsecase>(() => SignupUsecase(sl()));
@@ -206,6 +302,17 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<GetFollowingUsecase>(
       () => GetFollowingUsecase(sl()));
   sl.registerLazySingleton<RaiseTicketUsecase>(() => RaiseTicketUsecase(sl()));
+  sl.registerLazySingleton<RecruiterDashboardUsecase>(
+          () => RecruiterDashboardUsecase(sl()));
+  sl.registerLazySingleton(
+        () => GetApplicantDetailsUseCase(sl()),
+  );
+  sl.registerLazySingleton<RecruiterJobPostsUseCase>(
+          () => RecruiterJobPostsUseCase(sl()));
+  sl.registerLazySingleton<RecruiterScheduleInterviewUseCase>(
+          () => RecruiterScheduleInterviewUseCase(sl()));
+  sl.registerLazySingleton<RecruiterApplicationUseCase>(
+          () => RecruiterApplicationUseCase(sl()));
   sl.registerLazySingleton<SendOtpToMobileUseCase>(
       () => SendOtpToMobileUseCase(sl()));
   sl.registerLazySingleton<VerifyPhoneNumberUseCase>(
@@ -216,12 +323,28 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<VerifyOtpAndResetPasswordUsecase>(
         () => VerifyOtpAndResetPasswordUsecase(sl()),
   );
+  // sl.registerLazySingleton<ProfileUsecase>(
+  //       () => ProfileUsecase(sl<ProfileRepository>()),
+  // );
+  sl.registerLazySingleton<UpdateUserSkillsUseCase>(() => UpdateUserSkillsUseCase(sl()));
+  sl.registerLazySingleton<RecruiterPendingTasksUseCase>(
+          () => RecruiterPendingTasksUseCase(sl()));
+  sl.registerLazySingleton<RecruiterUpcomingInterviewsUseCase>(
+          () => RecruiterUpcomingInterviewsUseCase(sl()));
+  sl.registerLazySingleton<RecruiterPipelineCandidatesUseCase>(
+          () => RecruiterPipelineCandidatesUseCase(sl()));
+  sl.registerLazySingleton<RecruiterSendAssignmentUseCase>(
+          () => RecruiterSendAssignmentUseCase(sl()));
+
 
   // Repository
   sl.registerLazySingleton<SignupRepository>(() => SignupRepositoryImpl(sl()));
   sl.registerLazySingleton<LoginRepository>(() => LoginRepositoryImpl(sl()));
   sl.registerLazySingleton<DetailedSignupRepository>(
       () => DetailedSignupRepositoryImpl(sl()));
+  sl.registerLazySingleton<RecruiterFullViewApplicationRepository>(
+    () => RecruiterFullViewApplicationRepositoryImpl(sl()),
+  );
   sl.registerLazySingleton<SkillRepository>(() => SkillRepositoryImpl(sl()));
   sl.registerLazySingleton<RecruiterSignupRepository>(
       () => RecruiterSignupRepositoryImpl(sl()));
@@ -235,9 +358,36 @@ Future<void> initializeDependencies() async {
       () => ProfileRepositoryImpl(sl()));
   sl.registerLazySingleton<UploadFileRepository>(
       () => UploadFileRepositoryImpl(sl()));
+  sl.registerLazySingleton<RecruiterDashboardRepositoryImpl>(
+      () => RecruiterDashboardRepositoryImpl(sl()));
+  sl.registerLazySingleton<RecruiterJobPostRepositoryImpl>(
+      () => RecruiterJobPostRepositoryImpl(sl()));
+  sl.registerLazySingleton<RecruiterScheduleInterviewRepository>(
+      () => RecruiterScheduleInterviewRepositoryImpl(sl()));
+  sl.registerLazySingleton<RecruiterApplicationRepository>(
+      () => RecruiterApplicationRepositoryImpl(sl()));
   sl.registerLazySingleton<UserAuthOtpRepository>(
       () => UserAuthOtpRepositoryImpl(apiService: sl()));
   sl.registerLazySingleton<ForgotPasswordRepository>(
         () => ForgotPasswordRepositoryImpl(apiService: sl<ForgotPasswordApiService>()),
   );
+  // sl.registerLazySingleton<UserAuthOtpRepository>(
+  //       () => UserAuthOtpRepositoryImpl(
+  //     apiService: sl<UserAuthOtpApiService>(),
+  //   ),
+  // );
+  sl.registerLazySingleton<UserSkillApprovalRepository>(() => UserSkillApprovalRepositoryImpl(sl()));
+  sl.registerLazySingleton<RecruiterPendingTasksRepository>(
+          () => RecruiterPendingTasksRepositoryImpl(sl()));
+  sl.registerLazySingleton<RecruiterUpcomingInterviewsRepository>(
+          () => RecruiterUpcomingInterviewsRepositoryImpl(sl()));
+  sl.registerLazySingleton<RecruiterPipelineCandidatesRepository>(
+          () => RecruiterPipelineCandidatesRepositoryImpl(sl()));
+
+  sl.registerLazySingleton<RecruiterSendAssignmentRepository>(
+          () => RecruiterSendAssignmentRepositoryImpl(sl()));
+
+  // sl.registerLazySingleton<ProfileRepository>(
+  //       () => ProfileRepositoryImpl(sl<ProfileApiService>()),
+  // );
 }
