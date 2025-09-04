@@ -38,20 +38,20 @@ class _SignUpStudent1State extends State<SignUpStudent1> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: const Text(""),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => SignUpStudent_2(
-                    Email: emailController.text.trim(),
-                  ),
-                ),
-              );
-            },
-            icon: const Icon(Icons.double_arrow),
-          )
-        ],
+        // actions: [
+        //   IconButton(
+        //     onPressed: () {
+        //       Navigator.of(context).push(
+        //         MaterialPageRoute(
+        //           builder: (context) => SignUpStudent_2(
+        //             Email: emailController.text.trim(),
+        //           ),
+        //         ),
+        //       );
+        //     },
+        //     icon: const Icon(Icons.double_arrow),
+        //   )
+        // ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer' as developer show log;
 import 'dart:io';
 import 'package:dio/dio.dart';
@@ -12,11 +13,29 @@ import 'package:job_portal/views/detailed_signup_student/data/model/specializati
 import 'package:job_portal/views/detailed_signup_student/data/model/submit_detailed_user_profile.dart';
 import 'package:job_portal/views/detailed_signup_student/domain/entities/metadata_entities.dart';
 import 'package:job_portal/views/detailed_signup_student/domain/repository/detailed_signup_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DetailedSignupRepositoryImpl extends DetailedSignupRepository {
   final DetailedApiService _apiService;
 
   DetailedSignupRepositoryImpl(this._apiService);
+
+  @override
+  Future<DataState<dynamic>> getMasterAllData() async {
+    try {
+      final response = await _apiService.getMasterAllData();
+      if (response.response.statusCode == 200) {
+        return DataSuccess(response.data);
+      } else {
+        return DataFailed(DioException(
+          requestOptions: response.response.requestOptions,
+          type: DioExceptionType.badResponse,
+        ));
+      }
+    } on DioException catch (e) {
+      return DataFailed(e);
+    }
+  }
 
   @override
   Future<DataState<BasicUserInfoResponse>> getBasicUserInfo(
@@ -121,22 +140,43 @@ class DetailedSignupRepositoryImpl extends DetailedSignupRepository {
   @override
   Future<DataState<LocationListEntity>> getLocations() async {
     try {
-      final res = await _apiService.getLocations();
-      if (res.response.statusCode == HttpStatus.ok) {
-        developer.log('.checkk response in repository : ${res.data}');
-        return DataSuccess(res.data);
+      final prefs = await SharedPreferences.getInstance();
+      final String? cachedMasterData = prefs.getString('master_api_all_data');
+
+      if (cachedMasterData != null) {
+        final Map<String, dynamic> masterData = jsonDecode(cachedMasterData);
+
+        if (masterData.containsKey('data') && masterData['data'].containsKey('locations')) {
+          final List<dynamic> locationJsonList = masterData['data']['locations'];
+          final List<LocationEntity> locations = locationJsonList
+              .map((e) => LocationEntity(id: e['id'], name: e['name']))
+              .toList();
+
+          final locationListEntity = LocationListEntity(
+            success: true,
+            locations: locations,
+            message: 'Locations loaded from cache',
+          );
+
+          return DataSuccess(locationListEntity);
+        }
+      }
+
+      // Fallback to API if cache missing
+      final response = await _apiService.getLocations();
+      if (response.response.statusCode == 200) {
+        return DataSuccess(response.data);
       } else {
-        developer.log('..checkk response in repository : ${res.data}');
         return DataFailed(DioException(
-            error: res.response.statusMessage,
-            response: res.response,
-            type: DioExceptionType.badResponse,
-            requestOptions: res.response.requestOptions));
+          requestOptions: response.response.requestOptions,
+          type: DioExceptionType.badResponse,
+        ));
       }
     } on DioException catch (e) {
-      final error = e.type;
-      developer.log('....checkk  : $error');
       return DataFailed(e);
+    } catch (e) {
+      developer.log('Error loading locations from cache: $e');
+      return DataFailed(DioException(requestOptions: RequestOptions()));
     }
   }
 

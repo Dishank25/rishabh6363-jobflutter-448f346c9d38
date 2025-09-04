@@ -8,6 +8,9 @@ import 'package:job_portal/views/detailed_signup_student/data/model/submit_detai
 import 'package:job_portal/views/detailed_signup_student/domain/entities/metadata_entities.dart';
 
 abstract class DetailedSignupRepository {
+
+  Future<DataState<dynamic>> getMasterAllData();
+
   Future<DataState<BasicUserInfoResponse>> getBasicUserInfo(
       Map<String, dynamic> emailMap);
 

@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:developer' as developer show log;
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:job_portal/views/detailed_signup_student/domain/usecases/detailed_signup_usecase.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_event.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/signup_as_anyone_bloc/detailed_signup_state.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../utils/resourses/data_state.dart';
 import '../../../domain/entities/metadata_entities.dart';
@@ -18,6 +20,30 @@ class DetailedSignupBloc
     on<DetailedSignupGetCollegeDetails>(_onGetCollegeDetails);
     on<DetailedSingupSubmitUserDetails>(_onSubmitUserDetails);
     on<DetailedSignupGetSpecializations>(_onGetSpecializations);
+  }
+
+  Future<void> _onGetMasterAllData(DetailedSignupGetMasterAllData event, Emitter<DetailedSignupState> emit) async {
+    try {
+      developer.log('Fetching Master All API data...');
+      final response = await _detailedSignupUsecase.getMasterAllData(); // Assume this method exists
+
+      if (response is DataSuccess) {
+        final masterData = response.data;
+
+        // Save to cache (Shared Preferences)
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('master_api_response', jsonEncode(masterData.toJson())); // Ensure model has toJson()
+
+        developer.log('Master API data cached successfully.');
+        emit(const MasterAllDataLoaded()); // Optional: if you need UI feedback (but no UI change)
+      } else if (response is DataFailed) {
+        developer.log('Master API failed: ${response.error}');
+        emit(const MasterAllDataError());
+      }
+    } catch (e) {
+      developer.log('Exception during Master API call: $e');
+      emit(const MasterAllDataError());
+    }
   }
 
   Future<void> _onGetBasicUserInfo(DetailedSignupGetBasicUserInfo event,

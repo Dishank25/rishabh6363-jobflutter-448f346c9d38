@@ -15,7 +15,7 @@ import 'package:job_portal/utils/upload_file_get_url/presentation/bloc/upload_fi
 import 'package:job_portal/views/detailed_signup_student/domain/entities/metadata_entities.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/skill_bloc/skill_bloc.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/skill_bloc/skill_event.dart'
-    as se;
+as se;
 import 'package:job_portal/views/detailed_signup_student/presentation/bloc/skill_bloc/skill_state.dart';
 import 'package:job_portal/views/detailed_signup_student/presentation/views/signup_your_preferences_view.dart';
 import 'package:job_portal/ui_helper/ui_helper.dart';
@@ -43,10 +43,10 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
   final _formKey = GlobalKey<FormState>();
   UniqueKey _autoCompleteKey = UniqueKey();
 
-  /// Domain Skills Drop Down
-  final LayerLink _domainLink = LayerLink();
-  final GlobalKey _domainFieldKey = GlobalKey();
-  OverlayEntry? _domainOverlayEntry;
+  // /// Domain Skills Drop Down
+  // final LayerLink _domainLink = LayerLink();
+  // final GlobalKey _domainFieldKey = GlobalKey();
+  // OverlayEntry? _domainOverlayEntry;
 
   List<DomainEntity> allDomains = [];
   List<String> tempSelectedDomains = [];
@@ -59,41 +59,41 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
   Map<String, dynamic> certificateImages = {};
   Map<String, dynamic> finalSkillData = {};
 
-  void _showDomainDropdown(
-      BuildContext context, TextEditingController controller) {
-    final renderBox =
-        _domainFieldKey.currentContext!.findRenderObject() as RenderBox;
-    final size = renderBox.size;
-    final offset = renderBox.localToGlobal(Offset.zero);
-
-    // context.read<DomainBloc>().add(FetchDomains());
-
-    _domainOverlayEntry = OverlayEntry(
-      builder: (context) => Positioned(
-        width: size.width,
-        left: offset.dx,
-        top: offset.dy + size.height,
-        child: CompositedTransformFollower(
-          link: _domainLink,
-          offset: Offset(0, size.height),
-          child: Material(
-            elevation: 4,
-            borderRadius: BorderRadius.circular(8),
-          ),
-        ),
-      ),
-    );
-
-    Overlay.of(context).insert(_domainOverlayEntry!);
-  }
-
-  @override
-  void dispose() {
-    // Ensure any active overlay is removed to prevent _dependents assertion error
-    _domainOverlayEntry?.remove();
-    _domainOverlayEntry = null;
-    super.dispose();
-  }
+  // void _showDomainDropdown(
+  //     BuildContext context, TextEditingController controller) {
+  //   final renderBox =
+  //   _domainFieldKey.currentContext!.findRenderObject() as RenderBox;
+  //   final size = renderBox.size;
+  //   final offset = renderBox.localToGlobal(Offset.zero);
+  //
+  //   // context.read<DomainBloc>().add(FetchDomains());
+  //
+  //   _domainOverlayEntry = OverlayEntry(
+  //     builder: (context) => Positioned(
+  //       width: size.width,
+  //       left: offset.dx,
+  //       top: offset.dy + size.height,
+  //       child: CompositedTransformFollower(
+  //         link: _domainLink,
+  //         offset: Offset(0, size.height),
+  //         child: Material(
+  //           elevation: 4,
+  //           borderRadius: BorderRadius.circular(8),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  //
+  //   Overlay.of(context).insert(_domainOverlayEntry!);
+  // }
+  //
+  // @override
+  // void dispose() {
+  //   // Ensure any active overlay is removed to prevent _dependents assertion error
+  //   _domainOverlayEntry?.remove();
+  //   _domainOverlayEntry = null;
+  //   super.dispose();
+  // }
 
   @override
   void initState() {
@@ -137,18 +137,18 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: const Text(""),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          SignupPageYourPreferences(params: {})));
-            },
-            icon: const Icon(Icons.double_arrow),
-          )
-        ],
+        // actions: [
+        //   IconButton(
+        //     onPressed: () {
+        //       Navigator.push(
+        //           context,
+        //           MaterialPageRoute(
+        //               builder: (context) =>
+        //                   SignupPageYourPreferences(params: {})));
+        //     },
+        //     icon: const Icon(Icons.double_arrow),
+        //   )
+        // ],
         leading: IconButton(
             onPressed: () async {
               await cacheSkills();
@@ -220,12 +220,12 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
                                   value.name, value.id.toString()));
                               setState(() {
                                 selectedDomains.add(value.name);
-                                _autoCompleteKey = UniqueKey();
+                                _autoCompleteKey = UniqueKey(); // Reset the key to clear the input
                               });
                             } else {
                               showSnackbar('Skill already selected.', context);
                               setState(() {
-                                _autoCompleteKey = UniqueKey();
+                                _autoCompleteKey = UniqueKey(); // Reset the key even on error
                               });
                             }
                           },
@@ -252,7 +252,7 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
                             preferenceContainer(
                               cName: domain,
                               fileName:
-                                  certificateImages[domain]?.files.first.name,
+                              certificateImages[domain]?.files.first.name,
                               onTap: () {},
                               subSkills: subSkills,
                               selectedSubSkills: selectedSkills,
@@ -270,7 +270,7 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
                                 });
                               },
                               courseCollegeController:
-                                  courseCollegeControllers[domain]!,
+                              courseCollegeControllers[domain]!,
                               validator: (value) {
                                 if (value == null || value.trim().isEmpty) {
                                   return 'Please enter the details';
@@ -312,17 +312,13 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
                     BlocListener<MyProfileBloc, MyProfileState>(
                       listener: (context, state) {
                         if (state is UpdateProfileLoaded) {
-                          developer
-                              .log('update profile loaded in skills screen');
-                          showSnackbar(
-                              state.updateUserProfileEntity.message, context);
-                          Navigator.pop(context);
+                          developer.log('update profile loaded in skills screen');
+                          showSnackbar(state.updateUserProfileEntity.message, context);
+                          // ✅ Removed Navigator.pop(context) — we are moving forward, not back
                         } else if (state is UpdateProfileLoading) {
-                          developer
-                              .log('update profile loading in skills screen');
+                          developer.log('update profile loading in skills screen');
                         } else if (state is UpdateProfileError) {
-                          developer
-                              .log('update profile error in skills screen');
+                          developer.log('update profile error in skills screen');
                         }
                       },
                       child: const SizedBox(),
@@ -371,20 +367,46 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
                           title: "Save Changes",
                           onTap: () async {
                             if (_formKey.currentState!.validate()) {
-                              // final skillList = await createSkillList();
                               await uploadCertificates();
                               _prefs.clear(PreferencesManager.SKILL_PARAMS);
+
+                              final Map<String, dynamic> paramsCopy = Map.from(widget.params);
+
+                              // ✅ Ensure all required fields are present
+                              final userId = _prefs.getUserId();
+                              if (userId != null) paramsCopy['user_id'] = userId;
+
+                              if (!paramsCopy.containsKey('first_name')) {
+                                showSnackbar('First name is missing. Please go back and check.', context);
+                                return;
+                              }
+                              if (!paramsCopy.containsKey('email')) {
+                                showSnackbar('Email is missing.', context);
+                                return;
+                              }
+                              if (!paramsCopy.containsKey('gender')) {
+                                showSnackbar('Gender is missing.', context);
+                                return;
+                              }
+                              if (!paramsCopy.containsKey('dob')) {
+                                showSnackbar('Date of birth is missing.', context);
+                                return;
+                              }
+                              if (!paramsCopy.containsKey('phone')) {
+                                showSnackbar('Phone number is missing.', context);
+                                return;
+                              }
+
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => SignupPageYourPreferences(
-                                    params: widget.params,
+                                    params: paramsCopy,
                                   ),
                                 ),
                               );
                             } else {
-                              showSnackbar(
-                                  'Please enter all the details', context);
+                              showSnackbar('Please enter all the details', context);
                             }
                           },
                         ),
@@ -440,7 +462,6 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
   }
 
   Map<String, dynamic> createSkillList(List<dynamic>? urls) {
-    // Step 1: Construct skill list
     List<Map<String, dynamic>> skillList = [];
 
     for (int i = 0; i < selectedDomains.length; i++) {
@@ -449,58 +470,60 @@ class _SignupPageYourSkillsState extends State<SignupPageYourSkills> {
       final subSkills = selectedSubSkillsPerDomain[domain] ?? [];
 
       for (int j = 0; j < subSkills.length; j++) {
-        skillList.add({
-          'skill_id': subSkills[j].id, // check this
-          "skill": subSkills[j].name,
-          "authority": authority,
-        });
+        final skill = subSkills[j];
+        // ✅ Only add valid skills with non-null id and name
+        if (skill.id != null && skill.name?.isNotEmpty == true) {
+          skillList.add({
+            'skill_id': skill.id,
+            "skill": skill.name,
+            "authority": authority,
+          });
+        }
       }
     }
 
     final map = {'skills': skillList, 'certificate_images': urls};
-
     developer.log('Skill map : $map');
-
     return map;
   }
 
-  // Future<FormData> createParamsForSkill() async {
-  //   final _prefs = sl<PreferencesManager>();
-  //   // final user_id = '1';
-  //   final user_id = _prefs.getUserId() ?? '1';
-  //   // Step 1: Construct skill list
-  //   List<Map<String, dynamic>> skillList = [];
-  //   for (int i = 0; i < selectedDomains.length; i++) {
-  //     final skill = selectedDomains[i];
-  //     final authority = courseCollegeControllers[skill]?.text ?? '';
-  //     skillList.add({
-  //       // 'skill_id': 1,
-  //       "skill": skill,
-  //       "authority": authority,
-  //     });
-  //   }
-  //   // Step 2: Create FormData
-  //   final formData = FormData();
-  //   formData.fields
-  //     ..add(MapEntry('user_id', user_id))
-  //     ..add(MapEntry('skills', jsonEncode(skillList)));
-  //   // Step 3: Attach certificate images with indexed keys
-  //   int index = 0;
-  //   for (var domain in certificateImages.keys) {
-  //     final file = certificateImages[domain].files.first;
-  //     if (file != null) {
-  //       final fileName = file.path.split('/').last;
-  //       formData.files.add(
-  //         MapEntry(
-  //           'certificate_image_$index',
-  //           await MultipartFile.fromFile(file.path, filename: fileName),
-  //         ),
-  //       );
-  //       index++;
-  //     }
-  //   }
-  //   developer.log(
-  //       'For Data of skill\nfields : ${formData.fields}\nfiles : ${formData.files}');
-  //   return formData;
-  // }
+// Future<FormData> createParamsForSkill() async {
+//   final _prefs = sl<PreferencesManager>();
+//   // final user_id = '1';
+//   final user_id = _prefs.getUserId() ?? '1';
+//   // Step 1: Construct skill list
+//   List<Map<String, dynamic>> skillList = [];
+//   for (int i = 0; i < selectedDomains.length; i++) {
+//     final skill = selectedDomains[i];
+//     final authority = courseCollegeControllers[skill]?.text ?? '';
+//     skillList.add({
+//       // 'skill_id': 1,
+//       "skill": skill,
+//       "authority": authority,
+//     });
+//   }
+//   // Step 2: Create FormData
+//   final formData = FormData();
+//   formData.fields
+//     ..add(MapEntry('user_id', user_id))
+//     ..add(MapEntry('skills', jsonEncode(skillList)));
+//   // Step 3: Attach certificate images with indexed keys
+//   int index = 0;
+//   for (var domain in certificateImages.keys) {
+//     final file = certificateImages[domain].files.first;
+//     if (file != null) {
+//       final fileName = file.path.split('/').last;
+//       formData.files.add(
+//         MapEntry(
+//           'certificate_image_$index',
+//           await MultipartFile.fromFile(file.path, filename: fileName),
+//         ),
+//       );
+//       index++;
+//     }
+//   }
+//   developer.log(
+//       'For Data of skill\nfields : ${formData.fields}\nfiles : ${formData.files}');
+//   return formData;
+// }
 }

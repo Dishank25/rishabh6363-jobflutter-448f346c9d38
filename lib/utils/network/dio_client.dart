@@ -7,15 +7,15 @@ class DioClient {
 
   DioClient(String baseUrl)
       : _dio = Dio(
-          BaseOptions(
-            baseUrl: baseUrl,
-            connectTimeout: const Duration(seconds: 15),
-            receiveTimeout: const Duration(seconds: 15),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          ),
-        ) {
+    BaseOptions(
+      baseUrl: baseUrl,
+      connectTimeout: const Duration(seconds: 15),
+      receiveTimeout: const Duration(seconds: 15),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    ),
+  ) {
     // Add interceptor
     _dio.interceptors
         .add(LogInterceptor(requestBody: true, responseBody: true));
@@ -26,7 +26,7 @@ class DioClient {
         // can add bearer token here
 
         String token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjksImVtYWlsIjoibW11ZGdhbDY3QGdtYWlsLmNvbSIsInJvbGUiOiJDT01QQU5ZIiwiaWF0IjoxNzUyNDg0Mjg0LCJleHAiOjE3NTI2NTcwODR9.W_DpdydE2ZuXaLUX103TUl2m275HD9MRBWVnZ2s5w6w";
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksImVtYWlsIjoiYTgyOTEyNjYwMTJAZ21haWwuY29tIiwicm9sZSI6IlNUVURFTlQiLCJpYXQiOjE3NTY5NzY2MTQsImV4cCI6MTc2MjE2MDYxNH0.EbMTrFf5XcwBP7UjhexrkdpDsqccoL6LOBWc9HXGJqA";
         final _prefs = sl<PreferencesManager>();
         final storedToken = _prefs.getToken();
         if (storedToken != null && storedToken != '') {

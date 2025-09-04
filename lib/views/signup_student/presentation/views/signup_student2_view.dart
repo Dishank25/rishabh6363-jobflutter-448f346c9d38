@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:developer' as developer;
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:job_portal/views/signup_student/presentation/bloc/remote_signup_bloc/remote_signup_bloc.dart';
@@ -6,8 +9,14 @@ import 'package:job_portal/views/signup_student/presentation/bloc/remote_signup_
 import 'package:job_portal/views/signup_student/presentation/bloc/verify_otp_bloc/verify_otp_bloc.dart';
 import 'package:job_portal/views/signup_student/presentation/bloc/verify_otp_bloc/verify_otp_event.dart';
 import 'package:job_portal/views/signup_student/presentation/bloc/verify_otp_bloc/verify_otp_state.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../injection_container.dart';
 import '../../../../ui_helper/ui_helper.dart';
+import '../../../../utils/resourses/data_state.dart';
 import '../../../../widgets/widgets.dart';
+import '../../../detailed_signup_student/data/data_source/detailed_api_service.dart';
+import '../../../detailed_signup_student/data/repository/detailed_signup_repository_impl.dart';
+import '../../../detailed_signup_student/domain/repository/detailed_signup_repository.dart';
 import '../../../login/presentation/views/login_page_first_view.dart';
 import '../../../detailed_signup_student/presentation/views/signup_as_anyone_view.dart';
 
@@ -72,19 +81,6 @@ class _SignUpStudent_2State extends State<SignUpStudent_2> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: const Text(""),
-          actions: [
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SignupAsAnyOne(email: widget.Email),
-                  ),
-                );
-              },
-              icon: const Icon(Icons.double_arrow),
-            )
-          ],
         ),
         body: SafeArea(
           child: Container(
@@ -117,21 +113,50 @@ class _SignUpStudent_2State extends State<SignUpStudent_2> {
                     ),
                     mSpacer(),
                     BlocListener<VerifyOtpBloc, VerifyOtpState>(
-                      listener: (context, state) {
+                      listener: (context, state) async {
                         if (state is VerifyOtpLoaded) {
                           final data = state.verifyOtpEntity;
 
                           if (data.message == "email verification successful") {
+                            developer.log(' OTP verified. Fetching master/all API...');
+
+                            unawaited(Future.microtask(() async {
+                              try {
+                                final repository = sl<DetailedSignupRepository>();
+                                final result = await repository.getMasterAllData();
+
+                                if (result is DataSuccess) {
+                                  final masterData = result.data;
+
+                                  // Save to SharedPreferences
+                                  final prefs = await SharedPreferences.getInstance();
+                                  await prefs.setString('master_api_all_data', jsonEncode(masterData));
+
+                                  // Log full response
+                                  developer.log(' Master API Response:');
+                                  developer.log(jsonEncode(masterData));
+
+                                  developer.log(' master/all API data cached successfully.');
+                                } else if (result is DataFailed) {
+                                  developer.log(' Failed to fetch master/all: ${result.error}');
+                                }
+                              } catch (e, s) {
+                                developer.log(' Critical error: $e');
+                                developer.log(' Stack: $s');
+                              }
+                            }));
+
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    SignupAsAnyOne(email: widget.Email),
+                                builder: (context) => SignupAsAnyOne(email: widget.Email),
                               ),
                             );
                           } else {
                             showSnackbar("OTP could not be verified.", context);
                           }
+                        } else if (state is VerifyOtpError) {
+                          showSnackbar("Failed to verify OTP. Please try again.", context);
                         }
                       },
                       child: commonRedContainer(
@@ -139,11 +164,10 @@ class _SignUpStudent_2State extends State<SignUpStudent_2> {
                         onTap: () {
                           Map<String, dynamic> emailOtpMap = {
                             "email": widget.Email,
-                            "otp": enterOTP.text.trim()
+                            "otp": enterOTP.text.trim(),
                           };
-                          context
-                              .read<VerifyOtpBloc>()
-                              .add(LoadVerifyOtp(emailOtpMap));
+                          developer.log(' Sending OTP verification for: ${widget.Email}');
+                          context.read<VerifyOtpBloc>().add(LoadVerifyOtp(emailOtpMap));
                         },
                       ),
                     ),

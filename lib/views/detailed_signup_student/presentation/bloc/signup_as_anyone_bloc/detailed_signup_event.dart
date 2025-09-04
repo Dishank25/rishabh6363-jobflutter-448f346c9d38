@@ -6,6 +6,12 @@ abstract class DetailedSignupEvent extends Equatable {
   const DetailedSignupEvent();
 }
 
+class DetailedSignupGetMasterAllData extends DetailedSignupEvent {
+  const DetailedSignupGetMasterAllData();
+  @override
+  List<Object?> get props => [];
+}
+
 class DetailedSignupInitialize extends DetailedSignupEvent {
   const DetailedSignupInitialize();
 

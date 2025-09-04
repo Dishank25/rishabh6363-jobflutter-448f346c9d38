@@ -511,18 +511,18 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: const Text(""),
-          actions: [
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            SignupPageYourSkills(params: {})));
-              },
-              icon: const Icon(Icons.double_arrow),
-            )
-          ],
+          // actions: [
+          //   IconButton(
+          //     onPressed: () {
+          //       Navigator.push(
+          //           context,
+          //           MaterialPageRoute(
+          //               builder: (context) =>
+          //                   SignupPageYourSkills(params: {})));
+          //     },
+          //     icon: const Icon(Icons.double_arrow),
+          //   )
+          // ],
         ),
         body: SafeArea(
           child: SingleChildScrollView(

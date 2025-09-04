@@ -12,6 +12,10 @@ class DetailedSignupUsecase {
   final DetailedSignupRepository _repository;
   DetailedSignupUsecase(this._repository);
 
+  Future<DataState<dynamic>> getMasterAllData() async {
+    return await _repository.getMasterAllData();
+  }
+
   Future<DataState<BasicUserInfoResponse>> getBasicUserInfo(
       Map<String, dynamic> emailMap) async {
     final response = await _repository.getBasicUserInfo(emailMap);

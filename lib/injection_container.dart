@@ -239,10 +239,6 @@ Future<void> initializeDependencies() async {
   sl.registerFactory<UserSkillApprovalBloc>(() => UserSkillApprovalBloc(useCase: sl()));
   sl.registerFactory<YourExperienceBloc>(() => YourExperienceBloc());
   sl.registerFactory<RaiseTicketBloc>(() => RaiseTicketBloc(sl()));
-  sl.registerFactory<UserAuthBloc>(() => UserAuthBloc(
-        sendOtpToMobileUseCase: sl(),
-        verifyPhoneNumberUseCase: sl(),
-      ));
   sl.registerFactory<ForgotPasswordBloc>(() => ForgotPasswordBloc(
     sendOtpToEmailUsecase: sl(),
     verifyOtpAndResetPasswordUsecase: sl(),
@@ -341,7 +337,7 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<SignupRepository>(() => SignupRepositoryImpl(sl()));
   sl.registerLazySingleton<LoginRepository>(() => LoginRepositoryImpl(sl()));
   sl.registerLazySingleton<DetailedSignupRepository>(
-      () => DetailedSignupRepositoryImpl(sl()));
+          () => DetailedSignupRepositoryImpl(sl<DetailedApiService>()));
   sl.registerLazySingleton<RecruiterFullViewApplicationRepository>(
     () => RecruiterFullViewApplicationRepositoryImpl(sl()),
   );

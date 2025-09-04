@@ -76,24 +76,39 @@ class _SignupPageYourPreferencesState extends State<SignupPageYourPreferences> {
   }
 
   Future<void> onPressedFindOpportunities() async {
-    // add preferences to params
+    // Ensure required fields are present
+    if (!widget.params.containsKey('first_name') || widget.params['first_name'] == null) {
+      showSnackbar('First name is missing.', context);
+      return;
+    }
+    if (!widget.params.containsKey('email') || widget.params['email'] == null) {
+      showSnackbar('Email is missing.', context);
+      return;
+    }
+    if (!widget.params.containsKey('gender') || widget.params['gender'] == null) {
+      showSnackbar('Gender is missing.', context);
+      return;
+    }
+    if (!widget.params.containsKey('dob') || widget.params['dob'] == null) {
+      showSnackbar('Date of birth is missing.', context);
+      return;
+    }
+    if (!widget.params.containsKey('phone') || widget.params['phone'] == null) {
+      showSnackbar('Phone number is missing.', context);
+      return;
+    }
+
+    // Add preferences
     widget.params.addAll({
       DETAILEDPROFILEPARAMS.currently_looking_for.name:
-          cleanString(selectedPreferences.first),
+      cleanString(selectedPreferences.first),
       DETAILEDPROFILEPARAMS.work_mode.name:
-          cleanString(selectedWorkModes.first),
+      cleanString(selectedWorkModes.first),
     });
 
-    // context
-    //     .read<DetailedSignupBloc>()
-    //     .add(DetailedSingupSubmitUserDetails(widget.params));
-    context
-        .read<DetailedSignupBloc>()
-        .add(DetailedSingupSubmitUserDetails(widget.params));
+    developer.log('🎯 Final payload to API: $widget.params'); // Log full payload
 
-    developer.log('Params in preferences screen : ${widget.params}');
-
-    // developer.log('Detailed Profile Payload : $payload');
+    context.read<DetailedSignupBloc>().add(DetailedSingupSubmitUserDetails(widget.params));
   }
 
   @override
@@ -103,19 +118,19 @@ class _SignupPageYourPreferencesState extends State<SignupPageYourPreferences> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(""),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Student_Bottom_Nav_bar(),
-                ),
-              );
-            },
-            icon: const Icon(Icons.double_arrow),
-          )
-        ],
+        // actions: [
+        //   IconButton(
+        //     onPressed: () {
+        //       Navigator.push(
+        //         context,
+        //         MaterialPageRoute(
+        //           builder: (context) => const Student_Bottom_Nav_bar(),
+        //         ),
+        //       );
+        //     },
+        //     icon: const Icon(Icons.double_arrow),
+        //   )
+        // ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -202,7 +217,7 @@ class _SignupPageYourPreferencesState extends State<SignupPageYourPreferences> {
                     OptionContainer(
                       title: "Work From Home  +",
                       isSelected:
-                          selectedWorkModes.contains("Work From Home  +"),
+                      selectedWorkModes.contains("Work From Home  +"),
                       onTap: () => toggleWorkMode("Work From Home  +"),
                     ),
                   ],
@@ -214,22 +229,20 @@ class _SignupPageYourPreferencesState extends State<SignupPageYourPreferences> {
                     if (state is DetailedSingupSubmitUserDetailsLoaded) {
                       final data = state.submitDetailedUserProfile;
 
-                      if (data.message ==
-                          'User details and experiences added successfully.') {
-                        Navigator.push(
+                      if (data.message == 'User details and experiences added successfully.') {
+                        // ✅ Only navigate here — after success
+                        Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                const Student_Bottom_Nav_bar(),
+                            builder: (context) => const Student_Bottom_Nav_bar(),
                           ),
+                              (route) => false, // Clears the entire signup stack
                         );
                       } else {
                         showSnackbar(data.message, context);
                       }
                     } else if (state is DetailedSingupSubmitUserDetailsError) {
-                      showSnackbar(
-                          'We encountered some error submiting your profile.',
-                          context);
+                      showSnackbar('We encountered some error submitting your profile.', context);
                     }
                   },
                   child: Center(
@@ -239,13 +252,7 @@ class _SignupPageYourPreferencesState extends State<SignupPageYourPreferences> {
                         title: "Find opportunities",
                         onTap: () async {
                           await onPressedFindOpportunities();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const Student_Bottom_Nav_bar(),
-                            ),
-                          );
+                          // Navigator.push is REMOVED from here
                         },
                       ),
                     ),

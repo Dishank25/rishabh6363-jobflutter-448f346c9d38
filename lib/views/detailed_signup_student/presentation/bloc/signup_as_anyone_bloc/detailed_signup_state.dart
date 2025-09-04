@@ -13,6 +13,14 @@ abstract class DetailedSignupState extends Equatable {
   List<Object?> get props => [];
 }
 
+class MasterAllDataLoaded extends DetailedSignupState {
+  const MasterAllDataLoaded();
+}
+
+class MasterAllDataError extends DetailedSignupState {
+  const MasterAllDataError();
+}
+
 class DetailedSignupInitial extends DetailedSignupState {
   const DetailedSignupInitial();
 }

@@ -72,7 +72,9 @@ class Urls {
 
   static const String sendAssignment = "assignments/{applicantId}";
 
+  // Master All Data
 
+  static const String getMasterAllData = "master/all";
 
 
 }

@@ -17,6 +17,9 @@ part 'detailed_api_service.g.dart';
 abstract class DetailedApiService {
   factory DetailedApiService(Dio dio, {String? baseUrl}) = _DetailedApiService;
 
+  @GET(Urls.getMasterAllData)
+  Future<HttpResponse<dynamic>> getMasterAllData();
+
   @POST(Urls.getUserBasicInfo)
   Future<HttpResponse<BasicUserInfoResponse>> getBasicUserInfo(
       @Body() Map<String, dynamic> emailMap);
