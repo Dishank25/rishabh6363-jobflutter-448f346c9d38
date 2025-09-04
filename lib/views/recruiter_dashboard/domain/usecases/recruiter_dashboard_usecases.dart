@@ -11,6 +11,7 @@ class RecruiterDashboardUsecase
 
   @override
   Future<DataState<RecruiterDashboardEntity>> call({Map<String, dynamic>? params}) {
-    return _repository.getTotalJobCount();
+
+    return _repository.getDashboardStats();
   }
 }

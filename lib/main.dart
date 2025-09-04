@@ -16,18 +16,25 @@ import 'package:job_portal/views/post_opportunities/presentation/bloc/opportunit
 import 'package:job_portal/views/recruiter_dashboard/presentation/bloc/recruiter_dashboard_bloc/Recruiter_Dashboard_Bloc.dart';
 import 'package:job_portal/views/recruiter_full_view_application/presentation/bloc/recruiter_full_view_application_bloc.dart';
 import 'package:job_portal/views/recruiter_job_post/presentation/bloc/recruiter_job_post_bloc/recruiter_job_post_bloc.dart';
+import 'package:job_portal/views/recruiter_pending_tasks/presentation/bloc/recruiter_pending_tasks_bloc.dart';
+import 'package:job_portal/views/recruiter_pipeline_candidates/presentation/bloc/recruiter_pipeline_candidates_bloc.dart';
 import 'package:job_portal/views/recruiter_schedule_interview/presentaion/bloc/recruiter_schedule_interview_bloc.dart';
+import 'package:job_portal/views/recruiter_send_assignment/presenation/bloc/recruiter_send_assignment_bloc.dart';
+import 'package:job_portal/views/recruiter_upcoming_interviews/presentation/bloc/recruiter_upcoming_interviews_bloc.dart';
 import 'package:job_portal/views/signup_recruiter/presentation/bloc/recruiter_signup_bloc/recruiter_signup_bloc.dart';
 import 'package:job_portal/views/signup_recruiter/presentation/bloc/verify_otp_recruiter_bloc/verify_otp_recruiter_bloc.dart';
 import 'package:job_portal/views/signup_student/presentation/bloc/remote_signup_bloc/remote_signup_bloc.dart';
 import 'package:job_portal/views/signup_student/presentation/bloc/verify_otp_bloc/verify_otp_bloc.dart';
 import 'package:job_portal/views/signup_university/presentation/blocs/university_signup_bloc.dart';
+import 'package:job_portal/views/user_authentication_and_approval_screens/presentation/bloc/user_auth_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/job_applications_bloc/job_application_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/manage_account_bloc/manage_account_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/my_profile_bloc/my_profile_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/terms_and_conditions_bloc/terms_and_conditions_bloc.dart';
 import 'package:job_portal/views/user_profile/presentation/bloc/upload_resume_bloc/upload_resume_bloc.dart';
+import 'package:job_portal/views/user_profile/presentation/bloc/your_experience_bloc/your_experience_bloc.dart';
+import 'package:job_portal/views/user_skill_approval/presentation/bloc/user_skill_approval_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,6 +55,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => sl<RecruiterSignupBloc>()),
         BlocProvider(create: (_) => sl<RecruiterDashboardBloc>()),
         BlocProvider(create: (_) => sl<OpportunityBloc>()),
+        BlocProvider(create: (_) => sl<UserAuthBloc>()),
         BlocProvider(create: (_) => sl<JobBloc>()),
         BlocProvider(create: (_) => sl<JobDetailsBloc>()),
         BlocProvider(create: (_) => sl<VerifyOtpBloc>()),
@@ -66,6 +74,12 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => sl<RecruiterJobPostBloc>()),
         BlocProvider(create: (_) => sl<RecruiterScheduleInterviewBloc>()),
         BlocProvider(create: (_) => sl<RecruiterFullViewApplicationBloc>()),
+        BlocProvider(create: (_) => sl<YourExperienceBloc>()),
+        BlocProvider(create: (_) => sl<UserSkillApprovalBloc>()),
+        BlocProvider(create: (_) => sl<RecruiterSendAssignmentBloc>()),
+        BlocProvider(create: (_) => sl<RecruiterPendingTasksBloc>()),
+        BlocProvider(create: (_) => sl<RecruiterUpcomingInterviewsBloc>()),
+        BlocProvider(create: (_) => sl<RecruiterPipelineCandidatesBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

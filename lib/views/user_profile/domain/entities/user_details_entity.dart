@@ -8,7 +8,7 @@ class UserDetailEntity {
   final String dob;
   final String? aadhaarNumber;
   final String? aadhaarCardFile;
-  final bool isAadhaarVerified;
+  final bool? isAadhaarVerified;
   final String? currentLocation;
   final String gender;
   final String user_type;
@@ -20,11 +20,11 @@ class UserDetailEntity {
   final String? career_objective;
   final String? resume;
   final String? language;
-  final bool is_email_verified;
-  final bool is_phone_verified;
-  final bool is_gst_verified;
+  final bool? is_email_verified;
+  final bool? is_phone_verified;
+  final bool? is_gst_verified;
   final String? userProfilePic;
-  final bool terms_and_condition;
+  final bool? terms_and_condition;
   final DateTime created_at;
   final DateTime updated_at;
   final List<UserEducationEntity> educations;

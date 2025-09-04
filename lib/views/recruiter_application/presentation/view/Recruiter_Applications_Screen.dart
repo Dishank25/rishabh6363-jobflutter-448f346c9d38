@@ -256,7 +256,10 @@ class AppReceivedCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => SendAssignmentPage(),
+            builder: (context) => SendAssignmentPage(
+              candidateName: applicantName,
+              applicantId: applicantId,
+            ),
           ),
         );
       } else if (value == 'schedule_interview') {

@@ -1,7 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
-@immutable
 abstract class RecruiterDashboardState extends Equatable {
   const RecruiterDashboardState();
 
@@ -15,11 +13,21 @@ class RecruiterDashboardLoading extends RecruiterDashboardState {}
 
 class RecruiterDashboardLoaded extends RecruiterDashboardState {
   final int totalCount;
+  final int pendingTasksCount;
+  final int upcomingInterviewsCount;
 
-  const RecruiterDashboardLoaded(this.totalCount);
+  const RecruiterDashboardLoaded({
+    required this.totalCount,
+    this.pendingTasksCount = 0,
+    this.upcomingInterviewsCount = 0,
+  });
 
   @override
-  List<Object> get props => [totalCount];
+  List<Object> get props => [
+    totalCount,
+    pendingTasksCount,
+    upcomingInterviewsCount,
+  ];
 }
 
 class RecruiterDashboardError extends RecruiterDashboardState {

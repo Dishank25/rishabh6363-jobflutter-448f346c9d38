@@ -12,6 +12,7 @@ import 'package:job_portal/utils/theme/custom_themes/color_theme.dart';
 import 'package:job_portal/views/detailed_signup_student/domain/entities/metadata_entities.dart';
 
 import '../UI_Helper/UI_Helper.dart';
+import '../views/recruiter_job_post/presentation/view/Recruiter_total_job_posts.dart';
 
 /// CUSTOMIZED APPBAR
 
@@ -486,6 +487,129 @@ Widget OptionContainer(
       ),
     ),
   );
+}
+
+// ✅ optionContainer here
+Widget optionContainer({
+  required String title,
+  String? nApplications,
+  required Color textColor,
+  required Color bgColor,
+  VoidCallback? onTap,
+}) {
+  final bool isBgWhite = bgColor == Colors.white;
+
+  return InkWell(
+    onTap: onTap,
+    child: Container(
+      height: 26,
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(26),
+        border: Border.all(width: 1, color: Colors.grey.shade300),
+        color: bgColor,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 12,
+              color: isBgWhite ? const Color(0xff6C7278) : textColor,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          if (nApplications != null)
+            Text(
+              " $nApplications",
+              style: TextStyle(
+                fontSize: 12,
+                color: isBgWhite ? const Color(0xff6C7278) : textColor,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+        ],
+      ),
+    ),
+  );
+}
+
+// ✅ 2. Move AppReceivedCard here
+class AppReceivedCard extends StatelessWidget {
+  final String applicantName;
+  final String postName;
+  final String total_exp;
+  final String appliedDate;
+  final String status;
+  final Color bgColor;
+  final Color tColor;
+
+  const AppReceivedCard({
+    Key? key,
+    required this.applicantName,
+    required this.postName,
+    required this.total_exp,
+    required this.appliedDate,
+    required this.status,
+    required this.bgColor,
+    required this.tColor,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.grey.shade300, width: 1.0),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(applicantName,
+                  style: mTextStyle14(mFontWeight: FontWeight.w600)),
+              Spacer(),
+              optionContainer(
+                  title: status, textColor: tColor, bgColor: bgColor),
+              Icon(Icons.more_vert),
+            ],
+          ),
+          SizedBox(height: 4),
+          Text(postName,
+              style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500)),
+          SizedBox(height: 2),
+          Text(
+            "Total Work Experience: $total_exp",
+            style: TextStyle(fontSize: 11, fontWeight: FontWeight.w400),
+          ),
+          Row(
+            children: [
+              Text(
+                "Applied $appliedDate days ago",
+                style: TextStyle(fontSize: 11, fontWeight: FontWeight.w400),
+              ),
+              Spacer(),
+              SizedBox(
+                width: 160,
+                child: ViewAppContainer(
+                  bgColor: TColors.secondary,
+                  textColor: Colors.white,
+                  title: "View Full Application",
+                  onTap: () {
+                    // Handle navigation
+                  },
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 /// NEXT BUTTON AT THE BOTTOM

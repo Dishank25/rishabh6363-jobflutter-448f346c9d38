@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
 import '../../../data/data_source/recruiter_dashboard_api_service/recruiter_dashboard_api_service.dart';
 import 'Recruiter_Dashboard_Event.dart';
 import 'Recruiter_Dashboard_State.dart';
@@ -10,46 +9,24 @@ class RecruiterDashboardBloc
 
   RecruiterDashboardBloc(this.apiService)
       : super(RecruiterDashboardInitial()) {
-    on<FetchTotalJobCount>(_onFetchTotalJobCount);
+    on<FetchTotalJobCount>(_onFetchDashboardStats);
   }
 
-  // Future<void> _onFetchTotalJobCount(
-  //     FetchTotalJobCount event,
-  //     Emitter<RecruiterDashboardState> emit,
-  //     ) async {
-  //   emit(RecruiterDashboardLoading());
-  //   try {
-  //     print("Fetching total job count...");
-  //     final response = await apiService.getTotalJobCount();
-  //     print("Raw API Response Data: ${response.data}");
-  //     print("Response JSON Body: ${response.data.toJson()}");
-  //
-  //     if (response.data != null) {
-  //       emit(RecruiterDashboardLoaded(response.data.totalCount));
-  //     } else {
-  //       emit(RecruiterDashboardError("No data received"));
-  //     }
-  //   } on DioException catch (e) {
-  //     print("Dio Error: ${e.message}");
-  //     emit(RecruiterDashboardError("Network error: ${e.message}"));
-  //   } catch (e) {
-  //     print("Unexpected Error: $e");
-  //     emit(RecruiterDashboardError("Unexpected error"));
-  //   }
-  // }
-
-  Future<void> _onFetchTotalJobCount(
+  Future<void> _onFetchDashboardStats(
       FetchTotalJobCount event,
       Emitter<RecruiterDashboardState> emit,
       ) async {
     emit(RecruiterDashboardLoading());
     try {
-      final response = await apiService.getTotalJobCount();
-      if (response.data != null) {
-        emit(RecruiterDashboardLoaded(response.data.totalCount));
-      } else {
-        emit(RecruiterDashboardError("No data received"));
-      }
+      //  Call new API
+      final response = await apiService.getDashboardStats();
+
+      //  Access all fields
+      emit(RecruiterDashboardLoaded(
+        totalCount: response.totalCount,
+        pendingTasksCount: response.pendingTasks ?? 0,
+        upcomingInterviewsCount: response.upcomingInterviews ?? 0,
+      ));
     } on Exception catch (e) {
       emit(RecruiterDashboardError(e.toString()));
     }

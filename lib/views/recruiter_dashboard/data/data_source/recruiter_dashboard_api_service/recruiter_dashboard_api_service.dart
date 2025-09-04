@@ -10,6 +10,10 @@ abstract class RecruiterDashboardApiService {
   factory RecruiterDashboardApiService(Dio dio, {String? baseUrl}) =
   _RecruiterDashboardApiService;
 
+  @GET(Urls.getDashboardStats)
+  Future<RecruiterDashboardResponseModel> getDashboardStats();
+
   @GET(Urls.totalJobCount)
   Future<HttpResponse<RecruiterDashboardResponseModel>> getTotalJobCount();
+
 }

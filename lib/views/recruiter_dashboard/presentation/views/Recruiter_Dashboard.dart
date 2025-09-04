@@ -5,11 +5,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:job_portal/utils/constants/image_string.dart';
 import 'package:job_portal/views/signup_recruiter/presentation/views/Recruiter_Analytics_Reports.dart';
 import 'package:job_portal/views/signup_recruiter/presentation/views/Recruiter_Setting_Panel.dart';
-import 'package:job_portal/views/signup_recruiter/presentation/views/Recruiter_Upcoming_Interviews.dart';
-import 'package:job_portal/views/signup_recruiter/presentation/views/Recruiter_pending_tasks.dart';
-import 'package:job_portal/views/signup_recruiter/presentation/views/Recruiter_pipeline_candidates.dart';
+import 'package:job_portal/views/recruiter_upcoming_interviews/presentation/view/Recruiter_Upcoming_Interviews.dart';
+import 'package:job_portal/views/recruiter_pending_tasks/presentation/view/Recruiter_pending_tasks.dart';
+import 'package:job_portal/views/recruiter_pipeline_candidates/presentation/view/Recruiter_pipeline_candidates.dart';
 import 'package:job_portal/views/user_profile/presentation/views/User_messages_screen.dart';
-import '../../../../UI_Helper/ui_helper.dart';
+import '../../../../UI_Helper/UI_Helper.dart';
 import '../../../../injection_container.dart';
 import '../../../../widgets/widgets.dart';
 import '../../../post_opportunities/presentation/views/post_opportunity_screen.dart';
@@ -39,19 +39,24 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<RecruiterDashboardBloc>().state;
+    final dashboardState = context.watch<RecruiterDashboardBloc>().state;
 
     int totalJobCount = 0;
+    int pendingTasksCount = 0;
+    int upcomingInterviewsCount = 0;
     bool loading = true;
 
-    if (state is RecruiterDashboardLoaded) {
-      totalJobCount = state.totalCount;
+    if (dashboardState is RecruiterDashboardLoaded) {
+      totalJobCount = dashboardState.totalCount;
+      pendingTasksCount = dashboardState.pendingTasksCount;
+      upcomingInterviewsCount = dashboardState.upcomingInterviewsCount;
       loading = false;
-    } else if (state is RecruiterDashboardInitial ||
-        state is RecruiterDashboardLoading) {
+    } else if (dashboardState is RecruiterDashboardInitial || dashboardState is RecruiterDashboardLoading) {
       loading = true;
-    } else if (state is RecruiterDashboardError) {
+    } else if (dashboardState is RecruiterDashboardError) {
       totalJobCount = 0;
+      pendingTasksCount = 0;
+      upcomingInterviewsCount = 0;
       loading = false;
     }
 
@@ -61,17 +66,6 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
       /// APP BAR
       appBar: AppBar(
         backgroundColor: Colors.white,
-        // title: Padding(
-        //   padding: const EdgeInsets.symmetric(horizontal: 12.0),
-        //   child: Text(
-        //     "LOGO",
-        //     style: TextStyle(
-        //         fontSize: 20,
-        //         fontFamily: "Inter",
-        //         fontWeight: FontWeight.w700,
-        //         color: AppColors.mainIndigoColor),
-        //   ),
-        // ),
         title: SvgPicture.asset(
           ImageString.jobPortalLogo,
           height: 30,
@@ -79,8 +73,10 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
         actions: [
           InkWell(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MessagesScreen()));
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MessagesScreen()),
+              );
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 20.0),
@@ -90,9 +86,9 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
           InkWell(
             onTap: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => NotificationsScreen()));
+                context,
+                MaterialPageRoute(builder: (context) => NotificationsScreen()),
+              );
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 20.0),
@@ -103,7 +99,9 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
       ),
 
       /// BODY PART
-      body: SingleChildScrollView(
+      body: loading
+          ? Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(right: 24.0, top: 7.0, left: 24.0),
           child: Column(
@@ -114,120 +112,116 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
                 "DashBoard",
                 style: mTextStyle32(mColor: Colors.black),
               ),
-              const SizedBox(
-                height: 15,
-              ),
+              const SizedBox(height: 15),
 
               /// Post A Job Button
               CustomButton1(
                 onPressed: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => PostInternshipsScreen()));
+                    context,
+                    MaterialPageRoute(builder: (context) => PostInternshipsScreen()),
+                  );
                 },
                 text: 'Post a Job',
               ),
 
               /// DASHBOARD CONTAINERS
-              SizedBox(
-                height: 25,
-              ),
+              SizedBox(height: 25),
+
+              // Total Job Post
               DashBoardConatiner(
-                  Heading: "Total Job Post",
-                  SubHeading:
-                      "Track and manage all your open roles in one place.",
-                  redButtonTitle: "Manage postings",
-                  notificationNum: "($totalJobCount)",
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              BlocProvider<RecruiterJobPostBloc>(
-                                create: (context) => sl<RecruiterJobPostBloc>()
-                                  ..add(FetchAllJobPosts()),
-                                child: RecruiterTotalJobPosts(),
-                              )),
-                    );
-                  }),
-              SizedBox(
-                height: 20,
+                Heading: "Total Job Post",
+                SubHeading: "Track and manage all your open roles in one place.",
+                redButtonTitle: "Manage postings",
+                notificationNum: "($totalJobCount)",
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BlocProvider<RecruiterJobPostBloc>(
+                        create: (context) => sl<RecruiterJobPostBloc>()..add(FetchAllJobPosts()),
+                        child: RecruiterTotalJobPosts(),
+                      ),
+                    ),
+                  );
+                },
               ),
+              SizedBox(height: 20),
+
+              // Pipeline candidates
               DashBoardConatiner(
-                  Heading: "Pipeline candidates",
-                  SubHeading:
-                      "Monitor every candidate’s journey through your hiring funnel.",
-                  redButtonTitle: "Manage pipelines",
-                  notificationNum: "(2)",
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                RecruiterPipelineCandidates()));
-                  }),
-              SizedBox(
-                height: 20,
+                Heading: "Pipeline candidates",
+                SubHeading: "Monitor every candidate’s journey through your hiring funnel.",
+                redButtonTitle: "Manage pipelines",
+                notificationNum: "(2)",
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RecruiterPipelineCandidates()),
+                  );
+                },
               ),
+              SizedBox(height: 20),
+
+              // Upcoming interviews
               DashBoardConatiner(
-                  Heading: "Upcoming interviews",
-                  SubHeading: "You have 3 interviews scheduled for today..",
-                  redButtonTitle: "Review interviews",
-                  notificationNum: "(3)",
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                RecruiterUpcomingInterviews()));
-                  }),
-              SizedBox(
-                height: 20,
+                Heading: "Upcoming interviews",
+                SubHeading: "You have $upcomingInterviewsCount interviews scheduled for today..",
+                redButtonTitle: "Review interviews",
+                notificationNum: "($upcomingInterviewsCount)",
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RecruiterUpcomingInterviews()),
+                  );
+                },
               ),
+              SizedBox(height: 20),
+
+              // Pending tasks
               DashBoardConatiner(
-                  Heading: "Pending tasks",
-                  SubHeading: "You have 5 tasks waiting for your attention..",
-                  redButtonTitle: "Manage tasks",
-                  notificationNum: "(5)",
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => RecruiterPendingTasks()));
-                  }),
-              SizedBox(
-                height: 20,
+                Heading: "Pending tasks",
+                SubHeading: "You have $pendingTasksCount tasks waiting for your attention..",
+                redButtonTitle: "Manage tasks",
+                notificationNum: "($pendingTasksCount)",
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RecruiterPendingTasks()),
+                  );
+                },
               ),
+              SizedBox(height: 20),
+
+              // Analytics and Report
               DashBoardConatiner(
-                  Heading: "Analytics and Report",
-                  SubHeading:
-                      "Track hiring progress and performance in real time.",
-                  redButtonTitle: "view Details",
-                  notificationNum: "",
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => RecruiterAnalyticsReports()));
-                  }),
-              SizedBox(
-                height: 20,
+                Heading: "Analytics and Report",
+                SubHeading: "Track hiring progress and performance in real time.",
+                redButtonTitle: "view Details",
+                notificationNum: "",
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RecruiterAnalyticsReports()),
+                  );
+                },
               ),
+              SizedBox(height: 20),
+
+              // Settings and access panel
               DashBoardConatiner(
-                  Heading: "Settings and access panel",
-                  SubHeading: "Manage your personal info and app preferences.",
-                  redButtonTitle: "view Details",
-                  notificationNum: "",
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => RecruiterSettingPanel()));
-                  }),
-              SizedBox(
-                height: 20,
+                Heading: "Settings and access panel",
+                SubHeading: "Manage your personal info and app preferences.",
+                redButtonTitle: "view Details",
+                notificationNum: "",
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RecruiterSettingPanel()),
+                  );
+                },
               ),
+              SizedBox(height: 20),
             ],
           ),
         ),
@@ -237,18 +231,20 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
 }
 
 /// WIDGET FOR DASHBOARD CONTAINERS
-Widget DashBoardConatiner(
-    {required String Heading,
-    required String SubHeading,
-    required String redButtonTitle,
-    required String notificationNum,
-    required VoidCallback onTap}) {
+Widget DashBoardConatiner({
+  required String Heading,
+  required String SubHeading,
+  required String redButtonTitle,
+  required String notificationNum,
+  required VoidCallback onTap,
+}) {
   return Container(
     height: 110,
     width: double.infinity,
     decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.grey.shade300, width: 1.0)),
+      borderRadius: BorderRadius.circular(10),
+      border: Border.all(color: Colors.grey.shade300, width: 1.0),
+    ),
     child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
       child: Column(
@@ -264,25 +260,23 @@ Widget DashBoardConatiner(
               InkWell(onTap: () {}, child: Icon(Icons.more_horiz))
             ],
           ),
-          SizedBox(
-            height: 9,
-          ),
+          SizedBox(height: 9),
           Text(
             SubHeading,
             style: TextStyle(
-                fontSize: 12,
-                color: AppColors.blueTextColor,
-                fontWeight: FontWeight.w400),
+              fontSize: 12,
+              color: AppColors.blueTextColor,
+              fontWeight: FontWeight.w400,
+            ),
           ),
-          SizedBox(
-            height: 12,
-          ),
+          SizedBox(height: 12),
           Container(
             height: 26,
             width: 150,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: AppColors.mainRedColor),
+              borderRadius: BorderRadius.circular(5),
+              color: AppColors.mainRedColor,
+            ),
             child: InkWell(
               onTap: onTap,
               child: Row(
@@ -292,9 +286,7 @@ Widget DashBoardConatiner(
                     redButtonTitle,
                     style: mTextStyle12(mColor: Colors.white),
                   ),
-                  SizedBox(
-                    width: 3,
-                  ),
+                  SizedBox(width: 3),
                   Text(
                     notificationNum,
                     style: mTextStyle12(mColor: Colors.white),

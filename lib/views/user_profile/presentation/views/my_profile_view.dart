@@ -24,9 +24,10 @@ import 'package:job_portal/views/user_profile/presentation/views/profile_editing
 import 'package:job_portal/views/user_profile/presentation/views/profile_editing_views/edit_career_objective_view.dart';
 import 'package:job_portal/views/user_profile/presentation/views/profile_editing_views/edit_language_view.dart';
 import '../../../../ui_helper/ui_helper.dart';
+import '../bloc/your_experience_bloc/your_experience_bloc.dart';
 import 'profile_editing_views/user_education_approval_view.dart.dart';
 import 'profile_editing_views/user_work_experience_view.dart';
-import 'profile_editing_views/user_skills_approval_view.dart';
+import '../../../user_skill_approval/presentation/view/user_skills_approval_view.dart';
 import 'User_Notifications_Screen.dart';
 import 'User_messages_screen.dart';
 import 'dart:core';
@@ -481,9 +482,9 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        UserExperienceApprovalScreen(
-                                      userExperience: data.experiences,
+                                    builder: (_) => BlocProvider(
+                                      create: (_) => sl<YourExperienceBloc>(), // Get from get_it
+                                      child: UserExperienceApprovalScreen(userExperience: data.experiences),
                                     ),
                                   ),
                                 ).then((value) {
@@ -539,9 +540,9 @@ class _UserProfileScreen2State extends State<UserProfileScreen2> {
                               title: "Authentication",
                               items: ["Email", "Phone No.", "Aadhar"],
                               statusList: [
-                                data.is_email_verified,
-                                data.is_phone_verified,
-                                data.isAadhaarVerified,
+                                data.is_email_verified ?? true,
+                                data.is_phone_verified ?? true,
+                                data.isAadhaarVerified ?? true,
                               ],
                               onEditTap: () {
                                 Navigator.push(

@@ -59,4 +59,18 @@ class Urls {
       'jobpost/{jobId}/applicant/{applicantId}';
 
   static const String scheduleInterview = "interview-invitations/{applicantId}";
+
+  static const String getDashboardStats = "company-recruiter/dashboardStats";
+
+  static const String getViewPendingTask = "pendingtask/grouped";
+
+  static const String getUpcomingInterviews = "interview-invitations/upcoming/all";
+
+  static const String getPipelineCandidates = "company-recruiter/candidates";
+
+  static const String sendAssignment = "assignments/{applicantId}";
+
+
+
+
 }
