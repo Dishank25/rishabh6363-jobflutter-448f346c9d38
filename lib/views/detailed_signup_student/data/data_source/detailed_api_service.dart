@@ -20,9 +20,9 @@ abstract class DetailedApiService {
   @GET(Urls.getMasterAllData)
   Future<HttpResponse<dynamic>> getMasterAllData();
 
-  @POST(Urls.getUserBasicInfo)
+  @GET(Urls.getUserBasicInfo)
   Future<HttpResponse<BasicUserInfoResponse>> getBasicUserInfo(
-      @Body() Map<String, dynamic> emailMap);
+      @Query("email") String email);
 
   @GET(Urls.getColleges)
   Future<HttpResponse<CollegeListModel>> getColleges(

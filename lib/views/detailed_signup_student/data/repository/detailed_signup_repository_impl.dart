@@ -40,22 +40,23 @@ class DetailedSignupRepositoryImpl extends DetailedSignupRepository {
   @override
   Future<DataState<BasicUserInfoResponse>> getBasicUserInfo(
       Map<String, dynamic> emailMap) async {
+    final String email = emailMap['email'] ?? '';
     try {
-      final res = await _apiService.getBasicUserInfo(emailMap);
+      final res = await _apiService.getBasicUserInfo(email); // ← Pass email string
       if (res.response.statusCode == HttpStatus.ok) {
         developer.log('.checkk response in repository : ${res.data.message}');
         return DataSuccess(res.data);
       } else {
         developer.log('..checkk response in repository : ${res.data.message}');
         return DataFailed(DioException(
-            error: res.response.statusMessage,
-            response: res.response,
-            type: DioExceptionType.badResponse,
-            requestOptions: res.response.requestOptions));
+          error: res.response.statusMessage,
+          response: res.response,
+          type: DioExceptionType.badResponse,
+          requestOptions: res.response.requestOptions,
+        ));
       }
     } on DioException catch (e) {
-      final error = e.type;
-      developer.log('....checkk  : ${error}');
+      developer.log('....checkk DioException: ${e.type}');
       return DataFailed(e);
     }
   }

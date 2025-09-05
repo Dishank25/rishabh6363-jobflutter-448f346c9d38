@@ -99,3 +99,16 @@ class DetailedSignupSpecializationLoaded extends DetailedSignupState {
 class DetailedSignupSpecializationError extends DetailedSignupState {
   const DetailedSignupSpecializationError();
 }
+
+class DetailedSignupCompanyLoading extends DetailedSignupState {
+  const DetailedSignupCompanyLoading();
+}
+
+class DetailedSignupCompanyLoaded extends DetailedSignupState {
+  final List<CompanyEntity> companyListResponse;
+  const DetailedSignupCompanyLoaded(this.companyListResponse);
+}
+
+class DetailedSignupCompanyError extends DetailedSignupState {
+  const DetailedSignupCompanyError();
+}

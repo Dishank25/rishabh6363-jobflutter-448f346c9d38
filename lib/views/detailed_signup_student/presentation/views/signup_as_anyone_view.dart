@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer' as developer show log;
 
 import 'package:flutter/material.dart';
@@ -1268,6 +1269,26 @@ class _SignInPageUniversityStudentState extends State<SignupAsAnyOne> {
   }
 
   void fillDataIntoParams() {
+    // first_name: firstnameController.text,
+    // surName: surnameController.text,
+    // email: emailController.text,
+    // phoneNumber: phoneController.text,
+    // DOB: DOBController.text,
+    // currentLocation: cityController.text,
+    // jobPreferenceLocation: JobLocationController.text,
+    // gender: genderController.text,
+    // userCategory: selectedOption,
+    // course: selectedCourse,
+    // current_job_role: jobRoleController.text,
+    // CollegeName: collegeController.text,
+    // Specialization: specializationController.text,
+    // courseStartYear: startCourseYearController.text,
+    // courseEndYear: endCourseYearController.text,
+    // current_company: current_company.text,
+    // jobStartYear: startJobYearController.text,
+    // jobEndYear: endJobYearController.text,
+    // studentClass: selectedClass,
+    // totalWorkExp: totalWorkExp.text,
     final _prefs = sl<PreferencesManager>();
 
     widget.params.addAll({
@@ -1361,6 +1382,19 @@ class DatePickerField extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
         ),
+        // onTap: () async {
+        //   final DateTime? picked = await showDatePicker(
+        //     context: context,
+        //     initialDate: DateTime.now(),
+        //     firstDate: DateTime(1970),
+        //     lastDate: DateTime(2100),
+        //   );
+        //
+        //   if (picked != null) {
+        //     controller.text =
+        //         '${picked.day} ${_monthName(picked.month)} ${picked.year}';
+        //   }
+        // },
         onTap: () async {
           final DateTime now = DateTime.now();
           final DateTime? pickedYear = await showModalBottomSheet<DateTime>(
@@ -1417,4 +1451,238 @@ class DatePickerField extends StatelessWidget {
         }
     );
   }
+
+  String _monthName(int month) {
+    const months = [
+      '',
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ];
+    return months[month];
+  }
 }
+
+//                     Row(
+//                       mainAxisAlignment: MainAxisAlignment.end,
+//                       children: [
+//                         nextButton(
+//                           title: "Next",
+//                           onTap: () async {
+//                             final _prefs = sl<PreferencesManager>();
+//
+//                             widget.params.addAll({
+//                               DETAILEDPROFILEPARAMS.user_id.name: _prefs.getUserId() ?? '59',
+//                               DETAILEDPROFILEPARAMS.first_name.name: firstnameController.text,
+//                               DETAILEDPROFILEPARAMS.last_name.name: surnameController.text,
+//                               DETAILEDPROFILEPARAMS.email.name: emailController.text,
+//                               DETAILEDPROFILEPARAMS.phone.name: phoneController.text,
+//                               DETAILEDPROFILEPARAMS.dob.name: formatDobToIso(DOBController.text),
+//                               DETAILEDPROFILEPARAMS.city.name: cityController.text,
+//                               DETAILEDPROFILEPARAMS.jobLocation.name: JobLocationController.text,
+//                               DETAILEDPROFILEPARAMS.gender.name: genderController.text,
+//                               DETAILEDPROFILEPARAMS.user_type.name: selectedOption,
+//                             });
+//
+//                             widget.params
+//                               ..remove(DETAILEDPROFILEPARAMS.educationStandard.name)
+//                               ..remove(DETAILEDPROFILEPARAMS.course.name)
+//                               ..remove(DETAILEDPROFILEPARAMS.college_name.name)
+//                               ..remove(DETAILEDPROFILEPARAMS.specialization.name)
+//                               ..remove(DETAILEDPROFILEPARAMS.start_year.name)
+//                               ..remove(DETAILEDPROFILEPARAMS.end_year.name)
+//                               ..remove(DETAILEDPROFILEPARAMS.experiences.name);
+//
+//                             if (selectedOption == JOBSEEKERTYPE.SchoolStudent.name) {
+//                               widget.params[DETAILEDPROFILEPARAMS.educationStandard.name] = selectedClass;
+//                             } else if (selectedOption == JOBSEEKERTYPE.CollegeStudent.name ||
+//                                 selectedOption == JOBSEEKERTYPE.Fresher.name) {
+//                               final masterData = await getCachedMasterData();
+//                               final courseId = getCourseId(masterData, selectedCourse);
+//                               final specializationId = getSpecializationId(masterData, selectedCourse, selectedSpecialization);
+//
+//                               final education = {
+//                                 'course_id': courseId,
+//                                 'specialization_id': specializationId,
+//                                 'college_name': selectedCollege,
+//                                 'start_year': startCourseYearController.text,
+//                                 'end_year': endCourseYearController.text,
+//                               };
+//
+//                               widget.params['educations'] = [education];
+//                             } else if (selectedOption == JOBSEEKERTYPE.WorkingProffesional.name) {
+//                               widget.params[DETAILEDPROFILEPARAMS.experiences.name] = [
+//                                 {
+//                                   DETAILEDPROFILEPARAMS.user_id.name: _prefs.getUserId() ?? '59',
+//                                   DETAILEDPROFILEPARAMS.jobRole.name: selectedjobRole,
+//                                   DETAILEDPROFILEPARAMS.company.name: selectedjobCompany,
+//                                   DETAILEDPROFILEPARAMS.start_date.name: startJobYearController.text,
+//                                   DETAILEDPROFILEPARAMS.end_date.name: endJobYearController.text,
+//                                 }
+//                               ];
+//                             }
+//
+//                             developer.log('🎯 Final payload to API: ${widget.params}');
+//
+//                             if (_formKey.currentState?.validate() == true) {
+//                               context.read<DetailedSignupBloc>().add(
+//                                 DetailedSingupSubmitUserDetails(widget.params),
+//                               );
+//                             } else {
+//                               showSnackbar('Please fill all required fields.', context);
+//                             }
+//                           },
+//                         ),
+//                       ],
+//                     ),
+//                     mSpacer(mHeight: 25.0),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           ),
+//         ));
+//   }
+//
+//   dynamic getCachedMasterData() async {
+//     try {
+//       final sp = await SharedPreferences.getInstance();
+//       final cached = sp.getString('master_api_all_data');
+//       if (cached != null) {
+//         return jsonDecode(cached);
+//       }
+//       return null;
+//     } catch (e) {
+//       developer.log('Error reading cached master data: $e');
+//       return null;
+//     }
+//   }
+// }
+//
+// int? getCourseId(dynamic masterData, String? courseName) {
+//   if (courseName == null || masterData == null) return null;
+//   try {
+//     final courses = masterData['data']['courses'] as List;
+//     final match = courses.firstWhere((c) => c['name'] == courseName);
+//     return match['id'];
+//   } on StateError {
+//     developer.log(' Course not found: $courseName');
+//     return null;
+//   }
+// }
+// int? getSpecializationId(dynamic masterData, String? courseName, String? specializationName) {
+//   if (courseName == null || specializationName == null || masterData == null) return null;
+//   try {
+//     final specializations = masterData['data']['specializations'] as List;
+//     final courseId = getCourseId(masterData, courseName);
+//     if (courseId == null) return null;
+//
+//     final match = specializations.firstWhere((s) =>
+//     s['name'] == specializationName && s['course_id'] == courseId);
+//     return match['id'];
+//   } on StateError {
+//     developer.log(' Specialization not found: $specializationName (course: $courseName)');
+//     return null;
+//   }
+// }
+//
+// /// Drop down for years
+// class DatePickerField extends StatelessWidget {
+//   final TextEditingController controller;
+//   final String hintText;
+//   final Color? fillColor;
+//
+//   const DatePickerField({
+//     required this.controller,
+//     this.hintText = 'Select Date',
+//     super.key,
+//     this.fillColor,
+//   });
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return TextFormField(
+//         controller: controller,
+//         readOnly: true,
+//         decoration: InputDecoration(
+//           filled: true,
+//           fillColor: fillColor ?? Colors.transparent,
+//           hintText: hintText,
+//           hintStyle: const TextStyle(fontSize: 13, color: Colors.grey),
+//           suffixIcon: const Icon(
+//             Icons.keyboard_arrow_down,
+//             size: 18,
+//             color: Color(0xffBCC1CA),
+//           ),
+//           contentPadding:
+//           const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+//           border: OutlineInputBorder(
+//             borderRadius: BorderRadius.circular(10),
+//           ),
+//         ),
+//         onTap: () async {
+//           final DateTime now = DateTime.now();
+//           final DateTime? pickedYear = await showModalBottomSheet<DateTime>(
+//             context: context,
+//             builder: (context) {
+//               final ScrollController scrollController = ScrollController(
+//                 initialScrollOffset: 50 * (now.year - 1970).toDouble(),
+//               );
+//               return SizedBox(
+//                 height: 300,
+//                 child: Column(
+//                   children: [
+//                     Row(
+//                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                       children: [
+//                         TextButton(
+//                           onPressed: () => Navigator.pop(context),
+//                           child: const Text('Cancel'),
+//                         ),
+//                         const Text('Select Year'),
+//                         TextButton(
+//                           onPressed: () => Navigator.pop(context, DateTime(now.year)),
+//                           child: const Text('Now'),
+//                         ),
+//                       ],
+//                     ),
+//                     Expanded(
+//                       child: ListView.builder(
+//                         controller: scrollController,
+//                         itemCount: 2100 - 1970,
+//                         itemBuilder: (context, index) {
+//                           final year = 1970 + index;
+//                           return ListTile(
+//                             title: Center(
+//                               child: Text(
+//                                 '$year',
+//                                 style: const TextStyle(fontSize: 18),
+//                               ),
+//                             ),
+//                             onTap: () => Navigator.pop(context, DateTime(year)),
+//                           );
+//                         },
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               );
+//             },
+//           );
+//
+//           if (pickedYear != null) {
+//             controller.text = pickedYear.year.toString(); // Only year
+//           }
+//         }
+//     );
+//   }
+// }

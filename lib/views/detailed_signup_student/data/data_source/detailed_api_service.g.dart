@@ -43,15 +43,14 @@ class _DetailedApiService implements DetailedApiService {
 
   @override
   Future<HttpResponse<BasicUserInfoResponse>> getBasicUserInfo(
-    Map<String, dynamic> emailMap,
+    String email,
   ) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'email': email};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(emailMap);
+    const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<BasicUserInfoResponse>>(
-      Options(method: 'POST', headers: _headers, extra: _extra)
+      Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
             'users/getUserData',

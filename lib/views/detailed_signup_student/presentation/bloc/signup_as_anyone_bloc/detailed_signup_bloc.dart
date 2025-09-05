@@ -10,71 +10,68 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../utils/resourses/data_state.dart';
 import '../../../domain/entities/metadata_entities.dart';
 
-class DetailedSignupBloc extends Bloc<DetailedSignupEvent, DetailedSignupState> {
+class DetailedSignupBloc
+    extends Bloc<DetailedSignupEvent, DetailedSignupState> {
   final DetailedSignupUsecase _detailedSignupUsecase;
 
   DetailedSignupBloc(this._detailedSignupUsecase)
       : super(const DetailedSignupInitial()) {
-    on<DetailedSignupGetMasterAllData>(_onGetMasterAllData);
     on<DetailedSignupGetBasicUserInfo>(_onGetBasicUserInfo);
     on<DetailedSignupGetCollegeDetails>(_onGetCollegeDetails);
-    on<DetailedSignupGetSpecializations>(_onGetSpecializations);
     on<DetailedSingupSubmitUserDetails>(_onSubmitUserDetails);
+    on<DetailedSignupGetSpecializations>(_onGetSpecializations);
   }
 
-  Future<void> _onGetMasterAllData(
-      DetailedSignupGetMasterAllData event,
-      Emitter<DetailedSignupState> emit,
-      ) async {
+  Future<void> _onGetMasterAllData(DetailedSignupGetMasterAllData event, Emitter<DetailedSignupState> emit) async {
     try {
       developer.log('Fetching Master All API data...');
-      final response = await _detailedSignupUsecase.getMasterAllData();
+      final response = await _detailedSignupUsecase.getMasterAllData(); // Assume this method exists
 
       if (response is DataSuccess) {
         final masterData = response.data;
 
-        // Cache master data
+        // Save to cache (Shared Preferences)
         final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('master_api_all_data', jsonEncode(masterData));
-        developer.log(' master/all API data cached successfully.');
+        await prefs.setString('master_api_response', jsonEncode(masterData.toJson())); // Ensure model has toJson()
 
-        // No need to emit a state if UI doesn't react
+        developer.log('Master API data cached successfully.');
+        emit(const MasterAllDataLoaded()); // Optional: if you need UI feedback (but no UI change)
       } else if (response is DataFailed) {
-        developer.log(' Master API failed: ${response.error}');
+        developer.log('Master API failed: ${response.error}');
+        emit(const MasterAllDataError());
       }
     } catch (e) {
-      developer.log(' Exception during Master API call: $e');
+      developer.log('Exception during Master API call: $e');
+      emit(const MasterAllDataError());
     }
   }
 
   Future<void> _onGetBasicUserInfo(
       DetailedSignupGetBasicUserInfo event,
-      Emitter<DetailedSignupState> emit,
-      ) async {
+      Emitter<DetailedSignupState> emit) async {
     try {
       emit(const DetailedSignupGetBasicUserInfoLoading());
-      final userInfoRes = await _detailedSignupUsecase.getBasicUserInfo(event.emailMap);
-      final locationsRes = await _detailedSignupUsecase.getLocations();
 
-      if (userInfoRes is DataSuccess && locationsRes is DataSuccess) {
-        emit(DetailedSignupGetBasicUserInfoLoaded(
-          userInfoRes.data!,
-          locationsRes.data!,
-        ));
-        developer.log(' Response of get basic user info: ${userInfoRes.data!.message}');
+      final responseUserInfo = await _detailedSignupUsecase.getBasicUserInfo(event.emailMap);
+      final responseLocations = await _detailedSignupUsecase.getLocations();
+
+      if (responseUserInfo is DataSuccess && responseUserInfo.data != null) {
+        final userData = responseUserInfo.data!;
+        final locationsData = responseLocations.data!;
+        developer.log('✅ Response of get basic user info : ${userData.message}');
+        emit(DetailedSignupGetBasicUserInfoLoaded(userData, locationsData));
       } else {
+        developer.log('❌ Failed to load user info: $responseUserInfo');
         emit(const DetailedSignupGetBasicUserInfoError());
       }
     } catch (e) {
-      developer.log(' Error in get basic user info: $e');
+      developer.log('❌ Error in get basic user info: $e');
       emit(const DetailedSignupGetBasicUserInfoError());
     }
   }
 
-  Future<void> _onGetCollegeDetails(
-      DetailedSignupGetCollegeDetails event,
-      Emitter<DetailedSignupState> emit,
-      ) async {
+  Future<void> _onGetCollegeDetails(DetailedSignupGetCollegeDetails event,
+      Emitter<DetailedSignupState> emit) async {
     try {
       emit(const DetailedSignupGetCollegeDetailsLoading());
       developer.log('Course and clg updated .1bloc');
@@ -82,7 +79,7 @@ class DetailedSignupBloc extends Bloc<DetailedSignupEvent, DetailedSignupState> 
       final colleges = await _detailedSignupUsecase.getColleges();
       final courses = await _detailedSignupUsecase.getCourses();
       final jobRoles = await _detailedSignupUsecase.getJobRoles();
-      final companies = await _detailedSignupUsecase.getCompanies();
+      final companies = await _detailedSignupUsecase.getCompanies(); // ← Add
 
       emit(DetailedSignupGetCollegeDetailsLoaded(
         colleges.data!,
@@ -91,9 +88,10 @@ class DetailedSignupBloc extends Bloc<DetailedSignupEvent, DetailedSignupState> 
         companies.data!,
       ));
       developer.log('Course and clg updated .2bloc');
+      developer.log('Course and clg updated .3bloc');
     } catch (e) {
-      developer.log(' Course and clg updated .4bloc | Error: $e');
       emit(const DetailedSignupGetCollegeDetailsError());
+      developer.log('Course and clg updated .4bloc');
     }
   }
 
@@ -104,54 +102,35 @@ class DetailedSignupBloc extends Bloc<DetailedSignupEvent, DetailedSignupState> 
     emit(const DetailedSignupSpecializationLoading());
     try {
       final specializations = await _detailedSignupUsecase.getSpecialization(event.course_id);
-
-      developer.log(' Specialization UseCase Result: $specializations');
+      developer.log('🔧 Specialization UseCase Result: $specializations');
 
       if (specializations is DataSuccess<List<SpecializationEntity>>) {
         final data = specializations.data;
         if (data != null && data.isNotEmpty) {
           emit(DetailedSignupSpecializationLoaded(data));
-          developer.log(' Specializations loaded: ${data.length} items');
+          developer.log('✅ Specializations loaded: ${data.length} items');
         } else {
           emit(const DetailedSignupSpecializationError());
-          developer.log(' No specializations found for course ID: ${event.course_id}');
+          developer.log('❌ No specializations found for course ID: ${event.course_id}');
         }
       } else {
         emit(const DetailedSignupSpecializationError());
-        developer.log(' Failed to load specializations: $specializations');
+        developer.log('❌ Failed to load specializations: $specializations');
       }
     } catch (e, st) {
-      developer.log(' Exception in _onGetSpecializations: $e\n$st');
+      developer.log('🚨 Exception in _onGetSpecializations: $e\n$st');
       emit(const DetailedSignupSpecializationError());
     }
   }
 
-  Future<void> _onSubmitUserDetails(
-      DetailedSingupSubmitUserDetails event,
-      Emitter<DetailedSignupState> emit,
-      ) async {
+  Future<void> _onSubmitUserDetails(DetailedSingupSubmitUserDetails event,
+      Emitter<DetailedSignupState> emit) async {
     try {
       emit(const DetailedSingupSubmitUserDetailsLoading());
-
-      developer.log(' [Bloc] Raw params before submit: ${event.params}');
-
-      final response = await _detailedSignupUsecase.submitDetailedUserProfile(event.params);
-
-      if (response is DataSuccess) {
-        final data = response.data;
-        if (data != null) {
-          emit(DetailedSingupSubmitUserDetailsLoaded(data));
-          developer.log(' [Bloc] Profile updated successfully: ${data.message}');
-        } else {
-          developer.log(' [Bloc] Submit failed: response.data is null');
-          emit(const DetailedSingupSubmitUserDetailsError());
-        }
-      } else {
-        developer.log(' [Bloc] Submit failed: Not a DataSuccess');
-        emit(const DetailedSingupSubmitUserDetailsError());
-      }
-    } catch (e, stackTrace) {
-      developer.log(' [Bloc] Exception during submit: $e\n$stackTrace');
+      final response =
+      await _detailedSignupUsecase.submitDetailedUserProfile(event.params);
+      emit(DetailedSingupSubmitUserDetailsLoaded(response.data!));
+    } catch (e) {
       emit(const DetailedSingupSubmitUserDetailsError());
     }
   }
