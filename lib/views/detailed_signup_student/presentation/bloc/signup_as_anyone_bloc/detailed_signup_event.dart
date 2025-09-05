@@ -30,9 +30,7 @@ class DetailedSignupGetBasicUserInfo extends DetailedSignupEvent {
 
 class DetailedSignupGetCollegeDetails extends DetailedSignupEvent {
   final Map<String, dynamic> emailMap;
-
   const DetailedSignupGetCollegeDetails(this.emailMap);
-
   @override
   List<Object?> get props => [emailMap];
 }

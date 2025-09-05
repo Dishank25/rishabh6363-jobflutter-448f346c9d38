@@ -14,8 +14,9 @@ abstract class DetailedSignupRepository {
   Future<DataState<BasicUserInfoResponse>> getBasicUserInfo(
       Map<String, dynamic> emailMap);
 
-  Future<DataState<CollegeListEntity>> getColleges(
-      Map<String, dynamic> emailMap);
+  Future<DataState<CollegeListEntity>> getColleges();
+
+  Future<DataState<CompanyListEntity>> getCompanies();
 
   Future<DataState<List<SpecializationEntity>>> getSpecialization(
       String course_id);

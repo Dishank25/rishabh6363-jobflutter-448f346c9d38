@@ -131,3 +131,21 @@ class SCourseEntity {
     return SCourseEntity(name: other.name);
   }
 }
+
+class CompanyEntity {
+  final int id;
+  final String company_name;
+
+  const CompanyEntity({
+    required this.id,
+    required this.company_name,
+  });
+}
+
+class CompanyListEntity {
+  final List<CompanyEntity> companies;
+
+  const CompanyListEntity({
+    required this.companies,
+  });
+}

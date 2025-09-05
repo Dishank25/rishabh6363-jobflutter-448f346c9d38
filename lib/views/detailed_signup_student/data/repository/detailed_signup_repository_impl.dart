@@ -61,79 +61,139 @@ class DetailedSignupRepositoryImpl extends DetailedSignupRepository {
   }
 
   @override
-  Future<DataState<CollegeListEntity>> getColleges(
-      Map<String, dynamic> emailMap) async {
+  Future<DataState<CollegeListEntity>> getColleges() async {
     try {
-      final res = await _apiService.getColleges(emailMap);
+      final prefs = await SharedPreferences.getInstance();
+      final String? cachedMasterData = prefs.getString('master_api_all_data');
+
+      if (cachedMasterData != null) {
+        final Map<String, dynamic> masterData = jsonDecode(cachedMasterData);
+
+        if (masterData.containsKey('data') && masterData['data'].containsKey('schoolColleges')) {
+          final List<dynamic> collegeJsonList = masterData['data']['schoolColleges'];
+          final List<CollegeEntity> colleges = collegeJsonList
+              .map((e) => CollegeEntity(
+            id: e['id'],
+            name: e['name'],
+            logo_pic: e['logo_pic'] ?? '',
+          ))
+              .toList();
+
+          return DataSuccess(CollegeListEntity(
+            success: true,
+            colleges: colleges,
+            message: 'Colleges loaded from cache',
+          ));
+        }
+      }
+
+      // Fallback to API — use dummy emailMap if required by API
+      final res = await _apiService.getColleges({'email': 'fallback@fallback.com'});
       if (res.response.statusCode == HttpStatus.ok) {
-        developer.log('.checkk response in repository : ${res.data}');
         return DataSuccess(res.data);
       } else {
-        developer.log('..checkk response in repository : ${res.data}');
         return DataFailed(DioException(
-            error: res.response.statusMessage,
-            response: res.response,
-            type: DioExceptionType.badResponse,
-            requestOptions: res.response.requestOptions));
+          requestOptions: res.response.requestOptions,
+          type: DioExceptionType.badResponse,
+        ));
       }
     } on DioException catch (e) {
-      final error = e.type;
-      developer.log('....checkk  : $error');
       return DataFailed(e);
+    } catch (e) {
+      developer.log('Error loading colleges from cache: $e');
+      return DataFailed(DioException(requestOptions: RequestOptions()));
     }
   }
 
   @override
   Future<DataState<List<SpecializationEntity>>> getSpecialization(String course_id) async {
     try {
+      final prefs = await SharedPreferences.getInstance();
+      final String? cachedMasterData = prefs.getString('master_api_all_data');
+
+      if (cachedMasterData != null) {
+        final Map<String, dynamic> masterData = jsonDecode(cachedMasterData);
+
+        if (masterData.containsKey('data') && masterData['data'].containsKey('specializations')) {
+          final List<dynamic> specializationJsonList = masterData['data']['specializations'];
+          final List<SpecializationEntity> specializations = specializationJsonList
+              .where((e) => e['course_id'].toString() == course_id)
+              .map((e) => SpecializationEntity(
+            id: e['id'],
+            name: e['name'],
+            course_id: e['course_id'],
+            course: e['course'] != null
+                ? SCourseEntity(name: e['course']['name'])
+                : null,
+          ))
+              .toList();
+
+          if (specializations.isNotEmpty) {
+            return DataSuccess(specializations);
+          } else {
+            developer.log('⚠️ No specializations found in cache for course_id: $course_id');
+          }
+        }
+      }
+
+      // Fallback to API
       final res = await _apiService.getSpecialization(course_id);
-
-      developer.log('🔍 Raw API Response: ${res.data}');
-      developer.log('📄 Specialization count: ${res.data.data.length}');
-
-      if (res.response.statusCode == HttpStatus.ok && res.data.success) {
-        final List<SpecializationEntity> specializations = res.data.data
-            .map((model) {
-          developer.log('⚡ Converting model: ${model.name}');
-          return model.toEntity();
-        })
-            .toList();
-
-        developer.log('✅ Specializations converted: ${specializations.length}');
-        return DataSuccess(specializations);
+      if (res.response.statusCode == HttpStatus.ok) {
+        return DataSuccess(res.data.data);
       } else {
-        developer.log('❌ API failed: ${res.data.message}');
         return DataFailed(DioException(
-          error: res.data.message,
-          type: DioExceptionType.badResponse,
           requestOptions: res.response.requestOptions,
+          type: DioExceptionType.badResponse,
         ));
       }
     } on DioException catch (e) {
-      developer.log('🚨 Exception in getSpecialization: $e');
       return DataFailed(e);
+    } catch (e) {
+      developer.log('Error loading specializations from cache: $e');
+      return DataFailed(DioException(requestOptions: RequestOptions()));
     }
   }
 
   @override
   Future<DataState<CourseListEntity>> getCourses() async {
     try {
+      final prefs = await SharedPreferences.getInstance();
+      final String? cachedMasterData = prefs.getString('master_api_all_data');
+
+      if (cachedMasterData != null) {
+        final Map<String, dynamic> masterData = jsonDecode(cachedMasterData);
+
+        if (masterData.containsKey('data') && masterData['data'].containsKey('courses')) {
+          final List<dynamic> courseJsonList = masterData['data']['courses'];
+          final List<CourseModel> courses = courseJsonList
+              .map((e) => CourseModel(id: e['id'], name: e['name']))
+              .toList();
+
+          final courseListEntity = CourseListEntity(
+            success: true,
+            courses: courses,
+            message: 'Courses loaded from cache',
+          );
+
+          return DataSuccess(courseListEntity);
+        }
+      }
+
+      // Fallback to API if cache missing
       final res = await _apiService.getCourses();
       if (res.response.statusCode == HttpStatus.ok) {
-        developer.log('.checkk response in repository : ${res.data}');
         return DataSuccess(res.data);
       } else {
-        developer.log('..checkk response in repository : ${res.data}');
         return DataFailed(DioException(
-            error: res.response.statusMessage,
-            response: res.response,
-            type: DioExceptionType.badResponse,
-            requestOptions: res.response.requestOptions));
+          requestOptions: res.response.requestOptions,
+          type: DioExceptionType.badResponse,
+        ));
       }
     } on DioException catch (e) {
-      final error = e.type;
-      developer.log('....checkk  : $error');
       return DataFailed(e);
+    } catch (e) {
+      developer.log('Error loading courses from cache: $e');
+      return DataFailed(DioException(requestOptions: RequestOptions()));
     }
   }
 
@@ -183,22 +243,66 @@ class DetailedSignupRepositoryImpl extends DetailedSignupRepository {
   @override
   Future<DataState<JobRolesListResponse>> getJobRoles() async {
     try {
+      final prefs = await SharedPreferences.getInstance();
+      final String? cachedMasterData = prefs.getString('master_api_all_data');
+
+      if (cachedMasterData != null) {
+        final Map<String, dynamic> masterData = jsonDecode(cachedMasterData);
+
+        if (masterData.containsKey('data') && masterData['data'].containsKey('jobRoles')) {
+          final List<dynamic> jobRoleJsonList = masterData['data']['jobRoles'];
+          final List<String> jobRoles = jobRoleJsonList
+              .map((e) => e['title'] as String)
+              .toList();
+
+          final jobRolesListResponse = JobRolesListResponse(jobRoles: jobRoles);
+
+          return DataSuccess(jobRolesListResponse);
+        }
+      }
+
+      // Fallback to API
       final res = await _apiService.getJobRoles();
       if (res.response.statusCode == HttpStatus.ok) {
-        developer.log('.checkk response in repository : ${res.data}');
         return DataSuccess(res.data);
       } else {
-        developer.log('..checkk response in repository : ${res.data}');
         return DataFailed(DioException(
-            error: res.response.statusMessage,
-            response: res.response,
-            type: DioExceptionType.badResponse,
-            requestOptions: res.response.requestOptions));
+          requestOptions: res.response.requestOptions,
+          type: DioExceptionType.badResponse,
+        ));
       }
     } on DioException catch (e) {
-      final error = e.type;
-      developer.log('....checkk  : $error');
       return DataFailed(e);
+    } catch (e) {
+      developer.log('Error loading jobRoles from cache: $e');
+      return DataFailed(DioException(requestOptions: RequestOptions()));
+    }
+  }
+
+  @override
+  Future<DataState<CompanyListEntity>> getCompanies() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final String? cachedMasterData = prefs.getString('master_api_all_data');
+
+      if (cachedMasterData != null) {
+        final Map<String, dynamic> masterData = jsonDecode(cachedMasterData);
+        if (masterData.containsKey('data') && masterData['data'].containsKey('companies')) {
+          final List<dynamic> companyJsonList = masterData['data']['companies'];
+          final List<CompanyEntity> companies = companyJsonList
+              .map((e) => CompanyEntity(
+            id: e['id'],
+            company_name: e['company_name'],
+          ))
+              .toList();
+          return DataSuccess(CompanyListEntity(companies: companies));
+        }
+      }
+
+      return DataSuccess(const CompanyListEntity(companies: []));
+    } catch (e) {
+      developer.log('Error loading companies from cache: $e');
+      return DataFailed(DioException(requestOptions: RequestOptions()));
     }
   }
 
@@ -206,6 +310,59 @@ class DetailedSignupRepositoryImpl extends DetailedSignupRepository {
   Future<DataState<SubmitDetailedUserProfile>> submitDetailedUserProfile(
       Map<String, dynamic> params) async {
     try {
+
+      final prefs = await SharedPreferences.getInstance();
+      final String? cachedMasterData = prefs.getString('master_api_all_data');
+
+      if (cachedMasterData == null) {
+        developer.log('⚠️ No cached master data found. Proceeding without ID mapping.');
+      }
+
+      final Map<String, dynamic>? masterData = cachedMasterData != null
+          ? jsonDecode(cachedMasterData)['data']
+          : null;
+
+      final String? courseName = params['course'];
+      int? courseId;
+      if (courseName != null && masterData != null && masterData.containsKey('courses')) {
+        try {
+          final courseMatch = (masterData['courses'] as List).firstWhere((c) => c['name'] == courseName);
+          courseId = courseMatch['id'];
+          params['course_id'] = courseId;
+          developer.log('✅ Mapped course "$courseName" → course_id: $courseId');
+        } on StateError {
+          developer.log('❌ No course found for name: $courseName');
+        }
+      }
+
+      final String? specializationName = params['specialization'];
+      int? specializationId;
+      if (specializationName != null &&
+          courseId != null &&
+          masterData != null &&
+          masterData.containsKey('specializations')) {
+        try {
+          final specializationMatch = (masterData['specializations'] as List).firstWhere((s) =>
+          s['name'] == specializationName && s['course_id'] == courseId);
+          specializationId = specializationMatch['id'];
+          params['specialization_id'] = specializationId;
+          developer.log('✅ Mapped specialization "$specializationName" → specialization_id: $specializationId');
+        } on StateError {
+          developer.log('❌ No specialization found for: $specializationName (course_id: $courseId)');
+        }
+      }
+
+      final String? collegeName = params['college_name'];
+      if (collegeName != null) {
+        params['college_name'] = collegeName;
+        developer.log('📎 College name included: $collegeName');
+      }
+
+      params['start_year'] = params['start_year']?.toString();
+      params['end_year'] = params['end_year']?.toString();
+
+      developer.log('📊 Final Payload to API: ${jsonEncode(params)}');
+
       final res = await _apiService.submitDetailedUserProfile(params);
       if (res.response.statusCode == HttpStatus.ok ||
           res.response.statusCode == HttpStatus.created ||
@@ -215,20 +372,28 @@ class DetailedSignupRepositoryImpl extends DetailedSignupRepository {
       } else {
         developer.log('..checkk response in repository : ${res.data}');
         return DataFailed(DioException(
-            error: res.response.statusMessage,
-            response: res.response,
-            type: DioExceptionType.badResponse,
-            requestOptions: res.response.requestOptions));
+          error: res.response.statusMessage,
+          response: res.response,
+          type: DioExceptionType.badResponse,
+          requestOptions: res.response.requestOptions,
+        ));
       }
     } on DioException catch (e) {
       final error = e.type;
-      developer.log('....checkk  : $error');
-      if (error == DioExceptionType.badResponse) {
-        developer.log('...checkk response in repository : ${e.response}');
-        final data = SubmitDetailedUserProfile.fromJson(e.response!.data);
-        return DataSuccess(data);
+      developer.log('....checkk DioException: $error');
+      if (error == DioExceptionType.badResponse && e.response != null) {
+        developer.log('...checkk bad response data: ${e.response!.data}');
+        try {
+          final data = SubmitDetailedUserProfile.fromJson(e.response!.data);
+          return DataSuccess(data);
+        } catch (jsonError) {
+          developer.log('Failed to parse error response: $jsonError');
+        }
       }
       return DataFailed(e);
+    } catch (e) {
+      developer.log('Unexpected error in submitDetailedUserProfile: $e');
+      return DataFailed(DioException(requestOptions: RequestOptions()));
     }
   }
 }

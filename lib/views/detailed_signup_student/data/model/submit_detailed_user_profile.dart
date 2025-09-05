@@ -32,10 +32,13 @@ class UserDetail {
   final String dob;
   final String gender;
   final String user_type;
-  final String? course;
-  final String? specialization;
+
+  final int? course_id;
+  final int? specialization_id;
+  final String? college_name;
   final String? start_year;
   final String? end_year;
+
   final DateTime updated_at;
   final DateTime created_at;
 
@@ -54,8 +57,9 @@ class UserDetail {
     required this.dob,
     required this.gender,
     required this.user_type,
-    this.course,
-    this.specialization,
+    this.course_id,
+    this.specialization_id,
+    this.college_name,
     this.start_year,
     this.end_year,
     required this.updated_at,
@@ -64,7 +68,7 @@ class UserDetail {
 
   factory UserDetail.fromJson(Map<String, dynamic> json) {
     return UserDetail(
-      isAadhaarVerified: json['isAadhaarVerified'] ?? false,
+      isAadhaarVerified: json['is_aadhaar_verified'] ?? false,
       is_email_verified: json['is_email_verified'] ?? false,
       is_phone_verified: json['is_phone_verified'] ?? false,
       is_gst_verified: json['is_gst_verified'] ?? false,
@@ -78,12 +82,35 @@ class UserDetail {
       dob: json['dob'] ?? '',
       gender: json['gender'] ?? '',
       user_type: json['user_type'] ?? '',
-      course: json['course'],
-      specialization: json['specialization'],
+
+      course_id: json['course_id'],
+      specialization_id: json['specialization_id'],
+      college_name: json['college_name'],
       start_year: json['start_year'],
       end_year: json['end_year'],
+
       updated_at: DateTime.parse(json['updated_at']),
       created_at: DateTime.parse(json['created_at']),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'user_id': user_id,
+      'first_name': first_name,
+      'last_name': last_name,
+      'email': email,
+      'phone': phone,
+      'dob': dob,
+      'gender': gender,
+      'user_type': user_type,
+      'course_id': course_id,
+      'specialization_id': specialization_id,
+      'college_name': college_name,
+      'start_year': start_year,
+      'end_year': end_year,
+      'currently_looking_for': null,
+      'work_mode': null,
+    };
   }
 }

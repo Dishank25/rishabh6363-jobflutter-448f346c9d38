@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:job_portal/utils/resourses/data_state.dart';
 import 'package:job_portal/views/detailed_signup_student/data/model/basic_user_data_response.dart';
 import 'package:job_portal/views/detailed_signup_student/data/model/colleges_response.dart';
@@ -22,9 +23,13 @@ class DetailedSignupUsecase {
     return response;
   }
 
-  Future<DataState<CollegeListEntity>> getColleges(
-      Map<String, dynamic> emailMap) async {
-    final response = await _repository.getColleges(emailMap);
+  Future<DataState<CollegeListEntity>> getColleges() async {
+    final response = await _repository.getColleges();
+    return response;
+  }
+
+  Future<DataState<CompanyListEntity>> getCompanies() async {
+    final response = await _repository.getCompanies();
     return response;
   }
 
@@ -51,7 +56,15 @@ class DetailedSignupUsecase {
 
   Future<DataState<SubmitDetailedUserProfile>> submitDetailedUserProfile(
       Map<String, dynamic> params) async {
-    final response = await _repository.submitDetailedUserProfile(params);
-    return response;
+    try {
+      final response = await _repository.submitDetailedUserProfile(params);
+
+      return response;
+    } catch (e) {
+      return DataFailed(
+
+        DioException(requestOptions: RequestOptions(path: '/user-details/detail')),
+      );
+    }
   }
 }

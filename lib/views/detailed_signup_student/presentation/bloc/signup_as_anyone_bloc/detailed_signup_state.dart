@@ -4,6 +4,8 @@ import 'package:job_portal/views/detailed_signup_student/data/model/basic_user_d
 import 'package:job_portal/views/detailed_signup_student/data/model/submit_detailed_user_profile.dart';
 import 'package:job_portal/views/detailed_signup_student/domain/entities/metadata_entities.dart';
 
+import '../../../data/model/job_roles_response.dart';
+
 @immutable
 abstract class DetailedSignupState extends Equatable {
   const DetailedSignupState();
@@ -48,13 +50,23 @@ class DetailedSignupGetCollegeDetailsLoading extends DetailedSignupState {
 class DetailedSignupGetCollegeDetailsLoaded extends DetailedSignupState {
   final CollegeListEntity collegesListResponse;
   final CourseListEntity coursesListResponse;
-  // final JobRolesListResponse jobRolesListResponse;
+  final JobRolesListResponse jobRolesListResponse;
+  final CompanyListEntity companyListResponse;
 
   const DetailedSignupGetCollegeDetailsLoaded(
-    this.collegesListResponse,
-    this.coursesListResponse,
-    // this.jobRolesListResponse,
-  );
+      this.collegesListResponse,
+      this.coursesListResponse,
+      this.jobRolesListResponse,
+      this.companyListResponse,
+      );
+
+  @override
+  List<Object?> get props => [
+    collegesListResponse,
+    coursesListResponse,
+    jobRolesListResponse,
+    companyListResponse,
+  ];
 }
 
 class DetailedSignupGetCollegeDetailsError extends DetailedSignupState {
