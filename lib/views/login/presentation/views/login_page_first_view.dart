@@ -17,6 +17,7 @@ import '../../../../ui_helper/ui_helper.dart';
 import '../../../../widgets/widgets.dart';
 import 'login_with_email_otp_view.dart';
 import '../../../signup_student/presentation/views/create_account.dart';
+import '../../../bottom_nav_bar/recruiter_bottom_nav_bar.dart';
 
 class LogInPage1 extends StatefulWidget {
   @override
@@ -164,7 +165,7 @@ class _SignInPage_1State extends State<LogInPage1> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        const RecruiterDashboard(),
+                                        RecruiterBottomNavBar(),
                                   ),
                                 );
                               }

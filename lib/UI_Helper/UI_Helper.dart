@@ -63,3 +63,80 @@ Widget mSpacer({mHeight = 22.0}) {
     height: mHeight,
   );
 }
+
+class CustomButton1 extends StatelessWidget {
+  /// The text to display on the button
+  final String text;
+
+  /// Callback when the button is pressed
+  final VoidCallback? onPressed;
+
+  /// Optional: Customize text style
+  final TextStyle? textStyle;
+
+  /// Optional: Button width (default: 355)
+  final double width;
+
+  /// Optional: Button height (default: 48)
+  final double height;
+
+  const CustomButton1({
+    Key? key,
+    required this.text,
+    this.onPressed,
+    this.textStyle,
+    this.width = double.infinity,
+    this.height = 48.0,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: width,
+      height: height,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color.fromRGBO(240, 55, 41, 1), // Base red
+          elevation: 0,
+          padding: const EdgeInsets.fromLTRB(24, 10, 24, 10), // LTRB padding
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          side: BorderSide.none, // Remove default side
+        ),
+        child: Container(
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+              bottomLeft: Radius.circular(10),
+              bottomRight: Radius.circular(10),
+            ),
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color.fromRGBO(240, 55, 41, 1),
+                Color.fromRGBO(240, 55, 41, 1),
+              ],
+            ),
+            // Add drop shadow
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromRGBO(240, 55, 41, 1),
+                blurRadius: 2,
+                spreadRadius: 0,
+                offset: Offset(0, 1),
+              ),
+            ],
+          ),
+          child: Center(
+            child: Text(text, style: mTextStyle16()),
+          ),
+        ),
+      ),
+    );
+  }
+}
