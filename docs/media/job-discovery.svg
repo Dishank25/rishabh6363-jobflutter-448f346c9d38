@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="352" viewBox="0 0 1120 352" role="img" aria-labelledby="title desc">
+  <title id="title">Job Discovery</title>
+  <desc id="desc">Three layered filter controls illustrate the job search interface in this Flutter application.</desc>
+  <defs>
+    <linearGradient id="stage" x2="1" y2="1"><stop stop-color="#101124"/><stop offset=".58" stop-color="#221c3b"/><stop offset="1" stop-color="#38253c"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#ea847e" stop-opacity=".2"/><stop offset="1" stop-color="#ea847e" stop-opacity="0"/></radialGradient>
+    <linearGradient id="panel" x2="1" y2=".8"><stop stop-color="#41405e"/><stop offset="1" stop-color="#262941"/></linearGradient>
+    <linearGradient id="edge" x2=".9" y2="1"><stop stop-color="#d2bedc"/><stop offset="1" stop-color="#7c6289"/></linearGradient>
+    <style>
+      text {font-family:Arial,Helvetica,sans-serif}
+      @media (prefers-reduced-motion:no-preference){
+        .one{animation:slide 4s ease-in-out 2}.two{animation:slide 4s ease-in-out .4s 2 reverse}.three{animation:slide 4s ease-in-out .8s 2}
+      }
+      @keyframes slide{0%,100%{transform:translateX(0)}50%{transform:translateX(12px)}}
+    </style>
+  </defs>
+  <rect width="1120" height="352" rx="16" fill="url(#stage)"/>
+  <ellipse cx="844" cy="197" rx="334" ry="182" fill="url(#glow)"/>
+  <g fill="none" stroke="#cb94aa" opacity=".23" stroke-width="1.2">
+    <path d="m655 200 133 103 260-96M666 215l122 95 247-90m-54-160 68 52-29 11"/>
+    <ellipse cx="851" cy="170" rx="221" ry="128" transform="rotate(-10 851 170)" stroke-dasharray="2 9"/>
+  </g>
+  <g transform="matrix(.99,-.20,.25,.88,655,100)">
+    <rect x="14" y="24" width="306" height="204" rx="22" fill="#301f38" stroke="#785064" stroke-width="1.6"/>
+    <rect x="7" y="12" width="306" height="204" rx="22" fill="#4f3c54" stroke="#92738d" stroke-width="1.6"/>
+    <rect width="306" height="204" rx="22" fill="url(#panel)" stroke="url(#edge)" stroke-width="2.2"/>
+    <g fill="none" stroke="#ebbdad" stroke-width="3" stroke-linecap="round"><path d="M26 29h29m-23 8h19m-13 8h8"/></g>
+    <g fill="#cbbbd1"><rect x="69" y="28" width="81" height="4" rx="2"/><rect x="69" y="38" width="50" height="3" rx="1.5" opacity=".55"/></g>
+    <g fill="#25273d" stroke="#5c5168"><rect x="20" y="61" width="266" height="34" rx="9"/><rect x="20" y="105" width="266" height="34" rx="9"/><rect x="20" y="149" width="266" height="34" rx="9"/></g>
+    <g fill="none" stroke-width="3.1" stroke-linecap="round"><path d="M40 78h223m-223 44h223m-223 44h223" stroke="#66647b"/><path d="M40 78h101" stroke="#fdab96"/><path d="M40 122h172" stroke="#d4b3ef"/><path d="M40 166h61" stroke="#8fdccf"/></g>
+    <g class="one"><circle cx="141" cy="78" r="10" fill="#ffc6ac"/><circle cx="141" cy="78" r="3" fill="#805c6b"/></g>
+    <g class="two"><circle cx="212" cy="122" r="10" fill="#d8c3ff"/><circle cx="212" cy="122" r="3" fill="#6c588b"/></g>
+    <g class="three"><circle cx="101" cy="166" r="10" fill="#96ddd0"/><circle cx="101" cy="166" r="3" fill="#466b70"/></g>
+  </g>
+  <g transform="translate(56 0)">
+    <path d="M0 69h36" stroke="#ffaf9b" stroke-width="3.5"/>
+    <text x="0" y="164" fill="#faf1ee" font-size="72" font-weight="700" letter-spacing="-3.6">Job Discovery</text>
+    <text x="2" y="215" fill="#d7c3d2" font-size="29">Candidate screens and search filters</text>
+    <text x="2" y="273" fill="#ffb39e" font-size="22" letter-spacing="1">Flutter  /  Dart</text>
+  </g>
+</svg>
